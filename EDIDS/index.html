@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingegneria del Software — Patterns & Principi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080810;
+    --bg-card: #0f0f1a;
+    --bg-card-hover: #141428;
+    --border: rgba(120, 100, 255, 0.15);
+    --border-hover: rgba(120, 100, 255, 0.4);
+    --accent: #7c5cfc;
+    --accent-soft: #a78bfa;
+    --accent-glow: rgba(124, 92, 252, 0.2);
+    --text-primary: #f0eeff;
+    --text-secondary: #9488c2;
+    --text-muted: #5a5080;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --coral: #f87171;
+    --teal: #22d3ee;
+    --code-bg: #0a0a16;
+    --tag-bg: rgba(124, 92, 252, 0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 60px;
+    background: rgba(8, 8, 16, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent-soft);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124, 92, 252, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border-hover);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-soft);
+    letter-spacing: 0.08em;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #f0eeff 0%, #a78bfa 50%, #7c5cfc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 3rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 12px 28px;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover { background: #9571ff; transform: translateY(-1px); }
+
+  .btn-ghost {
+    padding: 12px 28px;
+    background: transparent;
+    border: 1px solid var(--border-hover);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--accent-soft); color: var(--text-primary); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(15, 15, 26, 0.6);
+    margin-top: 5rem;
+  }
+
+  .stat-item {
+    flex: 1;
+    max-width: 200px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* SECTION */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .section-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-bottom: 3.5rem;
+    line-height: 1.75;
+  }
+
+  /* GRASP SECTION */
+  .grasp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .grasp-card {
+    background: var(--bg-card);
+    padding: 1.75rem;
+    transition: background 0.2s;
+    cursor: default;
+  }
+
+  .grasp-card:hover { background: var(--bg-card-hover); }
+
+  .grasp-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent-soft);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .grasp-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  .grasp-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .grasp-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 3px 10px;
+    background: var(--tag-bg);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-soft);
+    letter-spacing: 0.04em;
+  }
+
+  /* GOF SECTION */
+  .gof-tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    width: fit-content;
+  }
+
+  .gof-tab {
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    border-right: 1px solid var(--border);
+    letter-spacing: 0.02em;
+  }
+
+  .gof-tab:last-child { border-right: none; }
+
+  .gof-tab.active {
+    background: var(--tag-bg);
+    color: var(--accent-soft);
+  }
+
+  .gof-tab:hover:not(.active) { color: var(--text-secondary); }
+
+  .gof-panel { display: none; }
+  .gof-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+
+  .gof-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .gof-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .gof-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+  }
+
+  .gof-card p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .gof-card .gof-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* SINGLETON SECTION */
+  .singleton-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .singleton-layout { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+    .stats-bar { flex-wrap: wrap; }
+  }
+
+  .singleton-text h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .singleton-text p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .pros-cons-box {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid;
+  }
+
+  .pros-cons-box.pro { border-color: var(--green); }
+  .pros-cons-box.con { border-color: var(--coral); }
+
+  .pros-cons-box h5 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+
+  .pros-cons-box.pro h5 { color: var(--green); }
+  .pros-cons-box.con h5 { color: var(--coral); }
+
+  .pros-cons-box ul {
+    list-style: none;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 2;
+  }
+
+  .pros-cons-box ul li::before {
+    margin-right: 6px;
+    font-weight: 700;
+  }
+
+  .pros-cons-box.pro ul li::before { content: '+'; color: var(--green); }
+  .pros-cons-box.con ul li::before { content: '−'; color: var(--coral); }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(124, 92, 252, 0.05);
+  }
+
+  .code-dots { display: flex; gap: 6px; }
+
+  .code-dots span {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #28c840; }
+
+  .code-filename {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .code-body {
+    padding: 1.5rem;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #c4b5fd;
+    overflow-x: auto;
+  }
+
+  .code-body .kw { color: #f87171; }
+  .code-body .fn { color: #818cf8; }
+  .code-body .cm { color: #4f4673; font-style: italic; }
+  .code-body .str { color: #6ee7b7; }
+  .code-body .tp { color: #fbbf24; }
+
+  /* DIVIDER */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 2rem;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: var(--tag-bg);
+    border: 1px solid var(--border-hover);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 13px;
+    color: var(--accent-soft);
+    line-height: 1.7;
+  }
+
+  /* DIAGRAM */
+  .diagram-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .diagram-box {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .diagram-arrow {
+    font-size: 20px;
+    color: var(--text-muted);
+    line-height: 1;
+    margin: 4px 0;
+  }
+
+  .db-singleton {
+    background: rgba(124, 92, 252, 0.15);
+    border: 1px solid rgba(124, 92, 252, 0.4);
+    color: #a78bfa;
+  }
+
+  .db-client {
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    color: var(--teal);
+  }
+
+  .db-check {
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: var(--green);
+    font-size: 11px;
+    padding: 6px 20px;
+  }
+
+  .db-clients {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .diagram-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 4px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">// ingegneria-sw</a>
+  <ul class="nav-links">
+    <li><a href="#grasp">GRASP</a></li>
+    <li><a href="#gof">GoF Patterns</a></li>
+    <li><a href="#singleton">Singleton</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <span class="hero-badge">Ingegneria del Software</span>
+  <h1>Design<br>Patterns</h1>
+  <p class="hero-sub">
+    Principi e pattern fondamentali per progettare software robusto, manutenibile e scalabile. Da GRASP ai Gang of Four.
+  </p>
+  <div class="hero-cta">
+    <a href="#grasp" class="btn-primary">Esplora i concetti</a>
+    <a href="#singleton" class="btn-ghost">Vedere il codice</a>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">9</div>
+      <div class="stat-label">Principi GRASP</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">23</div>
+      <div class="stat-label">Pattern GoF</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Categorie</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Applicazioni</div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- GRASP -->
+<section id="grasp">
+  <div class="section-eyebrow">Principi fondamentali</div>
+  <h2 class="section-title">GRASP Patterns</h2>
+  <p class="section-desc">
+    General Responsibility Assignment Software Patterns — 9 principi guida per assegnare responsabilità a classi e oggetti in modo coerente e manutenibile.
+  </p>
+
+  <div class="grasp-grid">
+    <div class="grasp-card">
+      <div class="grasp-icon">IC</div>
+      <h3>Information Expert</h3>
+      <p>Assegna la responsabilità alla classe che possiede le informazioni necessarie per svolgere il compito. Chi sa, fa.</p>
+      <span class="grasp-tag">responsabilità</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">CR</div>
+      <h3>Creator</h3>
+      <p>La classe B dovrebbe creare istanze di A se B contiene, aggrega, registra o usa strettamente oggetti di tipo A.</p>
+      <span class="grasp-tag">creazione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">LC</div>
+      <h3>Low Coupling</h3>
+      <p>Minimizza le dipendenze tra classi per ridurre l'impatto delle modifiche e aumentare la riusabilità del codice.</p>
+      <span class="grasp-tag">accoppiamento</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">HC</div>
+      <h3>High Cohesion</h3>
+      <p>Ogni classe dovrebbe avere responsabilità fortemente correlate e focalizzate. Evita le "God Class" che fanno tutto.</p>
+      <span class="grasp-tag">coesione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">CT</div>
+      <h3>Controller</h3>
+      <p>Delega la gestione degli eventi di sistema a una classe controller, separando la logica UI dalla business logic.</p>
+      <span class="grasp-tag">architettura</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PV</div>
+      <h3>Polymorphism</h3>
+      <p>Usa il polimorfismo invece di condizionali (if/switch) quando il comportamento varia in base al tipo.</p>
+      <span class="grasp-tag">OOP</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PI</div>
+      <h3>Pure Fabrication</h3>
+      <p>Crea una classe artificiale (non del dominio) per raggiungere Low Coupling e High Cohesion. Es: DAO, Repository.</p>
+      <span class="grasp-tag">astrazione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">IN</div>
+      <h3>Indirection</h3>
+      <p>Introduci un intermediario tra due componenti per disaccoppiarle. La base di molti design pattern.</p>
+      <span class="grasp-tag">disaccoppiamento</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PV</div>
+      <h3>Protected Variations</h3>
+      <p>Identifica i punti di variazione e instabilità, poi costruisci interfacce stabili attorno ad essi.</p>
+      <span class="grasp-tag">stabilità</span>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    💡 <strong>Regola pratica:</strong> Low Coupling e High Cohesion sono i due principi più importanti. Ogni altra decisione di design dovrebbe tendere a massimizzarli entrambi contemporaneamente.
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- GoF -->
+<section id="gof">
+  <div class="section-eyebrow">Gang of Four — 1994</div>
+  <h2 class="section-title">GoF Design Patterns</h2>
+  <p class="section-desc">
+    I 23 pattern classici catalogati da Gamma, Helm, Johnson e Vlissides nel libro <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>.
+  </p>
+
+  <div class="gof-tabs">
+    <button class="gof-tab active" onclick="showTab('creazionali')">Creazionali</button>
+    <button class="gof-tab" onclick="showTab('strutturali')">Strutturali</button>
+    <button class="gof-tab" onclick="showTab('comportamentali')">Comportamentali</button>
+  </div>
+
+  <div id="panel-creazionali" class="gof-panel active">
+    <div class="gof-card">
+      <h4>Singleton</h4>
+      <p>Garantisce una sola istanza di una classe, con accesso globale controllato.</p>
+      <div class="gof-type">// creazionale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Factory Method</h4>
+      <p>Definisce un'interfaccia per creare oggetti, lasciando alle sottoclassi la scelta del tipo concreto.</p>
+      <div class="gof-type">// creazionale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Abstract Factory</h4>
+      <p>Crea famiglie di oggetti correlati senza specificarne le classi concrete.</p>
+      <div class="gof-type">// creazionale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Builder</h4>
+      <p>Separa la costruzione di oggetti complessi dalla loro rappresentazione finale.</p>
+      <div class="gof-type">// creazionale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Prototype</h4>
+      <p>Crea nuovi oggetti clonando un'istanza esistente, detto prototipo.</p>
+      <div class="gof-type">// creazionale</div>
+    </div>
+  </div>
+
+  <div id="panel-strutturali" class="gof-panel">
+    <div class="gof-card">
+      <h4>Adapter</h4>
+      <p>Converte l'interfaccia di una classe in un'altra attesa dal client. Il "traduttore" tra API incompatibili.</p>
+      <div class="gof-type">// strutturale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Composite</h4>
+      <p>Compone oggetti in strutture ad albero per rappresentare gerarchie parte-tutto.</p>
+      <div class="gof-type">// strutturale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Decorator</h4>
+      <p>Aggiunge responsabilità a un oggetto dinamicamente, alternativa flessibile all'ereditarietà.</p>
+      <div class="gof-type">// strutturale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Facade</h4>
+      <p>Fornisce un'interfaccia semplificata a un sottosistema complesso.</p>
+      <div class="gof-type">// strutturale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Proxy</h4>
+      <p>Fornisce un surrogato controllato per un altro oggetto, per gestire accesso, cache o lazy loading.</p>
+      <div class="gof-type">// strutturale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Bridge</h4>
+      <p>Disaccoppia un'astrazione dalla sua implementazione in modo che possano variare indipendentemente.</p>
+      <div class="gof-type">// strutturale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Flyweight</h4>
+      <p>Usa la condivisione per supportare efficientemente un grande numero di oggetti simili.</p>
+      <div class="gof-type">// strutturale</div>
+    </div>
+  </div>
+
+  <div id="panel-comportamentali" class="gof-panel">
+    <div class="gof-card">
+      <h4>Observer</h4>
+      <p>Definisce una dipendenza uno-a-molti: quando un oggetto cambia stato, tutti i dipendenti vengono notificati.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Strategy</h4>
+      <p>Definisce una famiglia di algoritmi intercambiabili, incapsula ciascuno e li rende sostituibili.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Template Method</h4>
+      <p>Definisce lo scheletro di un algoritmo, lasciando alcuni passi alle sottoclassi.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Command</h4>
+      <p>Incapsula una richiesta come oggetto, permettendo parametrizzazione, coda e undo delle operazioni.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Iterator</h4>
+      <p>Fornisce un modo sequenziale per accedere agli elementi di una collezione senza esporre la struttura interna.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>State</h4>
+      <p>Permette a un oggetto di cambiare comportamento al cambiare del suo stato interno.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Chain of Responsibility</h4>
+      <p>Passa una richiesta lungo una catena di handler, ognuno decide se gestirla o passarla avanti.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Mediator</h4>
+      <p>Definisce un oggetto che coordina le interazioni tra un insieme di oggetti, riducendo le dipendenze dirette.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Memento</h4>
+      <p>Cattura e esternalizza lo stato interno di un oggetto per poterlo ripristinare in seguito.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Visitor</h4>
+      <p>Rappresenta un'operazione da effettuare sugli elementi di una struttura, senza modificarli.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+    <div class="gof-card">
+      <h4>Interpreter</h4>
+      <p>Definisce una grammatica per un linguaggio e fornisce un interprete per le frasi.</p>
+      <div class="gof-type">// comportamentale</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- SINGLETON -->
+<section id="singleton">
+  <div class="section-eyebrow">Deep dive — Pattern Creazionale</div>
+  <h2 class="section-title">Singleton</h2>
+  <p class="section-desc">
+    Il pattern più semplice e più controverso del GoF. Garantisce l'esistenza di una sola istanza di una classe nell'intera applicazione.
+  </p>
+
+  <div class="singleton-layout">
+    <div class="singleton-text">
+      <h3>Come funziona</h3>
+      <p>
+        Il costruttore viene reso privato per impedire la creazione diretta di istanze. L'accesso avviene solo tramite un metodo statico <code>getInstance()</code> che, al primo invio, crea l'istanza e la memorizza in un attributo statico privato.
+      </p>
+      <p>
+        Tutte le chiamate successive restituiscono sempre la stessa istanza già creata, garantendo un unico punto di accesso globale.
+      </p>
+
+      <div class="diagram-container">
+        <div class="diagram-label">Client A</div>
+        <div class="db-clients">
+          <div class="diagram-box db-client">Client A</div>
+          <div class="diagram-box db-client">Client B</div>
+          <div class="diagram-box db-client">Client C</div>
+        </div>
+        <div class="diagram-arrow">↓</div>
+        <div class="diagram-box db-check">getInstance()</div>
+        <div class="diagram-arrow">↓</div>
+        <div class="diagram-box db-singleton">◆ Singleton<br><small style="font-size:10px;opacity:0.7">istanza unica</small></div>
+      </div>
+
+      <div class="pros-cons">
+        <div class="pros-cons-box pro">
+          <h5>Vantaggi</h5>
+          <ul>
+            <li>Istanza controllata</li>
+            <li>Accesso globale</li>
+            <li>Lazy initialization</li>
+            <li>Risparmio di risorse</li>
+          </ul>
+        </div>
+        <div class="pros-cons-box con">
+          <h5>Svantaggi</h5>
+          <ul>
+            <li>Difficile da testare</li>
+            <li>Stato globale nascosto</li>
+            <li>Viola SRP (spesso)</li>
+            <li>Problemi con thread</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span class="code-filename">Singleton.java</span>
+        </div>
+        <div class="code-body"><pre>
+<span class="cm">// Implementazione Thread-Safe (Eager)</span>
+<span class="kw">public class</span> <span class="tp">DatabaseConnection</span> {
+
+  <span class="cm">// Istanza creata al caricamento della classe</span>
+  <span class="kw">private static final</span> <span class="tp">DatabaseConnection</span>
+    instance = <span class="kw">new</span> <span class="tp">DatabaseConnection</span>();
+
+  <span class="cm">// Costruttore privato</span>
+  <span class="kw">private</span> <span class="fn">DatabaseConnection</span>() {
+    <span class="cm">// inizializzazione connessione</span>
+  }
+
+  <span class="cm">// Punto di accesso globale</span>
+  <span class="kw">public static</span> <span class="tp">DatabaseConnection</span>
+    <span class="fn">getInstance</span>() {
+      <span class="kw">return</span> instance;
+  }
+
+  <span class="kw">public void</span> <span class="fn">query</span>(<span class="tp">String</span> sql) {
+    <span class="cm">// esecuzione query</span>
+  }
+}
+
+<span class="cm">// Utilizzo</span>
+<span class="tp">DatabaseConnection</span> db =
+  <span class="tp">DatabaseConnection</span>.<span class="fn">getInstance</span>();
+db.<span class="fn">query</span>(<span class="str">"SELECT * FROM users"</span>);
+</pre></div>
+      </div>
+
+      <div class="code-block" style="margin-top: 1rem;">
+        <div class="code-header">
+          <div class="code-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span class="code-filename">Singleton_lazy.java</span>
+        </div>
+        <div class="code-body"><pre>
+<span class="cm">// Double-Checked Locking (Lazy)</span>
+<span class="kw">public class</span> <span class="tp">Singleton</span> {
+
+  <span class="kw">private volatile static</span> <span class="tp">Singleton</span> instance;
+
+  <span class="kw">private</span> <span class="fn">Singleton</span>() {}
+
+  <span class="kw">public static</span> <span class="tp">Singleton</span> <span class="fn">getInstance</span>() {
+    <span class="kw">if</span> (instance == <span class="kw">null</span>) {
+      <span class="kw">synchronized</span> (<span class="tp">Singleton</span>.<span class="kw">class</span>) {
+        <span class="kw">if</span> (instance == <span class="kw">null</span>) {
+          instance = <span class="kw">new</span> <span class="tp">Singleton</span>();
+        }
+      }
+    }
+    <span class="kw">return</span> instance;
+  }
+}
+</pre></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 2rem;">
+    ⚠️ <strong>Anti-pattern warning:</strong> Il Singleton è spesso considerato un anti-pattern in sistemi moderni. Preferire la <em>Dependency Injection</em> per mantenere il codice testabile e disaccoppiato. Il Singleton dovrebbe essere usato solo quando l'unicità dell'istanza è un requisito reale del dominio, non solo di convenienza.
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>// ingegneria del software — design patterns — GRASP · GoF · Singleton</p>
+</footer>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.gof-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.gof-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Smooth scroll per i link nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
