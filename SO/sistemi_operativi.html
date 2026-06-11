@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoria — Sistemi Operativi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">// SO · Sistemi Operativi</a>
+  <div class="nav-links-row">
+    <a href="index.html" class="nav-back">← EDIDS</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a>
+    <span>/</span>
+    <a href="index.html">EDIDS</a>
+    <span>/</span>
+    <span>Sistemi Operativi</span>
+  </div>
+  <div class="page-eyebrow">Architettura dei Sistemi</div>
+  <h1>Sistemi<br>Operativi</h1>
+  <p>Core concetti, gestione della concorrenza, mappatura della memoria, storage e architetture embedded sicure.</p>
+</div>
+
+<div class="toc">
+  <a href="#core"          class="toc-item">Sistemi & Processi</a>
+  <a href="#scheduling"    class="toc-item">CPU & Sincronizzazione</a>
+  <a href="#memory"        class="toc-item">Memoria Virtuale</a>
+  <a href="#io-storage"    class="toc-item">I/O & Storage</a>
+  <a href="#embedded-sec"  class="toc-item">Embedded & Sicurezza</a>
+</div>
+
+<hr class="divider" style="max-width:900px;margin:1rem auto 0;">
+
+<div class="content-section" id="core">
+  <div class="section-eyebrow">Modulo 01</div>
+  <h2 class="section-title">Sistemi Operativi, Processi e Thread</h2>
+  
+  <div class="pattern-card pc-teal">
+    <div class="pattern-header">
+      <div class="pattern-title">Sistemi Operativi</div>
+    </div>
+    <p class="pattern-desc">
+      L'intermediario fondamentale tra l'hardware del computer e i programmi applicativi. Gestisce l'allocazione delle risorse (CPU, memoria, periferiche), astrae la complessità dei componenti fisici e isola le esecuzioni per garantire stabilità e consistenza.
+    </p>
+  </div>
+
+  <div class="pattern-card pc-accent">
+    <div class="pattern-header">
+      <div class="pattern-title">Processi</div>
+    </div>
+    <p class="pattern-desc">
+      Un'istanza di un programma in esecuzione, dotata del proprio spazio di indirizzamento isolato (Codice, Dati, Heap, Stack). Ogni processo possiede un PCB (Process Control Block) che ne traccia lo stato, i registri della CPU e le risorse allocate dal sistema.
+    </p>
+  </div>
+
+  <div class="pattern-card pc-amber">
+    <div class="pattern-header">
+      <div class="pattern-title">Thread</div>
+    </div>
+    <p class="pattern-desc">
+      L'unità più piccola di utilizzo della CPU (spesso definiti processi leggeri). Più thread all'interno dello stesso processo condividono il segmento codice, dati e le risorse di sistema, ma mantengono uno stack privato e un program counter indipendente per l'esecuzione parallela o concorrente.
+    </p>
+  </div>
+</div>
+
+<div class="content-section" id="scheduling">
+  <div class="section-eyebrow">Modulo 02</div>
+  <h2 class="section-title">CPU Scheduling, Sincronizzazione e Deadlocks</h2>
+
+  <div class="pattern-card pc-coral">
+    <div class="pattern-header">
+      <div class="pattern-title">CPU Scheduling</div>
+    </div>
+    <p class="pattern-desc">
+      L'algoritmo con cui lo scheduler decide quale thread pronto debba occupare la CPU. Nei sistemi embedded e real-time (RTOS) la pianificazione è deterministica e basata su priorità rigide, mentre nei sistemi operativi tradizionali adotta schemi a turni (Round-Robin) o code multilivello con feedback.
+    </p>
+  </div>
+
+  <div class="pattern-card pc-green">
+    <div class="pattern-header">
+      <div class="pattern-title">Sincronizzazione</div>
+    </div>
+    <p class="pattern-desc">
+      I meccanismi di coordinamento tra processi/thread per evitare corruzioni di dati (Race Conditions) durante l'accesso a risorse condivise. Include costrutti ad esclusione mutua vincolata a un proprietario (Mutex) e contatori di permessi generici per l'allocazione simultanea (Semafori).
+    </p>
+  </div>
+
+  <div class="pattern-card pc-teal">
+    <div class="pattern-header">
+      <div class="pattern-title">Deadlocks (Stallo)</div>
+    </div>
+    <p class="pattern-desc">
+      Una condizione di blocco permanente in cui due o più thread si attendono a vicenda, bloccati su risorse incrociate. Si verifica al manifestarsi simultaneo delle quattro condizioni di Coffman: mutua esclusione, possesso e attesa, assenza di preemption, e attesa circolare.
+    </p>
+  </div>
+</div>
+
+<div class="content-section" id="memory">
+  <div class="section-eyebrow">Modulo 03</div>
+  <h2 class="section-title">Main Memory e Virtual Memory</h2>
+
+  <div class="pattern-card pc-accent">
+    <div class="pattern-header">
+      <div class="pattern-title">Main Memory (Memoria Principale)</div>
+    </div>
+    <p class="pattern-desc">
+      Lo spazio hardware fisico (la RAM) in cui risiedono i dati e i codici pronti per la CPU. È mappata in indirizzi fisici sequenziali e richiede tecniche di allocazione controllata (paginazione o segmentazione) per ospitare in modo sicuro i segmenti dei processi.
+    </p>
+  </div>
+
+  <div class="pattern-card pc-amber">
+    <div class="pattern-header">
+      <div class="pattern-title">Virtual Memory (Memoria Virtuale)</div>
+    </div>
+    <p class="pattern-desc">
+      L'astrazione creata dal Sistema Operativo che separa la memoria logica del processo dalla memoria fisica reale. Ogni processo crede di avere a disposizione una mappa di indirizzi logici continua a partire da zero. La MMU traduce al volo questi indirizzi intermedi salvaguardando l'isolamento dei dati.
+    </p>
+  </div>
+</div>
+
+<div class="content-section" id="io-storage">
+  <div class="section-eyebrow">Modulo 04</div>
+  <h2 class="section-title">I/O Systems, Mass-Storage e File System</h2>
+
+  <div class="pattern-card pc-coral">
+    <div class="pattern-header">
+      <div class="pattern-title">I/O Systems (Sistemi di Input/Output)</div>
+    </div>
+    <p class="pattern-desc">
+      Il sottosistema incaricato di gestire la comunicazione con i dispositivi esterni (mouse, tastiere, schede di rete). Sfrutta driver specifici, controller hardware e tecniche di interruzione o Direct Memory Access (DMA) per sollevare la CPU dal trasferimento dei singoli byte.
+    </p>
+  </div>
+
+  <div class="pattern-card pc-green">
+    <div class="pattern-header">
+      <div class="pattern-title">Mass-Storage Systems</div>
+    </div>
+    <p class="pattern-desc">
+      I sistemi fisici di memorizzazione non volatile a lungo termine (Hard Disk, SSD, memorie Flash). Il kernel implementa algoritmi di ottimizzazione degli accessi per velocizzare la lettura/scrittura di blocchi binari grezzi sulla superficie fisica dei dischi.
+    </p>
+  </div>
+
+  <div class="pattern-card pc-teal">
+    <div class="pattern-header">
+      <div class="pattern-title">File System</div>
+    </div>
+    <p class="pattern-desc">
+      L'astrazione logica che organizza i blocchi grezzi del mass-storage in entità comprensibili all'utente (file e cartelle). Gestisce i metadati (permessi, estensioni, date di creazione) e traccia lo spazio libero/occupato sul disco tramite tabelle di allocazione (es. FAT, NTFS, ext4).
+    </p>
+  </div>
+</div>
+
+<div class="content-section" id="embedded-sec">
+  <div class="section-eyebrow">Modulo 05</div>
+  <h2 class="section-title">Embedded Systems e Sicurezza</h2>
+
+  <div class="pattern-card pc-accent">
+    <div class="pattern-header">
+      <div class="pattern-title">Embedded Systems (Sistemi Embedded)</div>
+    </div>
+    <p class="pattern-desc">
+      Sistemi di calcolo dedicati a una singola funzione specifica, vincolati da risorse hardware minime (poca RAM, poca CPU, consumi energetici ridotti). Spesso utilizzano OS minimalisti o RTOS (come RIOT OS) dove il controllo dei thread e dello stack deve essere strutturato meticolosamente dal programmatore.
+    </p>
+  </div>
+
+  <div class="pattern-card pc-amber">
+    <div class="pattern-header">
+      <div class="pattern-title">Sicurezza dei Sistemi</div>
+    </div>
+    <p class="pattern-desc">
+      Insieme di tecniche volte a mitigare le vulnerabilità di memoria causate da una cattiva gestione del codice (come i Buffer Overflow). Si implementano contromisure a runtime come l'ASLR (casualizzazione dello spazio di indirizzamento) o controlli automatici preventivi sui puntatori delegati al compilatore.
+    </p>
+  </div>
+
+  <div class="highlight-box">
+    ✅ Nota di studio: L'isolamento della Memoria Virtuale e la sincronizzazione tramite Mutex costituiscono le fondamenta hardware e software necessarie a rendere sicura la concorrenza in un sistema multithread.
+  </div>
+</div>
+
+<div class="back-btn-wrap">
+  <a href="index.html" class="back-btn btn-teal">← Torna a EDIDS</a>
+  <a href="https://7Katch.github.io" class="back-btn btn-ghost">⌂ Home</a>
+</div>
+
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · EDIDS · Sistemi Operativi</p>
+</footer>
+
+</body>
+</html>
