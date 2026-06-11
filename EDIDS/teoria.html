@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoria — EDIDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #080810;
+    --bg-card: #0f0f1a;
+    --bg-card-hover: #141428;
+    --border: rgba(120, 100, 255, 0.15);
+    --border-hover: rgba(120, 100, 255, 0.4);
+    --accent: #7c5cfc;
+    --accent-soft: #a78bfa;
+    --text-primary: #f0eeff;
+    --text-secondary: #9488c2;
+    --text-muted: #5a5080;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --coral: #f87171;
+    --teal: #22d3ee;
+    --tag-bg: rgba(124, 92, 252, 0.1);
+    --code-bg: #0a0a16;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 60px;
+    background: rgba(8, 8, 16, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--teal);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  .nav-links-row { display: flex; align-items: center; gap: 10px; }
+  .nav-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .nav-back:hover { color: var(--accent-soft); border-color: var(--border-hover); }
+
+  /* PAGE HERO */
+  .page-hero {
+    padding: 9rem 2rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .page-hero::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(34,211,238,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.04em;
+  }
+  .breadcrumb a { color: var(--accent-soft); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .page-eyebrow::before { content:''; width:20px; height:1px; background:var(--teal); display:inline-block; }
+  .page-hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #f0eeff 0%, #22d3ee 60%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-hero p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.75;
+  }
+
+  /* TOC */
+  .toc {
+    max-width: 900px;
+    margin: 0 auto 1rem;
+    padding: 0 2rem;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .toc-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 5px 14px;
+    background: rgba(34,211,238,0.06);
+    border: 1px solid rgba(34,211,238,0.15);
+    border-radius: 100px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .toc-item:hover { color: var(--teal); border-color: rgba(34,211,238,0.4); }
+
+  hr.divider { border:none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* SECTIONS */
+  .content-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .content-section:last-of-type { border-bottom: none; }
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+  .section-eyebrow::before { content:''; display:inline-block; width:20px; height:1px; background:var(--teal); }
+  .section-title {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .section-intro {
+    font-size: 14px;
+    color: var(--text-secondary);
+    max-width: 660px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  /* GRASP GRID */
+  .grasp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .grasp-card {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .grasp-card:hover { background: var(--bg-card-hover); }
+  .grasp-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: rgba(34,211,238,0.08);
+    border: 1px solid rgba(34,211,238,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--teal);
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+  }
+  .grasp-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 0.4rem; }
+  .grasp-card p { font-size: 12px; color: var(--text-secondary); line-height: 1.65; }
+  .grasp-tag {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 2px 9px;
+    background: rgba(34,211,238,0.08);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--teal);
+    letter-spacing: 0.04em;
+  }
+
+  /* INFO / HIGHLIGHT BOXES */
+  .info-box {
+    background: var(--tag-bg);
+    border: 1px solid var(--border-hover);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 13px;
+    color: var(--accent-soft);
+    line-height: 1.7;
+  }
+  .highlight-box {
+    background: rgba(52,211,153,0.07);
+    border: 1px solid rgba(52,211,153,0.25);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 13px;
+    color: var(--green);
+    line-height: 1.7;
+  }
+  .warn-box {
+    background: rgba(248,113,113,0.07);
+    border: 1px solid rgba(248,113,113,0.25);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 13px;
+    color: var(--coral);
+    line-height: 1.7;
+  }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    margin: 1.25rem 0;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(34,211,238,0.04);
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green-dot { background: #28c840; }
+  .code-filename { font-size: 11px; color: var(--text-muted); letter-spacing: 0.04em; }
+  .code-body {
+    padding: 1.25rem 1.5rem;
+    font-size: 12px;
+    line-height: 1.85;
+    color: #c4b5fd;
+    overflow-x: auto;
+  }
+  .code-body .kw  { color: #f87171; }
+  .code-body .fn  { color: #818cf8; }
+  .code-body .cm  { color: #4f4673; font-style: italic; }
+  .code-body .str { color: #6ee7b7; }
+  .code-body .tp  { color: #fbbf24; }
+  .code-body .teal{ color: #22d3ee; }
+
+  /* SINGLETON LAYOUT */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media(max-width:700px){
+    .two-col { grid-template-columns: 1fr; }
+    nav .nav-links-row a:first-child { display: none; }
+  }
+
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
+  .pros-cons-box {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid;
+  }
+  .pros-cons-box.pro { border-color: var(--green); }
+  .pros-cons-box.con { border-color: var(--coral); }
+  .pros-cons-box h5 {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 0.5rem;
+  }
+  .pros-cons-box.pro h5 { color: var(--green); }
+  .pros-cons-box.con h5 { color: var(--coral); }
+  .pros-cons-box ul { list-style: none; font-size: 12px; color: var(--text-secondary); line-height: 2; }
+  .pros-cons-box.pro ul li::before { content: '+  '; color: var(--green); font-weight: 700; }
+  .pros-cons-box.con ul li::before { content: '−  '; color: var(--coral); font-weight: 700; }
+
+  /* PATTERN CARDS (Observer, Strategy, etc.) */
+  .pattern-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .pattern-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .pattern-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); }
+  .pattern-card:hover::before { opacity: 1; }
+  .pattern-card.pc-teal::before { background: linear-gradient(90deg, transparent, var(--teal), transparent); }
+  .pattern-card.pc-amber::before { background: linear-gradient(90deg, transparent, var(--amber), transparent); }
+  .pattern-card.pc-coral::before { background: linear-gradient(90deg, transparent, var(--coral), transparent); }
+  .pattern-card.pc-green::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+  .pattern-card.pc-accent::before { background: linear-gradient(90deg, transparent, var(--accent-soft), transparent); }
+
+  .pattern-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .pattern-title { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; }
+  .pattern-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 3px 9px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .badge-creo  { background: rgba(124,92,252,0.12); color: var(--accent-soft); border: 1px solid rgba(124,92,252,0.3); }
+  .badge-strut { background: rgba(34,211,238,0.1);  color: var(--teal);        border: 1px solid rgba(34,211,238,0.3); }
+  .badge-comp  { background: rgba(52,211,153,0.1);  color: var(--green);       border: 1px solid rgba(52,211,153,0.3); }
+  .badge-proj  { background: rgba(251,191,36,0.1);  color: var(--amber);       border: 1px solid rgba(251,191,36,0.3); }
+
+  .pattern-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 1rem; }
+
+  .pattern-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+    border-left: 2px solid var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* OBSERVER DIAGRAM */
+  .diagram-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    overflow-x: auto;
+    margin: 1.25rem 0;
+  }
+  .diagram-wrap svg { display: block; margin: 0 auto; }
+
+  /* TECHNIQUES TABLE */
+  .tech-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  .tech-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tech-table td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(120,100,255,0.07);
+    vertical-align: top;
+    line-height: 1.65;
+  }
+  .tech-table tr:last-child td { border-bottom: none; }
+  .tech-table tr:hover td { background: rgba(124,92,252,0.04); }
+  .tech-table td:first-child { color: var(--text-primary); font-weight: 600; white-space: nowrap; }
+  .tech-table td:nth-child(2) { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .tc-creo  { color: var(--accent-soft) !important; }
+  .tc-strut { color: var(--teal) !important; }
+  .tc-comp  { color: var(--green) !important; }
+
+  /* BACK BUTTONS */
+  .back-btn-wrap { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 4rem; display: flex; gap: 12px; flex-wrap: wrap; }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-teal  { background: rgba(34,211,238,0.12); color: var(--teal); border: 1px solid rgba(34,211,238,0.3); }
+  .btn-teal:hover { background: rgba(34,211,238,0.2); }
+  .btn-ghost { background: transparent; border: 1px solid var(--border-hover); color: var(--text-secondary); }
+  .btn-ghost:hover { border-color: var(--accent-soft); color: var(--text-primary); }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; }
+  footer p { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+  footer a { color: var(--accent-soft); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">// EDIDS · Teoria</a>
+  <div class="nav-links-row">
+    <a href="index.html" class="nav-back">← EDIDS</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a>
+    <span>/</span>
+    <a href="index.html">EDIDS</a>
+    <span>/</span>
+    <span>Teoria</span>
+  </div>
+  <div class="page-eyebrow">02 · Teoria</div>
+  <h1>Teoria dietro<br>al progetto</h1>
+  <p>Principi GRASP, pattern GoF e tecniche ricorrenti che ogni progettista di software orientato agli oggetti deve padroneggiare.</p>
+</div>
+
+<div class="toc">
+  <a href="#grasp"    class="toc-item">GRASP</a>
+  <a href="#singleton" class="toc-item">Singleton</a>
+  <a href="#observer" class="toc-item">Observer</a>
+  <a href="#patterns" class="toc-item">Altri Pattern GoF</a>
+  <a href="#tecniche" class="toc-item">Tecniche ricorrenti</a>
+</div>
+
+<hr class="divider" style="max-width:900px;margin:1rem auto 0;">
+
+<!-- ===== GRASP ===== -->
+<div class="content-section" id="grasp">
+  <div class="section-eyebrow">Principi fondamentali</div>
+  <h2 class="section-title">GRASP Patterns</h2>
+  <p class="section-intro">
+    General Responsibility Assignment Software Patterns — 9 principi guida per assegnare responsabilità a classi e oggetti. Non sono pattern implementativi come il GoF: sono criteri di giudizio per prendere buone decisioni di design.
+  </p>
+
+  <div class="grasp-grid">
+    <div class="grasp-card">
+      <div class="grasp-icon">IE</div>
+      <h3>Information Expert</h3>
+      <p>Assegna la responsabilità alla classe che possiede le informazioni necessarie. Chi sa, fa. Nel gioco, <code style="color:var(--teal);font-size:11px">Player</code> calcola il proprio punteggio perché ha <code style="color:var(--teal);font-size:11px">score</code> e <code style="color:var(--teal);font-size:11px">lives</code>.</p>
+      <span class="grasp-tag">responsabilità</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">CR</div>
+      <h3>Creator</h3>
+      <p>B crea A se B contiene, aggrega o usa strettamente A. <code style="color:var(--teal);font-size:11px">GameSession</code> crea i <code style="color:var(--teal);font-size:11px">Player</code> perché li aggrega e li contiene per tutta la sessione.</p>
+      <span class="grasp-tag">creazione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">LC</div>
+      <h3>Low Coupling</h3>
+      <p>Minimizza le dipendenze. <code style="color:var(--teal);font-size:11px">GameController</code> dipende dall'interfaccia <code style="color:var(--teal);font-size:11px">IGameObserver</code>, non dalle sue implementazioni concrete — cambiare la UI non tocca il controller.</p>
+      <span class="grasp-tag">accoppiamento</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">HC</div>
+      <h3>High Cohesion</h3>
+      <p>Ogni classe ha responsabilità focalizzate e correlate. <code style="color:var(--teal);font-size:11px">Item</code> sa solo come applicarsi a un Player. Non gestisce sessioni, punteggi o livelli.</p>
+      <span class="grasp-tag">coesione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">CT</div>
+      <h3>Controller</h3>
+      <p>Gli eventi di sistema sono gestiti da un oggetto Controller che non è UI. <code style="color:var(--teal);font-size:11px">GameController</code> riceve <code style="color:var(--teal);font-size:11px">move()</code>, <code style="color:var(--teal);font-size:11px">collectItem()</code>, <code style="color:var(--teal);font-size:11px">endGame()</code> dall'interfaccia e orchestra la logica.</p>
+      <span class="grasp-tag">architettura</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PL</div>
+      <h3>Polymorphism</h3>
+      <p>Usa il polimorfismo invece di if/switch per variazioni di comportamento. Tipi di <code style="color:var(--teal);font-size:11px">Item</code> diversi (HealthItem, WeaponItem) implementano tutti <code style="color:var(--teal);font-size:11px">apply(player)</code> in modo diverso.</p>
+      <span class="grasp-tag">OOP</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PF</div>
+      <h3>Pure Fabrication</h3>
+      <p>Classe artificiale non del dominio per rispettare LC e HC. Un <code style="color:var(--teal);font-size:11px">GameRepository</code> o <code style="color:var(--teal);font-size:11px">ScoreService</code> non esiste nel dominio del gioco, ma risolve problemi di persistenza senza sporcare le classi di dominio.</p>
+      <span class="grasp-tag">astrazione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">IN</div>
+      <h3>Indirection</h3>
+      <p>Introduce un intermediario per disaccoppiare. L'interfaccia <code style="color:var(--teal);font-size:11px">IGameObserver</code> è un livello di indirezione tra <code style="color:var(--teal);font-size:11px">GameSystem</code> e le sue viste — la base del pattern Observer.</p>
+      <span class="grasp-tag">disaccoppiamento</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PV</div>
+      <h3>Protected Variations</h3>
+      <p>Identifica i punti di cambiamento e proteggi le parti stabili con interfacce. La logica di rendering può cambiare liberamente: <code style="color:var(--teal);font-size:11px">IGameObserver</code> garantisce che il core del gioco non sia mai impattato.</p>
+      <span class="grasp-tag">stabilità</span>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    ✅ Nel progetto del gioco: <strong>Controller</strong> → GameController; <strong>Low Coupling</strong> → uso di interfacce Observer; <strong>Information Expert</strong> → Player gestisce il proprio stato; <strong>Creator</strong> → GameSession crea i Player.
+  </div>
+</div>
+
+<!-- ===== SINGLETON ===== -->
+<div class="content-section" id="singleton">
+  <div class="section-eyebrow">GoF · Creazionale</div>
+  <h2 class="section-title">Singleton</h2>
+  <p class="section-intro">
+    Garantisce una sola istanza di una classe con un punto di accesso globale controllato. Nel gioco, <code style="color:var(--accent-soft)">GameSystem</code> è un Singleton: esiste un solo sistema di gioco attivo che gestisce livelli, regole e stato globale.
+  </p>
+
+  <div class="two-col">
+    <div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.8;margin-bottom:1rem">
+        Il costruttore è <strong style="color:var(--text-primary)">privato</strong>: nessuno può creare istanze dall'esterno. L'unico accesso avviene tramite il metodo statico <code style="color:var(--accent-soft);font-size:12px">getInstance()</code>, che crea l'istanza al primo invio e la restituisce sempre nelle chiamate successive.
+      </p>
+      <div class="pros-cons">
+        <div class="pros-cons-box pro">
+          <h5>Vantaggi</h5>
+          <ul>
+            <li>Istanza controllata</li>
+            <li>Accesso globale</li>
+            <li>Lazy initialization</li>
+            <li>Stato condiviso sicuro</li>
+          </ul>
+        </div>
+        <div class="pros-cons-box con">
+          <h5>Attenzione</h5>
+          <ul>
+            <li>Difficile da testare</li>
+            <li>Stato globale nascosto</li>
+            <li>Thread safety richiesta</li>
+            <li>Viola SRP (spesso)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warn-box" style="margin-top:1.25rem">
+        ⚠️ Nei sistemi moderni preferisci la <strong>Dependency Injection</strong>. Il Singleton va usato solo quando l'unicità è un requisito reale del dominio, non solo convenienza.
+      </div>
+    </div>
+
+    <div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots">
+            <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
+          </div>
+          <span class="code-filename">GameSystem.java</span>
+        </div>
+        <div class="code-body"><pre>
+<span class="cm">// «Singleton» — Thread-safe (Holder idiom)</span>
+<span class="kw">public class</span> <span class="tp">GameSystem</span> {
+
+  <span class="cm">// Holder: creato solo quando richiesto</span>
+  <span class="kw">private static class</span> <span class="tp">Holder</span> {
+    <span class="kw">private static final</span> <span class="tp">GameSystem</span>
+      INSTANCE = <span class="kw">new</span> <span class="tp">GameSystem</span>();
+  }
+
+  <span class="kw">private</span> <span class="fn">GameSystem</span>() {
+    <span class="cm">// inizializzazione livelli, regole…</span>
+  }
+
+  <span class="kw">public static</span> <span class="tp">GameSystem</span> <span class="fn">getInstance</span>() {
+    <span class="kw">return</span> <span class="tp">Holder</span>.INSTANCE;
+  }
+
+  <span class="kw">public boolean</span> <span class="fn">checkWin</span>(<span class="tp">Player</span> p) {
+    <span class="kw">return</span> p.<span class="fn">getScore</span>() >= winThreshold;
+  }
+
+  <span class="kw">public void</span> <span class="fn">nextLevel</span>() { ... }
+}
+
+<span class="cm">// Utilizzo da GameController</span>
+<span class="tp">GameSystem</span> sys = <span class="tp">GameSystem</span>.<span class="fn">getInstance</span>();
+<span class="kw">boolean</span> won = sys.<span class="fn">checkWin</span>(player);
+</pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OBSERVER ===== -->
+<div class="content-section" id="observer">
+  <div class="section-eyebrow">GoF · Comportamentale</div>
+  <h2 class="section-title">Observer Pattern</h2>
+  <p class="section-intro">
+    Definisce una dipendenza uno-a-molti: quando il <strong>Subject</strong> cambia stato, tutti gli <strong>Observer</strong> registrati vengono notificati automaticamente. Nel gioco: <code style="color:var(--accent-soft)">GameSystem</code> è il Subject, <code style="color:var(--teal)">ScoreUI</code> e <code style="color:var(--teal)">SoundManager</code> sono Observer.
+  </p>
+
+  <div class="diagram-wrap">
+    <svg width="700" height="300" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', monospace">
+      <!-- IGameObserver interface -->
+      <rect x="400" y="10" width="180" height="85" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <rect x="400" y="10" width="180" height="28" rx="6" fill="rgba(124,92,252,0.08)"/>
+      <text x="490" y="20" text-anchor="middle" fill="#a78bfa" font-size="9">«interface»</text>
+      <text x="490" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">IGameObserver</text>
+      <line x1="400" y1="38" x2="580" y2="38" stroke="rgba(124,92,252,0.2)" stroke-width="1"/>
+      <text x="410" y="53" fill="#22d3ee" font-size="9">+ onScoreChange(s: int)</text>
+      <text x="410" y="66" fill="#22d3ee" font-size="9">+ onLevelUp(level: int)</text>
+      <text x="410" y="79" fill="#22d3ee" font-size="9">+ onGameOver()</text>
+
+      <!-- GameSystem (Subject) -->
+      <rect x="30" y="10" width="195" height="115" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.5)" stroke-width="1.5"/>
+      <rect x="30" y="10" width="195" height="28" rx="6" fill="rgba(124,92,252,0.15)"/>
+      <text x="127" y="20" text-anchor="middle" fill="#a78bfa" font-size="9">«Singleton · Subject»</text>
+      <text x="127" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">GameSystem</text>
+      <line x1="30" y1="38" x2="225" y2="38" stroke="rgba(124,92,252,0.3)" stroke-width="1"/>
+      <text x="40" y="53" fill="#9488c2" font-size="9">− observers: List&lt;IGameObserver&gt;</text>
+      <line x1="30" y1="61" x2="225" y2="61" stroke="rgba(124,92,252,0.15)" stroke-width="1"/>
+      <text x="40" y="76" fill="#22d3ee" font-size="9">+ addObserver(o)</text>
+      <text x="40" y="89" fill="#22d3ee" font-size="9">+ removeObserver(o)</text>
+      <text x="40" y="102" fill="#22d3ee" font-size="9">− notifyAll(event)</text>
+      <text x="40" y="115" fill="#22d3ee" font-size="9">+ checkWin(): bool</text>
+
+      <!-- Arrow GameSystem -> IGameObserver -->
+      <line x1="225" y1="55" x2="400" y2="50" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
+      <polygon points="396,45 406,50 396,55" fill="rgba(160,140,255,0.5)"/>
+      <text x="275" y="44" fill="#5a5080" font-size="9">notifies *</text>
+
+      <!-- ScoreUI -->
+      <rect x="400" y="155" width="180" height="80" rx="6" fill="#0f0f1a" stroke="rgba(52,211,153,0.4)" stroke-width="1.5"/>
+      <rect x="400" y="155" width="180" height="28" rx="6" fill="rgba(52,211,153,0.08)"/>
+      <text x="490" y="165" text-anchor="middle" fill="#34d399" font-size="9">«implements»</text>
+      <text x="490" y="177" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">ScoreUI</text>
+      <line x1="400" y1="183" x2="580" y2="183" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
+      <text x="410" y="198" fill="#22d3ee" font-size="9">+ onScoreChange(s)</text>
+      <text x="410" y="211" fill="#22d3ee" font-size="9">+ onLevelUp(l)</text>
+      <text x="410" y="224" fill="#22d3ee" font-size="9">+ onGameOver()</text>
+
+      <!-- SoundManager -->
+      <rect x="400" y="255" width="180" height="38" rx="6" fill="#0f0f1a" stroke="rgba(251,191,36,0.35)" stroke-width="1.5"/>
+      <rect x="400" y="255" width="180" height="18" rx="6" fill="rgba(251,191,36,0.06)"/>
+      <text x="490" y="265" text-anchor="middle" fill="#fbbf24" font-size="9">«implements»</text>
+      <text x="490" y="284" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">SoundManager</text>
+
+      <!-- implements arrows (dashed) -->
+      <line x1="490" y1="95" x2="490" y2="155" stroke="rgba(52,211,153,0.4)" stroke-width="1.2" stroke-dasharray="4,3"/>
+      <polygon points="485,149 490,159 495,149" fill="none" stroke="rgba(52,211,153,0.4)" stroke-width="1.2"/>
+      <line x1="490" y1="235" x2="490" y2="255" stroke="rgba(251,191,36,0.35)" stroke-width="1.2" stroke-dasharray="4,3"/>
+      <polygon points="485,249 490,259 495,249" fill="none" stroke="rgba(251,191,36,0.35)" stroke-width="1.2"/>
+
+      <!-- labels -->
+      <text x="500" y="128" fill="#5a5080" font-size="8">implements</text>
+      <text x="500" y="248" fill="#5a5080" font-size="8">implements</text>
+    </svg>
+  </div>
+
+  <div class="two-col">
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
+        </div>
+        <span class="code-filename">IGameObserver.java</span>
+      </div>
+      <div class="code-body"><pre>
+<span class="kw">public interface</span> <span class="tp">IGameObserver</span> {
+  <span class="kw">void</span> <span class="fn">onScoreChange</span>(<span class="kw">int</span> newScore);
+  <span class="kw">void</span> <span class="fn">onLevelUp</span>(<span class="kw">int</span> level);
+  <span class="kw">void</span> <span class="fn">onGameOver</span>();
+}
+
+<span class="cm">// ScoreUI implementa l'Observer</span>
+<span class="kw">public class</span> <span class="tp">ScoreUI</span>
+    <span class="kw">implements</span> <span class="tp">IGameObserver</span> {
+
+  <span class="kw">public void</span> <span class="fn">onScoreChange</span>(<span class="kw">int</span> s) {
+    display.<span class="fn">update</span>(<span class="str">"Score: "</span> + s);
+  }
+  <span class="kw">public void</span> <span class="fn">onLevelUp</span>(<span class="kw">int</span> l) {
+    display.<span class="fn">showBanner</span>(<span class="str">"Level "</span> + l);
+  }
+  <span class="kw">public void</span> <span class="fn">onGameOver</span>() {
+    display.<span class="fn">showGameOver</span>();
+  }
+}
+</pre></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
+        </div>
+        <span class="code-filename">GameSystem_notify.java</span>
+      </div>
+      <div class="code-body"><pre>
+<span class="cm">// Nel Subject: notifica tutti gli observer</span>
+<span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">IGameObserver</span>&gt; observers
+    = <span class="kw">new</span> <span class="tp">ArrayList</span>&lt;&gt;();
+
+<span class="kw">public void</span> <span class="fn">addObserver</span>(<span class="tp">IGameObserver</span> o) {
+  observers.<span class="fn">add</span>(o);
+}
+
+<span class="kw">private void</span> <span class="fn">notifyScoreChange</span>(<span class="kw">int</span> s) {
+  <span class="kw">for</span> (<span class="tp">IGameObserver</span> o : observers) {
+    o.<span class="fn">onScoreChange</span>(s);
+  }
+}
+
+<span class="cm">// Registrazione dal Controller</span>
+sys.<span class="fn">addObserver</span>(<span class="kw">new</span> <span class="tp">ScoreUI</span>());
+sys.<span class="fn">addObserver</span>(<span class="kw">new</span> <span class="tp">SoundManager</span>());
+</pre></div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    ✅ L'Observer è il bridge tra il core del gioco e qualsiasi vista o effetto. Aggiungere un <code>AchievementTracker</code> non richiede modificare <code>GameSystem</code>: basta implementare <code>IGameObserver</code> e registrarlo.
+  </div>
+</div>
+
+<!-- ===== ALTRI PATTERN GOF ===== -->
+<div class="content-section" id="patterns">
+  <div class="section-eyebrow">GoF · I più usati nel progetto</div>
+  <h2 class="section-title">Altri Pattern GoF</h2>
+  <p class="section-intro">
+    I 23 pattern GoF si dividono in Creazionali, Strutturali e Comportamentali. Ecco i più frequenti in un progetto software come il gioco, con spiegazione e contesto d'uso.
+  </p>
+
+  <!-- STRATEGY -->
+  <div class="pattern-card pc-amber">
+    <div class="pattern-header">
+      <div class="pattern-title">Strategy</div>
+      <div class="pattern-badges">
+        <span class="badge badge-comp">Comportamentale</span>
+        <span class="badge badge-proj">Usato nel gioco</span>
+      </div>
+    </div>
+    <p class="pattern-desc">
+      Definisce una famiglia di algoritmi intercambiabili e li incapsula, rendendoli sostituibili a runtime. Nel gioco: la <strong>strategia di movimento</strong> del Player può variare — camminata normale, scivolata, volo — senza cambiare la classe Player.
+    </p>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span></div>
+        <span class="code-filename">MovementStrategy.java</span>
+      </div>
+      <div class="code-body"><pre>
+<span class="kw">public interface</span> <span class="tp">MovementStrategy</span> {
+  <span class="tp">Position</span> <span class="fn">move</span>(<span class="tp">Position</span> current, <span class="tp">Direction</span> dir);
+}
+
+<span class="kw">public class</span> <span class="tp">WalkStrategy</span> <span class="kw">implements</span> <span class="tp">MovementStrategy</span> {
+  <span class="kw">public</span> <span class="tp">Position</span> <span class="fn">move</span>(<span class="tp">Position</span> p, <span class="tp">Direction</span> d) {
+    <span class="kw">return</span> p.<span class="fn">step</span>(d, 1); <span class="cm">// 1 tile</span>
+  }
+}
+<span class="kw">public class</span> <span class="tp">FlyStrategy</span> <span class="kw">implements</span> <span class="tp">MovementStrategy</span> {
+  <span class="kw">public</span> <span class="tp">Position</span> <span class="fn">move</span>(<span class="tp">Position</span> p, <span class="tp">Direction</span> d) {
+    <span class="kw">return</span> p.<span class="fn">step</span>(d, 3); <span class="cm">// 3 tiles</span>
+  }
+}
+
+<span class="cm">// Player usa la strategia corrente</span>
+player.<span class="fn">setMovement</span>(<span class="kw">new</span> <span class="tp">FlyStrategy</span>());
+player.<span class="fn">move</span>(Direction.UP); <span class="cm">// vola di 3 tile</span>
+</pre></div>
+    </div>
+    <div class="pattern-when">Usalo quando: hai più varianti di un algoritmo che devono essere selezionabili a runtime, o per eliminare if/switch basati sul tipo di comportamento.</div>
+  </div>
+
+  <!-- FACTORY METHOD -->
+  <div class="pattern-card pc-accent">
+    <div class="pattern-header">
+      <div class="pattern-title">Factory Method</div>
+      <div class="pattern-badges">
+        <span class="badge badge-creo">Creazionale</span>
+      </div>
+    </div>
+    <p class="pattern-desc">
+      Definisce un'interfaccia per creare oggetti, delegando alle sottoclassi la scelta del tipo concreto. Nel gioco: <code style="color:var(--accent-soft);font-size:12px">ItemFactory</code> crea Item diversi (HealthPotion, Shield, Weapon) senza che il Controller conosca le classi concrete.
+    </p>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span></div>
+        <span class="code-filename">ItemFactory.java</span>
+      </div>
+      <div class="code-body"><pre>
+<span class="kw">public abstract class</span> <span class="tp">ItemFactory</span> {
+  <span class="kw">public abstract</span> <span class="tp">Item</span> <span class="fn">createItem</span>(<span class="tp">String</span> type);
+}
+
+<span class="kw">public class</span> <span class="tp">LevelItemFactory</span> <span class="kw">extends</span> <span class="tp">ItemFactory</span> {
+  <span class="kw">public</span> <span class="tp">Item</span> <span class="fn">createItem</span>(<span class="tp">String</span> type) {
+    <span class="kw">return switch</span> (type) {
+      <span class="kw">case</span> <span class="str">"health"</span> -> <span class="kw">new</span> <span class="tp">HealthPotion</span>(+30);
+      <span class="kw">case</span> <span class="str">"weapon"</span> -> <span class="kw">new</span> <span class="tp">Sword</span>(<span class="str">"IronSword"</span>);
+      <span class="kw">default</span>      -> <span class="kw">new</span> <span class="tp">BasicItem</span>();
+    };
+  }
+}
+</pre></div>
+    </div>
+    <div class="pattern-when">Usalo quando: il codice che crea oggetti non deve conoscere il tipo concreto, o quando vuoi che sottoclassi decidano cosa istanziare.</div>
+  </div>
+
+  <!-- DECORATOR -->
+  <div class="pattern-card pc-teal">
+    <div class="pattern-header">
+      <div class="pattern-title">Decorator</div>
+      <div class="pattern-badges">
+        <span class="badge badge-strut">Strutturale</span>
+      </div>
+    </div>
+    <p class="pattern-desc">
+      Aggiunge responsabilità a un oggetto dinamicamente, come alternativa all'ereditarietà. Nel gioco: un Player può ricevere un'armatura (<code style="color:var(--teal);font-size:12px">ArmoredPlayer</code>) che riduce i danni subiti, senza modificare la classe Player originale.
+    </p>
+    <div class="pattern-when">Usalo quando: vuoi aggiungere funzionalità a oggetti singoli senza sottoclassi, o per combinare comportamenti in modo flessibile a runtime.</div>
+  </div>
+
+  <!-- COMMAND -->
+  <div class="pattern-card pc-coral">
+    <div class="pattern-header">
+      <div class="pattern-title">Command</div>
+      <div class="pattern-badges">
+        <span class="badge badge-comp">Comportamentale</span>
+      </div>
+    </div>
+    <p class="pattern-desc">
+      Incapsula una richiesta come oggetto, permettendo parametrizzazione, accodamento e <strong>undo/redo</strong> delle azioni. Nel gioco: ogni azione del player (<code style="color:var(--teal);font-size:12px">MoveCommand</code>, <code style="color:var(--teal);font-size:12px">UseItemCommand</code>) può essere registrata e annullata.
+    </p>
+    <div class="pattern-when">Usalo quando: hai bisogno di undo/redo, registrazione delle operazioni (log), o vuoi accodare azioni da eseguire in futuro.</div>
+  </div>
+
+  <!-- STATE -->
+  <div class="pattern-card pc-green">
+    <div class="pattern-header">
+      <div class="pattern-title">State</div>
+      <div class="pattern-badges">
+        <span class="badge badge-comp">Comportamentale</span>
+        <span class="badge badge-proj">Usato nel gioco</span>
+      </div>
+    </div>
+    <p class="pattern-desc">
+      Permette a un oggetto di cambiare comportamento al cambiare del suo stato interno. Nel gioco: <code style="color:var(--teal);font-size:12px">GameSession</code> può essere in stato <em>WAITING</em>, <em>RUNNING</em>, <em>PAUSED</em>, <em>ENDED</em> — ogni stato risponde diversamente agli stessi metodi.
+    </p>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span></div>
+        <span class="code-filename">GameState.java</span>
+      </div>
+      <div class="code-body"><pre>
+<span class="kw">public interface</span> <span class="tp">GameState</span> {
+  <span class="kw">void</span> <span class="fn">onMove</span>(<span class="tp">GameSession</span> ctx, <span class="tp">Direction</span> d);
+  <span class="kw">void</span> <span class="fn">onPause</span>(<span class="tp">GameSession</span> ctx);
+}
+
+<span class="kw">public class</span> <span class="tp">RunningState</span> <span class="kw">implements</span> <span class="tp">GameState</span> {
+  <span class="kw">public void</span> <span class="fn">onMove</span>(<span class="tp">GameSession</span> ctx, <span class="tp">Direction</span> d) {
+    ctx.<span class="fn">getPlayer</span>().<span class="fn">move</span>(d); <span class="cm">// movimento normale</span>
+  }
+  <span class="kw">public void</span> <span class="fn">onPause</span>(<span class="tp">GameSession</span> ctx) {
+    ctx.<span class="fn">setState</span>(<span class="kw">new</span> <span class="tp">PausedState</span>());
+  }
+}
+
+<span class="kw">public class</span> <span class="tp">PausedState</span> <span class="kw">implements</span> <span class="tp">GameState</span> {
+  <span class="kw">public void</span> <span class="fn">onMove</span>(<span class="tp">GameSession</span> ctx, <span class="tp">Direction</span> d) {
+    <span class="cm">// ignorato: il gioco è in pausa</span>
+  }
+}
+</pre></div>
+    </div>
+    <div class="pattern-when">Usalo quando: un oggetto cambia comportamento drasticamente in base al suo stato e vuoi evitare if/switch giganti sullo stato corrente.</div>
+  </div>
+</div>
+
+<!-- ===== TECNICHE RICORRENTI ===== -->
+<div class="content-section" id="tecniche">
+  <div class="section-eyebrow">Buone pratiche</div>
+  <h2 class="section-title">Tecniche ricorrenti di design</h2>
+  <p class="section-intro">
+    Oltre ai pattern formali, esistono principi e tecniche che ogni progettista applica continuamente per mantenere il codice sano, evolutivo e testabile.
+  </p>
+
+  <div class="info-box">
+    📐 Questi non sono pattern GoF formali, ma regole pratiche nate dall'esperienza. In un progetto reale, li applicherai più spesso dei pattern stessi.
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:1.25rem">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Tecnica</th>
+          <th>Categoria</th>
+          <th>Descrizione e applicazione nel progetto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Program to Interface</td>
+          <td class="tc-creo">principio OOP</td>
+          <td>Dipendi da astrazioni, non da classi concrete. <code style="color:var(--accent-soft);font-size:11px">GameController</code> dipende da <code style="color:var(--accent-soft);font-size:11px">IGameObserver</code>, non da <code style="color:var(--accent-soft);font-size:11px">ScoreUI</code>.</td>
+        </tr>
+        <tr>
+          <td>Favor Composition over Inheritance</td>
+          <td class="tc-strut">principio OOP</td>
+          <td>Invece di ereditare comportamento, iniettalo come dipendenza. Player usa una <code style="color:var(--teal);font-size:11px">MovementStrategy</code> composta, non estende una classe base di movimento.</td>
+        </tr>
+        <tr>
+          <td>SOLID — Single Responsibility</td>
+          <td class="tc-comp">SOLID</td>
+          <td>Ogni classe ha un solo motivo per cambiare. <code style="color:var(--green);font-size:11px">Item.apply()</code> solo effetti; la persistenza è in un <code style="color:var(--green);font-size:11px">GameRepository</code> separato.</td>
+        </tr>
+        <tr>
+          <td>SOLID — Open/Closed</td>
+          <td class="tc-comp">SOLID</td>
+          <td>Aperto all'estensione, chiuso alla modifica. Aggiungere un nuovo tipo di Item non modifica <code style="color:var(--green);font-size:11px">GameSystem</code> — si aggiunge una nuova classe che implementa <code style="color:var(--green);font-size:11px">Item</code>.</td>
+        </tr>
+        <tr>
+          <td>SOLID — Liskov Substitution</td>
+          <td class="tc-comp">SOLID</td>
+          <td>Le sottoclassi devono essere usabili al posto della classe base senza rompere il comportamento. Ogni <code style="color:var(--green);font-size:11px">MovementStrategy</code> concreta è intercambiabile.</td>
+        </tr>
+        <tr>
+          <td>SOLID — Interface Segregation</td>
+          <td class="tc-comp">SOLID</td>
+          <td>Interfacce piccole e focalizzate. <code style="color:var(--green);font-size:11px">IGameObserver</code> ha solo 3 metodi specifici — non un'unica interfaccia gigante che tutti devono implementare.</td>
+        </tr>
+        <tr>
+          <td>SOLID — Dependency Inversion</td>
+          <td class="tc-comp">SOLID</td>
+          <td>I moduli di alto livello non dipendono da quelli di basso livello. <code style="color:var(--green);font-size:11px">GameController</code> (alto livello) dipende da <code style="color:var(--green);font-size:11px">IGameObserver</code> (astrazione), non da <code style="color:var(--green);font-size:11px">ScoreUI</code> (basso livello).</td>
+        </tr>
+        <tr>
+          <td>Dependency Injection</td>
+          <td class="tc-strut">tecnica</td>
+          <td>Le dipendenze vengono passate dall'esterno (costruttore, setter) invece di essere create internamente. Rende il codice testabile con mock e sostituibile senza modifiche.</td>
+        </tr>
+        <tr>
+          <td>Law of Demeter</td>
+          <td class="tc-creo">principio</td>
+          <td>Parla solo con i tuoi amici diretti. Evita <code style="color:var(--accent-soft);font-size:11px">player.getInventory().getItem(0).apply()</code>. Preferisci <code style="color:var(--accent-soft);font-size:11px">player.useFirstItem()</code>.</td>
+        </tr>
+        <tr>
+          <td>Tell, Don't Ask</td>
+          <td class="tc-creo">principio</td>
+          <td>Dì agli oggetti cosa fare invece di chiedere il loro stato e decidere tu. Invece di controllare <code style="color:var(--accent-soft);font-size:11px">if player.lives == 0 → player.die()</code>, chiama direttamente <code style="color:var(--accent-soft);font-size:11px">player.takeDamage()</code> che gestisce internamente la morte.</td>
+        </tr>
+        <tr>
+          <td>Fail Fast</td>
+          <td class="tc-strut">tecnica</td>
+          <td>Valida i precondizioni all'inizio dei metodi e lancia eccezioni immediate. Meglio un'eccezione chiara in <code style="color:var(--teal);font-size:11px">collectItem(null)</code> che un NullPointerException remoto e difficile da tracciare.</td>
+        </tr>
+        <tr>
+          <td>Immutability</td>
+          <td class="tc-comp">tecnica</td>
+          <td>Oggetti di valore (Position, Score) immutabili eliminano bug di stato condiviso. <code style="color:var(--green);font-size:11px">Position.move(dir)</code> restituisce una nuova Position invece di modificare quella esistente.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight-box" style="margin-top:1.5rem">
+    ✅ Regola d'oro: se devi spiegare ad alta voce perché una classe fa quella cosa, probabilmente sta violando High Cohesion o Single Responsibility. Il codice ben progettato si legge come prosa.
+  </div>
+</div>
+
+<!-- BACK BUTTONS -->
+<div class="back-btn-wrap">
+  <a href="index.html" class="back-btn btn-teal">← Torna a EDIDS</a>
+  <a href="https://7Katch.github.io" class="back-btn btn-ghost">⌂ Home</a>
+</div>
+
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · EDIDS · Teoria</p>
+</footer>
+
+</body>
+</html>
