@@ -7,6 +7,107 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<style>
+  /* ── Layout griglia materie ─────────────────────────────────── */
+  /* La griglia ha 3 colonne per le card piccole */
+  .materie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  /* Le card attive (featured) si estendono su tutta la larghezza */
+  .materia-card.featured {
+    grid-column: 1 / -1;          /* occupa tutte e 3 le colonne */
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .materia-card.featured .featured-left {
+    flex: 1;
+    padding-right: 2rem;
+  }
+
+  .materia-card.featured .featured-right {
+    width: 220px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border);
+    padding-left: 2rem;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Card spente: layout verticale standard */
+  .materia-card.disabled {
+    flex-direction: column;
+  }
+
+  /* Materie section: larghezza piena */
+  .materie-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+    border-bottom: none;
+  }
+
+  /* Section header */
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .materie-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+  }
+
+  /* Hero max-width più ampia per la homepage */
+  .hero {
+    max-width: 1100px;
+  }
+
+  /* Scroll hint centrato */
+  .scroll-hint {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .materie-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .materia-card.featured {
+      grid-column: 1 / -1;
+      flex-direction: column;
+    }
+    .materia-card.featured .featured-right {
+      width: 100%;
+      border-left: none;
+      border-top: 1px solid var(--border);
+      padding-left: 0;
+      padding-top: 1.5rem;
+    }
+    .materia-card.featured .featured-left {
+      padding-right: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .materie-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 </head>
 <body>
 
@@ -39,7 +140,7 @@
   </p>
 
   <div class="hero-cta">
-    <a href="#materie" class="btn-primary">Vai alle materie</a>
+    <a href="#materie" class="btn-primary btn">Vai alle materie</a>
   </div>
 
   <div class="scroll-hint">
@@ -62,7 +163,7 @@
 
   <div class="materie-grid">
 
-    <!-- FEATURED: EDIDS — unica attiva -->
+    <!-- ── ATTIVA 1: Ingegneria del Software ─────────────────── -->
     <a href="/EDIDS/" class="materia-card featured">
       <div class="featured-left">
         <div class="card-top">
@@ -87,7 +188,6 @@
           <div class="card-arrow">→</div>
         </div>
       </div>
-
       <div class="featured-right">
         <div class="featured-stats">
           <div class="featured-stat">
@@ -105,43 +205,37 @@
         </div>
       </div>
     </a>
+
+    <!-- ── ATTIVA 2: Sistemi Operativi ───────────────────────── -->
     <a href="/SO/" class="materia-card featured">
       <div class="featured-left">
         <div class="card-top">
-          <div class="card-icon icon-green">SO</div>
+          <div class="card-icon icon-amber">SO</div>
           <span class="card-status status-active">Disponibile</span>
         </div>
-        <div class="card-sigla">SO · SISTEMI OPERATIVI</div>
+        <div class="card-sigla">SO · Sistemi Operativi</div>
         <div class="card-title">Sistemi Operativi</div>
         <div class="card-desc">
-          Spiegazione di come funziona all'interno del computer in lato software, interazione tra i vari componenti, la gestione del lavoro del processore, la memoria fisica vs virtuale  
+          Come funziona il software al livello più basso: processi, thread, scheduling CPU, gestione della memoria fisica e virtuale, filesystem e sicurezza.
         </div>
         <div class="card-tags">
-          <span class="tag">Sistemi operativi</span>
           <span class="tag">Processi</span>
           <span class="tag">Thread</span>
-          <span class="tag">CPU scheduling</span>
-          <span class="tag">Sincronizzazione</span>
-          <span class="tag">Deadlocks</span>
-          <span class="tag">Main memory</span>
-          <span class="tag">Virtual memory</span>
-          <span class="tag">I/O Systems</span>
-          <span class="tag">Mass-storage systems</span>
-          <span class="tag">File system</span>
-          <span class="tag">Embedded systems</span>
-          <span class="tag">Sicurezza</span>
+          <span class="tag">CPU Scheduling</span>
+          <span class="tag">Memoria</span>
+          <span class="tag">Deadlock</span>
+          <span class="tag">File System</span>
         </div>
         <div class="card-footer">
-          <span class="card-meta">1.0</span>
+          <span class="card-meta">13 argomenti · 60+ subtopic</span>
           <div class="card-arrow">→</div>
         </div>
       </div>
-
       <div class="featured-right">
         <div class="featured-stats">
           <div class="featured-stat">
             <span class="featured-stat-label">argomenti</span>
-            <span class="featured-stat-value"> CPU · RAM · Embedded</span>
+            <span class="featured-stat-value">CPU · RAM · Embedded</span>
           </div>
           <div class="featured-stat">
             <span class="featured-stat-label">livello</span>
@@ -155,14 +249,13 @@
       </div>
     </a>
 
-
-    <!-- COMING SOON cards -->
+    <!-- ── IN ARRIVO: 3 card piccole sulla stessa riga ────────── -->
     <div class="materia-card disabled">
       <div class="card-top">
         <div class="card-icon icon-teal">BD</div>
         <span class="card-status status-soon">In arrivo</span>
       </div>
-      <div class="card-sigla">EDIDS · Basi di Dati</div>
+      <div class="card-sigla">· Basi di Dati</div>
       <div class="card-title">Basi di Dati</div>
       <div class="card-desc">
         SQL, modello relazionale, normalizzazione, transazioni e sistemi DBMS. Dall'ER diagram alla query ottimizzata.
@@ -179,13 +272,12 @@
       </div>
     </div>
 
-
     <div class="materia-card disabled">
       <div class="card-top">
-        <div class="card-icon icon-amber">RE</div>
+        <div class="card-icon icon-coral">RE</div>
         <span class="card-status status-soon">In arrivo</span>
       </div>
-      <div class="card-sigla">EDIDS · Reti</div>
+      <div class="card-sigla">· Reti di Calcolatori</div>
       <div class="card-title">Reti di Calcolatori</div>
       <div class="card-desc">
         Modello ISO/OSI, TCP/IP, routing, DNS, HTTP e protocolli di rete. Come i dati viaggiano da A a B.
@@ -204,10 +296,10 @@
 
     <div class="materia-card disabled">
       <div class="card-top">
-        <div class="card-icon icon-coral">AI</div>
+        <div class="card-icon icon-purple">AI</div>
         <span class="card-status status-soon">In arrivo</span>
       </div>
-      <div class="card-sigla">EDIDS · Intelligenza Artificiale</div>
+      <div class="card-sigla">· Intelligenza Artificiale</div>
       <div class="card-title">Intelligenza Artificiale</div>
       <div class="card-desc">
         Algoritmi di ricerca, machine learning, reti neurali e agenti intelligenti. Dai fondamenti ai modelli moderni.
@@ -233,11 +325,15 @@
 <footer>
   <p>// portale-corsi · Ingegneria Informatica · A.A. 2024–25</p>
   <p style="margin-top: 8px;">
-    <a href="/EDIDS/index.html">Ingegneria del Software</a>
+    <a href="/EDIDS/">Ingegneria del Software</a>
+    &nbsp;·&nbsp;
+    <a href="/SO/">Sistemi Operativi</a>
     &nbsp;·&nbsp;
     <span style="color: var(--text-muted);">Basi di Dati</span>
     &nbsp;·&nbsp;
-    <span style="color: var(--text-muted);">Sistemi Operativi</span>
+    <span style="color: var(--text-muted);">Reti</span>
+    &nbsp;·&nbsp;
+    <span style="color: var(--text-muted);">Intelligenza Artificiale</span>
   </p>
 </footer>
 
