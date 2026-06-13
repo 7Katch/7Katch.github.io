@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 · Mass-Storage — SO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../so.css">
+<style>
+  .nav-logo{color:var(--green)}.nav-back:hover{color:var(--green);border-color:rgba(52,211,153,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(52,211,153,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#34d399 55%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--green)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(52,211,153,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--green);background:rgba(52,211,153,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--green)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--green)}.index-item .idx-num{color:var(--green);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
+</style>
+</head>
+<body class="dot-grid">
+<nav>
+  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+  <div class="nav-right">
+    <a href="../index.html" class="nav-back">← Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3);color:var(--green)">Macroargomento 10 · Storage</span>
+  <div class="topic-num">10 / 13</div>
+  <h1 class="topic-hero-title">Mass-Storage</h1>
+  <p class="hero-sub" style="max-width:640px">HDD vs SSD, algoritmi di disk scheduling FCFS/SSTF/SCAN/C-SCAN, RAID 0/1/5/6, SAN e gestione dello spazio libero.</p>
+</div>
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">SO</a><span>/</span>
+    <span>10 · Mass-Storage</span>
+  </div>
+  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(52,211,153,.25)">Questa pagina copre i <strong style="color:var(--green)">6 sottoargomenti</strong> del macroargomento 10: la struttura e la gestione della memoria di massa.</div>
+  <div class="index-grid">
+    <div class="index-item"><div class="idx-num">10.01</div><div class="idx-name">HDD vs SSD</div></div>
+    <div class="index-item"><div class="idx-num">10.02</div><div class="idx-name">Disk Scheduling</div></div>
+    <div class="index-item"><div class="idx-num">10.03</div><div class="idx-name">SCAN & C-SCAN</div></div>
+    <div class="index-item"><div class="idx-num">10.04</div><div class="idx-name">RAID</div></div>
+    <div class="index-item"><div class="idx-num">10.05</div><div class="idx-name">SAN</div></div>
+    <div class="index-item"><div class="idx-num">10.06</div><div class="idx-name">Gestione spazio libero</div></div>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> HDD vs SSD <span class="sub-tag">fondamento</span></h2>
+    <p>Un <span class="keyword">HDD</span> (Hard Disk Drive) è composto da piatti magnetici in rotazione (tipicamente 5400 o 7200 RPM) e testine mobili che si spostano radialmente. Il tempo di accesso si compone di <span class="keyword">seek time</span> (spostamento della testina sulla traccia giusta, ~3–10 ms), <span class="keyword">rotational latency</span> (attesa che il settore ruoti sotto la testina, in media metà rotazione), e tempo di trasferimento. L'accesso sequenziale è veloce (~200 MB/s); l'accesso casuale è lento perché richiede seek e rotazione per ogni blocco.</p>
+    <p>Un <span class="keyword">SSD</span> (Solid State Drive) usa memoria flash NAND: nessun componente meccanico, nessun seek, nessuna rotazione. La latenza è uniforme per accessi sequenziali e casuali (~0.1 ms vs ~10 ms dell'HDD). Velocità di lettura tipiche: 500 MB/s (SATA), 3–7 GB/s (NVMe PCIe). Il limite dell'SSD è l'usura: ogni cella flash sopporta un numero finito di cicli di scrittura (1000–10000 a seconda del tipo di NAND). Il controller SSD gestisce il <span class="keyword">wear leveling</span> distribuendo le scritture uniformemente.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Disk Scheduling</h2>
+    <p>Il <span class="keyword">disk scheduling</span> ottimizza l'ordine in cui il SO evade le richieste I/O pendenti su un HDD, minimizzando il movimento delle testine. Non ha senso per gli SSD (latenza uniforme). Queste tecniche si applicano anche al livello del device driver o del controller.</p>
+    <p><span class="keyword">FCFS</span> (First Come First Served): le richieste vengono servite nell'ordine di arrivo. Equo, nessuna starvation, ma il movimento delle testine è casuale e il throughput è basso. <span class="keyword">SSTF</span> (Shortest Seek Time First): si serve sempre la richiesta più vicina alla posizione attuale delle testine. Riduce drasticamente il seek time medio, ma rischia la <span class="keyword">starvation</span> delle richieste lontane: se arrivano continuamente richieste vicine, quelle distanti non vengono mai servite.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> SCAN & C-SCAN</h2>
+    <p><span class="keyword">SCAN</span> (o "elevator algorithm"): le testine si muovono in una direzione, servendo tutte le richieste che incontrano, fino all'estremità del disco; poi invertono direzione e tornano indietro servendo le richieste nell'altro senso. Come un ascensore che sale, serve tutti i piani richiesti, poi scende. Elimina la starvation e offre distribuzione più uniforme dei tempi di attesa rispetto a SSTF.</p>
+    <p><span class="keyword">C-SCAN</span> (Circular SCAN): le testine si muovono sempre in una sola direzione (es. dal cilindro 0 al cilindro N). Quando raggiungono l'estremità, saltano immediatamente all'inizio senza servire richieste nel ritorno. Garantisce un tempo di attesa massimo più uniforme di SCAN, poiché le richieste vicino all'estremità appena servita non attendono più a lungo di quelle vicino al centro. Linux usa una variante chiamata <span class="keyword">CFQ</span> (Completely Fair Queuing) o <span class="keyword">BFQ</span> (Budget Fair Queueing) per SSD e workload misti.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> RAID — Redundant Array of Independent Disks</h2>
+    <p>RAID combina più dischi fisici per ottenere più performance, più affidabilità, o entrambe. I livelli principali sono: <span class="keyword">RAID 0</span> (striping puro): i dati sono distribuiti a stripe su N dischi. Throughput N volte superiore, ma nessuna ridondanza — se un disco si guasta si perde tutto. <span class="keyword">RAID 1</span> (mirroring): ogni dato è scritto su due dischi identici. Sopporta il guasto di un disco, lettura veloce (da uno dei due), ma capacità effettiva dimezzata. <span class="keyword">RAID 5</span> (striping + parità distribuita): i dati e le informazioni di parità sono distribuiti su almeno 3 dischi. Sopporta il guasto di un disco, buon throughput in lettura, scriture leggermente penalizzate (calcolo parità). Bilanciamento ideale tra performance, affidabilità e costo. <span class="keyword">RAID 6</span>: come RAID 5 ma con doppia parità — sopporta il guasto di 2 dischi simultanei. Indispensabile in array grandi (probabilità di secondo guasto durante il rebuild non trascurabile).</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> SAN — Storage Area Network</h2>
+    <p>Una <span class="keyword">SAN</span> è una rete dedicata ad alta velocità (Fibre Channel o iSCSI over Ethernet) che collega server a storage centralizzato. Dal punto di vista del server, i dischi SAN appaiono come dischi locali (block storage), anche se fisicamente si trovano in un array remoto.</p>
+    <p>I vantaggi principali: scalabilità (si aggiunge storage senza toccare i server), gestione centralizzata, alta disponibilità (path ridondanti), condivisione dello storage tra server diversi (con filesystem cluster-aware come GFS2, OCFS2). Le SAN sono la soluzione dominante nei datacenter enterprise e cloud. Un'alternativa è il <span class="keyword">NAS</span> (Network Attached Storage), che espone il filesystem via protocolli NFS o SMB anziché blocchi grezzi.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Gestione dello Spazio Libero</h2>
+    <p>Il SO deve tenere traccia di quali blocchi del disco sono liberi per poterli assegnare ai nuovi file. Le strutture principali sono tre. Il <span class="keyword">bit vector</span> (o bitmap): un bit per ogni blocco del disco — 0 = libero, 1 = occupato. Compatto (1 TB di disco con blocchi da 4 KB richiede ~32 MB di bitmap), facile da aggiornare, e permette di trovare rapidamente blocchi contigui liberi grazie alle operazioni bitwise. È la scelta di ext2/ext3/ext4.</p>
+    <p>La <span class="keyword">linked list</span>: i blocchi liberi sono collegati tra loro in una lista. Non richiede spazio extra (i puntatori sono nei blocchi liberi stessi), ma trovare N blocchi contigui richiede una scansione lineare. Il <span class="keyword">Grouping</span> e il <span class="keyword">Counting</span> sono ottimizzazioni: il grouping memorizza indirizzi di blocchi liberi in gruppi; il counting tiene traccia di sequenze contigue (indirizzo_inizio, lunghezza), efficiente quando i file sono allocati in modo contiguo.</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="09-io-systems.html" class="btn btn-ghost">← 09 · I/O Systems</a>
+    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+    <a href="11-file-system.html" class="btn btn-ghost">11 · File System →</a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 10 · Mass-Storage</p>
+  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+</footer>
+</body>
+</html>

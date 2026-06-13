@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 · CPU Scheduling — SO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../so.css">
+<style>
+  .nav-logo{color:var(--teal)}.nav-back:hover{color:var(--teal);border-color:rgba(34,211,238,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(34,211,238,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#22d3ee 55%,#06b6d4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--teal)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(34,211,238,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--teal);background:rgba(34,211,238,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(34,211,238,.12);color:var(--teal);border:1px solid rgba(34,211,238,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--teal)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--teal)}.index-item .idx-num{color:var(--teal);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
+</style>
+</head>
+<body class="dot-grid">
+<nav>
+  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+  <div class="nav-right">
+    <a href="../index.html" class="nav-back">← Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:var(--teal)">Macroargomento 04 · Gestione CPU</span>
+  <div class="topic-num">04 / 13</div>
+  <h1 class="topic-hero-title">CPU Scheduling</h1>
+  <p class="hero-sub" style="max-width:640px">FCFS, SJF, Round Robin, Priority Scheduling, Multilevel Queue e il Completely Fair Scheduler di Linux. Come il SO decide chi usa la CPU e quando.</p>
+</div>
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">SO</a><span>/</span>
+    <span>04 · CPU Scheduling</span>
+  </div>
+  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(34,211,238,.25)">Questa pagina copre gli <strong style="color:var(--teal)">8 sottoargomenti</strong> del macroargomento 4: gli algoritmi di scheduling della CPU.</div>
+  <div class="index-grid">
+    <div class="index-item"><div class="idx-num">04.01</div><div class="idx-name">Concetti base & Criteri</div></div>
+    <div class="index-item"><div class="idx-num">04.02</div><div class="idx-name">FCFS</div></div>
+    <div class="index-item"><div class="idx-num">04.03</div><div class="idx-name">SJF</div></div>
+    <div class="index-item"><div class="idx-num">04.04</div><div class="idx-name">Round Robin</div></div>
+    <div class="index-item"><div class="idx-num">04.05</div><div class="idx-name">Priority Scheduling</div></div>
+    <div class="index-item"><div class="idx-num">04.06</div><div class="idx-name">Multilevel Queue</div></div>
+    <div class="index-item"><div class="idx-num">04.07</div><div class="idx-name">Multilevel Feedback Queue</div></div>
+    <div class="index-item"><div class="idx-num">04.08</div><div class="idx-name">CFS — Linux</div></div>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Concetti Base e Criteri di Scheduling <span class="sub-tag">fondamento</span></h2>
+    <p>Lo <span class="keyword">scheduler della CPU</span> è il componente del SO che decide quale processo (o thread) occupare la CPU nel prossimo time slot. Opera sulla <span class="keyword">ready queue</span>: la coda dei processi pronti all'esecuzione. Lo scheduling può essere <span class="keyword">non preemptive</span> (il processo tiene la CPU finché non la rilascia volontariamente) o <span class="keyword">preemptive</span> (il SO può sottrarre la CPU al processo in esecuzione).</p>
+    <p>I criteri di valutazione sono: <span class="keyword">CPU utilization</span> (massimizzare l'uso della CPU, idealmente 100%), <span class="keyword">Throughput</span> (processi completati per unità di tempo), <span class="keyword">Turnaround time</span> (tempo totale dalla sottomissione al completamento), <span class="keyword">Waiting time</span> (tempo passato in ready queue), <span class="keyword">Response time</span> (tempo dalla richiesta alla prima risposta, cruciale per sistemi interattivi).</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> FCFS — First Come First Served</h2>
+    <p>Il più semplice degli algoritmi: i processi vengono eseguiti nell'ordine in cui arrivano nella ready queue, senza preemption. L'implementazione usa una coda FIFO.</p>
+    <p>Il problema principale è l'<span class="keyword">effetto convoy</span>: se un processo lungo arriva prima di molti processi brevi, questi ultimi devono aspettare tutta la sua esecuzione. Con un processo da 10 secondi seguito da cento processi da 0.1 secondi, il waiting time medio si avvicina a 10 secondi. FCFS è inadatto per sistemi interattivi o time-sharing.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> SJF — Shortest Job First</h2>
+    <p>Esegue sempre il processo con il <span class="keyword">CPU burst più breve</span>. Garantisce il waiting time medio minimo teorico tra tutti gli algoritmi non preemptive, ma ha un difetto fondamentale: il SO non conosce in anticipo la durata del prossimo CPU burst.</p>
+    <p>La soluzione è la <span class="keyword">previsione esponenziale</span>: τ(n+1) = α × t(n) + (1-α) × τ(n), dove t(n) è la durata misurata del burst n e α (tipicamente 0.5) controlla il peso dei burst recenti vs storici. La variante preemptive (SRTF — Shortest Remaining Time First) sospende il processo corrente se ne arriva uno con burst stimato minore.</p>
+    <p>Il rischio è la <span class="keyword">starvation</span> dei processi lunghi: se continuano ad arrivare processi corti, i lunghi non vengono mai schedulati.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Round Robin (RR)</h2>
+    <p>Ogni processo riceve un intervallo di tempo fisso chiamato <span class="keyword">time quantum</span> (o time slice), tipicamente 10–100 ms. Alla scadenza del quantum, il processo viene preempted e messo in fondo alla ready queue. Se il processo completa prima del quantum, rilascia la CPU spontaneamente.</p>
+    <p>Il Round Robin è l'algoritmo ideale per i sistemi <span class="keyword">time-sharing</span> perché garantisce equità (nessun processo aspetta più di (n-1)×quantum) e ottima risposta per processi interattivi. La scelta del quantum è cruciale: troppo piccolo → troppi context switch; troppo grande → degrada a FCFS.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Priority Scheduling</h2>
+    <p>Ogni processo ha un <span class="keyword">numero di priorità</span> (convenzione: il numero più basso = priorità più alta). La CPU va sempre al processo a priorità più alta nella ready queue. La versione preemptive sospende il processo corrente se ne arriva uno a priorità più alta.</p>
+    <p>Il problema principale è la <span class="keyword">starvation</span>: processi a bassa priorità potrebbero non ricevere mai la CPU se ci sono continuamente processi ad alta priorità. La soluzione è l'<span class="keyword">aging</span>: la priorità di un processo aumenta proporzionalmente al tempo che trascorre in attesa, garantendo che prima o poi riceva la CPU.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Multilevel Queue</h2>
+    <p>La ready queue viene divisa in più <span class="keyword">code separate</span>, ognuna per una categoria di processi (foreground interattivi, background batch, processi di sistema). Ogni coda ha il proprio algoritmo interno (Round Robin per il foreground, FCFS per il batch) e una propria priorità rispetto alle altre code.</p>
+    <p>I processi non si spostano tra code. Il principale svantaggio è la rigidità: un processo batch che diventa interattivo rimane comunque nella coda a bassa priorità.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Multilevel Feedback Queue</h2>
+    <p>Estende il Multilevel Queue con la possibilità per i processi di <span class="keyword">migrare tra code</span> in base al loro comportamento. Un processo che usa molto la CPU scende di priorità (finisce nelle code inferiori con quantum più lungo). Un processo che si comporta come interattivo (usa poco CPU, fa molti I/O) sale di priorità.</p>
+    <p>È l'algoritmo più flessibile e generale. Parametri configurabili: numero di code, algoritmo per ogni coda, regole di promozione/declassamento, metodo di scelta quando un processo è in starvation. Unix/Linux originale usava una variante di questo schema.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> CFS — Completely Fair Scheduler (Linux)</h2>
+    <p>Lo scheduler di Linux moderno, introdotto nel kernel 2.6.23. Il principio è semplice: ogni processo deve ricevere una quota <span class="keyword">equa</span> del tempo CPU. CFS traccia per ogni processo il <span class="keyword">virtual runtime</span> (vruntime): il tempo CPU consumato, pesato per la priorità (nice value).</p>
+    <p>I processi sono ordinati per vruntime in un <span class="keyword">albero rosso-nero</span> (una BST bilanciata). Lo scheduler esegue sempre il processo con il vruntime più basso (il nodo più a sinistra dell'albero), garantendo equità. Non c'è un quantum fisso: il time slice è proporzionale alla priorità relativa dei processi in coda. CFS offre latenza eccellente per i processi interattivi e alto throughput per i batch.</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="03-thread.html" class="btn btn-ghost">← 03 · Thread</a>
+    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+    <a href="05-sincronizzazione.html" class="btn btn-ghost">05 · Sincronizzazione →</a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 04 · CPU Scheduling</p>
+  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+</footer>
+</body>
+</html>

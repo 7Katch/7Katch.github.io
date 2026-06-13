@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13 · Sicurezza — SO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../so.css">
+<style>
+  .nav-logo{color:var(--coral)}.nav-back:hover{color:var(--coral);border-color:rgba(248,113,113,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(248,113,113,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#f87171 55%,#ef4444 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coral);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--coral)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(248,113,113,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--coral);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--coral);background:rgba(248,113,113,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(248,113,113,.12);color:var(--coral);border:1px solid rgba(248,113,113,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--coral)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--coral)}.index-item .idx-num{color:var(--coral);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
+</style>
+</head>
+<body class="dot-grid">
+<nav>
+  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+  <div class="nav-right">
+    <a href="../index.html" class="nav-back">← Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--coral)">Macroargomento 13 · Protezione</span>
+  <div class="topic-num">13 / 13</div>
+  <h1 class="topic-hero-title">Sicurezza</h1>
+  <p class="hero-sub" style="max-width:640px">Triada CIA, autenticazione, access control, buffer overflow, malware e protezione del kernel tramite privilege rings e sandbox.</p>
+</div>
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">SO</a><span>/</span>
+    <span>13 · Sicurezza</span>
+  </div>
+  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(248,113,113,.25)">Questa pagina copre i <strong style="color:var(--coral)">6 sottoargomenti</strong> del macroargomento 13, l'ultimo del corso: sicurezza e protezione del SO.</div>
+  <div class="index-grid">
+    <div class="index-item"><div class="idx-num">13.01</div><div class="idx-name">Obiettivi CIA</div></div>
+    <div class="index-item"><div class="idx-num">13.02</div><div class="idx-name">Autenticazione</div></div>
+    <div class="index-item"><div class="idx-num">13.03</div><div class="idx-name">Access Control</div></div>
+    <div class="index-item"><div class="idx-num">13.04</div><div class="idx-name">Buffer Overflow</div></div>
+    <div class="index-item"><div class="idx-num">13.05</div><div class="idx-name">Malware & Virus</div></div>
+    <div class="index-item"><div class="idx-num">13.06</div><div class="idx-name">Rings & Sandbox</div></div>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Obiettivi di Sicurezza — Triada CIA <span class="sub-tag">fondamento</span></h2>
+    <p>La sicurezza informatica si costruisce intorno a tre obiettivi fondamentali, noti come la <span class="keyword">triada CIA</span>. <span class="keyword">Confidenzialità</span> (Confidentiality): le informazioni devono essere accessibili solo a chi è autorizzato. Un file con i dati degli utenti non deve essere leggibile da processi non autorizzati. <span class="keyword">Integrità</span> (Integrity): i dati non devono essere alterati in modo non autorizzato. Un file di sistema non deve poter essere modificato da un processo utente. <span class="keyword">Disponibilità</span> (Availability): le risorse devono essere accessibili agli utenti legittimi quando ne hanno bisogno. Un attacco DoS viola la disponibilità.</p>
+    <p>Un sistema operativo contribuisce alla triada a tutti i livelli: protezione della memoria (confidenzialità e integrità tra processi), permessi sui file (confidenzialità), journaling e RAID (integrità e disponibilità), scheduling equo (disponibilità).</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Autenticazione</h2>
+    <p>L'<span class="keyword">autenticazione</span> è la verifica dell'identità dichiarata da un utente o processo. Si basa su tre categorie di fattori, spesso combinati (Multi-Factor Authentication): <span class="keyword">qualcosa che sai</span> (password, PIN, risposta a domande segrete), <span class="keyword">qualcosa che hai</span> (token hardware, smartphone per OTP, smart card), <span class="keyword">qualcosa che sei</span> (biometria: impronta digitale, riconoscimento facciale, iride).</p>
+    <p>Le password non vengono mai memorizzate in chiaro. Il SO salva l'hash della password: quando l'utente si autentica, l'hash della password inserita viene confrontato con quello memorizzato. Gli algoritmi moderni usano funzioni di hashing lente e con <span class="keyword">salt</span>: <span class="keyword">bcrypt</span>, <span class="keyword">Argon2</span> o <span class="keyword">scrypt</span>. Il salt è un valore casuale aggiunto alla password prima dell'hash, che impedisce l'uso di <em>rainbow table</em> (tabelle precalcolate di hash). Su Linux le password sono in <code class="inline">/etc/shadow</code>, leggibile solo da root.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Access Control</h2>
+    <p>Il controllo degli accessi decide chi può fare cosa su quali risorse. Le due implementazioni principali sono complementari. Una <span class="keyword">ACL (Access Control List)</span> è associata a ogni risorsa e lista le entità autorizzate con i relativi permessi. Esempio: il file <code class="inline">report.pdf</code> può essere letto da Alice e Bob, scritto solo da Alice, eseguito da nessuno. I permessi Unix rwx per owner/group/other sono una ACL semplificata (solo tre soggetti).</p>
+    <p>Una <span class="keyword">Capability List</span> (o Capability Set) è associata a ogni processo o utente e lista le risorse a cui può accedere con i permessi corrispondenti. È come un "biglietto di accesso" che il processo presenta quando richiede una risorsa. Linux usa le <span class="keyword">capabilities</span> per suddividere i privilegi root in unità più granulari: <code class="inline">CAP_NET_BIND_SERVICE</code> (bind a porte < 1024), <code class="inline">CAP_SYS_ADMIN</code> (operazioni di sistema), <code class="inline">CAP_KILL</code> (inviare segnali a qualsiasi processo), ecc.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Buffer Overflow</h2>
+    <p>Il <span class="keyword">buffer overflow</span> è una delle vulnerabilità più sfruttate nella storia della sicurezza informatica. Si verifica quando un programma scrive dati in un buffer superando la dimensione allocata, sovrascrivendo aree di memoria adiacenti. In C, operazioni come <code class="inline">strcpy(dst, src)</code> non verificano la dimensione del buffer destinazione: se <code class="inline">src</code> è più lungo di <code class="inline">dst</code>, i byte in eccesso sovrascrivono variabili locali, il frame pointer e l'indirizzo di ritorno sullo stack. L'attaccante può così redirigere l'esecuzione a codice arbitrario (shellcode).</p>
+    <p>Le contromisure hardware/OS sono quattro: <span class="keyword">Stack Canary</span> — il compilatore inserisce un valore casuale (canary) tra le variabili locali e l'indirizzo di ritorno; prima di ritornare la funzione verifica che il canary sia intatto. <span class="keyword">ASLR</span> (Address Space Layout Randomization) — le aree di codice, stack e heap sono posizionate a indirizzi casuali ad ogni esecuzione, rendendo imprevedibile dove inserire il codice malevolo. <span class="keyword">NX bit</span> (No-Execute) — le pagine di stack e heap sono marcate come non eseguibili; tentare di eseguire codice in quelle aree genera una trap. <span class="keyword">Linguaggi sicuri</span> — Go, Rust, Java verificano i limiti degli array a runtime, eliminando la classe di vulnerabilità alla radice.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Malware & Virus</h2>
+    <p>Il termine <span class="keyword">malware</span> (malicious software) raggruppa diverse categorie di software malevolo. Un <span class="keyword">Virus</span> è codice che si replica allegando copie di sé stesso a programmi legittimi; si diffonde quando l'utente esegue il programma infetto. Un <span class="keyword">Worm</span> si propaga autonomamente sfruttando vulnerabilità di rete, senza intervento umano (es. WannaCry, Slammer). Un <span class="keyword">Trojan</span> si maschera da software legittimo e utile, ma esegue azioni malevole in background (installare backdoor, esfiltrare dati). Un <span class="keyword">Ransomware</span> cifra i file dell'utente con chiave nota solo all'attaccante e richiede un riscatto per la decifratura (es. CryptoLocker, Ryuk). Un <span class="keyword">Rootkit</span> modifica il kernel o i tool di sistema per nascondere la propria presenza (file, processi, connessioni di rete).</p>
+    <p>La difesa a livello SO include: verifica delle firme digitali dei moduli kernel, Secure Boot (verifica dell'intera catena di avvio), sandboxing dei processi, e aggiornamenti tempestivi delle patch di sicurezza.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Protezione del Kernel: Rings & Sandbox</h2>
+    <p>I processori x86 implementano quattro <span class="keyword">livelli di privilegio</span> (ring 0–3), anche se i SO moderni ne usano solo due. Il <span class="keyword">ring 0</span> (kernel mode) ha accesso illimitato all'hardware: può eseguire qualsiasi istruzione, accedere a qualsiasi indirizzo fisico, configurare il TLB e gli interrupt. Il <span class="keyword">ring 3</span> (user mode) è fortemente limitato: non può accedere direttamente all'hardware, modificare le page table, né eseguire istruzioni privilegiate. Qualsiasi tentativo genera una trap gestita dal kernel.</p>
+    <p>La <span class="keyword">sandbox</span> estende il principio del least privilege ai processi. In Linux, i meccanismi principali sono: <span class="keyword">namespaces</span> (isolamento di PID, filesystem, rete, utenti tra processi), <span class="keyword">seccomp</span> (Security Computing Mode: filtra le syscall che un processo può chiamare, usato da Docker e Chrome), <span class="keyword">cgroups</span> (Control Groups: limitano le risorse CPU/RAM/I/O di un gruppo di processi), <span class="keyword">SELinux</span> e <span class="keyword">AppArmor</span> (MAC — Mandatory Access Control: policy di accesso definite dall'amministratore che il kernel applica indipendentemente dai permessi DAC). Questi meccanismi sono la base tecnologica dei container Docker e Kubernetes.</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="12-embedded-systems.html" class="btn btn-ghost">← 12 · Embedded Systems</a>
+    <a href="../index.html" class="btn btn-amber">↑ Indice SO — Fine corso</a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 13 · Sicurezza</p>
+  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+</footer>
+</body>
+</html>

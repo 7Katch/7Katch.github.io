@@ -102,6 +102,12 @@ body {
 .text-amber     { color: var(--amber); }
 .text-coral     { color: var(--coral); }
 
+a {
+  color: var(--accent-soft);
+  text-decoration: none;
+
+}
+
 /* ── Navigation ─────────────────────────────────────────── */
 nav {
   position: fixed;

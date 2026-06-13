@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 · Thread — SO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../so.css">
+<style>
+  .nav-logo{color:var(--amber)}.nav-back:hover{color:var(--amber);border-color:rgba(251,191,36,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(251,191,36,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#fbbf24 55%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--amber)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--amber);background:rgba(251,191,36,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(251,191,36,.12);color:var(--amber);border:1px solid rgba(251,191,36,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--amber)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--amber)}.index-item .idx-num{color:var(--amber);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
+</style>
+</head>
+<body class="dot-grid">
+<nav>
+  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+  <div class="nav-right">
+    <a href="../index.html" class="nav-back">← Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3);color:var(--amber)">Macroargomento 03 · Core</span>
+  <div class="topic-num">03 / 13</div>
+  <h1 class="topic-hero-title">Thread</h1>
+  <p class="hero-sub" style="max-width:640px">Multithreading, concorrenza vs parallelismo, Legge di Amdahl, user/kernel thread e i tre modelli di mapping: Many-to-One, One-to-One, Many-to-Many.</p>
+</div>
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">SO</a><span>/</span>
+    <span>03 · Thread</span>
+  </div>
+  <div class="amber-box" style="margin-bottom:2rem">Questa pagina copre i <strong style="color:var(--amber)">9 sottoargomenti</strong> del macroargomento 3: il modello di esecuzione multi-thread e i suoi trade-off.</div>
+  <div class="index-grid">
+    <div class="index-item"><div class="idx-num">03.01</div><div class="idx-name">Benefici multithreading</div></div>
+    <div class="index-item"><div class="idx-num">03.02</div><div class="idx-name">Concorrenza vs Parallelismo</div></div>
+    <div class="index-item"><div class="idx-num">03.03</div><div class="idx-name">Data & Task parallelism</div></div>
+    <div class="index-item"><div class="idx-num">03.04</div><div class="idx-name">Legge di Amdahl</div></div>
+    <div class="index-item"><div class="idx-num">03.05</div><div class="idx-name">User e Kernel Threads</div></div>
+    <div class="index-item"><div class="idx-num">03.06</div><div class="idx-name">Modelli multithreading</div></div>
+    <div class="index-item"><div class="idx-num">03.07</div><div class="idx-name">Many-to-One</div></div>
+    <div class="index-item"><div class="idx-num">03.08</div><div class="idx-name">One-to-One</div></div>
+    <div class="index-item"><div class="idx-num">03.09</div><div class="idx-name">Many-to-Many</div></div>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Benefici del Multithreading <span class="sub-tag">fondamento</span></h2>
+    <p>Un <span class="keyword">thread</span> è un'unità di esecuzione all'interno di un processo. Tutti i thread di un processo condividono codice, dati globali e file aperti, ma ognuno ha il proprio stack, il proprio program counter e i propri registri. Questo li rende molto più leggeri dei processi.</p>
+    <p>I vantaggi del multithreading sono quattro: <span class="keyword">Responsività</span> — un'applicazione può continuare a rispondere all'utente anche mentre un thread esegue un'operazione lunga (es. download). <span class="keyword">Condivisione delle risorse</span> — i thread comunicano direttamente tramite la memoria del processo, senza IPC. <span class="keyword">Economia</span> — creare un thread richiede molto meno overhead di una <code class="inline">fork()</code>. <span class="keyword">Scalabilità</span> — su sistemi multicore i thread vengono distribuiti su più processori, ottenendo parallelismo reale.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Concorrenza vs Parallelismo</h2>
+    <p><span class="keyword">Concorrenza</span> significa che più task sono in progresso nello stesso periodo di tempo, ma non necessariamente nello stesso istante. Anche su un singolo core, il SO può far avanzare più thread con <em>time-slicing</em> (interleaving), creando l'illusione della simultaneità.</p>
+    <p><span class="keyword">Parallelismo</span> significa che due o più task vengono eseguiti letteralmente nello stesso istante su core (o CPU) diversi. È possibile solo con hardware multicore. Il parallelismo implica concorrenza, ma non viceversa.</p>
+    <p>Per un programmatore, scrivere codice corretto in concorrenza è la sfida principale: race condition e deadlock possono presentarsi sia in modalità concorrente che parallela, ma diventano molto più difficili da riprodurre e debuggare con il vero parallelismo.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Parallelismo dei Dati e dei Task</h2>
+    <p>Il <span class="keyword">parallelismo dei dati</span> applica la stessa operazione su sottoinsiemi diversi di un grande insieme di dati, distribuiti su più core. Esempio: sommare un array di un milione di elementi dividendolo in 8 parti e assegnando ogni parte a un core separato.</p>
+    <p>Il <span class="keyword">parallelismo dei task</span> distribuisce invece operazioni diverse su core diversi, spesso su dati diversi. Esempio: un webserver che gestisce richieste HTTP diverse su thread diversi, ognuno eseguendo la stessa sequenza di operazioni ma su una connessione distinta.</p>
+    <p>Nella pratica le applicazioni moderne combinano entrambi. Framework come OpenMP facilitano il parallelismo dei dati; librerie come pthreads vengono usate per il parallelismo dei task.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Legge di Amdahl</h2>
+    <p>La <span class="keyword">Legge di Amdahl</span> quantifica il limite teorico dello speedup ottenibile parallelizzando un programma con N core. La formula è: <strong style="color:var(--text-primary)">Speedup = 1 / (S + (1-S)/N)</strong>, dove S è la frazione di codice che rimane seriale (non parallelizzabile) e N è il numero di core.</p>
+    <p>Il risultato è sorprendente: se solo il 5% del codice è seriale (S=0.05), anche con infiniti core lo speedup massimo è solo 20×. La legge mostra perché ridurre la parte seriale è fondamentale: portare S da 10% a 1% può triplicare il guadagno ottenibile dall'hardware parallelo.</p>
+    <p>Nella pratica, lock e sezioni critiche costituiscono la parte seriale nascosta di molti programmi. Un'analisi con strumenti come <code class="inline">perf</code> aiuta a identificarle.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> User Thread e Kernel Thread</h2>
+    <p>I <span class="keyword">user thread</span> (thread a livello utente) sono gestiti da una libreria in user space (es. GNU Pthreads, Java thread). Il kernel non li conosce: vede solo il processo contenitore. Sono veloci da creare e da commutare (nessun cambio di modalità kernel), ma se un user thread si blocca in una syscall, blocca tutti gli altri thread del processo.</p>
+    <p>I <span class="keyword">kernel thread</span> sono entità di scheduling del kernel. Il SO li conosce e può distribuirli su core diversi. Se un kernel thread si blocca in I/O, il kernel può schedulare un altro thread dello stesso processo su un altro core. Il loro costo di creazione e context switch è maggiore degli user thread.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Modelli di Multithreading</h2>
+    <p>I modelli di multithreading descrivono come i thread utente vengono <span class="keyword">mappati</span> sui kernel thread. La scelta del modello determina il grado di parallelismo reale e l'overhead di gestione.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Many-to-One</h2>
+    <p>Nel modello <span class="keyword">Many-to-One</span>, molti user thread sono mappati su un singolo kernel thread. La libreria thread gestisce lo scheduling tra gli user thread. Il vantaggio è la semplicità e l'efficienza della commutazione (tutto in user space). Lo svantaggio è pesante: se un thread chiama una syscall bloccante, tutti i thread del processo si bloccano, e non c'è mai vero parallelismo. Oggi questo modello è raro nei sistemi general-purpose.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> One-to-One</h2>
+    <p>Nel modello <span class="keyword">One-to-One</span>, ogni user thread è mappato su un distinto kernel thread. Il kernel può schedulare thread diversi su core diversi in parallelo. Se un thread si blocca in I/O, gli altri continuano a girare. È il modello usato da <span class="keyword">Linux</span> (tramite <code class="inline">clone()</code>) e da <span class="keyword">Windows</span>. Lo svantaggio è che creare molti thread ha un costo maggiore, poiché ogni user thread richiede un kernel thread.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Many-to-Many</h2>
+    <p>Nel modello <span class="keyword">Many-to-Many</span>, N user thread vengono mappati su M kernel thread, con M ≤ N. Il programmatore può creare quanti user thread vuole; il kernel ne mantiene un numero adeguato. Quando un user thread si blocca, un altro può usare il kernel thread libero. È il modello più flessibile ma anche il più complesso da implementare. Alcune implementazioni lo combinano con il modello Two-level: alcuni thread critici sono mappati One-to-One, gli altri Many-to-Many.</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="02-processi.html" class="btn btn-ghost">← 02 · Processi</a>
+    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+    <a href="04-cpu-scheduling.html" class="btn btn-ghost">04 · CPU Scheduling →</a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 03 · Thread</p>
+  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+</footer>
+</body>
+</html>

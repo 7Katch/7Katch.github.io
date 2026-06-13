@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 · Main Memory — SO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../so.css">
+<style>
+  .nav-logo{color:var(--teal)}.nav-back:hover{color:var(--teal);border-color:rgba(34,211,238,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(34,211,238,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#22d3ee 55%,#06b6d4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--teal)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(34,211,238,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--teal);background:rgba(34,211,238,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(34,211,238,.12);color:var(--teal);border:1px solid rgba(34,211,238,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--teal)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--teal)}.index-item .idx-num{color:var(--teal);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
+</style>
+</head>
+<body class="dot-grid">
+<nav>
+  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+  <div class="nav-right">
+    <a href="../index.html" class="nav-back">← Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:var(--teal)">Macroargomento 07 · Gestione Memoria</span>
+  <div class="topic-num">07 / 13</div>
+  <h1 class="topic-hero-title">Main Memory</h1>
+  <p class="hero-sub" style="max-width:640px">Allocazione contigua, frammentazione, paginazione, TLB, protezione, pagine condivise e segmentazione. Come il SO gestisce la memoria fisica.</p>
+</div>
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">SO</a><span>/</span>
+    <span>07 · Main Memory</span>
+  </div>
+  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(34,211,238,.25)">Questa pagina copre gli <strong style="color:var(--teal)">8 sottoargomenti</strong> del macroargomento 7: la gestione della memoria principale (RAM).</div>
+  <div class="index-grid">
+    <div class="index-item"><div class="idx-num">07.01</div><div class="idx-name">Allocazione contigua</div></div>
+    <div class="index-item"><div class="idx-num">07.02</div><div class="idx-name">Frammentazione</div></div>
+    <div class="index-item"><div class="idx-num">07.03</div><div class="idx-name">Paginazione</div></div>
+    <div class="index-item"><div class="idx-num">07.04</div><div class="idx-name">TLB</div></div>
+    <div class="index-item"><div class="idx-num">07.05</div><div class="idx-name">Protezione della memoria</div></div>
+    <div class="index-item"><div class="idx-num">07.06</div><div class="idx-name">Pagine condivise</div></div>
+    <div class="index-item"><div class="idx-num">07.07</div><div class="idx-name">Segmentazione</div></div>
+    <div class="index-item"><div class="idx-num">07.08</div><div class="idx-name">Segmentazione + paginazione</div></div>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Allocazione Contigua della Memoria <span class="sub-tag">base</span></h2>
+    <p>Nell'<span class="keyword">allocazione contigua</span>, ogni processo occupa un singolo blocco di indirizzi fisici consecutivi. Il SO mantiene una lista di "buchi" liberi e ne sceglie uno di dimensione sufficiente quando un processo deve essere caricato. Tre strategie di scelta: <span class="keyword">First-fit</span> (primo buco abbastanza grande — veloce), <span class="keyword">Best-fit</span> (buco più piccolo sufficiente — minimizza lo spreco ma lascia frammenti minuscoli), <span class="keyword">Worst-fit</span> (buco più grande — lascia residui più grandi e potenzialmente utili).</p>
+    <p>Questo schema è semplice da implementare, ma soffre di <span class="keyword">frammentazione esterna</span>: dopo molte allocazioni e deallocazioni, la memoria libera si sparpaglia in tanti piccoli buchi non contigui, rendendo impossibile allocare processi grandi anche se la memoria totale libera sarebbe sufficiente. Una soluzione è la <span class="keyword">compattazione</span> (spostare i processi per unire i buchi), ma è costosa in termini di tempo.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Frammentazione</h2>
+    <p>La <span class="keyword">frammentazione esterna</span> si verifica quando la memoria libera totale è sufficiente per un nuovo processo, ma non è fisicamente contigua: esistono molti piccoli buchi separati da processi allocati. È il problema principale dell'allocazione contigua.</p>
+    <p>La <span class="keyword">frammentazione interna</span> è di natura opposta: si verifica quando il blocco di memoria assegnato a un processo è leggermente più grande di quello richiesto, e lo spazio in eccesso — pur facendo parte del blocco assegnato — non può essere usato da nessuno. È il costo inevitabile dell'allocazione per frame fissi nella paginazione: se un processo richiede 3.1 frame, riceve 4, sprecando 0.9 frame.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Paginazione</h2>
+    <p>La <span class="keyword">paginazione</span> è la soluzione fondamentale alla frammentazione esterna. L'idea: dividere sia la memoria fisica che lo spazio logico in blocchi di dimensione fissa. La memoria fisica è suddivisa in <span class="keyword">frame</span> (tipicamente 4 KB). Lo spazio di indirizzi logico di ogni processo è suddiviso in <span class="keyword">pagine</span> della stessa dimensione. Una <span class="keyword">page table</span> (una per processo) mappa ogni numero di pagina logica al numero di frame fisico corrispondente.</p>
+    <p>Il vantaggio è netto: le pagine di un processo possono stare in frame fisicamente sparsi in tutta la RAM — non è richiesta contiguità fisica. La traduzione degli indirizzi avviene nell'hardware (MMU — Memory Management Unit): l'indirizzo logico viene diviso in numero di pagina e offset; la page table fornisce il numero di frame; l'indirizzo fisico = (frame × dimensione_pagina) + offset.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> TLB — Translation Lookaside Buffer</h2>
+    <p>Ogni accesso alla memoria con paginazione richiede due accessi RAM: uno per leggere la page table e trovare il frame, uno per accedere al dato reale. Questo raddoppia la latenza, rendendola inaccettabile.</p>
+    <p>Il <span class="keyword">TLB</span> è una cache hardware piccola ma velocissima (tipicamente 64–1024 entry) che memorizza le traduzioni pagina→frame usate di recente. Un <span class="keyword">TLB hit</span> (la pagina è in cache) richiede ~1 ciclo di clock. Un <span class="keyword">TLB miss</span> (la pagina non è in cache) richiede un accesso alla page table in RAM (~100 cicli) e poi aggiorna il TLB. Con un hit rate tipico del 99%+, l'overhead effettivo della paginazione è meno dell'1%.</p>
+    <p>Al context switch tra processi, il TLB deve essere svuotato (flush) o etichettato con un identificatore di processo (ASID — Address Space Identifier, usato nei processori ARM) per evitare che un processo acceda al TLB di un altro.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Protezione della Memoria</h2>
+    <p>La paginazione offre un meccanismo naturale per la protezione. Ogni entry della page table include <span class="keyword">bit di protezione</span>: read (R), write (W), execute (X). Il tentativo di scrivere su una pagina read-only, o di eseguire codice da una pagina non-executable (NX bit), genera una <span class="keyword">trap</span> (segmentation fault su Linux, access violation su Windows).</p>
+    <p>Un bit speciale, il <span class="keyword">valid/invalid bit</span>, indica se una pagina è effettivamente allocata per quel processo. Accedere a una pagina con bit invalid genera un page fault (può essere un errore del processo, oppure un segnale al SO che la pagina è su disco e va caricata — demand paging). Questo meccanismo isola i processi tra loro e dal kernel, garantendo che un processo non possa leggere o modificare la memoria di un altro.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Pagine Condivise</h2>
+    <p>La paginazione permette a più processi di mappare lo stesso frame fisico nelle proprie page table, ottenendo <span class="keyword">memoria condivisa</span> senza copie. Questo è usato in tre scenari principali.</p>
+    <p>Le <span class="keyword">librerie condivise</span> (shared libraries, file <code class="inline">.so</code> su Linux, <code class="inline">.dll</code> su Windows): il codice di <code class="inline">libc</code> è caricato in un solo frame fisico e mappato in read-only nei processi che la usano — potenzialmente migliaia. La <span class="keyword">Copy-on-Write (CoW) dopo fork()</span>: padre e figlio condividono inizialmente gli stessi frame fisici; solo quando uno dei due modifica una pagina, il kernel la duplica e assegna la copia al modificatore. La <span class="keyword">shared memory IPC</span> (<code class="inline">shm_open</code> + <code class="inline">mmap</code>): processi espliciti che vogliono comunicare mappano la stessa regione fisica.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Segmentazione</h2>
+    <p>La <span class="keyword">segmentazione</span> è un approccio alternativo alla paginazione che riflette la visione logica del programmatore. Lo spazio degli indirizzi è diviso in segmenti di dimensione variabile, ognuno corrispondente a una struttura logica del programma: segmento codice, segmento dati, segmento stack, segmento heap, segmenti per le librerie.</p>
+    <p>Una <span class="keyword">segment table</span> mappa ogni segmento con una coppia (base, limite): l'indirizzo fisico è base + offset, e il limite garantisce che l'offset non superi la dimensione del segmento. La segmentazione è più naturale per il programmatore (ogni struttura ha il proprio spazio) e permette protezioni diverse per segmenti diversi. Il suo svantaggio è la frammentazione esterna, poiché i segmenti hanno dimensioni variabili.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Segmentazione con Paginazione</h2>
+    <p>I processori x86 (in modalità protetta legacy) usano un ibrido: ogni segmento ha la propria page table. L'indirizzo logico viene prima tradotto tramite la segment table per ottenere un indirizzo lineare, poi la page table converte l'indirizzo lineare in fisico. Questo combina i benefici della visione logica della segmentazione con l'assenza di frammentazione esterna della paginazione.</p>
+    <p>Nella pratica, i SO moderni su x86-64 (Linux, Windows) usano la segmentazione in modo quasi trasparente (tutti i segmenti hanno base 0 e limite massimo, il modello è di fatto "flat") e delegano tutta la gestione alla paginazione, più flessibile e uniforme.</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="06-deadlocks.html" class="btn btn-ghost">← 06 · Deadlocks</a>
+    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+    <a href="08-virtual-memory.html" class="btn btn-ghost">08 · Virtual Memory →</a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 07 · Main Memory</p>
+  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+</footer>
+</body>
+</html>
