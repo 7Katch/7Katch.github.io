@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11 · File System — SO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../so.css">
+<style>
+  .nav-logo{color:var(--green)}.nav-back:hover{color:var(--green);border-color:rgba(52,211,153,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(52,211,153,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#34d399 55%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--green)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(52,211,153,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--green);background:rgba(52,211,153,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--green)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--green)}.index-item .idx-num{color:var(--green);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
+</style>
+</head>
+<body class="dot-grid">
+<nav>
+  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+  <div class="nav-right">
+    <a href="../index.html" class="nav-back">← Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3);color:var(--green)">Macroargomento 11 · File</span>
+  <div class="topic-num">11 / 13</div>
+  <h1 class="topic-hero-title">File System</h1>
+  <p class="hero-sub" style="max-width:640px">Concetti base, allocazione su disco, inode Unix, FAT, journaling, VFS, mounting e hard/soft link.</p>
+</div>
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">SO</a><span>/</span>
+    <span>11 · File System</span>
+  </div>
+  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(52,211,153,.25)">Questa pagina copre i <strong style="color:var(--green)">7 sottoargomenti</strong> del macroargomento 11: l'implementazione del file system.</div>
+  <div class="index-grid">
+    <div class="index-item"><div class="idx-num">11.01</div><div class="idx-name">File e Directory</div></div>
+    <div class="index-item"><div class="idx-num">11.02</div><div class="idx-name">Allocazione su disco</div></div>
+    <div class="index-item"><div class="idx-num">11.03</div><div class="idx-name">inode Unix</div></div>
+    <div class="index-item"><div class="idx-num">11.04</div><div class="idx-name">FAT</div></div>
+    <div class="index-item"><div class="idx-num">11.05</div><div class="idx-name">Journaling</div></div>
+    <div class="index-item"><div class="idx-num">11.06</div><div class="idx-name">VFS</div></div>
+    <div class="index-item"><div class="idx-num">11.07</div><div class="idx-name">Mounting & Link</div></div>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Concetti Base: File e Directory <span class="sub-tag">fondamento</span></h2>
+    <p>Un <span class="keyword">file</span> è la più piccola unità di storage logico: una sequenza di byte con un nome, dei metadati (permessi, proprietario, dimensione, timestamp) e un contenuto. Il SO astrae i dettagli fisici del disco e presenta i file tramite operazioni uniformi: <code class="inline">open()</code>, <code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">close()</code>.</p>
+    <p>Una <span class="keyword">directory</span> è una struttura speciale che mappa nomi a file (o ad altre directory). In Unix, una directory è anch'essa un file, il cui contenuto è una tabella di coppie (nome → inode number). Le strutture di directory possono essere: a singolo livello (tutti i file in un'unica directory — primitivo), a due livelli (una directory per utente), ad <span class="keyword">albero</span> (la struttura gerarchica usata da tutti i SO moderni), o con link (grafo aciclico o generale, che permette a un file di apparire in più directory).</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Allocazione dei File su Disco</h2>
+    <p>Esistono tre strategie per allocare i blocchi fisici di un file. <span class="keyword">Allocazione contigua</span>: i blocchi di ogni file sono fisicamente consecutivi. L'accesso sequenziale e casuale è velocissimo (l'HDD può fare prefetch), ma soffre di frammentazione esterna e richiede di conoscere la dimensione del file alla creazione. Usata su CD-ROM e alcuni filesystem ottimizzati per streaming.</p>
+    <p><span class="keyword">Allocazione linked</span> (concatenata): ogni blocco contiene un puntatore al blocco successivo. Nessuna frammentazione esterna, facilmente espandibile, ma l'accesso casuale richiede di attraversare la catena dal blocco. La FAT è un'ottimizzazione di questa strategia che porta i puntatori fuori dai blocchi dati in una tabella separata.</p>
+    <p><span class="keyword">Allocazione indexed</span> (inode su Unix): un blocco indice contiene i puntatori a tutti i blocchi dati del file. Accesso diretto efficiente per file di qualunque dimensione. Il costo è lo spazio del blocco indice, ma i puntatori indiretti (singolo, doppio, triplo) permettono di gestire file enormi con strutture a taglia variabile.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> inode (Unix/Linux)</h2>
+    <p>L'<span class="keyword">inode</span> è la struttura dati centrale del filesystem Unix/Linux. Ogni file ha esattamente un inode, identificato da un numero univoco nel filesystem. L'inode contiene: permessi (rwx per owner/group/other), UID e GID del proprietario, dimensione del file, timestamp (accesso, modifica, cambio metadati), numero di hard link, e i puntatori ai blocchi dati.</p>
+    <p>I puntatori sono organizzati in tre livelli: <span class="keyword">12 puntatori diretti</span> (puntano direttamente ai primi 12 blocchi dati — coprono file fino a 48 KB con blocchi da 4 KB), un <span class="keyword">puntatore indiretto singolo</span> (punta a un blocco che contiene altri puntatori — aggiunge fino a 4 MB), un <span class="keyword">puntatore indiretto doppio</span> (~4 GB aggiuntivi) e un <span class="keyword">puntatore indiretto triplo</span> (~4 TB). Il <span class="keyword">nome</span> del file non è nell'inode: è nella directory che lo contiene. Più nomi (hard link) possono puntare allo stesso inode.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> FAT — File Allocation Table</h2>
+    <p>La <span class="keyword">FAT</span> è un filesystem semplice che risolve il problema dell'allocazione linked portando i puntatori fuori dai blocchi dati. Esiste una tabella (la FAT) con una entry per ogni cluster del disco. Ogni entry contiene il numero del cluster successivo nella catena del file, oppure un marcatore di fine file (EOF) o di cluster libero.</p>
+    <p>Esistono tre varianti: <span class="keyword">FAT12</span> (floppy, partizioni piccole), <span class="keyword">FAT16</span> (partizioni fino a 2-4 GB), <span class="keyword">FAT32</span> (fino a 2 TB). La FAT è universale (supportata da praticamente tutti i SO), semplice da implementare, ma non ha journaling, permessi avanzati né supporto per file oltre 4 GB (FAT32). Ancora oggi è il filesystem standard per chiavette USB, schede SD e partizioni di boot EFI.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Journaling</h2>
+    <p>Il problema del filesystem senza journaling: se il sistema si spegne improvvisamente durante un'operazione di scrittura (es. creazione di un file che richiede l'aggiornamento dell'inode, della directory e del bitmap dei blocchi liberi), il filesystem può restare in uno stato inconsistente. Il tool <code class="inline">fsck</code> può ripararlo, ma richiede una scansione completa del disco — lenta e non garantita.</p>
+    <p>Il <span class="keyword">journaling</span> registra le modifiche imminenti in un'area dedicata (il <em>journal</em> o <em>log</em>) prima di applicarle al filesystem. Se il sistema crasha, al riavvio basta ripercorrere il journal e rieseguire le operazioni incomplete: il recovery è veloce e garantisce la consistenza. Il prezzo è un overhead di scrittura (ogni operazione viene scritta due volte). Usato da <span class="keyword">ext4</span> (Linux), <span class="keyword">NTFS</span> (Windows), <span class="keyword">APFS</span> (macOS), <span class="keyword">XFS</span> e quasi tutti i filesystem moderni.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> VFS — Virtual File System</h2>
+    <p>Il <span class="keyword">Virtual File System</span> è uno strato di astrazione nel kernel che fornisce un'interfaccia uniforme sopra filesystem diversi. Un'applicazione che chiama <code class="inline">open("/mnt/usb/file.txt")</code> usa la stessa syscall indipendentemente dal fatto che <code class="inline">/mnt/usb</code> sia FAT32, ext4, NTFS, NFS o procfs.</p>
+    <p>Il VFS definisce strutture dati astratte — <span class="keyword">inode</span>, <span class="keyword">dentry</span> (directory entry), <span class="keyword">file</span>, <span class="keyword">superblock</span> — e un insieme di operazioni virtuali (<code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">lookup()</code>). Ogni filesystem registra le proprie implementazioni di queste operazioni. Quando il kernel deve leggere un file, invoca la funzione <code class="inline">read()</code> del filesystem corretto tramite un puntatore a funzione. I filesystem speciali come <code class="inline">procfs</code> (che espone informazioni sui processi come file in <code class="inline">/proc</code>) e <code class="inline">sysfs</code> utilizzano lo stesso meccanismo VFS.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Mounting e Link</h2>
+    <p>Il <span class="keyword">mounting</span> è l'operazione con cui un filesystem viene agganciato all'albero delle directory del SO in un <em>mount point</em>. Con <code class="inline">mount /dev/sdb1 /mnt/dati</code>, il contenuto del disco <code class="inline">sdb1</code> diventa accessibile sotto <code class="inline">/mnt/dati</code> come se fosse parte del filesystem principale. Più filesystem (con tipi diversi) coesistono nell'unico albero delle directory.</p>
+    <p>I <span class="keyword">hard link</span> (<code class="inline">ln src dst</code>) creano un secondo nome nella directory che punta allo stesso inode. Non c'è copia dei dati; il file esiste finché almeno un hard link punta all'inode (link count > 0). I hard link non possono attraversare filesystem diversi e non possono puntare a directory. I <span class="keyword">soft link</span> (symlink, <code class="inline">ln -s src dst</code>) sono file speciali che contengono un percorso. Possono attraversare filesystem, puntare a directory e puntare a target inesistenti — ma se il target viene cancellato il link diventa <em>dangling</em>.</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="10-mass-storage.html" class="btn btn-ghost">← 10 · Mass-Storage</a>
+    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+    <a href="12-embedded-systems.html" class="btn btn-ghost">12 · Embedded Systems →</a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 11 · File System</p>
+  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+</footer>
+</body>
+</html>

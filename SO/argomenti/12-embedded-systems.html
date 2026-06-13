@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 · Embedded Systems — SO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../so.css">
+<style>
+  .nav-logo{color:var(--coral)}.nav-back:hover{color:var(--coral);border-color:rgba(248,113,113,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(248,113,113,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#f87171 55%,#ef4444 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coral);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--coral)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(248,113,113,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--coral);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--coral);background:rgba(248,113,113,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(248,113,113,.12);color:var(--coral);border:1px solid rgba(248,113,113,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--coral)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--coral)}.index-item .idx-num{color:var(--coral);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
+</style>
+</head>
+<body class="dot-grid">
+<nav>
+  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+  <div class="nav-right">
+    <a href="../index.html" class="nav-back">← Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--coral)">Macroargomento 12 · Speciale</span>
+  <div class="topic-num">12 / 13</div>
+  <h1 class="topic-hero-title">Embedded Systems</h1>
+  <p class="hero-sub" style="max-width:640px">Sistemi real-time, Hard vs Soft RT, Rate Monotonic Scheduling (RMS), Earliest Deadline First (EDF) e caratteristiche degli RTOS.</p>
+</div>
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">SO</a><span>/</span>
+    <span>12 · Embedded Systems</span>
+  </div>
+  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(248,113,113,.25)">Questa pagina copre i <strong style="color:var(--coral)">5 sottoargomenti</strong> del macroargomento 12: i sistemi real-time ed embedded.</div>
+  <div class="index-grid">
+    <div class="index-item"><div class="idx-num">12.01</div><div class="idx-name">Sistemi Real-Time</div></div>
+    <div class="index-item"><div class="idx-num">12.02</div><div class="idx-name">Hard vs Soft Real-Time</div></div>
+    <div class="index-item"><div class="idx-num">12.03</div><div class="idx-name">Rate Monotonic (RMS)</div></div>
+    <div class="index-item"><div class="idx-num">12.04</div><div class="idx-name">EDF</div></div>
+    <div class="index-item"><div class="idx-num">12.05</div><div class="idx-name">Caratteristiche RTOS</div></div>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Sistemi Real-Time <span class="sub-tag">fondamento</span></h2>
+    <p>Un <span class="keyword">sistema real-time</span> è un sistema in cui la correttezza del risultato dipende non solo dal valore computato, ma anche dal <em>momento</em> in cui viene prodotto. Un risultato corretto arrivato troppo tardi è un risultato sbagliato. I task in un sistema RT hanno <span class="keyword">deadline</span>: un tempo massimo entro cui devono completare la loro elaborazione.</p>
+    <p>I campi applicativi sono critici per la sicurezza umana: sistemi di controllo ABS, pacemaker, avionici, controllo di reattori nucleari, robot industriali, sistemi di guida autonoma. Un SO general-purpose come Linux non è adatto di default a questi scenari perché non garantisce latenze deterministiche: un interrupt può essere ritardato da decine di millisecondi a causa dello scheduler, della gestione degli interrupt stessi o del memory management.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Hard vs Soft Real-Time</h2>
+    <p>I sistemi RT si dividono in due categorie in base alle conseguenze del mancato rispetto di una deadline. In un sistema <span class="keyword">Hard Real-Time</span>, ogni deadline mancata è un fallimento catastrofico del sistema — potenzialmente con conseguenze fisiche gravi. Esempi: controllo di un airbag (deve attivarsi entro 30 ms dall'impatto), sistema di controllo di un reattore (deve rispondere alle anomalie in microsecondi), controllore di volo di un aereo. Non è accettabile nessuna tolleranza: la deadline è assoluta.</p>
+    <p>In un sistema <span class="keyword">Soft Real-Time</span>, una deadline occasionalmente mancata degrada la qualità del servizio ma non è catastrofica. Esempi: streaming video (un frame in ritardo produce un artefatto visivo temporaneo), interfaccia utente (una risposta lenta è fastidiosa ma non pericolosa), trading ad alta frequenza (una transazione in ritardo perde opportunità ma non causa danni fisici). La maggior parte degli RTOS consumer-grade (Android RTOS, iOS) rientra in questa categoria.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Rate Monotonic Scheduling (RMS)</h2>
+    <p>Il <span class="keyword">Rate Monotonic Scheduling</span> è l'algoritmo di scheduling real-time più studiato, proposto da Liu & Layland nel 1973. È un algoritmo <span class="keyword">preemptive a priorità statica</span>: le priorità dei task vengono assegnate prima dell'esecuzione e non cambiano mai. La regola di assegnamento è semplice e ottimale: il task con il periodo più breve riceve la priorità più alta.</p>
+    <p>RMS è ottimale tra tutti gli algoritmi a priorità statica: se un insieme di task periodici è schedulabile con un qualunque algoritmo a priorità fissa, lo è anche con RMS. Il suo limite teorico di utilizzazione è <strong style="color:var(--text-primary)">U = n × (2^(1/n) − 1)</strong>, che converge a ~69.3% per n grande. Significa che se l'utilizzo totale della CPU è sotto il 69%, RMS garantisce il rispetto di tutte le deadline. Sopra il 69%, potrebbero verificarsi deadline mancate, anche se non è detto (il test è sufficiente ma non necessario).</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> EDF — Earliest Deadline First</h2>
+    <p>L'<span class="keyword">Earliest Deadline First</span> è un algoritmo di scheduling <span class="keyword">preemptive a priorità dinamica</span>: in ogni istante, il task con la deadline più vicina nel tempo riceve la massima priorità. Le priorità cambiano dinamicamente al variare delle deadline dei task nella ready queue.</p>
+    <p>EDF è <span class="keyword">ottimale</span> per sistemi monoprocessore: può schedulare qualsiasi insieme di task periodici schedulabile da qualunque altro algoritmo. Il suo limite di utilizzazione è il 100%: se la somma delle utilizzazioni (tempo di computazione / periodo) di tutti i task è ≤ 1, EDF garantisce il rispetto di tutte le deadline. Il prezzo è la complessità implementativa: le priorità devono essere ricalcolate dinamicamente, e la struttura dati della ready queue deve supportare aggiornamenti efficienti (tipicamente un heap). EDF non è deterministico in overload (utilization > 1): non è prevedibile quali task mancheranno la deadline.</p>
+  </div>
+
+  <div class="section-block">
+    <h2><span class="dot"></span> Caratteristiche di un RTOS</h2>
+    <p>Un <span class="keyword">Real-Time Operating System</span> è progettato per garantire comportamento deterministico e latenze prevedibili. Le caratteristiche fondamentali che lo distinguono da un SO general-purpose sono: <span class="keyword">latenza di interrupt minima e deterministica</span> (il tempo tra l'arrivo di un interrupt e l'esecuzione del suo handler deve essere garantito e limitato), <span class="keyword">preemption immediata</span> (un task ad alta priorità deve poter preemptare uno a bassa priorità in qualsiasi momento, anche dentro una syscall), assenza di <span class="keyword">memoria virtuale</span> (il demand paging introduce latenze non deterministiche per i page fault — i sistemi hard RT usano solo RAM fisica), <span class="keyword">clock ad alta risoluzione</span> (timer hardware in grado di innescare interrupt con precisione di microsecondi o nanosecondi).</p>
+    <p>Esempi di RTOS diffusi: <span class="keyword">FreeRTOS</span> (open source, usatissimo in microcontrollori, supporta ARM Cortex-M), <span class="keyword">VxWorks</span> (commerciale, usato in avionica e militare), <span class="keyword">QNX</span> (usato in automotive, sistemi medicali, infrastrutture critiche), <span class="keyword">Zephyr</span> (open source Linux Foundation, per IoT e wearable).</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="11-file-system.html" class="btn btn-ghost">← 11 · File System</a>
+    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+    <a href="13-sicurezza.html" class="btn btn-ghost">13 · Sicurezza →</a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 12 · Embedded Systems</p>
+  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+</footer>
+</body>
+</html>
