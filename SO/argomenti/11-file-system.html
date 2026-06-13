@@ -10,8 +10,250 @@
 <style>
   .nav-logo{color:var(--green)}.nav-back:hover{color:var(--green);border-color:rgba(52,211,153,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(52,211,153,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#34d399 55%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--green)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(52,211,153,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--green);background:rgba(52,211,153,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--green)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--green)}.index-item .idx-num{color:var(--green);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
 </style>
+
+<style id="so-sb-css">
+/* ── Sidebar fissa ──────────────────────────────────────────────────── */
+:root { --sb-w: 240px; }
+
+/* Shift tutto il body a destra della sidebar */
+body {
+  padding-left: var(--sb-w);
+}
+
+/* La navbar si allunga a coprire anche la sidebar */
+nav {
+  left: 0 !important;
+  right: 0 !important;
+  padding-left: calc(var(--sb-w) + 1.5rem) !important;
+}
+
+/* Sidebar: fixed, piena altezza, sotto la navbar */
+.so-sidebar {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  width: var(--sb-w);
+  height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(8,8,16,0.97);
+  border-right: 1px solid var(--border);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 3rem;
+  /* thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(52,211,153,.25) transparent;
+}
+.so-sidebar::-webkit-scrollbar       { width: 3px; }
+.so-sidebar::-webkit-scrollbar-track { background: transparent; }
+.so-sidebar::-webkit-scrollbar-thumb { background: rgba(52,211,153,.3); border-radius: 3px; }
+
+/* Section labels (titolini) */
+.sb-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 1rem 1rem .45rem;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+.sb-label::before {
+  content: '';
+  display: inline-block;
+  width: 10px; height: 1px;
+  background: rgba(52,211,153,.55);
+  flex-shrink: 0;
+}
+
+/* ── Lista macroargomenti (tutte le pagine) ─────────────────────────── */
+.sb-pages {
+  list-style: none;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .5rem;
+  margin-bottom: .25rem;
+}
+.sb-pages li { display: block; }
+.sb-pages li a,
+.sb-pages li .sb-cur {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color .15s, background .15s;
+  border-left: 2px solid transparent;
+  line-height: 1.35;
+}
+.sb-pages li a:hover {
+  color: var(--text-secondary);
+  background: rgba(52,211,153,.04);
+  border-left-color: rgba(52,211,153,.25);
+}
+/* Pagina corrente */
+.sb-pages li .sb-cur {
+  color: var(--green);
+  font-weight: 700;
+  border-left-color: var(--green);
+  background: rgba(52,211,153,.07);
+}
+.sb-pdot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  opacity: .45;
+}
+.sb-cur .sb-pdot { opacity: 1; }
+
+/* ── Lista sezioni (questa pagina) ─────────────────────────────────── */
+.sb-sections {
+  list-style: none;
+  flex: 1;
+}
+.sb-sections li { display: block; }
+.sb-sections li .sb-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 5px 1rem;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color .15s, background .15s, border-color .15s;
+  line-height: 1.4;
+  cursor: pointer;
+  width: 100%;
+  background: none;
+  border-top: none; border-right: none; border-bottom: none;
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+}
+.sb-sections li .sb-link:hover {
+  color: var(--text-secondary);
+  background: rgba(52,211,153,.04);
+  border-left-color: rgba(52,211,153,.3);
+}
+.sb-sections li.sb-active .sb-link {
+  color: var(--green);
+  font-weight: 600;
+  border-left-color: var(--green);
+  background: rgba(52,211,153,.07);
+}
+.sb-idx {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: rgba(52,211,153,.4);
+  flex-shrink: 0;
+  min-width: 28px;
+  margin-top: 2px;
+}
+.sb-active .sb-idx { color: var(--green); }
+
+/* ── Index-grid cards clickable ─────────────────────────────────────── */
+.index-item {
+  cursor: pointer;
+  transition: background .15s, border-color .15s, transform .12s;
+  user-select: none;
+}
+.index-item:hover {
+  background: var(--bg-card-hover);
+  border-left-color: var(--green);
+  transform: translateY(-1px);
+}
+.index-item:active { transform: translateY(0); }
+
+/* ── Section flash on jump ─────────────────────────────────────────── */
+.section-block { scroll-margin-top: calc(var(--nav-h) + 1.25rem); }
+@keyframes sbFlash {
+  0%   { box-shadow: inset 0 0 0 2px rgba(52,211,153,.55); border-radius: 8px; }
+  100% { box-shadow: inset 0 0 0 2px rgba(52,211,153,0);   border-radius: 8px; }
+}
+.sb-flash { animation: sbFlash .75s ease-out; }
+
+/* ── Mobile: sidebar nascosta, padding rimosso ──────────────────────── */
+@media (max-width: 900px) {
+  .so-sidebar { display: none; }
+  body { padding-left: 0 !important; }
+  nav  { padding-left: 2.5rem !important; }
+}
+</style>
 </head>
 <body class="dot-grid">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
+    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
+    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
+    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
+    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
+    <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
+    <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
+    <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
+    <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
+    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>11 · File System</div></li>
+    <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
+    <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections">
+    <li data-sid="section-1">
+      <div class="sb-link" data-target="section-1">
+        <span class="sb-idx">11.01</span>
+        <span>Concetti Base: File e Directory</span>
+      </div>
+    </li>
+    <li data-sid="section-2">
+      <div class="sb-link" data-target="section-2">
+        <span class="sb-idx">11.02</span>
+        <span>Allocazione dei File su Disco</span>
+      </div>
+    </li>
+    <li data-sid="section-3">
+      <div class="sb-link" data-target="section-3">
+        <span class="sb-idx">11.03</span>
+        <span>inode (Unix/Linux)</span>
+      </div>
+    </li>
+    <li data-sid="section-4">
+      <div class="sb-link" data-target="section-4">
+        <span class="sb-idx">11.04</span>
+        <span>FAT — File Allocation Table</span>
+      </div>
+    </li>
+    <li data-sid="section-5">
+      <div class="sb-link" data-target="section-5">
+        <span class="sb-idx">11.05</span>
+        <span>Journaling</span>
+      </div>
+    </li>
+    <li data-sid="section-6">
+      <div class="sb-link" data-target="section-6">
+        <span class="sb-idx">11.06</span>
+        <span>VFS — Virtual File System</span>
+      </div>
+    </li>
+    <li data-sid="section-7">
+      <div class="sb-link" data-target="section-7">
+        <span class="sb-idx">11.07</span>
+        <span>Mounting e Link</span>
+      </div>
+    </li>
+  </ul>
+</aside>
+
 <nav>
   <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
   <div class="nav-right">
@@ -35,53 +277,53 @@
   </div>
   <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(52,211,153,.25)">Questa pagina copre i <strong style="color:var(--green)">7 sottoargomenti</strong> del macroargomento 11: l'implementazione del file system.</div>
   <div class="index-grid">
-    <div class="index-item"><div class="idx-num">11.01</div><div class="idx-name">File e Directory</div></div>
-    <div class="index-item"><div class="idx-num">11.02</div><div class="idx-name">Allocazione su disco</div></div>
-    <div class="index-item"><div class="idx-num">11.03</div><div class="idx-name">inode Unix</div></div>
-    <div class="index-item"><div class="idx-num">11.04</div><div class="idx-name">FAT</div></div>
-    <div class="index-item"><div class="idx-num">11.05</div><div class="idx-name">Journaling</div></div>
-    <div class="index-item"><div class="idx-num">11.06</div><div class="idx-name">VFS</div></div>
-    <div class="index-item"><div class="idx-num">11.07</div><div class="idx-name">Mounting & Link</div></div>
+    <div class="index-item" data-target="section-1"><div class="idx-num">11.01</div><div class="idx-name">File e Directory</div></div>
+    <div class="index-item" data-target="section-2"><div class="idx-num">11.02</div><div class="idx-name">Allocazione su disco</div></div>
+    <div class="index-item" data-target="section-3"><div class="idx-num">11.03</div><div class="idx-name">inode Unix</div></div>
+    <div class="index-item" data-target="section-4"><div class="idx-num">11.04</div><div class="idx-name">FAT</div></div>
+    <div class="index-item" data-target="section-5"><div class="idx-num">11.05</div><div class="idx-name">Journaling</div></div>
+    <div class="index-item" data-target="section-6"><div class="idx-num">11.06</div><div class="idx-name">VFS</div></div>
+    <div class="index-item" data-target="section-7"><div class="idx-num">11.07</div><div class="idx-name">Mounting & Link</div></div>
   </div>
 
-  <div class="section-block">
+  <div class="section-block" id="section-1">
     <h2><span class="dot"></span> Concetti Base: File e Directory <span class="sub-tag">fondamento</span></h2>
     <p>Un <span class="keyword">file</span> è la più piccola unità di storage logico: una sequenza di byte con un nome, dei metadati (permessi, proprietario, dimensione, timestamp) e un contenuto. Il SO astrae i dettagli fisici del disco e presenta i file tramite operazioni uniformi: <code class="inline">open()</code>, <code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">close()</code>.</p>
     <p>Una <span class="keyword">directory</span> è una struttura speciale che mappa nomi a file (o ad altre directory). In Unix, una directory è anch'essa un file, il cui contenuto è una tabella di coppie (nome → inode number). Le strutture di directory possono essere: a singolo livello (tutti i file in un'unica directory — primitivo), a due livelli (una directory per utente), ad <span class="keyword">albero</span> (la struttura gerarchica usata da tutti i SO moderni), o con link (grafo aciclico o generale, che permette a un file di apparire in più directory).</p>
   </div>
 
-  <div class="section-block">
+  <div class="section-block" id="section-2">
     <h2><span class="dot"></span> Allocazione dei File su Disco</h2>
     <p>Esistono tre strategie per allocare i blocchi fisici di un file. <span class="keyword">Allocazione contigua</span>: i blocchi di ogni file sono fisicamente consecutivi. L'accesso sequenziale e casuale è velocissimo (l'HDD può fare prefetch), ma soffre di frammentazione esterna e richiede di conoscere la dimensione del file alla creazione. Usata su CD-ROM e alcuni filesystem ottimizzati per streaming.</p>
     <p><span class="keyword">Allocazione linked</span> (concatenata): ogni blocco contiene un puntatore al blocco successivo. Nessuna frammentazione esterna, facilmente espandibile, ma l'accesso casuale richiede di attraversare la catena dal blocco. La FAT è un'ottimizzazione di questa strategia che porta i puntatori fuori dai blocchi dati in una tabella separata.</p>
     <p><span class="keyword">Allocazione indexed</span> (inode su Unix): un blocco indice contiene i puntatori a tutti i blocchi dati del file. Accesso diretto efficiente per file di qualunque dimensione. Il costo è lo spazio del blocco indice, ma i puntatori indiretti (singolo, doppio, triplo) permettono di gestire file enormi con strutture a taglia variabile.</p>
   </div>
 
-  <div class="section-block">
+  <div class="section-block" id="section-3">
     <h2><span class="dot"></span> inode (Unix/Linux)</h2>
     <p>L'<span class="keyword">inode</span> è la struttura dati centrale del filesystem Unix/Linux. Ogni file ha esattamente un inode, identificato da un numero univoco nel filesystem. L'inode contiene: permessi (rwx per owner/group/other), UID e GID del proprietario, dimensione del file, timestamp (accesso, modifica, cambio metadati), numero di hard link, e i puntatori ai blocchi dati.</p>
     <p>I puntatori sono organizzati in tre livelli: <span class="keyword">12 puntatori diretti</span> (puntano direttamente ai primi 12 blocchi dati — coprono file fino a 48 KB con blocchi da 4 KB), un <span class="keyword">puntatore indiretto singolo</span> (punta a un blocco che contiene altri puntatori — aggiunge fino a 4 MB), un <span class="keyword">puntatore indiretto doppio</span> (~4 GB aggiuntivi) e un <span class="keyword">puntatore indiretto triplo</span> (~4 TB). Il <span class="keyword">nome</span> del file non è nell'inode: è nella directory che lo contiene. Più nomi (hard link) possono puntare allo stesso inode.</p>
   </div>
 
-  <div class="section-block">
+  <div class="section-block" id="section-4">
     <h2><span class="dot"></span> FAT — File Allocation Table</h2>
     <p>La <span class="keyword">FAT</span> è un filesystem semplice che risolve il problema dell'allocazione linked portando i puntatori fuori dai blocchi dati. Esiste una tabella (la FAT) con una entry per ogni cluster del disco. Ogni entry contiene il numero del cluster successivo nella catena del file, oppure un marcatore di fine file (EOF) o di cluster libero.</p>
     <p>Esistono tre varianti: <span class="keyword">FAT12</span> (floppy, partizioni piccole), <span class="keyword">FAT16</span> (partizioni fino a 2-4 GB), <span class="keyword">FAT32</span> (fino a 2 TB). La FAT è universale (supportata da praticamente tutti i SO), semplice da implementare, ma non ha journaling, permessi avanzati né supporto per file oltre 4 GB (FAT32). Ancora oggi è il filesystem standard per chiavette USB, schede SD e partizioni di boot EFI.</p>
   </div>
 
-  <div class="section-block">
+  <div class="section-block" id="section-5">
     <h2><span class="dot"></span> Journaling</h2>
     <p>Il problema del filesystem senza journaling: se il sistema si spegne improvvisamente durante un'operazione di scrittura (es. creazione di un file che richiede l'aggiornamento dell'inode, della directory e del bitmap dei blocchi liberi), il filesystem può restare in uno stato inconsistente. Il tool <code class="inline">fsck</code> può ripararlo, ma richiede una scansione completa del disco — lenta e non garantita.</p>
     <p>Il <span class="keyword">journaling</span> registra le modifiche imminenti in un'area dedicata (il <em>journal</em> o <em>log</em>) prima di applicarle al filesystem. Se il sistema crasha, al riavvio basta ripercorrere il journal e rieseguire le operazioni incomplete: il recovery è veloce e garantisce la consistenza. Il prezzo è un overhead di scrittura (ogni operazione viene scritta due volte). Usato da <span class="keyword">ext4</span> (Linux), <span class="keyword">NTFS</span> (Windows), <span class="keyword">APFS</span> (macOS), <span class="keyword">XFS</span> e quasi tutti i filesystem moderni.</p>
   </div>
 
-  <div class="section-block">
+  <div class="section-block" id="section-6">
     <h2><span class="dot"></span> VFS — Virtual File System</h2>
     <p>Il <span class="keyword">Virtual File System</span> è uno strato di astrazione nel kernel che fornisce un'interfaccia uniforme sopra filesystem diversi. Un'applicazione che chiama <code class="inline">open("/mnt/usb/file.txt")</code> usa la stessa syscall indipendentemente dal fatto che <code class="inline">/mnt/usb</code> sia FAT32, ext4, NTFS, NFS o procfs.</p>
     <p>Il VFS definisce strutture dati astratte — <span class="keyword">inode</span>, <span class="keyword">dentry</span> (directory entry), <span class="keyword">file</span>, <span class="keyword">superblock</span> — e un insieme di operazioni virtuali (<code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">lookup()</code>). Ogni filesystem registra le proprie implementazioni di queste operazioni. Quando il kernel deve leggere un file, invoca la funzione <code class="inline">read()</code> del filesystem corretto tramite un puntatore a funzione. I filesystem speciali come <code class="inline">procfs</code> (che espone informazioni sui processi come file in <code class="inline">/proc</code>) e <code class="inline">sysfs</code> utilizzano lo stesso meccanismo VFS.</p>
   </div>
 
-  <div class="section-block">
+  <div class="section-block" id="section-7">
     <h2><span class="dot"></span> Mounting e Link</h2>
     <p>Il <span class="keyword">mounting</span> è l'operazione con cui un filesystem viene agganciato all'albero delle directory del SO in un <em>mount point</em>. Con <code class="inline">mount /dev/sdb1 /mnt/dati</code>, il contenuto del disco <code class="inline">sdb1</code> diventa accessibile sotto <code class="inline">/mnt/dati</code> come se fosse parte del filesystem principale. Più filesystem (con tipi diversi) coesistono nell'unico albero delle directory.</p>
     <p>I <span class="keyword">hard link</span> (<code class="inline">ln src dst</code>) creano un secondo nome nella directory che punta allo stesso inode. Non c'è copia dei dati; il file esiste finché almeno un hard link punta all'inode (link count > 0). I hard link non possono attraversare filesystem diversi e non possono puntare a directory. I <span class="keyword">soft link</span> (symlink, <code class="inline">ln -s src dst</code>) sono file speciali che contengono un percorso. Possono attraversare filesystem, puntare a directory e puntare a target inesistenti — ma se il target viene cancellato il link diventa <em>dangling</em>.</p>
@@ -97,5 +339,76 @@
   <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 11 · File System</p>
   <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
 </footer>
+
+<script id="so-sb-js">
+(function () {
+  var IDS = ["section-1","section-2","section-3","section-4","section-5","section-6","section-7"];
+
+  /* smooth scroll + flash */
+  function goTo(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.classList.remove('sb-flash');
+    void el.offsetWidth;                         // force reflow
+    el.classList.add('sb-flash');
+    el.addEventListener('animationend', function () {
+      el.classList.remove('sb-flash');
+    }, { once: true });
+    setActive(id);
+  }
+
+  /* highlight sidebar item */
+  function setActive(id) {
+    document.querySelectorAll('.sb-sections li').forEach(function (li) {
+      li.classList.toggle('sb-active', li.getAttribute('data-sid') === id);
+    });
+    /* auto-scroll sidebar so active item is visible */
+    var sb  = document.querySelector('.so-sidebar');
+    var act = document.querySelector('.sb-sections li.sb-active');
+    if (sb && act) {
+      var liTop = act.offsetTop;
+      var liH   = act.offsetHeight;
+      if (liTop < sb.scrollTop || liTop + liH > sb.scrollTop + sb.clientHeight) {
+        sb.scrollTop = liTop - sb.clientHeight / 2 + liH / 2;
+      }
+    }
+  }
+
+  /* wire index-grid cards */
+  document.querySelectorAll('.index-item[data-target]').forEach(function (card) {
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    var name = (card.querySelector('.idx-name') || {}).textContent || '';
+    card.setAttribute('aria-label', 'Vai a: ' + name.trim());
+    card.addEventListener('click', function () { goTo(card.dataset.target); });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(card.dataset.target); }
+    });
+  });
+
+  /* wire sidebar section links */
+  document.querySelectorAll('.sb-link[data-target]').forEach(function (el) {
+    el.addEventListener('click', function () { goTo(el.dataset.target); });
+  });
+
+  /* IntersectionObserver — aggiorna active mentre scorri */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) setActive(e.target.id);
+      });
+    }, { rootMargin: '-8% 0px -72% 0px', threshold: 0 });
+
+    IDS.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+
+  /* attivo iniziale */
+  if (IDS.length) setActive(IDS[0]);
+}());
+</script>
 </body>
 </html>
