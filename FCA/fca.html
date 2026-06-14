@@ -38,6 +38,9 @@
         .category.fisici {
             border-left-color: #e67e22;
         }
+        .category.transizione {
+            border-left-color: #48cd1f;
+        }
 
         .category.relazione {
             border-left-color: #9b59b6;
@@ -163,16 +166,41 @@
 
         </div>
 
-        <div class="category relazione">
-            <h2 class="category-title">2. Modelli di Relazione (PageRank, Probabilità)</h2>
+        <div class="category transizione">
+            <h2 class="category-title">2. Modelli di transizione tra stati</h2>
             <div class="card">
-                <h3>Navigazione Web / Catene di Markov</h3>
+                <p><em>Regola d'oro: La somma dei numeri in colonna deve dare 0</em></p>
+
+                <ul>
+                    <li><strong>Logica:</strong> Modello che rappresenta la transizione o persistenza di uno stato ad un altro</li>
+                    <li><strong>Fuori Diagonale (a<sub>ji</sub>):</strong> il nodo va verso quello stato di quel percentuale o valore</strong>
+                    <li><strong>Sulla Diagonale (a<sub>ii</sub>):</strong> % di oggetti che rimangono nello stato corrente</strong>
+                    <li><strong>Regola di controllo:</strong> La somma degli elementi di ogni colonna deve fare
+                        esattamente <strong>1</strong>.</li>
+                </ul>
+                <p>\begin{equation}
+                    A = 
+                    \begin{pmatrix}
+                    0.7 & 0.1 & 0.3 & 0 \\
+                    0.2 & 0.8 & 0 & 0 \\ 
+                    0 & 0 & 0.4 & 0.9 \\ 
+                    0.1 & 0.1 & 0.3 & 0.1  
+                    \end{pmatrix}
+                    \end{equation}
+                </p>
+                <img style="margin:0 auto; width:500px; display:block" src="./images/es2.png" alt="">
+            </div>
+        </div>
+
+        <div class="category relazione">
+            <h2 class="category-title">3. Modelli di Relazione (PageRank, Probabilità)</h2>
+            <div class="card">
+                <h3>Corsa ai armamenti / Navigazione Web / Catene di Markov</h3>
                 <ul>
                     <li><strong>Logica:</strong> Modello discreto basato sulle probabilità.</li>
-                    <li><strong>Fuori Diagonale (a<sub>ji</sub>):</strong> Se il nodo <em>i</em> ha L link uscenti,
+                    <li><strong>Fuori Diagonale (a<sub>ji</sub>):</strong> Ho una freccia entrante allo stato j
                         inserisci <span class="matrix-rule">1 / L</span> sulla riga <em>j</em> (destinazione).</li>
-                    <li><strong>Sulla Diagonale (a<sub>ii</sub>):</strong> <span class="highlight">0</span> (una pagina
-                        non linka se stessa).</li>
+                    <li><strong>Sulla Diagonale (a<sub>ii</sub>):</strong>Ho un self-loop di valore <strong>a<sub>ii</sub></strong></li>
                     <li><strong>Regola di controllo:</strong> La somma degli elementi di ogni colonna deve fare
                         esattamente <strong>1</strong>.</li>
                     <li><strong>Matrice B:</strong> Non esiste (sistema chiuso). Si calcola l'equilibrio risolvendo
@@ -180,10 +208,28 @@
                     </li>
                 </ul>
             </div>
+            <p>
+                \begin{equation}
+                A =
+                \begin{pmatrix}
+                    -1 & -1 & 2 \\
+                    1 & 2 & 0 \\
+                    -2 &  1 & 1 
+                \end{pmatrix}
+                \qquad
+                B = 
+                \begin{pmatrix}
+                0 & -0.4 & \\
+                1 & -0.6 & \\
+                0 & -0 & 
+                \end{pmatrix}
+                \end{equation}
+            </p>
+            <img style="margin:0 auto; width:500px; display:block" src="./images/es3.png" alt="">
         </div>
 
         <div class="category fisici">
-            <h2 class="category-title">3. Modelli Fisici (Newton, Kirchhoff)</h2>
+            <h2 class="category-title">4. Modelli Fisici (Newton, Kirchhoff)</h2>
             <p><em>Regola d'oro: Si ricavano dalle leggi fisiche, isolando le derivate prime.</em></p>
 
             <div class="grid">
