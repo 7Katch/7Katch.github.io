@@ -626,9 +626,13 @@
             <div class="sub-title">Routing su 3 nodi — 3×3, 0 ingressi</div>
             <div class="sub-desc">
               3 nodi di rete. Ad ogni passo una frazione p_ij della risorsa in j va al nodo i. A è stocastica per colonne (conservazione totale).
-              <span class="mblock"><span class="ha">A = [[p₁₁, p₁₂, p₁₃],
-     [p₂₁, p₂₂, p₂₃],
-     [p₃₁, p₃₂, p₃₃]]</span>   con Σᵢ p_ij = 1 ∀j</span>
+              <span class="mblock"><span class="ha">
+                \begin{pmatrix}
+                p_{11} & p_{12} & p_{13} \\
+                p_{21} & p_{22} & p_{23} \\
+                p_{31} & p_{32} & p_{33}
+                \end{pmatrix}
+    </span>   con Σᵢ p_ij = 1 ∀j</span>
               Stato stazionario: <span class="fbox amber">A·x̄ = x̄</span> (autovettore destro di A con λ=1). Esiste sempre ed è unico per A irriducibile.
             </div>
           </div>
@@ -1138,9 +1142,13 @@
             <div class="sub-title">Edificio a 3 zone — 3×3, 2 ingressi</div>
             <div class="sub-desc">
               Zone T₁, T₂, T₃ accoppiate termicamente con resistenze R₁₂, R₂₃. T_ext = u₁ agisce su T₁, sorgente di calore u₂ nella zona 2.
-              <span class="mblock"><span class="hp">A = [[−1/(R₁₂C₁)−1/(R₁C₁),  1/(R₁₂C₁),    0        ],
-     [  1/(R₁₂C₂),         −1/(R₁₂C₂)−1/(R₂₃C₂), 1/(R₂₃C₂)],
-     [  0,                   1/(R₂₃C₃),  −1/(R₂₃C₃)]]</span><br><br><span class="hp">B = [1/(R₁C₁), 0, 0; 0, 1/C₂, 0]</span></span>
+              <span class="mblock"><span class="hp">A = 
+                \begin{pmatrix} 
+                  -\frac{1}{R_{12}C_1} - \frac{1}{R_1C_1} & \frac{1}{R_{12}C_1} & 0 \\ 
+                  \frac{1}{R_{12}C_2} & -\frac{1}{R_{12}C_2} - \frac{1}{R_{23}C_2} & \frac{1}{R_{23}C_2} \\ 
+                  0 & \frac{1}{R_{23}C_3} & -\frac{1}{R_{23}C_3} 
+                \end{pmatrix}
+</span><br><br><span class="hp">B = [1/(R₁C₁), 0, 0; 0, 1/C₂, 0]</span></span>
             </div>
           </div>
         </div>
