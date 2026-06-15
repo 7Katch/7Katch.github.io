@@ -206,11 +206,44 @@
 
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Concetto di Processo <span class="sub-tag">fondamento</span></h2>
-      <p>Un <span class="keyword">processo</span> è un programma in esecuzione. Non è semplicemente il file binario su
-        disco: include il codice caricato in memoria (<em>text section</em>), i dati statici (<em>data section</em>), lo
-        <span class="keyword">stack</span> (variabili locali, parametri di funzione, indirizzi di ritorno) e l'<span
-          class="keyword">heap</span> (memoria allocata dinamicamente con <code class="inline">malloc()</code>).
+      <div class="card-def">
+        <div class="card-def-header">Definizione</div>
+        <div class="card-def-content">
+          <p>Un <span class="keyword">programma</span> è passivo in ed è salvato in disco. </p>
+          <p>Un <span class="keyword">processo</span> è un programma in esecuzione. </p>
+        </div>
+      </div>
+      <p>Non è semplicemente il file binario su
+        disco: include
       </p>
+      <div class="section-block" id="section-2">
+        <h2><span class="dot"></span> Struttura del Computer System</h2>
+
+        <div class="kk-flex-row">
+
+          <div class="kk-flex-text">
+            <p>L'architettura è composta in questo modo:</p>
+            <ol>
+              <li><span class="keyword">User</span></li>
+              <li><span class="keyword">Application programs</span><br>
+                Definisce come le risorse del computer devono essere usate per risolvere un problema dell’utente: video
+                games, web browsers.
+              </li>
+              <li><span class="keyword">Operating systems</span><br>
+                Controlla e coordina l’uso di hardware tra le varie applicazioni e utenti.
+              </li>
+              <li><span class="keyword">Hardware</span><br>
+                Prevede i componenti del computer come dispositivi I/O e CPU, memoria.
+              </li>
+            </ol>
+          </div>
+
+          <div class="kk-flex-media" style="width: 30%;"> <img src="../risorse/img2.png"
+              alt="Struttura del Computer System">
+          </div>
+
+        </div>
+      </div>
       <p>Due esecuzioni distinte dello stesso programma danno luogo a due processi separati, ognuno con il proprio
         spazio di indirizzamento virtuale, i propri file aperti e il proprio stato di esecuzione. Il SO garantisce che i
         processi siano isolati tra loro: uno non può leggere o scrivere la memoria di un altro senza meccanismi IPC
@@ -219,8 +252,14 @@
 
     <div class="section-block" id="section-2">
       <h2><span class="dot"></span> Process Control Block (PCB)</h2>
-      <p>Il kernel rappresenta ogni processo tramite una struttura dati chiamata <span class="keyword">Process Control
-          Block</span>. In Linux questa struttura si chiama <code class="inline">task_struct</code> e contiene:
+      <div class="card-def">
+        <div class="card-def-header">Definizione</div>
+        <div class="card-def-content">
+          <p>Il kernel rappresenta ogni processo con le sue informazioni tramite una struttura dati chiamata <span class="keyword">Process Control
+          Block</span>. </p>
+        </div>
+      </div>
+      <p>In Linux questa struttura si chiama <code class="inline">task_struct</code> e contiene:
         identificatore del processo (<code class="inline">PID</code>), stato corrente, valore del <span
           class="keyword">program counter</span>, valori dei registri CPU, informazioni di scheduling (priorità, tempo
         CPU consumato), informazioni sulla memoria virtuale (page table), lista dei file aperti e informazioni di
@@ -243,11 +282,20 @@
         <span class="arrow">→</span>
         <span class="state-box" style="background:rgba(248,113,113,0.15);color:var(--coral)">Terminated</span>
       </div>
-      <p><span class="keyword">New</span>: il processo è stato creato ma non ancora ammesso allo scheduling. <span
-          class="keyword">Ready</span>: il processo è pronto per essere eseguito, aspetta la CPU. <span
-          class="keyword">Running</span>: la CPU sta eseguendo le sue istruzioni. <span class="keyword">Waiting</span>:
-        il processo è bloccato in attesa di un evento (I/O completato, segnale, timer). <span
-          class="keyword">Terminated</span>: il processo ha concluso la sua esecuzione.</p>
+      <ol>
+        <li><span class="keyword">New</span>: il processo è stato creato ma non ancora ammesso allo scheduling. </li>
+        <li><span class="keyword">Ready</span>: il processo è pronto per essere eseguito, aspetta la CPU.</li>
+        <li> <span class="keyword">Running</span>: la CPU sta eseguendo le sue istruzioni.</li>
+        <li> <span class="keyword">Waiting</span>:
+          il processo è bloccato in attesa di un evento (I/O completato, segnale, timer).</li>
+        <li><span class="keyword">Terminated</span>: il processo ha concluso la sua esecuzione.</li>
+      </ol>
+
+      <div class="kk-flex-media">
+        <img style="width:70%" src="../risorse/img3.png" alt="Stati del processo">
+        
+      </div>
+      <br>
       <p>Le transizioni sono gestite dallo scheduler (Ready → Running, Running → Ready per preemption) e dagli eventi di
         I/O (Running → Waiting, Waiting → Ready quando l'evento si verifica).</p>
     </div>
@@ -280,7 +328,7 @@
     </div>
 
     <div class="section-block" id="section-6">
-      <h2><span class="dot"></span> Albero dei Processi in Linux</h2>
+      <h2><span class="dot"></span> Albero dei Processi in Linux <span class="sub-tag">fondamentale</span></h2>
       <p>Ogni processo Linux (tranne il primo) ha un processo padre. Si forma così una gerarchia ad albero. Il processo
         radice è <code class="inline">systemd</code> (o <code class="inline">init</code> nei sistemi più vecchi) con PID
         1, avviato direttamente dal kernel al boot. Tutti gli altri processi ne sono discendenti diretti o indiretti.

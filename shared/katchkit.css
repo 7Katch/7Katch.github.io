@@ -136,6 +136,12 @@ nav {
   line-height: 1.85;
   margin-bottom: 0.75rem;
 }
+.section-block ul li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 0.75rem;
+}
 
 
 /* ── 4. HERO SECTION DINAMICA ────────────────────────────── */
@@ -329,6 +335,41 @@ footer p { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mo
 footer a { color: var(--kk-primary); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 
+/* ── AFFIANCAMENTO TESTO / IMMAGINE (FLEX LAYOUT) ────────── */
+.kk-flex-row {
+  display: flex;
+  align-items: center; /* Allinea verticalmente al centro testo e immagine */
+  gap: 2rem;           /* Spazio di sicurezza tra il testo e l'immagine */
+  margin-bottom: 1.5rem;
+}
+
+.kk-flex-text {
+  flex: 1;             /* Il testo occupa tutto lo spazio rimanente */
+}
+
+.kk-flex-media {
+  flex-shrink: 0;      /* Impedisce all'immagine di rimpicciolirsi troppo */
+  display: flex;
+  justify-content: center;
+}
+
+.kk-flex-media img {
+  max-width: 100%;     /* Evita che l'immagine esca dal suo contenitore */
+  height: auto;
+  border-radius: var(--r-md, 10px); /* Mantiene i bordi arrotondati del sito */
+  border: 1px solid var(--border);  /* Sottile bordo per dare profondità */
+}
+
+/* RESPONSIVE: Su schermi piccoli (es. smartphone) incolonna gli elementi */
+@media (max-width: 768px) {
+  .kk-flex-row {
+    flex-direction: column-reverse; /* Mette prima il testo e sotto l'immagine */
+    gap: 1.25rem;
+  }
+  .kk-flex-media img {
+    max-width: 80%; /* Evita che su mobile l'immagine diventi gigantesca */
+  }
+}
 
 /* ── 10. RESPONSIVE (MEDIA QUERIES) ──────────────────────── */
 
