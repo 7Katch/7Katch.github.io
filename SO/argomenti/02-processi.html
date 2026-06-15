@@ -255,8 +255,9 @@
       <div class="card-def">
         <div class="card-def-header">Definizione</div>
         <div class="card-def-content">
-          <p>Il kernel rappresenta ogni processo con le sue informazioni tramite una struttura dati chiamata <span class="keyword">Process Control
-          Block</span>. </p>
+          <p>Il kernel rappresenta ogni processo con le sue informazioni tramite una struttura dati chiamata <span
+              class="keyword">Process Control
+              Block</span>. </p>
         </div>
       </div>
       <p>In Linux questa struttura si chiama <code class="inline">task_struct</code> e contiene:
@@ -293,7 +294,7 @@
 
       <div class="kk-flex-media">
         <img style="width:70%" src="../risorse/img3.png" alt="Stati del processo">
-        
+
       </div>
       <br>
       <p>Le transizioni sono gestite dallo scheduler (Ready → Running, Running → Ready per preemption) e dagli eventi di
@@ -340,18 +341,22 @@
     </div>
 
     <div class="section-block" id="section-7">
-      <h2><span class="dot"></span> Terminazione del Processo</h2>
-      <p>Un processo termina in modo normale chiamando <code class="inline">exit(status)</code>, che libera le risorse e
-        notifica il padre. Il valore <code class="inline">status</code> (intero, tipicamente 0 per successo, non-zero
-        per errore) è recuperabile dal padre tramite <code class="inline">wait()</code>.</p>
-      <p>Un processo può essere terminato in modo forzato da un segnale: <code class="inline">SIGKILL</code> (non
-        catturabile) termina immediatamente, <code class="inline">SIGTERM</code> chiede gentilmente al processo di
-        terminare (catturabile), <code class="inline">SIGSEGV</code> viene inviato dal kernel quando il processo accede
-        a memoria non sua.</p>
-      <p>Un processo terminato ma il cui padre non ha ancora chiamato <code class="inline">wait()</code> rimane nella
-        tabella dei processi come <span class="keyword">zombie</span>. Occupa una entry nella process table ma non
-        consuma CPU né memoria. Se un processo produce molti zombie senza raccoglierli, può esaurire gli slot della
-        process table.</p>
+      <h2><span class="dot"></span> Terminazione del Processo <span class="sub-tag">fondamentale</span></h2>
+      <ul>
+        <li> Un processo termina in modo normale chiamando <code class="inline">exit(status)</code>, che libera le
+          risorse e
+          notifica il padre. Il valore <code class="inline">status</code> (intero, tipicamente 0 per successo, non-zero
+          per errore) è recuperabile dal padre tramite <code class="inline">wait()</code>.</li>
+        <li>Un processo può essere terminato in modo forzato da un segnale: <code class="inline">SIGKILL</code> (non
+          catturabile) termina immediatamente, <code class="inline">SIGTERM</code> chiede gentilmente al processo di
+          terminare (catturabile), <code class="inline">SIGSEGV</code> viene inviato dal kernel quando il processo
+          accede
+          a memoria non sua.</li>
+        <li>Un processo terminato ma il cui padre non ha ancora chiamato <code class="inline">wait()</code> rimane nella
+          tabella dei processi come <span class="keyword">zombie</span>. Occupa una entry nella process table ma non
+          consuma CPU né memoria. Se un processo produce molti zombie senza raccoglierli, può esaurire gli slot della
+          process table.</li>
+      </ul>
     </div>
 
     <div class="section-block" id="section-8">
