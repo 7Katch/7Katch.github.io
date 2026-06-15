@@ -112,12 +112,18 @@
   </aside>
 
   <nav>
-    <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// SO · Sistemi Operativi</a>
+    </div>
+
     <div class="nav-right">
-      <a href="../index.html" class="nav-back">← Indice SO</a>
-      <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+      <a href="../" class="nav-back">← Indice SO</a>
+      <a href="[https://7Katch.github.io](https://7Katch.github.io)" class="nav-back">⌂ Home</a>
     </div>
   </nav>
+
+
   <div class="hero" style="min-height:55vh">
     <div class="hero-glow"></div>
     <span class="hero-eyebrow"
@@ -135,7 +141,8 @@
       <a href="../index.html">SO</a><span>/</span>
       <span>02 · Processi</span>
     </div>
-    <div class="amber-box" style="margin-bottom:2rem">Questa pagina copre i <strong style="color:var(--amber)">14
+    <div class="theme-box">
+      Questa pagina copre i <strong>14
         sottoargomenti</strong> del macroargomento 2: il ciclo di vita di un processo e la comunicazione interprocesso.
     </div>
     <div class="index-grid">
@@ -202,7 +209,8 @@
       <p>Un <span class="keyword">processo</span> è un programma in esecuzione. Non è semplicemente il file binario su
         disco: include il codice caricato in memoria (<em>text section</em>), i dati statici (<em>data section</em>), lo
         <span class="keyword">stack</span> (variabili locali, parametri di funzione, indirizzi di ritorno) e l'<span
-          class="keyword">heap</span> (memoria allocata dinamicamente con <code class="inline">malloc()</code>).</p>
+          class="keyword">heap</span> (memoria allocata dinamicamente con <code class="inline">malloc()</code>).
+      </p>
       <p>Due esecuzioni distinte dello stesso programma danno luogo a due processi separati, ognuno con il proprio
         spazio di indirizzamento virtuale, i propri file aperti e il proprio stato di esecuzione. Il SO garantisce che i
         processi siano isolati tra loro: uno non può leggere o scrivere la memoria di un altro senza meccanismi IPC
@@ -337,7 +345,8 @@
           zero</span> (rendez-vous): mittente e ricevente devono sincronizzarsi esattamente, nessun messaggio in coda.
         <span class="keyword">Capacità limitata</span>: la coda può contenere al massimo N messaggi; il mittente si
         blocca quando è piena. <span class="keyword">Capacità illimitata</span>: il mittente non si blocca mai (ma la
-        memoria potrebbe esaurirsi).</p>
+        memoria potrebbe esaurirsi).
+      </p>
     </div>
 
     <div class="section-block" id="section-12">
@@ -370,76 +379,7 @@
     <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
   </footer>
 
-  <script id="so-sb-js">
-    (function () {
-      var IDS = ["section-1", "section-2", "section-3", "section-4", "section-5", "section-6", "section-7", "section-8", "section-9", "section-10", "section-11", "section-12", "section-13"];
-
-      /* smooth scroll + flash */
-      function goTo(id) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        el.classList.remove('sb-flash');
-        void el.offsetWidth;                         // force reflow
-        el.classList.add('sb-flash');
-        el.addEventListener('animationend', function () {
-          el.classList.remove('sb-flash');
-        }, { once: true });
-        setActive(id);
-      }
-
-      /* highlight sidebar item */
-      function setActive(id) {
-        document.querySelectorAll('.sb-sections li').forEach(function (li) {
-          li.classList.toggle('sb-active', li.getAttribute('data-sid') === id);
-        });
-        /* auto-scroll sidebar so active item is visible */
-        var sb = document.querySelector('.so-sidebar');
-        var act = document.querySelector('.sb-sections li.sb-active');
-        if (sb && act) {
-          var liTop = act.offsetTop;
-          var liH = act.offsetHeight;
-          if (liTop < sb.scrollTop || liTop + liH > sb.scrollTop + sb.clientHeight) {
-            sb.scrollTop = liTop - sb.clientHeight / 2 + liH / 2;
-          }
-        }
-      }
-
-      /* wire index-grid cards */
-      document.querySelectorAll('.index-item[data-target]').forEach(function (card) {
-        card.setAttribute('tabindex', '0');
-        card.setAttribute('role', 'button');
-        var name = (card.querySelector('.idx-name') || {}).textContent || '';
-        card.setAttribute('aria-label', 'Vai a: ' + name.trim());
-        card.addEventListener('click', function () { goTo(card.dataset.target); });
-        card.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(card.dataset.target); }
-        });
-      });
-
-      /* wire sidebar section links */
-      document.querySelectorAll('.sb-link[data-target]').forEach(function (el) {
-        el.addEventListener('click', function () { goTo(el.dataset.target); });
-      });
-
-      /* IntersectionObserver — aggiorna active mentre scorri */
-      if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) setActive(e.target.id);
-          });
-        }, { rootMargin: '-8% 0px -72% 0px', threshold: 0 });
-
-        IDS.forEach(function (id) {
-          var el = document.getElementById(id);
-          if (el) io.observe(el);
-        });
-      }
-
-      /* attivo iniziale */
-      if (IDS.length) setActive(IDS[0]);
-    }());
-  </script>
+  <script src="/shared/katchkit.js"></script>
 </body>
 
 </html>

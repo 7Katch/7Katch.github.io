@@ -270,3 +270,23 @@ I bottoni possono essere inseriti ovunque. Il bottone `.btn-theme` prenderà aut
 </div>
 
 ```
+
+
+### Navbar (Barra di navigazione superiore)
+Deve essere posta all'inizio del `body`. Contiene il pulsante Hamburger per aprire e chiudere la Sidebar laterale.
+
+**✨ Magia di KatchKit:** Non hai bisogno di incollare codici SVG lunghissimi! Ti basta inserire un bottone vuoto con l'ID `sidebar-toggle`. Sarà il motore JavaScript del framework a disegnarci dentro l'icona al momento del caricamento. Abbiamo aggiunto anche `aria-label="Menu"` per renderlo accessibile agli screen reader.
+
+```html
+<nav>
+  <div class="nav-left">
+    <button id="sidebar-toggle" aria-label="Menu"></button>
+    <a href="../" class="nav-logo">// SO · Nome Materia</a>
+  </div>
+
+  <div class="nav-right">
+    <a href="../" class="nav-back">← Indice</a>
+    <a href="[https://7Katch.github.io](https://7Katch.github.io)" class="nav-back">⌂ Home</a>
+  </div>
+</nav>
+```

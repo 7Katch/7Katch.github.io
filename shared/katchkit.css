@@ -88,7 +88,18 @@ nav {
 }
 
 .nav-left, .nav-right { display: flex; align-items: center; gap: 12px; }
-
+#sidebar-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
 #sidebar-toggle:hover { background: rgba(255, 255, 255, 0.1) !important; color: var(--kk-primary) !important; }
 
 .nav-logo {
@@ -112,6 +123,19 @@ nav {
 .nav-breadcrumb a { color: var(--text-muted); }
 .nav-breadcrumb a:hover { color: var(--kk-primary); text-decoration: none; }
 .nav-breadcrumb span { color: var(--border-hover); }
+
+
+.section-block ol {
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-block ol li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 0.75rem;
+}
 
 
 /* ── 4. HERO SECTION DINAMICA ────────────────────────────── */

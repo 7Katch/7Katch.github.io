@@ -6,205 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>01 · Sistemi Operativi — SO</title>
   <link rel="stylesheet" href="/shared/katchkit.css">
-  <style>
-    .nav-logo {
-      color: var(--amber);
-    }
-
-    .nav-back:hover {
-      color: var(--amber);
-      border-color: rgba(251, 191, 36, 0.4);
-    }
-
-    .hero-glow {
-      background: radial-gradient(ellipse, rgba(251, 191, 36, 0.07) 0%, transparent 65%);
-    }
-
-    .page-accent {
-      color: var(--amber);
-    }
-
-    .topic-hero-title {
-      font-size: clamp(2.2rem, 6vw, 4.5rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      margin-bottom: 1.25rem;
-      background: linear-gradient(135deg, #f0eeff 0%, #fbbf24 55%, #f59e0b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .topic-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--amber);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .topic-num::before {
-      content: '';
-      display: inline-block;
-      width: 20px;
-      height: 1px;
-      background: var(--amber);
-    }
-
-    .content-wrap {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 3rem 2rem 6rem;
-    }
-
-    .section-block {
-      margin-bottom: 3rem;
-    }
-
-    .section-block h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-block h2 .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--amber);
-      flex-shrink: 0;
-    }
-
-    .section-block p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.85;
-      margin-bottom: 0.75rem;
-    }
-
-    /* Modifica il contenitore della lista, non i singoli elementi */
-    .section-block ol {
-      padding-left: 2rem;
-      /* Indentazione standard */
-      margin-bottom: 1.5rem;
-    }
-
-    .section-block ol li {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.85;
-      margin-bottom: 0.75rem;
-      /* RIMOSSO IL PADDING-LEFT: 50% DA QUI */
-    }
-
-    .section-block p:last-child {
-      margin-bottom: 0;
-    }
-
-    code.inline {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      color: var(--amber);
-      background: rgba(251, 191, 36, 0.08);
-      padding: 1px 6px;
-      border-radius: 4px;
-    }
-
-    .keyword {
-      color: var(--text-primary);
-      font-weight: 600;
-    }
-
-    .sub-tag {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      padding: 1px 7px;
-      border-radius: var(--r-pill);
-      background: rgba(251, 191, 36, 0.12);
-      color: var(--amber);
-      border: 1px solid rgba(251, 191, 36, 0.3);
-      letter-spacing: 0.04em;
-      margin-left: 8px;
-      vertical-align: middle;
-      font-weight: 600;
-    }
-
-    .nav-breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 2.5rem;
-    }
-
-    .nav-breadcrumb a {
-      color: var(--text-muted);
-      transition: color 0.2s;
-    }
-
-    .nav-breadcrumb a:hover {
-      color: var(--amber);
-    }
-
-    .nav-breadcrumb span {
-      color: var(--border-hover);
-    }
-
-    .back-btn-wrap {
-      display: flex;
-      gap: 12px;
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .index-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 8px;
-      margin-bottom: 2.5rem;
-    }
-
-    .index-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--r-md);
-      padding: 0.75rem 1rem;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-      border-left: 2px solid var(--amber);
-    }
-
-    .index-item .idx-num {
-      color: var(--amber);
-      font-size: 10px;
-      margin-bottom: 2px;
-    }
-
-    .index-item .idx-name {
-      color: var(--text-secondary);
-      font-size: 12px;
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-    }
-  </style>
-
-
 </head>
 
 <body class="dot-grid">
@@ -305,22 +106,14 @@
   </aside>
 
 
-  <nav style="display: flex; justify-content: space-between; align-items: center;">
-    <div class="nav-left" style="display: flex; align-items: center; gap: 12px;">
-      <button id="sidebar-toggle"
-        style="background:none; border:none; color:var(--text-secondary); cursor:pointer; padding:6px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background 0.2s;">
-        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
-          stroke-linecap="round" stroke-linejoin="round">
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-      <a href="../" class="nav-logo">// SO · Sistemi Operativi</a>
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
     </div>
 
     <div class="nav-right">
-      <a href="../" class="nav-back">← Indice SO</a>
+      <a href="../index.html" class="nav-back">← Indice SO</a>
       <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
     </div>
   </nav>
@@ -358,7 +151,7 @@
     </div> -->
 
     <div class="theme-box">
-            Questa pagina copre i <strong>12 sottoargomenti</strong> del macroargomento 1, tratti
+      Questa pagina copre i <strong>12 sottoargomenti</strong> del macroargomento 1, tratti
       dai capitoli 1 e 2 del corso.
     </div>
     <div class="index-grid">
@@ -652,7 +445,8 @@
         <div class="card-def-header">Definizione </div>
         <div class="card-def-content">
           <p>
-            <span class="keyword">Loadable Kernel Modules</span> : porzioni di codice compilate separatamente che possono essere inserite o rimosse dal kernel a runtime senza riavviare il sistema
+            <span class="keyword">Loadable Kernel Modules</span> : porzioni di codice compilate separatamente che
+            possono essere inserite o rimosse dal kernel a runtime senza riavviare il sistema
           </p>
         </div>
       </div>
@@ -663,7 +457,8 @@
         liberate.
       </p>
       <p>
-        Le differenze con il microkernel sono che operano a livello kernel anziché a livello user e possono comunicare l'un l'altro direttamente
+        Le differenze con il microkernel sono che operano a livello kernel anziché a livello user e possono comunicare
+        l'un l'altro direttamente
       </p>
     </div>
 

@@ -4,16 +4,16 @@
  */
 
 const KatchKitCore = {
-  
+
   // Funzione principale che avvia tutto
-  init: function() {
+  init: function () {
     this.initScrollSpy();
     this.initSidebarToggle();
     this.initDefinitions();
   },
 
   // Modulo 1: Scroll e navigazione (Spy & Flash)
-  initScrollSpy: function() {
+  initScrollSpy: function () {
     // Trova automaticamente tutti gli ID delle sezioni presenti nella pagina
     const sectionElements = document.querySelectorAll('.section-block[id]');
     const IDS = Array.from(sectionElements).map(el => el.id);
@@ -40,7 +40,7 @@ const KatchKitCore = {
         li.classList.toggle('sb-active', li.getAttribute('data-sid') === id);
       });
       /* auto-scroll sidebar so active item is visible */
-      const sb = document.querySelector('.so-sidebar'); 
+      const sb = document.querySelector('.so-sidebar');
       const act = document.querySelector('.sb-sections li.sb-active');
       if (sb && act) {
         const liTop = act.offsetTop;
@@ -86,30 +86,44 @@ const KatchKitCore = {
     if (IDS.length) setActive(IDS[0]);
   },
 
-  // Modulo 2: Toggle Sidebar (Stile Gemini)
-  initSidebarToggle: function() {
+  // Modulo 2: Toggle Sidebar (Stile Gemini) + Iniezione Icona
+  initSidebarToggle: function () {
     const toggleBtn = document.getElementById('sidebar-toggle');
     const sidebar = document.querySelector('.so-sidebar');
 
-    if (toggleBtn && sidebar) {
-      toggleBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        sidebar.classList.toggle('open');
-      });
+    if (toggleBtn) {
+      // 1. INIEZIONE ICONA: Se il bottone è vuoto, disegna l'SVG
+      if (!toggleBtn.innerHTML.trim()) {
+        toggleBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        `;
+      }
 
-      // Bonus: Chiude la sidebar se clicchi fuori (comodissimo su mobile!)
-      document.addEventListener('click', function(e) {
-        if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-          sidebar.classList.remove('open');
-        }
-      });
+      // 2. LOGICA DI APERTURA (solo se esiste anche la sidebar)
+      if (sidebar) {
+        toggleBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          sidebar.classList.toggle('open');
+        });
+
+        // Chiude la sidebar se clicchi fuori (comodissimo su mobile!)
+        document.addEventListener('click', function (e) {
+          if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+          }
+        });
+      }
     }
   },
 
   // Modulo 3: Iniezione icone nelle Definizioni
-  initDefinitions: function() {
+  initDefinitions: function () {
     const defHeaders = document.querySelectorAll('.card-def-header');
-    
+
     const libroIcona = `
       <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -132,3 +146,6 @@ const KatchKitCore = {
 document.addEventListener('DOMContentLoaded', function () {
   KatchKitCore.init();
 });
+
+
+
