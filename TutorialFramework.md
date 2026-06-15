@@ -20,16 +20,12 @@ Per iniziare una nuova pagina vuota, il tuo file HTML deve avere esclusivamente 
 <head>
   <meta charset="UTF-8">
   <title>Titolo Pagina</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="../katchkit.css">
+  <link rel="stylesheet" href="katchkit.css">
 </head>
 
 <body class="dot-grid">
 
-  <script src="../katchkit.js"></script>
+  <script src="katchkit.js"></script>
 </body>
 </html>
 

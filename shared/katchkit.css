@@ -215,18 +215,20 @@ code.inline {
 .index-item .idx-num { color: var(--kk-primary); font-size: 10px; margin-bottom: 2px; }
 .index-item .idx-name { color: var(--text-secondary); font-size: 12px; font-family: 'Inter', sans-serif; font-weight: 600; }
 
+
+/* CARD DEFINIZIONE */
 .card-def {
-  background: rgba(var(--kk-rgb), 0.05); border: 1px solid rgba(var(--kk-rgb), 0.2);
-  border-left: 4px solid var(--kk-primary); border-radius: var(--r-md); margin-bottom: 1.5rem; overflow: hidden;
+  background: rgba(52, 211, 153, 0.05); border: 1px solid rgba(52, 211, 153, 0.2);
+  border-left: 4px solid #34d399; border-radius: var(--r-md); margin-bottom: 1.5rem; overflow: hidden;
 }
 .card-def-header {
-  display: flex; align-items: center; gap: 8px; color: var(--kk-primary);
+  display: flex; align-items: center; gap: 8px; color: #34d399;
   font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 16px 8px; background: rgba(var(--kk-rgb), 0.03);
+  text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 16px 8px; background: rgba(52, 211, 153, 0.03);
 }
 .card-def-content { padding: 0 16px 16px; }
 .card-def-content p:last-child { margin-bottom: 0; }
-.card-def-content .keyword { color: var(--kk-primary); }
+.card-def-content .keyword { color: #34d399; }
 
 
 /* ── 8. SIDEBAR A SCOMPARSA (GEMINI STYLE) ───────────────── */
