@@ -122,7 +122,41 @@
   .mblock .hg  { color:var(--green); }
   .mblock .hc  { color:var(--coral); }
   .mblock .hp  { color:var(--accent-soft); }
+
+  /* ── MathJax formula styles ─────────────────────── */
+  .fbox-inline { display:inline-block; border-radius:6px; padding:2px 10px; margin:1px 2px; vertical-align:middle; }
+  .fbox-inline        { color:var(--teal);       background:rgba(34,211,238,.07); border:1px solid rgba(34,211,238,.2); }
+  .fbox-inline.amber  { color:var(--amber);       background:rgba(251,191,36,.07);  border-color:rgba(251,191,36,.2); }
+  .fbox-inline.green  { color:var(--green);       background:rgba(52,211,153,.07);  border-color:rgba(52,211,153,.2); }
+  .fbox-inline.coral  { color:var(--coral);       background:rgba(248,113,113,.07); border-color:rgba(248,113,113,.2); }
+  .fbox-inline.purple { color:var(--accent-soft); background:rgba(124,92,252,.08);  border-color:rgba(124,92,252,.2); }
+  .fbox-block { display:block; margin:.5rem 0; padding:6px 16px; border-radius:8px; text-align:center; }
+  .fbox-block         { color:var(--teal);       background:rgba(34,211,238,.07); border:1px solid rgba(34,211,238,.2); }
+  .fbox-block.amber  { color:var(--amber);       background:rgba(251,191,36,.07);  border-color:rgba(251,191,36,.2); }
+  .fbox-block.green  { color:var(--green);       background:rgba(52,211,153,.07);  border-color:rgba(52,211,153,.2); }
+  .fbox-block.coral  { color:var(--coral);       background:rgba(248,113,113,.07); border-color:rgba(248,113,113,.2); }
+  .fbox-block.purple { color:var(--accent-soft); background:rgba(124,92,252,.08);  border-color:rgba(124,92,252,.2); }
+  .mblock-latex {
+    display:block; background:rgba(15,15,26,.88); border:1px solid var(--border);
+    border-radius:8px; padding:.8rem 1.6rem; margin:.5rem 0; overflow-x:auto;
+    color:var(--text-secondary); font-size:14px; line-height:2;
+  }
+  /* Let MathJax inherit colour */
+  .fbox-inline mjx-container,
+  .fbox-block  mjx-container,
+  .mblock-latex mjx-container { color:inherit !important; }
+
 </style>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']], tags:'none' },
+      options: { skipHtmlTags:['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+  </script>
 </head>
 <body class="dot-grid">
 
@@ -171,7 +205,7 @@
   </div>
   <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-0.02em;margin-bottom:.75rem">Le 5 famiglie di modelli</h2>
   <p style="font-size:14px;color:var(--text-secondary);line-height:1.85;max-width:740px;margin-bottom:2rem">
-    Il corso costruisce sistemi LTI della forma <span class="fbox">ẋ(t) = Ax(t) + Bu(t)</span> (TC) o <span class="fbox amber">x(k+1) = Ax(k) + Bu(k)</span> (TD). L'esame chiede di passare dal grafo orientato alle matrici, trovare equilibri, verificare la conservazione. Il prof si spinge fino a <strong style="color:var(--text-primary)">4 compartimenti, 2 ingressi</strong>.
+    Il corso costruisce sistemi LTI della forma <span class="fbox-inline">\( \dot{x}(t) = Ax(t) + Bu(t) \)</span> (TC) o <span class="fbox-inline amber">\( x(k+1) = Ax(k) + Bu(k) \)</span> (TD). L'esame chiede di passare dal grafo orientato alle matrici, trovare equilibri, verificare la conservazione. Il prof si spinge fino a <strong style="color:var(--text-primary)">4 compartimenti, 2 ingressi</strong>.
   </p>
   <div class="overview-grid">
     <div class="overview-card ov-teal">
@@ -236,9 +270,9 @@
           <div>
             <div class="sub-title">Variabili e parametri <span class="sub-tag">nomenclatura</span></div>
             <div class="sub-desc">
-              <span class="fbox">x_i(t)</span> risorsa nel compartimento i (variabile di stato) &nbsp;|&nbsp;
-              <span class="fbox">u_l(t)</span> immissione esterna (sorgente) &nbsp;|&nbsp;
-              <span class="fbox">u_h(t)</span> prelievo esterno (pozzo).<br>
+              <span class="fbox-inline">\( x_{i}(t) \)</span> risorsa nel compartimento i (variabile di stato) &nbsp;|&nbsp;
+              <span class="fbox-inline">\( u_{l}(t) \)</span> immissione esterna (sorgente) &nbsp;|&nbsp;
+              <span class="fbox-inline">\( u_{h}(t) \)</span> prelievo esterno (pozzo).<br>
               Parametri: <strong style="color:var(--text-primary)">α</strong> = trasferimento (preleva da un compartimento e lo sposta), <strong style="color:var(--text-primary)">β</strong> = accoppiamento con ingressi/uscite esterni, <strong style="color:var(--text-primary)">γ</strong> = generazione interna (non riduce il compartimento sorgente). Tutti ∈ ℝ₊.
             </div>
           </div>
@@ -248,7 +282,7 @@
           <div>
             <div class="sub-title">Legge del bilancio di flusso</div>
             <div class="sub-desc">
-              <span class="fbox" style="display:block;margin:5px 0">ẋ_i(t) = f_i^in(t) − f_i^out(t)</span>
+              <div class="fbox-block">\[ \dot{x}_{i}(t) = f_{i}^{i}n(t) - f_{i}^{o}ut(t) \]</div>
               Velocità di variazione = flusso entrante totale − flusso uscente totale. È l'analogo della KCL per i nodi di un circuito o della conservazione della massa in idraulica.
             </div>
           </div>
@@ -258,10 +292,10 @@
           <div>
             <div class="sub-title">Flussi entranti nel compartimento i</div>
             <div class="sub-desc">
-              <span class="fbox">β_li · u_l(t)</span> &nbsp;flusso dall'esterno (sorgente l) — indipendente dagli stati<br>
-              <span class="fbox">α_ji · x_j(t)</span> &nbsp;prelevato da j e trasferito ad i — riduce anche j<br>
-              <span class="fbox">γ_ji · x_j(t)</span> &nbsp;generato da j e trasferito ad i — NON riduce j<br>
-              <span class="fbox">γ_ii · x_i(t)</span> &nbsp;generato e accumulato in i stesso (auto-generazione)
+              <span class="fbox-inline">\( \beta_{li} \, u_{l}(t) \)</span> &nbsp;flusso dall'esterno (sorgente l) — indipendente dagli stati<br>
+              <span class="fbox-inline">\( \alpha_{ji} \, x_{j}(t) \)</span> &nbsp;prelevato da j e trasferito ad i — riduce anche j<br>
+              <span class="fbox-inline">\( \gamma_{ji} \, x_{j}(t) \)</span> &nbsp;generato da j e trasferito ad i — NON riduce j<br>
+              <span class="fbox-inline">\( \gamma_{ii} \, x_{i}(t) \)</span> &nbsp;generato e accumulato in i stesso (auto-generazione)
             </div>
           </div>
         </div>
@@ -270,9 +304,9 @@
           <div>
             <div class="sub-title">Flussi uscenti dal compartimento i</div>
             <div class="sub-desc">
-              <span class="fbox coral">β_ih · u_h(t)</span> &nbsp;prelievo verso esterno (pozzo h) — indipendente da x_i<br>
-              <span class="fbox coral">α_ij · x_i(t)</span> &nbsp;trasferito ad altro compartimento j<br>
-              <span class="fbox coral">α_i0 · x_i(t)</span> &nbsp;perdita/smaltimento verso ambiente (j = 0)
+              <span class="fbox-inline coral">\( \beta_{ih} \, u_{h}(t) \)</span> &nbsp;prelievo verso esterno (pozzo h) — indipendente da x_i<br>
+              <span class="fbox-inline coral">\( \alpha_{ij} \, x_{i}(t) \)</span> &nbsp;trasferito ad altro compartimento j<br>
+              <span class="fbox-inline coral">\( \alpha_i0 \, x_{i}(t) \)</span> &nbsp;perdita/smaltimento verso ambiente (j = 0)
             </div>
           </div>
         </div>
@@ -281,8 +315,8 @@
           <div>
             <div class="sub-title">Equazione generale sviluppata</div>
             <div class="sub-desc">
-              <span class="mblock">ẋ_i = <span class="hi">Σ_{j≠i}(α_ji+γ_ji)x_j</span> + <span class="hi">γ_ii·x_i</span> − <span class="hc">Σ_{j≥0,j≠i} α_ij·x_i</span> + <span class="ha">Σ β_li·u_l</span> − <span class="hc">Σ β_ih·u_h</span></span>
-              Raccogliendo su tutti gli n compartimenti si ottiene: <span class="fbox">ẋ(t) = Ax(t) + Bu(t)</span>
+              <div class="mblock-latex">\[ \dot{x}_{i} = \Sigma_{j\neqi}(\alpha_{ji}+\gamma_{ji})x_{j} \]</div> + <span class="fbox-inline -inline">\( \( \gamma_{ii}\,x_{i} \) \)</span> − <span class="fbox-inline -inline coral">\( \( \Sigma_{j\geq0,j\neqi} \alpha_{ij}\,x_{i} \) \)</span> + <span class="fbox-inline -inline amber">\( \( \Sigma \beta_{li}\,u_{l} \) \)</span> − <span class="fbox-inline -inline coral">\( \( \Sigma \beta_{ih}\,u_{h} \) \)</span></span>
+              Raccogliendo su tutti gli n compartimenti si ottiene: <span class="fbox-inline">\( \dot{x}(t) = Ax(t) + Bu(t) \)</span>
             </div>
           </div>
         </div>
@@ -321,7 +355,7 @@
           <div>
             <div class="sub-title">Elementi fuori diagonale di A: a_ij con i≠j</div>
             <div class="sub-desc">
-              <span class="fbox" style="display:block;margin:5px 0">a_ij = α_ji + γ_ji</span>
+              <div class="fbox-block">\[ a_{ij} = \alpha_{ji} + \gamma_{ji} \]</div>
               = somma di tutti i coefficienti degli archi <strong style="color:var(--teal)">da j verso i</strong> nel grafo. Se non esiste arco j→i: a_ij = 0. I fuori-diagonale sono sempre <strong>≥ 0</strong>.
             </div>
           </div>
@@ -331,9 +365,9 @@
           <div>
             <div class="sub-title">Elementi diagonali di A: a_ii</div>
             <div class="sub-desc">
-              <span class="fbox" style="display:block;margin:5px 0">a_ii = γ_ii − Σ_{j≥0, j≠i} α_ij</span>
+              <div class="fbox-block">\[ a_{ii} = \gamma_{ii} - \Sigma_{j\geq0, j\neqi} \alpha_{ij} \]</div>
               = auto-generazione − (somma di tutti i flussi <em>che escono</em> da i, compresi α_i0 verso ambiente). Nella maggior parte degli esercizi γ_ii = 0, quindi:
-              <span class="fbox coral" style="display:block;margin:5px 0">a_ii = −(α_i1 + α_i2 + ... + α_i0)</span>
+              <div class="fbox-block coral">\[ a_{ii} = -(\alpha_i1 + \alpha_i2 + ... + \alpha_i0) \]</div>
               Gli elementi diagonali sono sempre <strong>≤ 0</strong>.
             </div>
           </div>
@@ -344,8 +378,8 @@
             <div class="sub-title">Matrice B: colonne = ingressi</div>
             <div class="sub-desc">
               Una colonna per ogni variabile indipendente u.<br>
-              <span class="fbox">B_il = +β_li</span> se u_l è una sorgente che immette nel compartimento i<br>
-              <span class="fbox coral">B_ih = −β_ih</span> se u_h è un pozzo che preleva dal compartimento i<br>
+              <span class="fbox-inline">\( B_{il} = +\beta_{li} \)</span> se u_l è una sorgente che immette nel compartimento i<br>
+              <span class="fbox-inline coral">\( B_{ih} = -\beta_{ih} \)</span> se u_h è un pozzo che preleva dal compartimento i<br>
               Tutte le altre righe = 0.
             </div>
           </div>
@@ -368,7 +402,7 @@
           <div>
             <div class="sub-title">Check di conservazione: 𝟙ᵀA = 0</div>
             <div class="sub-desc">
-              Se il sistema è <strong style="color:var(--text-primary)">isolato</strong> (nessuna perdita, nessun ingresso/uscita permanente), la somma di ogni <strong>colonna</strong> di A è zero: <span class="fbox">𝟙ᵀA = 0</span>. Questo è il check più veloce dopo aver costruito A. Se la somma di una colonna j è −k &lt; 0, il compartimento j perde risorsa al ritmo k verso l'ambiente.
+              Se il sistema è <strong style="color:var(--text-primary)">isolato</strong> (nessuna perdita, nessun ingresso/uscita permanente), la somma di ogni <strong>colonna</strong> di A è zero: <span class="fbox-inline">\( \mathbf{1}^{\top}A = 0 \)</span>. Questo è il check più veloce dopo aver costruito A. Se la somma di una colonna j è −k &lt; 0, il compartimento j perde risorsa al ritmo k verso l'ambiente.
             </div>
           </div>
         </div>
@@ -398,8 +432,8 @@
             <div class="sub-title">Serbatoio autonomo — 1 compartimento, 0 ingressi</div>
             <div class="sub-desc">
               Unico flusso uscente: perdita verso ambiente α₁₀·x₁.
-              <span class="mblock">ẋ₁ = −α₁₀·x₁   →   <span class="hi">A = [−α₁₀]</span>, B = [ ]</span>
-              Soluzione: <span class="fbox">x₁(t) = x₁(0)·e^{−α₁₀t}</span> — decadimento esponenziale.<br>
+              <div class="mblock-latex">\[ \dot{x}_{1} = -\alpha_{10}\,x_{1}   \to   A = [-\alpha_{10}] \]</div>, B = [ ]</span>
+              Soluzione: <span class="fbox-inline">\( x_{1}(t) = x_{1}(0)\,e^{-\alpha_{10}t} \)</span> — decadimento esponenziale.<br>
               <em style="color:var(--text-muted);font-size:11px">⚠ In realtà il flusso dipende da √x (eq. di Torricelli). La linearizzazione vale solo localmente.</em>
             </div>
           </div>
@@ -410,8 +444,8 @@
             <div class="sub-title">Serbatoio con ingresso e uscita — 1 stato, 1 ingresso</div>
             <div class="sub-desc">
               Sorgente β₁₁·u₁ entra, perdita α₁₀·x₁ esce.
-              <span class="mblock">ẋ₁ = −α₁₀·x₁ + β₁₁·u₁   →   <span class="hi">A=[−α₁₀]</span>, <span class="ha">B=[β₁₁]</span></span>
-              Soluzione: <span class="fbox">x₁(t) = e^{−α₁₀t}·x₁(0) + ∫₀ᵗ e^{−α₁₀(t−τ)}·β₁₁·u₁(τ)dτ</span> (integrale di convoluzione)
+              <div class="mblock-latex">\[ \dot{x}_{1} = -\alpha_{10}\,x_{1} + \beta_{11}\,u_{1}   \to   A=[-\alpha_{10}] \]</div>, <span class="fbox-inline -inline amber">\( \( B=[\beta_{11}] \) \)</span></span>
+              Soluzione: <span class="fbox-inline">\( x_{1}(t) = e^{-\alpha_{10}t}\,x_{1}(0) + \int_{0}^{t} e^{-\alpha_{10}(t-\tau)}\,\beta_{11}\,u_{1}(\tau)d\tau \)</span> (integrale di convoluzione)
             </div>
           </div>
         </div>
@@ -421,8 +455,8 @@
             <div class="sub-title">Prelievo controllato — 1 stato, 1 ingresso prelievo</div>
             <div class="sub-desc">
               Solo valvola di uscita β₁₁·u₁(t), nessuna dinamica autonoma.
-              <span class="mblock">ẋ₁ = −β₁₁·u₁   →   <span class="hi">A = [0]</span>, <span class="hc">B = [−1]</span></span>
-              Se u₁ = ū costante: <span class="fbox">x₁(t) = x₁(0) − ū·t</span>. A=[0] → integratore puro: nessuna forza di ripristino.
+              <div class="mblock-latex">\[ \dot{x}_{1} = -\beta_{11}\,u_{1}   \to   A = [0] \]</div>, <span class="fbox-inline -inline coral">\( \( B = [-1] \) \)</span></span>
+              Se u₁ = ū costante: <span class="fbox-inline">\( x_{1}(t) = x_{1}(0) - \bar{u}\,t \)</span>. A=[0] → integratore puro: nessuna forza di ripristino.
             </div>
           </div>
         </div>
@@ -432,7 +466,13 @@
             <div class="sub-title">Due serbatoi in cascata — 2×2, 2 ingressi</div>
             <div class="sub-desc">
               u₁ entra in x₁, flusso α₁₂ da x₁ verso x₂, u₂ preleva da x₂.
-              <span class="mblock">ẋ₁ = −α₁₂·x₁ + u₁<br>ẋ₂ = +α₁₂·x₁ − u₂<br><br><span class="hi">A = [[−α₁₂, 0], [α₁₂, 0]]</span>   <span class="ha">B = [[1, 0], [0, −1]]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+\dot{x}_{1} = -\alpha_{12}\,x_{1} + u_{1} \\
+\dot{x}_{2} = +\alpha_{12}\,x_{1} - u_{2} \\
+A = [[-\alpha_{12}, 0], [\alpha_{12}, 0]]
+\end{aligned}
+\]</div>   <span class="fbox-inline -inline amber">\( \( B = [[1, 0], [0, -1]] \) \)</span></span>
               Check: 𝟙ᵀA = [0, 0] ✓ (conservativo).<br>
               Risorsa totale: ẏ = ẋ₁+ẋ₂ = u₁−u₂. Se u₁=u₂=0: y(t) = y(0) = cost.
             </div>
@@ -444,7 +484,14 @@
             <div class="sub-title">Tre serbatoi con perdita — 3×3, 2 ingressi</div>
             <div class="sub-desc">
               x₁ riceve u₁, cede ad x₂ con α₁₂. x₃ riceve u₂, cede ad x₁ con α₃₁ e ad x₂ con α₃₂. x₂ perde verso ambiente con α₂₀.
-              <span class="mblock">ẋ₁ = −α₁₂·x₁ + α₃₁·x₃ + u₁<br>ẋ₂ = α₁₂·x₁ − α₂₀·x₂ + α₃₂·x₃<br>ẋ₃ = −(α₃₁+α₃₂)·x₃ + u₂<br><br><span class="hi">A = [[−α₁₂, 0, α₃₁], [α₁₂, −α₂₀, α₃₂], [0, 0, −α₃₁−α₃₂]]</span><br><span class="ha">B = [[1,0],[0,0],[0,1]]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+\dot{x}_{1} = -\alpha_{12}\,x_{1} + \alpha_{31}\,x_{3} + u_{1} \\
+\dot{x}_{2} = \alpha_{12}\,x_{1} - \alpha_{20}\,x_{2} + \alpha_{32}\,x_{3} \\
+\dot{x}_{3} = -(\alpha_{31}+\alpha_{32})\,x_{3} + u_{2} \\
+A = [[-\alpha_{12}, 0, \alpha_{31}], [\alpha_{12}, -\alpha_{20}, \alpha_{32}], [0, 0, -\alpha_{31}-\alpha_{32}]]
+\end{aligned}
+\]</div><br><span class="fbox-inline -inline amber">\( \( B = [[1,0],[0,0],[0,1]] \) \)</span></span>
               Check: 𝟙ᵀA = [0, −α₂₀, 0] ≠ 0 → sistema NON conservativo (perdita in x₂).
             </div>
           </div>
@@ -475,7 +522,7 @@
             <div class="sub-title">Setup — 4 città, grafo simmetrico</div>
             <div class="sub-desc">
               4 compartimenti = 4 città. Strade (α) e autostrade (2α) bidirezionali con stessi coefficienti → grafo simmetrico → A simmetrica. Nessun ingresso/uscita: sistema isolato conservativo.<br>
-              Ogni città i: <span class="fbox">ẋᵢ = α·(somma veicoli vicini pesati) − α·(gradi uscenti)·xᵢ</span>
+              Ogni città i: <span class="fbox-inline">\( \dot{x}ᵢ = \alpha\,(somma veicoli vicini pesati) - \alpha\,(gradi uscenti)\,xᵢ \)</span>
             </div>
           </div>
         </div>
@@ -484,10 +531,14 @@
           <div>
             <div class="sub-title">Matrice A del sistema</div>
             <div class="sub-desc">
-              <span class="mblock"><span class="hi">A = α·[[-4, 2, 1, 1],
-         [ 2,-4, 2, 0],
-         [ 1, 2,-5, 2],
-         [ 1, 0, 2,-3]]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A = \alpha\,[[-4, 2, 1, 1], \\
+[ 2,-4, 2, 0], \\
+[ 1, 2,-5, 2], \\
+[ 1, 0, 2,-3]]
+\end{aligned}
+\]</div></span>
               Proprietà: A = Aᵀ (simmetrica, grafo bidirezionale), elementi diag ≤ 0, fuori-diag ≥ 0, somma ogni colonna = 0 ✓.
             </div>
           </div>
@@ -498,7 +549,7 @@
             <div class="sub-title">Conservazione e autovettori di 𝟙</div>
             <div class="sub-desc">
               Poiché 𝟙ᵀA = 0 (conservazione per colonne) e A = Aᵀ: anche A𝟙 = 0. Quindi 𝟙 = [1,1,1,1]ᵀ è <strong style="color:var(--teal)">autovettore sia destro sia sinistro</strong> con autovalore 0.<br>
-              Equilibrio uniforme: <span class="fbox">x̄ = β·𝟙</span> (tutte le città con stessa quantità di veicoli). Verifica: A·(β𝟙) = β·A𝟙 = 0 ✓.
+              Equilibrio uniforme: <span class="fbox-inline">\( \bar{x} = \beta\,\mathbf{1} \)</span> (tutte le città con stessa quantità di veicoli). Verifica: A·(β𝟙) = β·A𝟙 = 0 ✓.
             </div>
           </div>
         </div>
@@ -508,10 +559,14 @@
             <div class="sub-title">Chiusura della strada 1→2 (perturbazione)</div>
             <div class="sub-desc">
               Al tempo t*: α₁₂ cambia da 2α a 0. Si modificano a₁₁ (−4α→−2α) e a₂₁ (2α→0).<br>
-              <span class="mblock"><span class="hc">A_new = α·[[-2, 2, 1, 1],
-             [ 0,-4, 2, 0],
-             [ 1, 2,-5, 2],
-             [ 1, 0, 2,-3]]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A_{new} = \alpha\,[[-2, 2, 1, 1], \\
+[ 0,-4, 2, 0], \\
+[ 1, 2,-5, 2], \\
+[ 1, 0, 2,-3]]
+\end{aligned}
+\]</div></span>
               A non è più simmetrica. Si calcola il nuovo equilibrio risolvendo A_new·x̄ = 0 con 𝟙ᵀx̄ = N_tot. Con N = 10000: x_ss = 10³·[3.72, 1.16, 2.33, 2.79]ᵀ. La città 1 accumula veicoli (non può più "esportarli" via autostrada).
             </div>
           </div>
@@ -552,7 +607,7 @@
           <div>
             <div class="sub-title">Equazione di stato TD <span class="sub-tag">fondamento</span></div>
             <div class="sub-desc">
-              <span class="fbox amber" style="display:block;margin:5px 0">x(k+1) = A·x(k) + B·u(k)</span>
+              <div class="fbox-block amber">\[ x(k+1) = A\,x(k) + B\,u(k) \]</div>
               x(k) ∈ ℝⁿ stato al passo k, u(k) ∈ ℝᵖ ingresso al passo k. A ∈ ℝⁿˣⁿ matrice di transizione discreta, B ∈ ℝⁿˣᵖ matrice di ingresso. Stessa struttura del TC ma A e B hanno significato diverso: <strong style="color:var(--amber)">A_ij = frazione della risorsa in j che va in i ad ogni passo</strong>.
             </div>
           </div>
@@ -562,8 +617,8 @@
           <div>
             <div class="sub-title">Vincoli sulla matrice A nel TD</div>
             <div class="sub-desc">
-              Per garantire che la risorsa rimanga non negativa: <span class="fbox amber">A_ij ≥ 0</span> per tutti i,j.<br>
-              Per conservazione: somma di ogni <strong>colonna</strong> = 1 → <span class="fbox amber">𝟙ᵀA = 𝟙ᵀ</span> (matrice <em>sub-stocastica per colonne</em> se c'è perdita, <em>stocastica</em> se conservativa).<br>
+              Per garantire che la risorsa rimanga non negativa: <span class="fbox-inline amber">\( A_{ij} \geq 0 \)</span> per tutti i,j.<br>
+              Per conservazione: somma di ogni <strong>colonna</strong> = 1 → <span class="fbox-inline amber">\( \mathbf{1}^{\top}A = \mathbf{1}^{\top} \)</span> (matrice <em>sub-stocastica per colonne</em> se c'è perdita, <em>stocastica</em> se conservativa).<br>
               Confronto con TC: in TC A ha diag ≤ 0; in TD A ha tutti gli elementi ≥ 0.
             </div>
           </div>
@@ -574,7 +629,7 @@
             <div class="sub-title">Soluzione ricorsiva</div>
             <div class="sub-desc">
               Con u(k) = 0 per ogni k:
-              <span class="fbox amber" style="display:block;margin:5px 0">x(k) = Aᵏ · x(0)</span>
+              <div class="fbox-block amber">\[ x(k) = A^{k} \, x(0) \]</div>
               La soluzione è la potenza k-esima di A applicata alla condizione iniziale. Il sistema converge a 0 se tutti gli autovalori di A hanno <strong style="color:var(--amber)">|λᵢ| &lt; 1</strong>. Se λ = 1 è autovalore: esistono stati stazionari non nulli.
             </div>
           </div>
@@ -584,7 +639,7 @@
           <div>
             <div class="sub-title">Dal grafo a A_discreta: regola pratica</div>
             <div class="sub-desc">
-              Ogni arco j→i con peso p_ij: <span class="fbox amber">A_ij = p_ij</span> (frazione di x_j che va in i). La risorsa che "resta" nel compartimento j: <span class="fbox amber">A_jj = 1 − Σ_{i≠j} p_ij − perdita_j</span>.<br>
+              Ogni arco j→i con peso p_ij: <span class="fbox-inline amber">\( A_{ij} = p_{ij} \)</span> (frazione di x_j che va in i). La risorsa che "resta" nel compartimento j: <span class="fbox-inline amber">\( A_{jj} = 1 - \Sigma_{i\neqj} p_{ij} - perdita_{j} \)</span>.<br>
               Differenza chiave rispetto al TC: le uscite non si sottraggono sulla diagonale con segno negativo, ma si tiene traccia della <em>frazione che rimane</em>.
             </div>
           </div>
@@ -615,8 +670,13 @@
             <div class="sub-title">Modello magazzino/scorte — 1 stato, 1 ingresso</div>
             <div class="sub-desc">
               Scorte x₁(k). Ogni settimana: vendita α·x₁, riordino u(k) unità.
-              <span class="mblock">x₁(k+1) = (1−α)·x₁(k) + u(k)<br><br><span class="ha">A = [1−α]</span>,  <span class="ha">B = [1]</span></span>
-              Equilibrio con u = ū costante: <span class="fbox amber">x̄ = ū/α</span> (inverti A: 0 = (1−α)x̄ + ū → x̄ = ū/α).
+              <div class="mblock-latex">\[
+\begin{aligned}
+x_{1}(k+1) = (1-\alpha)\,x_{1}(k) + u(k) \\
+A = [1-\alpha]
+\end{aligned}
+\]</div>,  <span class="fbox-inline -inline amber">\( \( B = [1] \) \)</span></span>
+              Equilibrio con u = ū costante: <span class="fbox-inline amber">\( \bar{x} = \bar{u}/\alpha \)</span> (inverti A: 0 = (1−α)x̄ + ū → x̄ = ū/α).
             </div>
           </div>
         </div>
@@ -626,14 +686,14 @@
             <div class="sub-title">Routing su 3 nodi — 3×3, 0 ingressi</div>
             <div class="sub-desc">
               3 nodi di rete. Ad ogni passo una frazione p_ij della risorsa in j va al nodo i. A è stocastica per colonne (conservazione totale).
-              <span class="mblock"><span class="ha">
-                \begin{pmatrix}
-                p_{11} & p_{12} & p_{13} \\
-                p_{21} & p_{22} & p_{23} \\
-                p_{31} & p_{32} & p_{33}
-                \end{pmatrix}
-    </span>   con Σᵢ p_ij = 1 ∀j</span>
-              Stato stazionario: <span class="fbox amber">A·x̄ = x̄</span> (autovettore destro di A con λ=1). Esiste sempre ed è unico per A irriducibile.
+              <div class="mblock-latex">\[
+\begin{aligned}
+A = [[p_{11}, p_{12}, p_{13}], \\
+[p_{21}, p_{22}, p_{23}], \\
+[p_{31}, p_{32}, p_{33}]]
+\end{aligned}
+\]</div>   con Σᵢ p_ij = 1 ∀j</span>
+              Stato stazionario: <span class="fbox-inline amber">\( A\,\bar{x} = \bar{x} \)</span> (autovettore destro di A con λ=1). Esiste sempre ed è unico per A irriducibile.
             </div>
           </div>
         </div>
@@ -643,8 +703,14 @@
             <div class="sub-title">Modello di popolazione con 2 classi di età — 2×2</div>
             <div class="sub-desc">
               Giovani x₁(k), adulti x₂(k). Ogni anno: β adulti generano giovani, α giovani diventano adulti, δ adulti muoiono/escono.
-              <span class="mblock">x₁(k+1) = (1−α)·x₁(k) + β·x₂(k)  &nbsp;[sopravvissuti + nuovi nati]<br>x₂(k+1) =    α·x₁(k) + (1−δ)·x₂(k)  &nbsp;[invecchiati + sopravvissuti adulti]<br><br><span class="ha">A = [[1−α,  β ],
-     [  α, 1−δ]]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+x_{1}(k+1) = (1-\alpha)\,x_{1}(k) + \beta\,x_{2}(k)   [sopravvissuti + nuovi nati] \\
+x_{2}(k+1) =    \alpha\,x_{1}(k) + (1-\delta)\,x_{2}(k)   [invecchiati + sopravvissuti adulti] \\
+A = [[1-\alpha,  \beta ], \\
+[  \alpha, 1-\delta]]
+\end{aligned}
+\]</div></span>
               Se β·α > δ·(1−α): popolazione cresce (autovalore dominante > 1).
             </div>
           </div>
@@ -655,7 +721,7 @@
             <div class="sub-title">Distribuzione budget su 4 divisioni — 4×4, 1 ingresso</div>
             <div class="sub-desc">
               Budget x_i(k) per divisione i. Ogni trimestre: redistribuzione interna (A) + iniezione esterna u(k) in divisione 1. A sub-stocastica (parte va a "spese operative" = perdita).
-              <span class="mblock">x(k+1) = <span class="ha">A</span>·x(k) + <span class="ha">B</span>·u(k)<br><br><span class="ha">A</span> 4×4 con Σᵢ A_ij ≤ 1 ∀j<br><span class="ha">B</span> = [1, 0, 0, 0]ᵀ</span>
+              <div class="mblock-latex">\[ x(k+1) = A \]</div>·x(k) + <span class="fbox-inline -inline amber">\( \( B \) \)</span>·u(k)<br><br><span class="fbox-inline -inline amber">\( \( A \) \)</span> 4×4 con Σᵢ A_ij ≤ 1 ∀j<br><span class="fbox-inline -inline amber">\( \( B \) \)</span> = [1, 0, 0, 0]ᵀ</span>
               Equilibrio con u = ū: x̄ = (I−A)⁻¹·B·ū se (I−A) invertibile.
             </div>
           </div>
@@ -696,9 +762,9 @@
           <div>
             <div class="sub-title">Matrice di transizione di Markov <span class="sub-tag">definizione</span></div>
             <div class="sub-desc">
-              <span class="fbox coral">P_ij = P(passare da j a i)</span> = probabilità di transitare dallo stato j allo stato i in un passo.<br>
-              Proprietà: P_ij ≥ 0 per ogni i,j e <span class="fbox coral">Σᵢ P_ij = 1</span> per ogni j (somma colonne = 1, matrice stocastica per colonne).<br>
-              Evoluzione: <span class="fbox coral">π(k+1) = P·π(k)</span>, dove π(k) è il vettore di probabilità al passo k.
+              <span class="fbox-inline coral">\( P_{ij} = P(passare da j a i) \)</span> = probabilità di transitare dallo stato j allo stato i in un passo.<br>
+              Proprietà: P_ij ≥ 0 per ogni i,j e <span class="fbox-inline coral">\( \Sigmaᵢ P_{ij} = 1 \)</span> per ogni j (somma colonne = 1, matrice stocastica per colonne).<br>
+              Evoluzione: <span class="fbox-inline coral">\( \pi(k+1) = P\,\pi(k) \)</span>, dove π(k) è il vettore di probabilità al passo k.
             </div>
           </div>
         </div>
@@ -707,8 +773,8 @@
           <div>
             <div class="sub-title">Distribuzione stazionaria</div>
             <div class="sub-desc">
-              La distribuzione stazionaria π* soddisfa: <span class="fbox coral">P·π* = π*</span><br>
-              cioè π* è autovettore di P con autovalore λ=1. Normalizzazione: <span class="fbox coral">𝟙ᵀπ* = 1</span> (somma prob = 1).<br>
+              La distribuzione stazionaria π* soddisfa: <span class="fbox-inline coral">\( P\,\pi* = \pi* \)</span><br>
+              cioè π* è autovettore di P con autovalore λ=1. Normalizzazione: <span class="fbox-inline coral">\( \mathbf{1}^{\top}\pi* = 1 \)</span> (somma prob = 1).<br>
               Per una catena irriducibile e aperiodica: π* è unica e π(k) → π* per k→∞ indipendentemente da π(0).
             </div>
           </div>
@@ -719,9 +785,13 @@
             <div class="sub-title">Esempio: catena 2 stati (sistema guasto-funzionante)</div>
             <div class="sub-desc">
               Stato 1 = funzionante, stato 2 = guasto. Prob rottura = α, prob riparazione = β.
-              <span class="mblock"><span class="hc">P = [[1−α,  β ],
-     [  α, 1−β]]</span></span>
-              Distribuzione stazionaria: <span class="fbox coral">π*₁ = β/(α+β)</span>, <span class="fbox coral">π*₂ = α/(α+β)</span>.<br>
+              <div class="mblock-latex">\[
+\begin{aligned}
+P = [[1-\alpha,  \beta ], \\
+[  \alpha, 1-\beta]]
+\end{aligned}
+\]</div></span>
+              Distribuzione stazionaria: <span class="fbox-inline coral">\( \pi*_{1} = \beta/(\alpha+\beta) \)</span>, <span class="fbox-inline coral">\( \pi*_{2} = \alpha/(\alpha+\beta) \)</span>.<br>
               Disponibilità del sistema = π*₁ = β/(α+β).
             </div>
           </div>
@@ -731,9 +801,13 @@
           <div>
             <div class="sub-title">Esempio: 3 stati — meteo (sole/nuvole/pioggia)</div>
             <div class="sub-desc">
-              <span class="mblock"><span class="hc">P = [[0.7, 0.3, 0.2],
-     [0.2, 0.4, 0.5],
-     [0.1, 0.3, 0.3]]</span>   (somma colonne = 1 ✓)</span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+P = [[0.7, 0.3, 0.2], \\
+[0.2, 0.4, 0.5], \\
+[0.1, 0.3, 0.3]]
+\end{aligned}
+\]</div>   (somma colonne = 1 ✓)</span>
               Distribuzione stazionaria: risolvi (P−I)π* = 0 con 𝟙ᵀπ* = 1. Sistema: 2 equazioni indip. + normalizzazione = 3 equazioni per 3 incognite.
             </div>
           </div>
@@ -744,7 +818,7 @@
             <div class="sub-title">PageRank di Google — 4 pagine</div>
             <div class="sub-desc">
               Ogni pagina web = stato. P_ij = 1/(out-degree di j) se esiste link j→i, altrimenti 0. Il rank di ogni pagina è π*_i (probabilità stazionaria del surfer casuale).
-              <span class="mblock"><span class="hc">P_ij = 1/|{link uscenti da j}|</span>  se esiste il link j→i<br><span class="hc">P_ij = 0</span>  altrimenti</span>
+              <div class="mblock-latex">\[ P_{ij} = 1/|{link uscenti da j}| \]</div>  se esiste il link j→i<br><span class="fbox-inline -inline coral">\( \( P_{ij} = 0 \) \)</span>  altrimenti</span>
               Con 4 pagine: matrice 4×4. Il ranking è il vettore π* ottenuto dall'autovettore di P con λ=1.
             </div>
           </div>
@@ -775,8 +849,8 @@
             <div class="sub-title">Generatore della catena (matrice Q)</div>
             <div class="sub-desc">
               In tempo continuo le transizioni avvengono con tassi q_ij ≥ 0 (λ di Poisson).<br>
-              <span class="fbox coral">Q_ij = q_ij</span> per i≠j (tasso da j a i) &nbsp;&nbsp; <span class="fbox coral">Q_jj = −Σ_{i≠j} q_ij</span><br>
-              L'equazione di Chapman-Kolmogorov: <span class="fbox coral" style="display:block;margin:5px 0">π̇(t) = Q·π(t)</span>
+              <span class="fbox-inline coral">\( Q_{ij} = q_{ij} \)</span> per i≠j (tasso da j a i) &nbsp;&nbsp; <span class="fbox-inline coral">\( Q_{jj} = -\Sigma_{i\neqj} q_{ij} \)</span><br>
+              L'equazione di Chapman-Kolmogorov: <div class="fbox-block coral">\[ \dot{\pi}(t) = Q\,\pi(t) \]</div>
               Struttura identica ai modelli di flusso TC! Q è la matrice A del sistema LTI. Somma ogni colonna = 0 (conservazione delle prob).
             </div>
           </div>
@@ -787,9 +861,13 @@
             <div class="sub-title">Esempio: sistema 2 stati in TC</div>
             <div class="sub-desc">
               Tassi: guasto λ (da funzionante a guasto), riparazione μ (da guasto a funzionante).
-              <span class="mblock"><span class="hc">Q = [[−λ,  μ],
-     [ λ, −μ]]</span></span>
-              Distribuzione stazionaria (ker Q): <span class="fbox coral">π*₁ = μ/(λ+μ)</span>, <span class="fbox coral">π*₂ = λ/(λ+μ)</span>. Identico alla catena discreta con α=λΔt, β=μΔt nel limite Δt→0.
+              <div class="mblock-latex">\[
+\begin{aligned}
+Q = [[-\lambda,  \mu], \\
+[ \lambda, -\mu]]
+\end{aligned}
+\]</div></span>
+              Distribuzione stazionaria (ker Q): <span class="fbox-inline coral">\( \pi*_{1} = \mu/(\lambda+\mu) \)</span>, <span class="fbox-inline coral">\( \pi*_{2} = \lambda/(\lambda+\mu) \)</span>. Identico alla catena discreta con α=λΔt, β=μΔt nel limite Δt→0.
             </div>
           </div>
         </div>
@@ -839,7 +917,7 @@
             <div class="sub-title">Modello SIR non lineare — 3 compartimenti</div>
             <div class="sub-desc">
               S = suscettibili, I = infetti, R = rimossi/guariti. N = S+I+R costante.
-              <span class="mblock">Ṡ = <span class="hc">−β·S·I/N</span>              [contagio: non lineare!]<br>İ = <span class="hi"> β·S·I/N</span> <span class="hc">− δ·I</span>     [nuovi infetti − guarigioni]<br>Ṙ = <span class="hg">          + δ·I</span>     [guariti]</span>
+              <div class="mblock-latex">\[ \dot{S} = -\beta\,S\,I/N \]</div>              [contagio: non lineare!]<br>İ = <span class="fbox-inline -inline">\( \( \beta\,S\,I/N \) \)</span> <span class="fbox-inline -inline coral">\( \( - \delta\,I \) \)</span>     [nuovi infetti − guarigioni]<br>Ṙ = <span class="fbox-inline -inline green">\( \( + \delta\,I \) \)</span>     [guariti]</span>
               Conservazione: Ṡ+İ+Ṙ = 0 → S+I+R = N = costante. Sistema conservativo ma non lineare.
             </div>
           </div>
@@ -850,10 +928,14 @@
             <div class="sub-title">Linearizzazione: S≈N all'inizio epidemia</div>
             <div class="sub-desc">
               Se S ≈ N (pochi infetti inizialmente): β·S/N ≈ β. Il termine non lineare si linearizza.
-              <span class="mblock"><span class="hg">A_lin = [[−β, 0, 0],
-          [ β,−δ, 0],
-          [ 0, δ, 0]]</span><br><br>Autovalori: 0, −β, −δ</span>
-              Il vettore S evolve come decadimento esponenziale (approx.). Numero riproduttivo: <span class="fbox green">R₀ = β/δ</span>. Se R₀ > 1: epidemia si diffonde (I cresce inizialmente). Se R₀ &lt; 1: epidemia si spegne.
+              <div class="mblock-latex">\[
+\begin{aligned}
+A_{lin} = [[-\beta, 0, 0], \\
+[ \beta,-\delta, 0], \\
+[ 0, \delta, 0]]
+\end{aligned}
+\]</div><br><br>Autovalori: 0, −β, −δ</span>
+              Il vettore S evolve come decadimento esponenziale (approx.). Numero riproduttivo: <span class="fbox-inline green">\( R_{0} = \beta/\delta \)</span>. Se R₀ > 1: epidemia si diffonde (I cresce inizialmente). Se R₀ &lt; 1: epidemia si spegne.
             </div>
           </div>
         </div>
@@ -863,10 +945,14 @@
             <div class="sub-title">Modello SIRD — 4 compartimenti, con decessi</div>
             <div class="sub-desc">
               Aggiunta compartimento D (deceduti) con tasso γ da I.
-              <span class="mblock"><span class="hg">A_lin = [[−β,   0,  0, 0],
-          [ β, −(δ+γ),0, 0],
-          [ 0,   δ,  0, 0],
-          [ 0,   γ,  0, 0]]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A_{lin} = [[-\beta,   0,  0, 0], \\
+[ \beta, -(\delta+\gamma),0, 0], \\
+[ 0,   \delta,  0, 0], \\
+[ 0,   \gamma,  0, 0]]
+\end{aligned}
+\]</div></span>
               Sistema 4×4. Check: 𝟙ᵀA_lin = [0, 0, 0, 0] ✓ (conservazione con la linearizzazione S≈N costante).
             </div>
           </div>
@@ -877,7 +963,13 @@
             <div class="sub-title">Controllo: vaccinazione come ingresso</div>
             <div class="sub-desc">
               u₁(t) = tasso di vaccinazione (individui S → R per unità di tempo).
-              <span class="mblock">Ṡ = −β·I − u₁<br>Ṙ = δ·I + u₁<br><br><span class="hg">B = [−1, 0, 1]ᵀ</span>  (u₁ riduce S, aumenta R)</span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+\dot{S} = -\beta\,I - u_{1} \\
+\dot{R} = \delta\,I + u_{1} \\
+B = [-1, 0, 1]^{\top}
+\end{aligned}
+\]</div>  (u₁ riduce S, aumenta R)</span>
               Obiettivo: mantenere R₀_eff = β·S/(δ·N) &lt; 1 tramite u₁(t).
             </div>
           </div>
@@ -908,8 +1000,8 @@
             <div class="sub-title">Modello DeGroot di opinione — n agenti</div>
             <div class="sub-desc">
               n agenti con opinione x_i(t). L'agente i aggiorna la propria opinione verso quelle dei vicini j con peso w_ij ≥ 0:
-              <span class="mblock">ẋᵢ = Σ_{j∈N(i)} w_ij·(x_j − xᵢ)</span>
-              Forma matriciale: <span class="fbox green">ẋ = −L·x</span> dove L è il <strong style="color:var(--green)">Laplaciano del grafo</strong>.<br>
+              <div class="mblock-latex">\[ \dot{x}ᵢ = \Sigma_{j\inN(i)} w_{ij}\,(x_{j} - xᵢ) \]</div>
+              Forma matriciale: <span class="fbox-inline green">\( \dot{x} = -L\,x \)</span> dove L è il <strong style="color:var(--green)">Laplaciano del grafo</strong>.<br>
               Converge al consensus (tutte le opinioni uguali) se il grafo è connesso.
             </div>
           </div>
@@ -919,12 +1011,16 @@
           <div>
             <div class="sub-title">Laplaciano del grafo</div>
             <div class="sub-desc">
-              <span class="fbox green">L_ii = Σ_{j≠i} w_ij</span> (grado pesato di i) &nbsp;&nbsp;
-              <span class="fbox green">L_ij = −w_ij</span> per i≠j.<br>
+              <span class="fbox-inline green">\( L_{ii} = \Sigma_{j\neqi} w_{ij} \)</span> (grado pesato di i) &nbsp;&nbsp;
+              <span class="fbox-inline green">\( L_{ij} = -w_{ij} \)</span> per i≠j.<br>
               L è semidefinita positiva. Ha sempre autovalore 0 con autovettore 𝟙. Per un grafo connesso: l'autovalore 0 è semplice e tutti gli altri autovalori sono > 0.
-              <span class="mblock"><span class="hg">L = [[w₁₂+w₁₃, −w₁₂,   −w₁₃  ],
-     [−w₁₂,    w₁₂+w₂₃, −w₂₃  ],
-     [−w₁₃,   −w₂₃,    w₁₃+w₂₃]]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+L = [[w_{12}+w_{13}, -w_{12},   -w_{13}  ], \\
+[-w_{12},    w_{12}+w_{23}, -w_{23}  ], \\
+[-w_{13},   -w_{23},    w_{13}+w_{23}]]
+\end{aligned}
+\]</div></span>
             </div>
           </div>
         </div>
@@ -933,8 +1029,8 @@
           <div>
             <div class="sub-title">Valore di consensus</div>
             <div class="sub-desc">
-              Il sistema ẋ=−Lx converge a <span class="fbox green">x*(t→∞) = c·𝟙</span> dove c è la media pesata delle opinioni iniziali. Per grafo non pesato (w_ij = 1): c = (1/n)·𝟙ᵀx(0) (media aritmetica).<br>
-              La quantità conservata è <span class="fbox green">𝟙ᵀx</span>: ˙(𝟙ᵀx) = 𝟙ᵀ(−Lx) = −(𝟙ᵀL)x = 0 perché 𝟙ᵀL = 0.
+              Il sistema ẋ=−Lx converge a <span class="fbox-inline green">\( x*(t\to\infty) = c\,\mathbf{1} \)</span> dove c è la media pesata delle opinioni iniziali. Per grafo non pesato (w_ij = 1): c = (1/n)·𝟙ᵀx(0) (media aritmetica).<br>
+              La quantità conservata è <span class="fbox-inline green">\( \mathbf{1}^{\top}x \)</span>: ˙(𝟙ᵀx) = 𝟙ᵀ(−Lx) = −(𝟙ᵀL)x = 0 perché 𝟙ᵀL = 0.
             </div>
           </div>
         </div>
@@ -944,7 +1040,12 @@
             <div class="sub-title">Consensus con leader (ingresso esterno)</div>
             <div class="sub-desc">
               Un nodo leader impone la propria opinione u(t) come target. Gli altri nodi sono attirati con guadagno κ:
-              <span class="mblock">ẋ = (−L − κI)·x + κ·𝟙·u<br><br><span class="hg">A = −L − κI</span>,  <span class="hg">B = κ·𝟙</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+\dot{x} = (-L - \kappaI)\,x + \kappa\,\mathbf{1}\,u \\
+A = -L - \kappaI
+\end{aligned}
+\]</div>,  <span class="fbox-inline -inline green">\( \( B = \kappa\,\mathbf{1} \) \)</span></span>
               Con κ>0: tutti i nodi convergono all'opinione del leader u (stabilità garantita perché A ha tutti autovalori &lt; 0).
             </div>
           </div>
@@ -985,7 +1086,7 @@
             <div class="sub-title">Circuito RC — 1 stato, 1 ingresso</div>
             <div class="sub-desc">
               Stato: tensione V_C(t) sul condensatore. Ingresso: V_in(t). KCL al nodo: C·V̇_C = (V_in − V_C)/R.
-              <span class="mblock"><span class="hp">A = [−1/(RC)]</span>,  <span class="hp">B = [1/(RC)]</span><br><br>Costante di tempo: τ = RC<br>Equil. con V_in = V̄: V̄_C = V̄  (A invertibile: V̄_C = −A⁻¹·B·V̄ = V̄)</span>
+              <div class="mblock-latex">\[ A = [-1/(RC)] \]</div>,  <span class="fbox-inline -inline purple">\( \( B = [1/(RC)] \) \)</span><br><br>Costante di tempo: τ = RC<br>Equil. con V_in = V̄: V̄_C = V̄  (A invertibile: V̄_C = −A⁻¹·B·V̄ = V̄)</span>
               Stessa struttura del serbatoio con ingresso: α₁₀ ↔ 1/RC, β₁₁ ↔ 1/RC.
             </div>
           </div>
@@ -996,8 +1097,12 @@
             <div class="sub-title">Due condensatori RC in cascata — 2×2</div>
             <div class="sub-desc">
               C₁, R₁ in ingresso; C₂, R₁₂ tra i due. V_in = u.
-              <span class="mblock"><span class="hp">A = [[−1/R₁C₁ − 1/R₁₂C₁,    1/R₁₂C₁ ],
-     [       1/R₁₂C₂,     −1/R₁₂C₂ ]]</span><br><br><span class="hp">B = [1/R₁C₁, 0]ᵀ</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A = [[-1/R_1C_{1} - 1/R_{12}C_{1},    1/R_{12}C_{1} ], \\
+[       1/R_{12}C_{2},     -1/R_{12}C_{2} ]]
+\end{aligned}
+\]</div><br><br><span class="fbox-inline -inline purple">\( \( B = [1/R_1C_{1}, 0]^{\top} \) \)</span></span>
               Check: la matrice A ha la struttura tipica dei modelli di flusso (diag ≤ 0, fuori-diag ≥ 0). 𝟙ᵀA ≠ 0 perché R₁ disperde verso massa.
             </div>
           </div>
@@ -1008,8 +1113,12 @@
             <div class="sub-title">Circuito RLC — 2 stati, secondo ordine</div>
             <div class="sub-desc">
               Stati: x₁ = V_C (tensione condensatore), x₂ = I_L (corrente induttore). KCL: C·V̇_C = I_L − V_C/R. KVL: L·İ_L = V_in − V_C.
-              <span class="mblock"><span class="hp">A = [[−1/(RC),  1/C ],
-     [−1/L,     0  ]]</span><br><br><span class="hp">B = [0, 1/L]ᵀ</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A = [[-1/(RC),  1/C ], \\
+[-1/L,     0  ]]
+\end{aligned}
+\]</div><br><br><span class="fbox-inline -inline purple">\( \( B = [0, 1/L]^{\top} \) \)</span></span>
               Autovalori: λ = [−1/(2RC) ± √(1/(2RC)² − 1/LC)]. Con 1/(2RC)² &lt; 1/LC: autovalori complessi coniugati → oscillazioni smorzate. Frequenza nat.: ω₀ = 1/√(LC), smorzamento: ζ = 1/(2R)·√(L/C).
             </div>
           </div>
@@ -1056,8 +1165,12 @@
             <div class="sub-title">Massa-molla-smorzatore — 2 stati, 1 ingresso</div>
             <div class="sub-desc">
               Seconda legge: m·q̈ = F(t) − b·q̇ − k·q. Variabili di stato: x₁ = q (posizione), x₂ = v = q̇ (velocità).
-              <span class="mblock"><span class="hp">A = [[ 0,    1  ],
-     [−k/m, −b/m]]</span><br><br><span class="hp">B = [0, 1/m]ᵀ</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A = [[ 0,    1  ], \\
+[-k/m, -b/m]]
+\end{aligned}
+\]</div><br><br><span class="fbox-inline -inline purple">\( \( B = [0, 1/m]^{\top} \) \)</span></span>
               Autovalori: λ = [−b ± √(b²−4km)]/(2m). Se b² &lt; 4km: λ complessi (oscillazioni smorzate). Equilibrio con F = F̄: q̄ = F̄/k, v̄ = 0.
             </div>
           </div>
@@ -1068,10 +1181,14 @@
             <div class="sub-title">Due masse in serie — 4×4, 1 ingresso (max esame)</div>
             <div class="sub-desc">
               m₁ e m₂ collegate da molla k₁₂ e smorzatore b₁₂. m₁ attaccato a parete con k₁,b₁. Forza F su m₁. Stati: x = [q₁, q̇₁, q₂, q̇₂]ᵀ.
-              <span class="mblock"><span class="hp">A = [[ 0,        1,         0,    0  ],
-     [−(k₁+k₁₂)/m₁, −(b₁+b₁₂)/m₁, k₁₂/m₁, b₁₂/m₁],
-     [ 0,        0,         0,    1  ],
-     [ k₁₂/m₂,  b₁₂/m₂, −k₁₂/m₂, −b₁₂/m₂]]</span><br><br><span class="hp">B = [0, 1/m₁, 0, 0]ᵀ</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A = [[ 0,        1,         0,    0  ], \\
+[-(k_{1}+k_{12})/m_{1}, -(b_{1}+b_{12})/m_{1}, k_{12}/m_{1}, b_{12}/m_{1}], \\
+[ 0,        0,         0,    1  ], \\
+[ k_{12}/m_{2},  b_{12}/m_{2}, -k_{12}/m_{2}, -b_{12}/m_{2}]]
+\end{aligned}
+\]</div><br><br><span class="fbox-inline -inline purple">\( \( B = [0, 1/m_{1}, 0, 0]^{\top} \) \)</span></span>
               Sistema 4×4 con 1 ingresso: il massimo richiesto all'esame.
             </div>
           </div>
@@ -1082,8 +1199,12 @@
             <div class="sub-title">Pendolo lineare (piccole oscillazioni) — 2 stati</div>
             <div class="sub-desc">
               θ̈ + (b/ml²)·θ̇ + (g/l)·θ = u/(ml²). Con x₁=θ, x₂=θ̇:
-              <span class="mblock"><span class="hp">A = [[ 0,      1    ],
-     [−g/l,  −b/(ml²)]]</span><br><br><span class="hp">B = [0, 1/(ml²)]ᵀ</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A = [[ 0,      1    ], \\
+[-g/l,  -b/(ml²)]]
+\end{aligned}
+\]</div><br><br><span class="fbox-inline -inline purple">\( \( B = [0, 1/(ml²)]^{\top} \) \)</span></span>
               Frequenza naturale ω₀ = √(g/l). Linearizzazione valida per |θ| &lt; 15°.
             </div>
           </div>
@@ -1131,7 +1252,12 @@
             <div class="sub-title">Equazione del calore — 1 zona, 1 ingresso</div>
             <div class="sub-desc">
               Temperatura T(t), capacità termica C_th, resistenza termica R_th verso esterno T_ext (ingresso u).
-              <span class="mblock">C_th·Ṫ = (T_ext − T)/R_th + Q_gen<br><br><span class="hp">A = [−1/(R_th·C_th)]</span>,  <span class="hp">B = [1/(R_th·C_th), 1/C_th]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+C_{th}\,Ṫ = (T_{ext} - T)/R_{th} + Q_{gen} \\
+A = [-1/(R_{th}\,C_{th})]
+\end{aligned}
+\]</div>,  <span class="fbox-inline -inline purple">\( \( B = [1/(R_{th}\,C_{th}), 1/C_{th}] \) \)</span></span>
               Identico al circuito RC con T↔V_C, C_th↔C, R_th↔R.
             </div>
           </div>
@@ -1142,13 +1268,13 @@
             <div class="sub-title">Edificio a 3 zone — 3×3, 2 ingressi</div>
             <div class="sub-desc">
               Zone T₁, T₂, T₃ accoppiate termicamente con resistenze R₁₂, R₂₃. T_ext = u₁ agisce su T₁, sorgente di calore u₂ nella zona 2.
-              <span class="mblock"><span class="hp">A = 
-                \begin{pmatrix} 
-                  -\frac{1}{R_{12}C_1} - \frac{1}{R_1C_1} & \frac{1}{R_{12}C_1} & 0 \\ 
-                  \frac{1}{R_{12}C_2} & -\frac{1}{R_{12}C_2} - \frac{1}{R_{23}C_2} & \frac{1}{R_{23}C_2} \\ 
-                  0 & \frac{1}{R_{23}C_3} & -\frac{1}{R_{23}C_3} 
-                \end{pmatrix}
-</span><br><br><span class="hp">B = [1/(R₁C₁), 0, 0; 0, 1/C₂, 0]</span></span>
+              <div class="mblock-latex">\[
+\begin{aligned}
+A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
+[  1/(R_{12}C_{2}),         -1/(R_{12}C_{2})-1/(R_{23}C_{2}), 1/(R_{23}C_{2})], \\
+[  0,                   1/(R_{23}C_{3}),  -1/(R_{23}C_{3})]]
+\end{aligned}
+\]</div><br><br><span class="fbox-inline -inline purple">\( \( B = [1/(R_1C_{1}), 0, 0; 0, 1/C_{2}, 0] \) \)</span></span>
             </div>
           </div>
         </div>
@@ -1205,10 +1331,10 @@
             <div class="sub-desc">
               x̄ è un equilibrio per ingresso costante ū se il sistema vi resta per sempre: ẋ = 0.
               Sostituendo in ẋ = Ax + Bu:
-              <span class="mblock"><span class="ha">0 = A·x̄ + B·ū</span></span>
-              Se A invertibile: <span class="fbox amber">x̄ = −A⁻¹·B·ū</span><br>
+              <div class="mblock-latex">\[ 0 = A\,\bar{x} + B\,\bar{u} \]</div></span>
+              Se A invertibile: <span class="fbox-inline amber">\( \bar{x} = -A⁻¹\,B\,\bar{u} \)</span><br>
               Se A singolare (det A = 0 → sistema conservativo): infinite soluzioni
-              → aggiungere il vincolo di conservazione <span class="fbox amber">𝟙ᵀ·x̄ = N_tot</span>.
+              → aggiungere il vincolo di conservazione <span class="fbox-inline amber">\( \mathbf{1}^{\top}\,\bar{x} = N_{tot} \)</span>.
             </div>
           </div>
         </div>
@@ -1218,7 +1344,7 @@
             <div class="sub-title">Sistema autonomo: ker A</div>
             <div class="sub-desc">
               Con u = 0: gli equilibri sono tutte le soluzioni di A·x̄ = 0:
-              <span class="fbox amber" style="display:block;margin:5px 0">{x̄ : A·x̄ = 0} = ker(A)</span>
+              <div class="fbox-block amber">\[ {\bar{x} : A\,\bar{x} = 0} = \ker(A) \]</div>
               Nei sistemi conservativi ker(A) contiene 𝟙 (o suoi multipli scalari).
               L'equilibrio fisicamente significativo si ricava fissando N_tot = 𝟙ᵀx̄.
             </div>
@@ -1230,7 +1356,7 @@
             <div class="sub-title">Condizione di conservazione: 𝟙ᵀA = 0</div>
             <div class="sub-desc">
               Il sistema conserva la risorsa totale y = 𝟙ᵀx se e solo se:
-              <span class="fbox amber" style="display:block;margin:5px 0">𝟙ᵀA = 0   ↔   la somma di ogni COLONNA di A è zero</span>
+              <div class="fbox-block amber">\[ \mathbf{1}^{\top}A = 0   \leftrightarrow   la somma di ogni COLONNA di A è zero \]</div>
               Dimostrazione: ẏ = 𝟙ᵀẋ = 𝟙ᵀAx = (𝟙ᵀA)x = 0·x = 0 per ogni x.<br>
               Se A = Aᵀ (grafo simmetrico): 𝟙ᵀA = 0 implica anche A𝟙 = 0, quindi 𝟙 è
               autovettore sia destro che sinistro con λ = 0.
@@ -1258,9 +1384,9 @@
             <div class="sub-title">Quantità conservate come output lineari</div>
             <div class="sub-desc">
               Se y = C·x è conservata: ẏ = C·A·x = 0 per ogni x, quindi
-              <span class="fbox amber">C·A = 0</span> (le righe di C sono autovettori sinistri di A con λ = 0).<br>
+              <span class="fbox-inline amber">\( C\,A = 0 \)</span> (le righe di C sono autovettori sinistri di A con λ = 0).<br>
               Esempio — 2 serbatoi: C = [1, 1].<br>
-              <span class="mblock">C·A = [1,1]·[[-α₁₂, 0],[α₁₂, 0]] = [0, 0]  ✓</span>
+              <div class="mblock-latex">\[ C\,A = [1,1]\,[[-\alpha_{12}, 0],[\alpha_{12}, 0]] = [0, 0]  ✓ \]</div>
               Questo permette di verificare la conservazione senza calcolare la traiettoria.
             </div>
           </div>
@@ -1322,8 +1448,8 @@
           <div>
             <div class="sub-title">④ Costruisci B colonna per colonna</div>
             <div class="sub-desc">Una colonna per ogni ingresso u.
-              Riga i: <span class="fbox amber">+β</span> se quell'ingresso immette nel compartimento i
-              (sorgente), <span class="fbox coral">−β</span> se preleva dal compartimento i (pozzo), 0 altrimenti.</div>
+              Riga i: <span class="fbox-inline amber">\( +\beta \)</span> se quell'ingresso immette nel compartimento i
+              (sorgente), <span class="fbox-inline coral">\( -\beta \)</span> se preleva dal compartimento i (pozzo), 0 altrimenti.</div>
           </div>
         </div>
         <div class="sub-item">
@@ -1357,7 +1483,7 @@
           <div class="sub-dot coral"></div>
           <div>
             <div class="sub-title">❌ Segno sbagliato su B per i prelievi</div>
-            <div class="sub-desc">Se u_h è un prelievo (valvola di uscita), l'elemento di B è <span class="fbox coral">−β</span> (negativo).
+            <div class="sub-desc">Se u_h è un prelievo (valvola di uscita), l'elemento di B è <span class="fbox-inline coral">\( -\beta \)</span> (negativo).
               Errore frequente: mettere +β pensando "u_h coinvolge il compartimento i".
               Ricorda: u_h porta via risorsa → segno meno in B e non va nella diagonale di A.</div>
           </div>
@@ -1400,7 +1526,7 @@
           <div>
             <div class="sub-title">❌ Equilibrio con A singolare senza vincolo aggiuntivo</div>
             <div class="sub-desc">Se det(A) = 0 (sistema conservativo), 0 = Ax̄ + Bū ha infinite soluzioni.
-              Serve il vincolo fisico <span class="fbox amber">𝟙ᵀx̄ = N_tot</span>.
+              Serve il vincolo fisico <span class="fbox-inline amber">\( \mathbf{1}^{\top}\bar{x} = N_{tot} \)</span>.
               Senza di esso la risposta è incompleta: il prof non assegnerà il punteggio pieno.</div>
           </div>
         </div>
@@ -1512,10 +1638,6 @@
 <footer>
   <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · FCA · Fondamenti di Controlli Automatici · A.A. 2025/26</p>
   <p style="margin-top:6px">CSS condiviso: <span style="color:var(--teal)">so.css</span></p>
-      
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
 </footer>
 
 <script>
