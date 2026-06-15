@@ -1,704 +1,688 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>01 · Sistemi Operativi — SO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../so.css">
-<style>
-  .nav-logo { color: var(--amber); }
-  .nav-back:hover { color: var(--amber); border-color: rgba(251,191,36,0.4); }
-  .hero-glow { background: radial-gradient(ellipse, rgba(251,191,36,0.07) 0%, transparent 65%); }
-  .page-accent { color: var(--amber); }
-  .topic-hero-title {
-    font-size: clamp(2.2rem, 6vw, 4.5rem);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    margin-bottom: 1.25rem;
-    background: linear-gradient(135deg, #f0eeff 0%, #fbbf24 55%, #f59e0b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .topic-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--amber);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .topic-num::before { content:''; display:inline-block; width:20px; height:1px; background:var(--amber); }
-  .content-wrap {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 3rem 2rem 6rem;
-  }
-  .section-block {
-    margin-bottom: 3rem;
-  }
-  .section-block h2 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .section-block h2 .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--amber);
-    flex-shrink: 0;
-  }
-  .section-block p {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.85;
-    margin-bottom: 0.75rem;
-  }
-  .section-block p:last-child { margin-bottom: 0; }
-  code.inline {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
-    color: var(--amber);
-    background: rgba(251,191,36,0.08);
-    padding: 1px 6px;
-    border-radius: 4px;
-  }
-  .keyword { color: var(--text-primary); font-weight: 600; }
-  .sub-tag {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    padding: 1px 7px;
-    border-radius: var(--r-pill);
-    background: rgba(251,191,36,0.12);
-    color: var(--amber);
-    border: 1px solid rgba(251,191,36,0.3);
-    letter-spacing: 0.04em;
-    margin-left: 8px;
-    vertical-align: middle;
-    font-weight: 600;
-  }
-  .nav-breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 2.5rem;
-  }
-  .nav-breadcrumb a { color: var(--text-muted); transition: color 0.2s; }
-  .nav-breadcrumb a:hover { color: var(--amber); }
-  .nav-breadcrumb span { color: var(--border-hover); }
-  .back-btn-wrap {
-    display: flex;
-    gap: 12px;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border);
-  }
-  .index-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
-    gap: 8px;
-    margin-bottom: 2.5rem;
-  }
-  .index-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--r-md);
-    padding: 0.75rem 1rem;
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    border-left: 2px solid var(--amber);
-  }
-  .index-item .idx-num { color: var(--amber); font-size: 10px; margin-bottom: 2px; }
-  .index-item .idx-name { color: var(--text-secondary); font-size: 12px; font-family: 'Inter', sans-serif; font-weight: 600; }
-</style>
-
-<style id="so-sb-css">
-/* ── Sidebar fissa ──────────────────────────────────────────────────── */
-:root { --sb-w: 240px; }
-
-/* Shift tutto il body a destra della sidebar */
-body {
-  padding-left: var(--sb-w);
-}
-
-/* La navbar si allunga a coprire anche la sidebar */
-nav {
-  left: 0 !important;
-  right: 0 !important;
-  padding-left: calc(var(--sb-w) + 1.5rem) !important;
-}
-
-/* Sidebar: fixed, piena altezza, sotto la navbar */
-.so-sidebar {
-  position: fixed;
-  top: var(--nav-h);
-  left: 0;
-  width: var(--sb-w);
-  height: calc(100vh - var(--nav-h));
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: rgba(8,8,16,0.97);
-  border-right: 1px solid var(--border);
-  z-index: 90;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 3rem;
-  /* thin scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(251,191,36,.25) transparent;
-}
-.so-sidebar::-webkit-scrollbar       { width: 3px; }
-.so-sidebar::-webkit-scrollbar-track { background: transparent; }
-.so-sidebar::-webkit-scrollbar-thumb { background: rgba(251,191,36,.3); border-radius: 3px; }
-
-/* Section labels (titolini) */
-.sb-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 1rem 1rem .45rem;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-shrink: 0;
-}
-.sb-label::before {
-  content: '';
-  display: inline-block;
-  width: 10px; height: 1px;
-  background: rgba(251,191,36,.55);
-  flex-shrink: 0;
-}
-
-/* ── Lista macroargomenti (tutte le pagine) ─────────────────────────── */
-.sb-pages {
-  list-style: none;
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: .5rem;
-  margin-bottom: .25rem;
-}
-.sb-pages li { display: block; }
-.sb-pages li a,
-.sb-pages li .sb-cur {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color .15s, background .15s;
-  border-left: 2px solid transparent;
-  line-height: 1.35;
-}
-.sb-pages li a:hover {
-  color: var(--text-secondary);
-  background: rgba(251,191,36,.04);
-  border-left-color: rgba(251,191,36,.25);
-}
-/* Pagina corrente */
-.sb-pages li .sb-cur {
-  color: var(--amber);
-  font-weight: 700;
-  border-left-color: var(--amber);
-  background: rgba(251,191,36,.07);
-}
-.sb-pdot {
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: currentColor;
-  flex-shrink: 0;
-  opacity: .45;
-}
-.sb-cur .sb-pdot { opacity: 1; }
-
-/* ── Lista sezioni (questa pagina) ─────────────────────────────────── */
-.sb-sections {
-  list-style: none;
-  flex: 1;
-}
-.sb-sections li { display: block; }
-.sb-sections li .sb-link {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  padding: 5px 1rem;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-decoration: none;
-  border-left: 2px solid transparent;
-  transition: color .15s, background .15s, border-color .15s;
-  line-height: 1.4;
-  cursor: pointer;
-  width: 100%;
-  background: none;
-  border-top: none; border-right: none; border-bottom: none;
-  font-family: 'Inter', sans-serif;
-  text-align: left;
-}
-.sb-sections li .sb-link:hover {
-  color: var(--text-secondary);
-  background: rgba(251,191,36,.04);
-  border-left-color: rgba(251,191,36,.3);
-}
-.sb-sections li.sb-active .sb-link {
-  color: var(--amber);
-  font-weight: 600;
-  border-left-color: var(--amber);
-  background: rgba(251,191,36,.07);
-}
-.sb-idx {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: rgba(251,191,36,.4);
-  flex-shrink: 0;
-  min-width: 28px;
-  margin-top: 2px;
-}
-.sb-active .sb-idx { color: var(--amber); }
-
-/* ── Index-grid cards clickable ─────────────────────────────────────── */
-.index-item {
-  cursor: pointer;
-  transition: background .15s, border-color .15s, transform .12s;
-  user-select: none;
-}
-.index-item:hover {
-  background: var(--bg-card-hover);
-  border-left-color: var(--amber);
-  transform: translateY(-1px);
-}
-.index-item:active { transform: translateY(0); }
-
-/* ── Section flash on jump ─────────────────────────────────────────── */
-.section-block { scroll-margin-top: calc(var(--nav-h) + 1.25rem); }
-@keyframes sbFlash {
-  0%   { box-shadow: inset 0 0 0 2px rgba(251,191,36,.55); border-radius: 8px; }
-  100% { box-shadow: inset 0 0 0 2px rgba(251,191,36,0);   border-radius: 8px; }
-}
-.sb-flash { animation: sbFlash .75s ease-out; }
-
-/* ── Mobile: sidebar nascosta, padding rimosso ──────────────────────── */
-@media (max-width: 900px) {
-  .so-sidebar { display: none; }
-  body { padding-left: 0 !important; }
-  nav  { padding-left: 2.5rem !important; }
-}
-</style>
-</head>
-<body class="dot-grid">
-<aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><div class="sb-cur"><span class="sb-pdot"></span>01 · Sistemi Operativi</div></li>
-    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-    <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-    <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-    <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-    <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-    <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-    <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-    <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections">
-    <li data-sid="section-1">
-      <div class="sb-link" data-target="section-1">
-        <span class="sb-idx">01.01</span>
-        <span>Definizione di Sistema Operativo</span>
-      </div>
-    </li>
-    <li data-sid="section-2">
-      <div class="sb-link" data-target="section-2">
-        <span class="sb-idx">01.02</span>
-        <span>Struttura del Computer System</span>
-      </div>
-    </li>
-    <li data-sid="section-3">
-      <div class="sb-link" data-target="section-3">
-        <span class="sb-idx">01.03</span>
-        <span>Sistemi Multiprocessori</span>
-      </div>
-    </li>
-    <li data-sid="section-4">
-      <div class="sb-link" data-target="section-4">
-        <span class="sb-idx">01.04</span>
-        <span>Architettura SMP & Multicore Design</span>
-      </div>
-    </li>
-    <li data-sid="section-5">
-      <div class="sb-link" data-target="section-5">
-        <span class="sb-idx">01.05</span>
-        <span>Non-Uniform Memory Access (NUMA)</span>
-      </div>
-    </li>
-    <li data-sid="section-6">
-      <div class="sb-link" data-target="section-6">
-        <span class="sb-idx">01.06</span>
-        <span>Servizi del Sistema Operativo</span>
-      </div>
-    </li>
-    <li data-sid="section-7">
-      <div class="sb-link" data-target="section-7">
-        <span class="sb-idx">01.07</span>
-        <span>System Calls</span>
-      </div>
-    </li>
-    <li data-sid="section-8">
-      <div class="sb-link" data-target="section-8">
-        <span class="sb-idx">01.08</span>
-        <span>Implementazione delle System Calls</span>
-      </div>
-    </li>
-    <li data-sid="section-9">
-      <div class="sb-link" data-target="section-9">
-        <span class="sb-idx">01.09</span>
-        <span>Esempi di System Calls per Categoria</span>
-      </div>
-    </li>
-    <li data-sid="section-10">
-      <div class="sb-link" data-target="section-10">
-        <span class="sb-idx">01.10</span>
-        <span>Struttura del Sistema Operativo</span>
-      </div>
-    </li>
-    <li data-sid="section-11">
-      <div class="sb-link" data-target="section-11">
-        <span class="sb-idx">01.11</span>
-        <span>Microkernels</span>
-      </div>
-    </li>
-    <li data-sid="section-12">
-      <div class="sb-link" data-target="section-12">
-        <span class="sb-idx">01.12</span>
-        <span>Moduli del Kernel</span>
-      </div>
-    </li>
-  </ul>
-</aside>
-
-
-<nav>
-  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
-  <div class="nav-right">
-    <a href="../index.html" class="nav-back">← Indice SO</a>
-    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
-  </div>
-</nav>
-
-<div class="hero" style="min-height:55vh">
-  <div class="hero-glow"></div>
-  <span class="hero-eyebrow" style="background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.3);color:var(--amber)">
-    Macroargomento 01 · Base
-  </span>
-  <div class="topic-num">01 / 13</div>
-  <h1 class="topic-hero-title">Sistemi Operativi</h1>
-  <p class="hero-sub" style="max-width:640px">
-    Definizione, struttura, architettura multiprocessore, system calls e modelli architetturali del kernel. Il punto di partenza per capire come funziona un sistema operativo moderno.
-  </p>
-</div>
-
-<hr class="divider">
-
-<div class="content-wrap">
-
-  <div class="nav-breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a>
-    <span>/</span>
-    <a href="../index.html">SO</a>
-    <span>/</span>
-    <span>01 · Sistemi Operativi</span>
-  </div>
-
-  <!-- Index map -->
-  <div class="amber-box" style="margin-bottom:2rem">
-    Questa pagina copre i <strong style="color:var(--amber)">12 sottoargomenti</strong> del macroargomento 1, tratti dai capitoli 1 e 2 del corso.
-  </div>
-  <div class="index-grid">
-    <div class="index-item" data-target="section-1"><div class="idx-num">01.01</div><div class="idx-name">Definizione di SO</div></div>
-    <div class="index-item" data-target="section-2"><div class="idx-num">01.02</div><div class="idx-name">Struttura computer system</div></div>
-    <div class="index-item" data-target="section-3"><div class="idx-num">01.03</div><div class="idx-name">Sistemi multiprocessori</div></div>
-    <div class="index-item" data-target="section-4"><div class="idx-num">01.04</div><div class="idx-name">SMP & Multicore</div></div>
-    <div class="index-item" data-target="section-5"><div class="idx-num">01.05</div><div class="idx-name">NUMA</div></div>
-    <div class="index-item" data-target="section-6"><div class="idx-num">01.06</div><div class="idx-name">Servizi OS</div></div>
-    <div class="index-item" data-target="section-7"><div class="idx-num">01.07</div><div class="idx-name">System Calls</div></div>
-    <div class="index-item" data-target="section-8"><div class="idx-num">01.08</div><div class="idx-name">Implementazione syscall</div></div>
-    <div class="index-item" data-target="section-9"><div class="idx-num">01.09</div><div class="idx-name">Esempi di syscall</div></div>
-    <div class="index-item" data-target="section-10"><div class="idx-num">01.10</div><div class="idx-name">Struttura OS</div></div>
-    <div class="index-item" data-target="section-11"><div class="idx-num">01.11</div><div class="idx-name">Microkernels</div></div>
-    <div class="index-item" data-target="section-12"><div class="idx-num">01.12</div><div class="idx-name">Moduli</div></div>
-  </div>
-
-  <!-- 01.01 -->
-  <div class="section-block" id="section-1">
-    <h2><span class="dot"></span> Definizione di Sistema Operativo <span class="sub-tag">fondamento</span></h2>
-    <p>
-      Un <span class="keyword">sistema operativo</span> è il software che fa da intermediario tra l'hardware della macchina e le applicazioni che girano su di essa. Il suo compito principale è gestire le risorse fisiche — processore, memoria, dispositivi di I/O — e metterle a disposizione dei programmi utente in modo sicuro, ordinato ed efficiente.
-    </p>
-    <p>
-      Dal punto di vista dell'utente, il SO nasconde la complessità dell'hardware e fornisce un'interfaccia coerente (shell, GUI, API). Dal punto di vista del sistema, è un gestore di risorse che deve massimizzare l'utilizzo dell'hardware evitando conflitti tra i processi in esecuzione.
-    </p>
-    <p>
-      Il componente centrale che rimane sempre in memoria e gira in modalità privilegiata si chiama <span class="keyword">kernel</span>. Tutto il resto — shell, utility, librerie di sistema — è software che gira al di sopra del kernel.
-    </p>
-  </div>
-
-  <!-- 01.02 -->
-  <div class="section-block" id="section-2">
-    <h2><span class="dot"></span> Struttura del Computer System</h2>
-    <p>
-      L'architettura di un sistema informatico si organizza in strati sovrapposti: in fondo c'è l'<span class="keyword">hardware</span> (CPU, RAM, bus, controller), su cui poggia il <span class="keyword">kernel</span>, poi i <span class="keyword">servizi di sistema</span> (compilatori, interpreti, utility), e infine le <span class="keyword">applicazioni utente</span>.
-    </p>
-    <p>
-      Ogni livello comunica solo con quello immediatamente adiacente tramite interfacce definite. Questo principio di astrazione a strati permette di sostituire o aggiornare un livello senza dover cambiare quelli superiori: un'applicazione che usa la system call <code class="inline">write()</code> funziona indipendentemente dal tipo di disco sottostante.
-    </p>
-    <p>
-      All'avvio del sistema, il <span class="keyword">bootstrap program</span> (BIOS/UEFI, poi bootloader) carica il kernel in memoria e gli trasferisce il controllo. Da quel momento il kernel inizializza i driver, monta il filesystem radice e avvia il processo <code class="inline">init</code> (o <code class="inline">systemd</code> nei sistemi Linux moderni).
-    </p>
-  </div>
-
-  <!-- 01.03 -->
-  <div class="section-block" id="section-3">
-    <h2><span class="dot"></span> Sistemi Multiprocessori</h2>
-    <p>
-      I sistemi moderni montano più CPU (o più core per CPU) che condividono la stessa memoria principale e lo stesso bus di sistema. Questo approccio porta due vantaggi chiave: maggiore <span class="keyword">throughput</span> (più lavoro per unità di tempo) e maggiore <span class="keyword">affidabilità</span> (se una CPU si guasta le altre continuano).
-    </p>
-    <p>
-      Si distinguono due grandi famiglie. I sistemi <span class="keyword">asimmetrici</span> (AMP) assegnano ruoli diversi a CPU diverse: una CPU master gestisce il sistema e delega i task alle slave. I sistemi <span class="keyword">simmetrici</span> (SMP), oggi dominanti, trattano tutte le CPU allo stesso modo: ognuna può eseguire qualsiasi processo e accedere alla memoria condivisa.
-    </p>
-    <p>
-      Il SO deve gestire la concorrenza tra CPU, proteggere le strutture dati del kernel con lock, e distribuire il carico equamente tra i processori disponibili tramite il <span class="keyword">load balancing</span>.
-    </p>
-  </div>
-
-  <!-- 01.04 -->
-  <div class="section-block" id="section-4">
-    <h2><span class="dot"></span> Architettura SMP & Multicore Design</h2>
-    <p>
-      Nella <span class="keyword">Symmetric Multi-Processing</span> ogni CPU ha accesso uniforme all'intera RAM. Ogni processore esegue una copia del SO e le istanze si coordinano tra loro. Lo scheduler del kernel può assegnare qualsiasi thread a qualsiasi CPU disponibile.
-    </p>
-    <p>
-      Il design <span class="keyword">multicore</span> integra più unità di elaborazione (core) sullo stesso chip fisico. I core condividono la cache L3 e il collegamento al bus, riducendo la latenza di comunicazione rispetto a CPU separate. Oggi quasi tutti i processori consumer e server sono multicore: da 4 a 128+ core per chip.
-    </p>
-    <p>
-      Una sfida critica è la <span class="keyword">cache coherency</span>: se due core modificano la stessa variabile nelle rispettive cache L1, i valori devono essere sincronizzati tramite protocolli hardware (MESI, MOESI) per evitare che un core legga dati obsoleti.
-    </p>
-  </div>
-
-  <!-- 01.05 -->
-  <div class="section-block" id="section-5">
-    <h2><span class="dot"></span> Non-Uniform Memory Access (NUMA)</h2>
-    <p>
-      In sistemi con decine o centinaia di CPU, avere un'unica memoria condivisa crea un collo di bottiglia sul bus. L'architettura <span class="keyword">NUMA</span> risolve il problema assegnando a ogni CPU (o gruppo di CPU) un banco di memoria "locale" cui accede con latenza minima, e lasciando accessibile tutta la memoria "remota" con latenza maggiore.
-    </p>
-    <p>
-      Il SO NUMA-aware cerca di allocare memoria locale al processo che la usa e di schedulare i thread sulle CPU vicine alla memoria che contiene i loro dati. Linux gestisce questo tramite il concetto di <span class="keyword">NUMA node</span> e offre API come <code class="inline">numactl</code> per controllare l'affinità.
-    </p>
-    <p>
-      Un accesso a memoria remota può essere 2-10 volte più lento rispetto a uno locale. Su sistemi ad alto carico, un'ottimizzazione NUMA scorretta può dimezzare le prestazioni.
-    </p>
-  </div>
-
-  <!-- 01.06 -->
-  <div class="section-block" id="section-6">
-    <h2><span class="dot"></span> Servizi del Sistema Operativo</h2>
-    <p>
-      Il SO fornisce un insieme di servizi sia verso l'utente che verso i programmi. I principali sono: <span class="keyword">gestione dei processi</span> (creazione, scheduling, terminazione), <span class="keyword">gestione della memoria</span> (allocazione, protezione, paginazione), <span class="keyword">gestione del file system</span> (creazione, lettura, scrittura, permessi), <span class="keyword">gestione dell'I/O</span> (astrazione dei dispositivi, buffering, spooling).
-    </p>
-    <p>
-      A questi si aggiungono servizi di <span class="keyword">comunicazione interprocesso</span> (pipe, socket, memoria condivisa), <span class="keyword">protezione e sicurezza</span> (isolamento tra processi, autenticazione, controllo degli accessi) e <span class="keyword">interfaccia utente</span> (CLI tramite shell, GUI tramite window manager).
-    </p>
-  </div>
-
-  <!-- 01.07 -->
-  <div class="section-block" id="section-7">
-    <h2><span class="dot"></span> System Calls</h2>
-    <p>
-      Le <span class="keyword">system call</span> sono l'interfaccia programmabile tra un processo in user space e il kernel. Quando un programma ha bisogno di un servizio privilegiato — aprire un file, creare un processo, scrivere su un socket — deve chiedere al kernel di farlo per suo conto tramite una syscall.
-    </p>
-    <p>
-      Il meccanismo di esecuzione prevede un cambio di modalità hardware: il processore passa da <span class="keyword">user mode</span> (ring 3 su x86) a <span class="keyword">kernel mode</span> (ring 0). In user mode il codice non può accedere direttamente all'hardware né alla memoria di altri processi. In kernel mode non ci sono restrizioni.
-    </p>
-    <p>
-      Esempi fondamentali: <code class="inline">fork()</code> crea un processo figlio, <code class="inline">read()</code> e <code class="inline">write()</code> leggono e scrivono da file descriptor, <code class="inline">open()</code> apre un file, <code class="inline">exit()</code> termina il processo, <code class="inline">mmap()</code> mappa memoria.
-    </p>
-  </div>
-
-  <!-- 01.08 -->
-  <div class="section-block" id="section-8">
-    <h2><span class="dot"></span> Implementazione delle System Calls</h2>
-    <p>
-      Il programmatore raramente chiama direttamente le syscall: usa le funzioni della libreria C standard (<code class="inline">libc</code>) che le wrappano. Ad esempio, la funzione C <code class="inline">printf()</code> alla fine chiama la syscall <code class="inline">write()</code>.
-    </p>
-    <p>
-      Il meccanismo hardware su x86-64 funziona così: l'applicazione carica il <span class="keyword">numero di syscall</span> nel registro <code class="inline">rax</code> e i parametri negli altri registri, poi esegue l'istruzione <code class="inline">syscall</code>. La CPU salva il contesto, passa in kernel mode, e il kernel legge il numero in <code class="inline">rax</code> per chiamare l'handler corretto dalla <span class="keyword">syscall table</span>.
-    </p>
-    <p>
-      Su Linux, ogni syscall è identificata da un numero intero definito in <code class="inline">asm/unistd.h</code>. Attualmente Linux ha circa 350 syscall attive.
-    </p>
-  </div>
-
-  <!-- 01.09 -->
-  <div class="section-block" id="section-9">
-    <h2><span class="dot"></span> Esempi di System Calls per Categoria</h2>
-    <p>
-      Le syscall si raggruppano in cinque categorie principali. Il <span class="keyword">controllo dei processi</span> include <code class="inline">fork()</code>, <code class="inline">exec()</code>, <code class="inline">wait()</code>, <code class="inline">exit()</code>, <code class="inline">getpid()</code>. La <span class="keyword">gestione dei file</span> comprende <code class="inline">open()</code>, <code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">close()</code>, <code class="inline">stat()</code>, <code class="inline">unlink()</code>.
-    </p>
-    <p>
-      La <span class="keyword">gestione dei dispositivi</span> usa <code class="inline">ioctl()</code> per comandi device-specific e <code class="inline">read()</code>/<code class="inline">write()</code> su file descriptor di dispositivo. La <span class="keyword">gestione delle informazioni di sistema</span> include <code class="inline">time()</code>, <code class="inline">uname()</code>, <code class="inline">sysinfo()</code>. Infine le <span class="keyword">comunicazioni</span> sfruttano <code class="inline">socket()</code>, <code class="inline">send()</code>, <code class="inline">recv()</code>, <code class="inline">pipe()</code>, <code class="inline">mmap()</code>.
-    </p>
-  </div>
-
-  <!-- 01.10 -->
-  <div class="section-block" id="section-10">
-    <h2><span class="dot"></span> Struttura del Sistema Operativo</h2>
-    <p>
-      Esistono diversi approcci architetturali al design di un kernel. Il kernel <span class="keyword">monolitico</span> (usato da Linux, FreeBSD) inserisce tutti i servizi — scheduler, driver, filesystem, networking — in un unico spazio di indirizzamento. È veloce (nessun overhead di comunicazione tra componenti) ma più difficile da mantenere.
-    </p>
-    <p>
-      L'approccio <span class="keyword">a strati</span> organizza il kernel in livelli gerarchici, dove ogni strato usa solo i servizi dello strato immediatamente inferiore. Più ordinato concettualmente, ma introduce latenza per ogni attraversamento di strato.
-    </p>
-    <p>
-      L'approccio <span class="keyword">modulare</span>, usato da Linux in pratica, combina il nucleo monolitico con la possibilità di caricare e scaricare <em>moduli</em> a runtime (ad esempio i driver). Offre flessibilità senza sacrificare le prestazioni.
-    </p>
-  </div>
-
-  <!-- 01.11 -->
-  <div class="section-block" id="section-11">
-    <h2><span class="dot"></span> Microkernels</h2>
-    <p>
-      In un'architettura a <span class="keyword">microkernel</span> il nucleo ridotto al minimo (IPC, gestione memoria di base, scheduling elementare) gira in kernel mode, mentre tutto il resto — driver, filesystem, protocolli di rete — gira come <em>server</em> in user space.
-    </p>
-    <p>
-      I vantaggi sono significativi: se un driver di dispositivo crasha, non porta giù l'intero sistema (fault isolation). Il codice kernel è più piccolo, più facile da verificare formalmente e più sicuro. Esempi notevoli: <span class="keyword">Mach</span> (base di macOS/iOS), <span class="keyword">MINIX 3</span>, <span class="keyword">QNX</span> (usato in automotive e sistemi embedded).
-    </p>
-    <p>
-      Lo svantaggio principale è la <span class="keyword">latenza di comunicazione</span>: ogni richiesta a un server richiede almeno due context switch (user → kernel → user). Su sistemi ad alto carico questo overhead diventa visibile, motivo per cui i SO general-purpose hanno preferito il kernel monolitico modulare.
-    </p>
-  </div>
-
-  <!-- 01.12 -->
-  <div class="section-block" id="section-12">
-    <h2><span class="dot"></span> Moduli del Kernel</h2>
-    <p>
-      I kernel moderni, Linux in primis, supportano i <span class="keyword">Loadable Kernel Modules (LKM)</span>: porzioni di codice compilate separatamente che possono essere inserite o rimosse dal kernel a runtime senza riavviare il sistema.
-    </p>
-    <p>
-      Ogni modulo esporta una funzione di inizializzazione e una di pulizia. Quando viene caricato con <code class="inline">insmod</code> o <code class="inline">modprobe</code>, il suo codice viene collegato dinamicamente al kernel. Quando viene rimosso con <code class="inline">rmmod</code>, le sue risorse vengono liberate.
-    </p>
-    <p>
-      I driver di dispositivo sono quasi sempre moduli: non è necessario ricompilare l'intero kernel per aggiungere il supporto a una nuova periferica. Anche i filesystem (ext4, btrfs, ntfs-3g) e i moduli di sicurezza (SELinux, AppArmor) vengono caricati come moduli.
-    </p>
-  </div>
-
-  <!-- Navigation -->
-  <div class="back-btn-wrap">
-    <a href="../index.html" class="btn btn-amber">← Torna all'indice SO</a>
-    <a href="02-processi.html" class="btn btn-ghost">02 · Processi →</a>
-  </div>
-
-</div>
-
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 01 · Sistemi Operativi</p>
-  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
-</footer>
-
-
-<script id="so-sb-js">
-(function () {
-  var IDS = ["section-1","section-2","section-3","section-4","section-5","section-6","section-7","section-8","section-9","section-10","section-11","section-12"];
-
-  /* smooth scroll + flash */
-  function goTo(id) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    el.classList.remove('sb-flash');
-    void el.offsetWidth;                         // force reflow
-    el.classList.add('sb-flash');
-    el.addEventListener('animationend', function () {
-      el.classList.remove('sb-flash');
-    }, { once: true });
-    setActive(id);
-  }
-
-  /* highlight sidebar item */
-  function setActive(id) {
-    document.querySelectorAll('.sb-sections li').forEach(function (li) {
-      li.classList.toggle('sb-active', li.getAttribute('data-sid') === id);
-    });
-    /* auto-scroll sidebar so active item is visible */
-    var sb  = document.querySelector('.so-sidebar');
-    var act = document.querySelector('.sb-sections li.sb-active');
-    if (sb && act) {
-      var liTop = act.offsetTop;
-      var liH   = act.offsetHeight;
-      if (liTop < sb.scrollTop || liTop + liH > sb.scrollTop + sb.clientHeight) {
-        sb.scrollTop = liTop - sb.clientHeight / 2 + liH / 2;
-      }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01 · Sistemi Operativi — SO</title>
+  <link rel="stylesheet" href="/shared/katchkit.css">
+  <style>
+    .nav-logo {
+      color: var(--amber);
     }
-  }
 
-  /* wire index-grid cards */
-  document.querySelectorAll('.index-item[data-target]').forEach(function (card) {
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('role', 'button');
-    var name = (card.querySelector('.idx-name') || {}).textContent || '';
-    card.setAttribute('aria-label', 'Vai a: ' + name.trim());
-    card.addEventListener('click', function () { goTo(card.dataset.target); });
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(card.dataset.target); }
-    });
-  });
+    .nav-back:hover {
+      color: var(--amber);
+      border-color: rgba(251, 191, 36, 0.4);
+    }
 
-  /* wire sidebar section links */
-  document.querySelectorAll('.sb-link[data-target]').forEach(function (el) {
-    el.addEventListener('click', function () { goTo(el.dataset.target); });
-  });
+    .hero-glow {
+      background: radial-gradient(ellipse, rgba(251, 191, 36, 0.07) 0%, transparent 65%);
+    }
 
-  /* IntersectionObserver — aggiorna active mentre scorri */
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) setActive(e.target.id);
-      });
-    }, { rootMargin: '-8% 0px -72% 0px', threshold: 0 });
+    .page-accent {
+      color: var(--amber);
+    }
 
-    IDS.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-  }
+    .topic-hero-title {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #f0eeff 0%, #fbbf24 55%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-  /* attivo iniziale */
-  if (IDS.length) setActive(IDS[0]);
-}());
-</script>
+    .topic-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topic-num::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--amber);
+    }
+
+    .content-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    .section-block {
+      margin-bottom: 3rem;
+    }
+
+    .section-block h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-block h2 .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      flex-shrink: 0;
+    }
+
+    .section-block p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Modifica il contenitore della lista, non i singoli elementi */
+    .section-block ol {
+      padding-left: 2rem;
+      /* Indentazione standard */
+      margin-bottom: 1.5rem;
+    }
+
+    .section-block ol li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+      /* RIMOSSO IL PADDING-LEFT: 50% DA QUI */
+    }
+
+    .section-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    code.inline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--amber);
+      background: rgba(251, 191, 36, 0.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .keyword {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .sub-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      padding: 1px 7px;
+      border-radius: var(--r-pill);
+      background: rgba(251, 191, 36, 0.12);
+      color: var(--amber);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      letter-spacing: 0.04em;
+      margin-left: 8px;
+      vertical-align: middle;
+      font-weight: 600;
+    }
+
+    .nav-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .nav-breadcrumb a {
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .nav-breadcrumb a:hover {
+      color: var(--amber);
+    }
+
+    .nav-breadcrumb span {
+      color: var(--border-hover);
+    }
+
+    .back-btn-wrap {
+      display: flex;
+      gap: 12px;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+      margin-bottom: 2.5rem;
+    }
+
+    .index-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 0.75rem 1rem;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      border-left: 2px solid var(--amber);
+    }
+
+    .index-item .idx-num {
+      color: var(--amber);
+      font-size: 10px;
+      margin-bottom: 2px;
+    }
+
+    .index-item .idx-name {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+    }
+  </style>
+
+
+</head>
+
+<body class="dot-grid">
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>01 · Sistemi Operativi</div>
+      </li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
+      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
+      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
+      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
+      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
+      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
+      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
+      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections">
+      <li data-sid="section-1">
+        <div class="sb-link" data-target="section-1">
+          <span class="sb-idx">01.01</span>
+          <span>Definizione di Sistema Operativo</span>
+        </div>
+      </li>
+      <li data-sid="section-2">
+        <div class="sb-link" data-target="section-2">
+          <span class="sb-idx">01.02</span>
+          <span>Struttura del Computer System</span>
+        </div>
+      </li>
+      <li data-sid="section-3">
+        <div class="sb-link" data-target="section-3">
+          <span class="sb-idx">01.03</span>
+          <span>Sistemi Multiprocessori</span>
+        </div>
+      </li>
+      <li data-sid="section-4">
+        <div class="sb-link" data-target="section-4">
+          <span class="sb-idx">01.04</span>
+          <span>Architettura SMP & Multicore Design</span>
+        </div>
+      </li>
+      <li data-sid="section-5">
+        <div class="sb-link" data-target="section-5">
+          <span class="sb-idx">01.05</span>
+          <span>Non-Uniform Memory Access (NUMA)</span>
+        </div>
+      </li>
+      <li data-sid="section-6">
+        <div class="sb-link" data-target="section-6">
+          <span class="sb-idx">01.06</span>
+          <span>Servizi del Sistema Operativo</span>
+        </div>
+      </li>
+      <li data-sid="section-7">
+        <div class="sb-link" data-target="section-7">
+          <span class="sb-idx">01.07</span>
+          <span>System Calls</span>
+        </div>
+      </li>
+      <li data-sid="section-8">
+        <div class="sb-link" data-target="section-8">
+          <span class="sb-idx">01.08</span>
+          <span>Implementazione delle System Calls</span>
+        </div>
+      </li>
+      <li data-sid="section-9">
+        <div class="sb-link" data-target="section-9">
+          <span class="sb-idx">01.09</span>
+          <span>Esempi di System Calls per Categoria</span>
+        </div>
+      </li>
+      <li data-sid="section-10">
+        <div class="sb-link" data-target="section-10">
+          <span class="sb-idx">01.10</span>
+          <span>Struttura del Sistema Operativo</span>
+        </div>
+      </li>
+      <li data-sid="section-11">
+        <div class="sb-link" data-target="section-11">
+          <span class="sb-idx">01.11</span>
+          <span>Microkernels</span>
+        </div>
+      </li>
+      <li data-sid="section-12">
+        <div class="sb-link" data-target="section-12">
+          <span class="sb-idx">01.12</span>
+          <span>Moduli del Kernel</span>
+        </div>
+      </li>
+    </ul>
+  </aside>
+
+
+  <nav style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="nav-left" style="display: flex; align-items: center; gap: 12px;">
+      <button id="sidebar-toggle"
+        style="background:none; border:none; color:var(--text-secondary); cursor:pointer; padding:6px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background 0.2s;">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="../" class="nav-logo">// SO · Sistemi Operativi</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back">← Indice SO</a>
+      <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+    </div>
+  </nav>
+
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.3);color:var(--amber)">
+      Macroargomento 01 · Base
+    </span>
+    <div class="topic-num">01 / 13</div>
+    <h1 class="topic-hero-title">Sistemi Operativi</h1>
+    <p class="hero-sub" style="max-width:640px">
+      Definizione, struttura, architettura multiprocessore, system calls e modelli architetturali del kernel. Il punto
+      di partenza per capire come funziona un sistema operativo moderno.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a>
+      <span>/</span>
+      <a href="../">SO</a>
+      <span>/</span>
+      <span>01 · Sistemi Operativi</span>
+    </div>
+
+    <!-- Index map -->
+    <!-- <div class="amber-box" style="margin-bottom:2rem">
+      Questa pagina copre i <strong style="color:var(--amber)">12 sottoargomenti</strong> del macroargomento 1, tratti
+      dai capitoli 1 e 2 del corso.
+    </div> -->
+
+    <div class="theme-box">
+            Questa pagina copre i <strong>12 sottoargomenti</strong> del macroargomento 1, tratti
+      dai capitoli 1 e 2 del corso.
+    </div>
+    <div class="index-grid">
+      <div class="index-item" data-target="section-1">
+        <div class="idx-num">01.01</div>
+        <div class="idx-name">Definizione di SO</div>
+      </div>
+      <div class="index-item" data-target="section-2">
+        <div class="idx-num">01.02</div>
+        <div class="idx-name">Struttura computer system</div>
+      </div>
+      <div class="index-item" data-target="section-3">
+        <div class="idx-num">01.03</div>
+        <div class="idx-name">Sistemi multiprocessori</div>
+      </div>
+      <div class="index-item" data-target="section-4">
+        <div class="idx-num">01.04</div>
+        <div class="idx-name">SMP & Multicore</div>
+      </div>
+      <div class="index-item" data-target="section-5">
+        <div class="idx-num">01.05</div>
+        <div class="idx-name">NUMA</div>
+      </div>
+      <div class="index-item" data-target="section-6">
+        <div class="idx-num">01.06</div>
+        <div class="idx-name">Servizi OS</div>
+      </div>
+      <div class="index-item" data-target="section-7">
+        <div class="idx-num">01.07</div>
+        <div class="idx-name">System Calls</div>
+      </div>
+      <div class="index-item" data-target="section-8">
+        <div class="idx-num">01.08</div>
+        <div class="idx-name">Implementazione syscall</div>
+      </div>
+      <div class="index-item" data-target="section-9">
+        <div class="idx-num">01.09</div>
+        <div class="idx-name">Esempi di syscall</div>
+      </div>
+      <div class="index-item" data-target="section-10">
+        <div class="idx-num">01.10</div>
+        <div class="idx-name">Struttura OS</div>
+      </div>
+      <div class="index-item" data-target="section-11">
+        <div class="idx-num">01.11</div>
+        <div class="idx-name">Microkernels</div>
+      </div>
+      <div class="index-item" data-target="section-12">
+        <div class="idx-num">01.12</div>
+        <div class="idx-name">Moduli</div>
+      </div>
+    </div>
+
+    <!-- 01.01 -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Definizione di Sistema Operativo <span class="sub-tag">fondamento</span></h2>
+      <p>
+        Il <span class="keyword">sistema operativo</span> è il software che fa da intermediario
+        tra l'hardware della macchina e le applicazioni che girano su di essa.
+        Il suo compito principale è gestire le risorse fisiche — processore, memoria,
+        dispositivi di I/O — e metterle a disposizione dei programmi utente in modo sicuro,
+        ordinato ed efficiente.
+      </p>
+      <p>
+        Dal punto di vista dell'utente, il SO nasconde la complessità dell'hardware e fornisce un'interfaccia coerente
+        (shell, GUI, API). Dal punto di vista del sistema, è un gestore di risorse che deve massimizzare l'utilizzo
+        dell'hardware evitando conflitti tra i processi in esecuzione.
+      </p>
+      <p>
+        Il componente centrale che rimane sempre in memoria e gira in modalità privilegiata si chiama <span
+          class="keyword">kernel</span>. Tutto il resto — shell, utility, librerie di sistema — è software che gira al
+        di sopra del kernel.
+      </p>
+    </div>
+
+    <!-- 01.02 -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Struttura del Computer System</h2>
+      <p>
+        L'architettura è composta in questo modo :
+      </p>
+      <ol>
+        <li><span class="keyword">User</span></li>
+        <li><span class="keyword">Application programs</span>
+          <br>Definisce come le risorse del computer devono essere usate per risolvere un problema dell’utente: video
+          games, web browsers
+        </li>
+        <li><span class="keyword">Operating systems</span><br>
+
+          Controlla e coordina l’uso di hardware tra le varie applicazioni e utenti
+        </li>
+        <li><span class="keyword">Hardware</span><br>
+          Prevede i componenti del computer come dispositivi I/O e CPU, memoria
+        </li>
+      </ol>
+      <div style="display : flex; justify-content : center">
+        <img style="width:50%" src="../risorse/img1.png" alt="">
+      </div>
+    </div>
+
+    <!-- 01.03 -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Sistemi Multiprocessori</h2>
+
+      <p>
+        I sistemi moderni montano più CPU (o più core per CPU) che condividono la stessa memoria principale e lo stesso
+        bus di sistema. Questo approccio porta due vantaggi chiave: maggiore <span class="keyword">throughput</span>
+        (più lavoro per unità di tempo) e maggiore <span class="keyword">affidabilità</span> (se una CPU si guasta le
+        altre continuano).
+      </p>
+      <p>
+        Si distinguono due grandi famiglie. I sistemi <span class="keyword">asimmetrici</span> (AMP) assegnano ruoli
+        diversi a CPU diverse: una CPU master gestisce il sistema e delega i task alle slave. I sistemi <span
+          class="keyword">simmetrici</span> (SMP), oggi dominanti, trattano tutte le CPU allo stesso modo: ognuna può
+        eseguire qualsiasi processo e accedere alla memoria condivisa.
+      </p>
+      <p>
+        Il SO deve gestire la concorrenza tra CPU, proteggere le strutture dati del kernel con lock, e distribuire il
+        carico equamente tra i processori disponibili tramite il <span class="keyword">load balancing</span>.
+      </p>
+    </div>
+
+    <!-- 01.04 -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Architettura SMP & Multicore Design</h2>
+      <p>
+        Nella <span class="keyword">Symmetric Multi-Processing</span> ogni CPU ha accesso uniforme all'intera RAM. Ogni
+        processore esegue una copia del SO e le istanze si coordinano tra loro. Lo scheduler del kernel può assegnare
+        qualsiasi thread a qualsiasi CPU disponibile.
+      </p>
+      <p>
+        Il design <span class="keyword">multicore</span> integra più unità di elaborazione (core) sullo stesso chip
+        fisico. I core condividono la cache L3 e il collegamento al bus, riducendo la latenza di comunicazione rispetto
+        a CPU separate. Oggi quasi tutti i processori consumer e server sono multicore: da 4 a 128+ core per chip.
+      </p>
+      <p>
+        Una sfida critica è la <span class="keyword">cache coherency</span>: se due core modificano la stessa variabile
+        nelle rispettive cache L1, i valori devono essere sincronizzati tramite protocolli hardware (MESI, MOESI) per
+        evitare che un core legga dati obsoleti.
+      </p>
+    </div>
+
+    <!-- 01.05 -->
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Non-Uniform Memory Access (NUMA)</h2>
+      <p>
+        In sistemi con decine o centinaia di CPU, avere un'unica memoria condivisa crea un collo di bottiglia sul bus.
+        L'architettura <span class="keyword">NUMA</span> risolve il problema assegnando a ogni CPU (o gruppo di CPU) un
+        banco di memoria "locale" cui accede con latenza minima, e lasciando accessibile tutta la memoria "remota" con
+        latenza maggiore.
+      </p>
+      <p>
+        Il SO NUMA-aware cerca di allocare memoria locale al processo che la usa e di schedulare i thread sulle CPU
+        vicine alla memoria che contiene i loro dati. Linux gestisce questo tramite il concetto di <span
+          class="keyword">NUMA node</span> e offre API come <code class="inline">numactl</code> per controllare
+        l'affinità.
+      </p>
+      <p>
+        Un accesso a memoria remota può essere 2-10 volte più lento rispetto a uno locale. Su sistemi ad alto carico,
+        un'ottimizzazione NUMA scorretta può dimezzare le prestazioni.
+      </p>
+    </div>
+
+    <!-- 01.06 -->
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> Servizi del Sistema Operativo</h2>
+      <p>
+        Il SO fornisce un insieme di servizi sia verso l'utente che verso i programmi. I principali sono: <span
+          class="keyword">gestione dei processi</span> (creazione, scheduling, terminazione), <span
+          class="keyword">gestione della memoria</span> (allocazione, protezione, paginazione), <span
+          class="keyword">gestione del file system</span> (creazione, lettura, scrittura, permessi), <span
+          class="keyword">gestione dell'I/O</span> (astrazione dei dispositivi, buffering, spooling).
+      </p>
+      <p>
+        A questi si aggiungono servizi di <span class="keyword">comunicazione interprocesso</span> (pipe, socket,
+        memoria condivisa), <span class="keyword">protezione e sicurezza</span> (isolamento tra processi,
+        autenticazione, controllo degli accessi) e <span class="keyword">interfaccia utente</span> (CLI tramite shell,
+        GUI tramite window manager).
+      </p>
+    </div>
+
+    <!-- 01.07 -->
+    <div class="section-block" id="section-7">
+      <h2><span class="dot"></span> System Calls</h2>
+      <p>
+        Le <span class="keyword">system call</span> sono l'interfaccia programmabile tra un
+        <span class="keyword">processo in user space e il kernel</span>.
+        Quando un programma ha bisogno di un servizio privilegiato — aprire un file, creare un processo,
+        scrivere su un socket — deve chiedere al kernel di farlo per suo conto tramite una syscall.
+      </p>
+      <p>
+        Esempi fondamentali: <code class="inline">fork()</code> crea un processo figlio, <code
+          class="inline">read()</code> e <code class="inline">write()</code> leggono e scrivono da file descriptor,
+        <code class="inline">open()</code> apre un file, <code class="inline">exit()</code> termina il processo, <code
+          class="inline">mmap()</code> mappa memoria come la <code class="inline">memory-mapped-file</code>.
+      </p>
+    </div>
+
+    <!-- 01.08 -->
+    <div class="section-block" id="section-8">
+      <h2><span class="dot"></span> Implementazione delle System Calls (Approfondimento)</h2>
+      <p>
+        Il programmatore raramente chiama direttamente le syscall: usa le funzioni della libreria C standard (<code
+          class="inline">libc</code>) che le wrappano. Ad esempio, la funzione C <code class="inline">printf()</code>
+        alla fine chiama la syscall <code class="inline">write()</code>.
+      </p>
+      <p>
+        Il meccanismo hardware su x86-64 funziona così: l'applicazione carica il <span class="keyword">numero di
+          syscall</span> nel registro <code class="inline">rax</code> e i parametri negli altri registri, poi esegue
+        l'istruzione <code class="inline">syscall</code>. La CPU salva il contesto, passa in kernel mode, e il kernel
+        legge il numero in <code class="inline">rax</code> per chiamare l'handler corretto dalla <span
+          class="keyword">syscall table</span>.
+      </p>
+      <p>
+        Su Linux, ogni syscall è identificata da un numero intero definito in <code class="inline">asm/unistd.h</code>.
+        Attualmente Linux ha circa 350 syscall attive.
+      </p>
+    </div>
+
+    <!-- 01.09 -->
+    <div class="section-block" id="section-9">
+      <h2><span class="dot"></span> Esempi di System Calls per Categoria (Approfondimento)</h2>
+      <p>
+        Le syscall si raggruppano in cinque categorie principali. Il <span class="keyword">controllo dei processi</span>
+        include <code class="inline">fork()</code>, <code class="inline">exec()</code>, <code
+          class="inline">wait()</code>, <code class="inline">exit()</code>, <code class="inline">getpid()</code>. La
+        <span class="keyword">gestione dei file</span> comprende <code class="inline">open()</code>, <code
+          class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">close()</code>, <code
+          class="inline">stat()</code>, <code class="inline">unlink()</code>.
+      </p>
+      <p>
+        La <span class="keyword">gestione dei dispositivi</span> usa <code class="inline">ioctl()</code> per comandi
+        device-specific e <code class="inline">read()</code>/<code class="inline">write()</code> su file descriptor di
+        dispositivo. La <span class="keyword">gestione delle informazioni di sistema</span> include <code
+          class="inline">time()</code>, <code class="inline">uname()</code>, <code class="inline">sysinfo()</code>.
+        Infine le <span class="keyword">comunicazioni</span> sfruttano <code class="inline">socket()</code>, <code
+          class="inline">send()</code>, <code class="inline">recv()</code>, <code class="inline">pipe()</code>, <code
+          class="inline">mmap()</code>.
+      </p>
+    </div>
+
+    <!-- 01.10 -->
+    <div class="section-block" id="section-10">
+      <h2><span class="dot"></span> Struttura del Sistema Operativo</h2>
+      <p>
+        Esistono diversi approcci architetturali al design di un kernel. Il kernel <span
+          class="keyword">monolitico</span> (usato da Linux, FreeBSD) inserisce tutti i servizi — scheduler, driver,
+        filesystem, networking — in un unico spazio di indirizzamento. È veloce (nessun overhead di comunicazione tra
+        componenti) ma più difficile da mantenere.
+      </p>
+      <p>
+        L'approccio <span class="keyword">a strati</span> organizza il kernel in livelli gerarchici, dove ogni strato
+        usa solo i servizi dello strato immediatamente inferiore. Più ordinato concettualmente, ma introduce latenza per
+        ogni attraversamento di strato.
+      </p>
+      <p>
+        L'approccio <span class="keyword">modulare</span>, usato da Linux in pratica, combina il nucleo monolitico con
+        la possibilità di caricare e scaricare <em>moduli</em> a runtime (ad esempio i driver). Offre flessibilità senza
+        sacrificare le prestazioni.
+      </p>
+    </div>
+
+    <!-- 01.11 -->
+    <div class="section-block" id="section-11">
+      <h2><span class="dot"></span> Microkernels</h2>
+      <p>
+        In un'architettura a <span class="keyword">microkernel</span> il nucleo ridotto al minimo (IPC, gestione memoria
+        di base, scheduling elementare) gira in kernel mode, mentre tutto il resto — driver, filesystem, protocolli di
+        rete — gira come <em>server</em> in user space.
+      </p>
+      <p>
+        I vantaggi sono significativi: se un driver di dispositivo crasha, non porta giù l'intero sistema (fault
+        isolation). Il codice kernel è più piccolo, più facile da verificare formalmente e più sicuro. Esempi notevoli:
+        <span class="keyword">Mach</span> (base di macOS/iOS), <span class="keyword">MINIX 3</span>, <span
+          class="keyword">QNX</span> (usato in automotive e sistemi embedded).
+      </p>
+      <p>
+        Lo svantaggio principale è la <span class="keyword">latenza di comunicazione</span>: ogni richiesta a un server
+        richiede almeno due context switch (user → kernel → user). Su sistemi ad alto carico questo overhead diventa
+        visibile, motivo per cui i SO general-purpose hanno preferito il kernel monolitico modulare.
+      </p>
+    </div>
+
+    <!-- 01.12 -->
+    <div class="section-block" id="section-12">
+      <h2><span class="dot"></span> Moduli del Kernel</h2>
+      <p>
+        I kernel moderni, Linux in primis, supportano i <span class="keyword">Loadable Kernel Modules (LKM)</span>
+      </p>
+      <div class="card-def">
+        <div class="card-def-header">Definizione </div>
+        <div class="card-def-content">
+          <p>
+            <span class="keyword">Loadable Kernel Modules</span> : porzioni di codice compilate separatamente che possono essere inserite o rimosse dal kernel a runtime senza riavviare il sistema
+          </p>
+        </div>
+      </div>
+      <p>
+        Ogni modulo esporta una funzione di inizializzazione e una di pulizia. Quando viene caricato con <code
+          class="inline">insmod</code> o <code class="inline">modprobe</code>, il suo codice viene collegato
+        dinamicamente al kernel. Quando viene rimosso con <code class="inline">rmmod</code>, le sue risorse vengono
+        liberate.
+      </p>
+      <p>
+        Le differenze con il microkernel sono che operano a livello kernel anziché a livello user e possono comunicare l'un l'altro direttamente
+      </p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="back-btn-wrap">
+      <a href="../" class="btn btn-amber">← Torna all'indice SO</a>
+      <a href="02-processi.html" class="btn btn-ghost">02 · Processi →</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 01 · Sistemi Operativi</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+  </footer>
+
+
+
+  <script src="/shared/katchkit.js"></script>
 </body>
+
 </html>

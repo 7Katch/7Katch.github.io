@@ -1,0 +1,321 @@
+/* ==========================================================
+   KATCHKIT UI FRAMEWORK - v2.0 (All-in-One)
+   Sito: 7Katch.github.io
+   Descrizione: Design System unificato, Componenti e Theming
+   ========================================================== */
+
+/* ── 1. DESIGN TOKENS & THEMING DINAMICO ─────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+:root {
+  /* Backgrounds & Base */
+  --bg:            #080810;
+  --bg-card:       #0f0f1a;
+  --bg-card-hover: #141428;
+  --code-bg:       #0a0a16;
+
+  /* Borders */
+  --border:        rgba(120, 100, 255, 0.15);
+  --border-hover:  rgba(120, 100, 255, 0.4);
+
+  /* Testi generali */
+  --text-primary:   #f0eeff;
+  --text-secondary: #9488c2;
+  --text-muted:     #5a5080;
+
+  /* Colori Semantici Statici (per bottoni specifici o alert) */
+  --accent-soft:   #a78bfa;
+  --green:  #34d399;
+  --amber:  #fbbf24;
+  --coral:  #f87171;
+  --teal:   #22d3ee;
+
+  /* Dimensioni e Spaziature */
+  --r-sm:  6px; --r-md: 10px; --r-lg: 14px; --r-xl: 16px; --r-2xl: 20px; --r-pill: 100px;
+  --nav-h: 60px;
+  --sb-w:  240px;
+
+  /* ⬇ TEMA DI DEFAULT (Ambra) ⬇ */
+  --kk-primary: #fbbf24;
+  --kk-rgb: 251, 191, 36;
+  --kk-grad-end: #f59e0b;
+}
+
+/* PRESET: TEAL (Azzurro) */
+.theme-teal { --kk-primary: #22d3ee; --kk-rgb: 34, 211, 238; --kk-grad-end: #06b6d4; }
+/* PRESET: CORAL (Rosso) */
+.theme-coral { --kk-primary: #f87171; --kk-rgb: 248, 113, 113; --kk-grad-end: #ef4444; }
+/* PRESET: EMERALD (Verde) */
+.theme-emerald { --kk-primary: #34d399; --kk-rgb: 52, 211, 153; --kk-grad-end: #10b981; }
+/* PRESET: PURPLE (Viola base) */
+.theme-purple { --kk-primary: #a78bfa; --kk-rgb: 167, 139, 250; --kk-grad-end: #7c5cfc; }
+
+
+/* ── 2. RESET E BASE HTML ────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Sfondo a pallini globale */
+.dot-grid::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(124,92,252,0.06) 1px, transparent 1px);
+  background-size: 40px 40px; pointer-events: none; z-index: -1;
+}
+
+a { color: var(--kk-primary); text-decoration: none; transition: color 0.2s; }
+a:hover { filter: brightness(1.2); }
+
+
+/* ── 3. NAVBAR E BREADCRUMBS ─────────────────────────────── */
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem 0 1.5rem; /* Padding fuso tra so.css e katchkit */
+  height: var(--nav-h);
+  background: rgba(8, 8, 16, 0.9); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-left, .nav-right { display: flex; align-items: center; gap: 12px; }
+
+#sidebar-toggle:hover { background: rgba(255, 255, 255, 0.1) !important; color: var(--kk-primary) !important; }
+
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
+  color: var(--kk-primary); letter-spacing: 0.05em; text-decoration: none;
+}
+
+.nav-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--text-muted); text-decoration: none;
+  padding: 5px 14px; border: 1px solid var(--border); border-radius: var(--r-pill);
+  transition: all 0.2s; letter-spacing: 0.04em;
+}
+.nav-back:hover { color: var(--kk-primary); border-color: rgba(var(--kk-rgb), 0.4); }
+
+.nav-breadcrumb {
+  display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--text-muted); margin-bottom: 2.5rem; letter-spacing: 0.04em;
+}
+.nav-breadcrumb a { color: var(--text-muted); }
+.nav-breadcrumb a:hover { color: var(--kk-primary); text-decoration: none; }
+.nav-breadcrumb span { color: var(--border-hover); }
+
+
+/* ── 4. HERO SECTION DINAMICA ────────────────────────────── */
+
+.hero {
+  min-height: 55vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 8rem 2rem 5rem; position: relative;
+}
+
+.hero-glow {
+  position: absolute; top: 25%; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 500px; pointer-events: none;
+  background: radial-gradient(ellipse, rgba(var(--kk-rgb), 0.08) 0%, transparent 65%);
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px;
+  background: rgba(var(--kk-rgb), 0.08); border: 1px solid rgba(var(--kk-rgb), 0.3);
+  border-radius: var(--r-pill); font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--kk-primary); letter-spacing: 0.08em;
+  margin-bottom: 2rem; text-transform: uppercase;
+}
+
+.topic-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--kk-primary); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;
+}
+.topic-num::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--kk-primary); }
+
+.topic-hero-title, .page-hero h1 {
+  font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, #f0eeff 0%, var(--kk-primary) 55%, var(--kk-grad-end) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem); color: var(--text-secondary);
+  max-width: 640px; margin: 0 auto 2.5rem; font-weight: 300; line-height: 1.8;
+}
+
+
+/* ── 5. LAYOUT E CONTENUTO DELLE SEZIONI ─────────────────── */
+
+.content-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+.section-block { margin-bottom: 3rem; scroll-margin-top: calc(var(--nav-h) + 1.25rem); }
+.section-block p { font-size: 14px; color: var(--text-secondary); line-height: 1.85; margin-bottom: 0.75rem; }
+.section-block p:last-child { margin-bottom: 0; }
+
+.section-block h2 {
+  font-size: 1.3rem; font-weight: 700; color: var(--text-primary);
+  margin-bottom: 0.75rem; padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(var(--kk-rgb), 0.2);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-block h2 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kk-primary); flex-shrink: 0; }
+
+code.inline {
+  font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+  color: var(--kk-primary); background: rgba(var(--kk-rgb), 0.08);
+  padding: 1px 6px; border-radius: 4px;
+}
+.keyword { color: var(--text-primary); font-weight: 600; }
+.sub-tag {
+  display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  padding: 1px 7px; border-radius: var(--r-pill);
+  background: rgba(var(--kk-rgb), 0.12); color: var(--kk-primary);
+  border: 1px solid rgba(var(--kk-rgb), 0.3); margin-left: 8px; vertical-align: middle; font-weight: 600;
+}
+
+
+/* ── 6. BOX, ALERT E CHIAMATE (THEME-AWARE) ──────────────── */
+
+/* Sostituisce i vecchi amber-box, teal-box ecc. Ora si adatta al tema! */
+.theme-box {
+  background: rgba(var(--kk-rgb), 0.07);
+  border: 1px solid rgba(var(--kk-rgb), 0.25);
+  border-radius: var(--r-md); padding: 1rem 1.25rem; margin: 1.5rem 0;
+  font-size: 13px; color: var(--kk-primary); line-height: 1.7;
+}
+.theme-box strong { color: var(--kk-primary) !important; }
+
+/* Box Semantici Statici (restano invariati per indicare errori, successi, ecc.) */
+.highlight-box { background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.25); border-radius: var(--r-md); padding: 1rem; color: var(--green); }
+.warn-box { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.25); border-radius: var(--r-md); padding: 1rem; color: var(--coral); }
+
+
+/* ── 7. GRIGLIA DELL'INDICE E CARDS ──────────────────────── */
+
+.index-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-bottom: 2.5rem; }
+.index-item {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-md);
+  padding: .75rem 1rem; font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
+  border-left: 2px solid var(--kk-primary); cursor: pointer; transition: background .15s, border-color .15s, transform .12s; user-select: none;
+}
+.index-item:hover { background: var(--bg-card-hover); border-left-color: var(--kk-primary); transform: translateY(-1px); }
+.index-item:active { transform: translateY(0); }
+.index-item .idx-num { color: var(--kk-primary); font-size: 10px; margin-bottom: 2px; }
+.index-item .idx-name { color: var(--text-secondary); font-size: 12px; font-family: 'Inter', sans-serif; font-weight: 600; }
+
+.card-def {
+  background: rgba(var(--kk-rgb), 0.05); border: 1px solid rgba(var(--kk-rgb), 0.2);
+  border-left: 4px solid var(--kk-primary); border-radius: var(--r-md); margin-bottom: 1.5rem; overflow: hidden;
+}
+.card-def-header {
+  display: flex; align-items: center; gap: 8px; color: var(--kk-primary);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 16px 8px; background: rgba(var(--kk-rgb), 0.03);
+}
+.card-def-content { padding: 0 16px 16px; }
+.card-def-content p:last-child { margin-bottom: 0; }
+.card-def-content .keyword { color: var(--kk-primary); }
+
+
+/* ── 8. SIDEBAR A SCOMPARSA (GEMINI STYLE) ───────────────── */
+
+.so-sidebar {
+  position: fixed; top: var(--nav-h); left: 0; width: var(--sb-w); height: calc(100vh - var(--nav-h));
+  overflow-y: auto; overflow-x: hidden; background: rgba(8, 8, 16, 0.98); border-right: 1px solid var(--border);
+  z-index: 1000; display: flex; flex-direction: column; padding-bottom: 3rem;
+  transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
+  scrollbar-width: thin; scrollbar-color: rgba(var(--kk-rgb), .25) transparent;
+}
+.so-sidebar.open { transform: translateX(0); }
+
+.so-sidebar::-webkit-scrollbar { width: 3px; }
+.so-sidebar::-webkit-scrollbar-track { background: transparent; }
+.so-sidebar::-webkit-scrollbar-thumb { background: rgba(var(--kk-rgb), .3); border-radius: 3px; }
+
+.sb-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); padding: 1rem 1rem .45rem; display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.sb-label::before { content: ''; display: inline-block; width: 10px; height: 1px; background: rgba(var(--kk-rgb), .55); flex-shrink: 0; }
+
+.sb-pages { list-style: none; flex-shrink: 0; border-bottom: 1px solid var(--border); padding-bottom: .5rem; margin-bottom: .25rem; }
+.sb-pages li a, .sb-pages li .sb-cur { display: flex; align-items: center; gap: 7px; padding: 4px 1rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); text-decoration: none; transition: color .15s, background .15s; border-left: 2px solid transparent; line-height: 1.35; }
+.sb-pages li a:hover { color: var(--text-secondary); background: rgba(var(--kk-rgb), .04); border-left-color: rgba(var(--kk-rgb), .25); }
+.sb-pages li .sb-cur { color: var(--kk-primary); font-weight: 700; border-left-color: var(--kk-primary); background: rgba(var(--kk-rgb), .07); }
+.sb-pdot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; opacity: .45; }
+.sb-cur .sb-pdot { opacity: 1; }
+
+.sb-sections { list-style: none; flex: 1; }
+.sb-sections li .sb-link { display: flex; align-items: flex-start; gap: 7px; padding: 5px 1rem; font-size: 11px; color: var(--text-muted); text-decoration: none; border-left: 2px solid transparent; transition: color .15s, background .15s, border-color .15s; line-height: 1.4; cursor: pointer; width: 100%; background: none; border: none; font-family: 'Inter', sans-serif; text-align: left; }
+.sb-sections li .sb-link:hover { color: var(--text-secondary); background: rgba(var(--kk-rgb), .04); border-left-color: rgba(var(--kk-rgb), .3); }
+.sb-sections li.sb-active .sb-link { color: var(--kk-primary); font-weight: 600; border-left-color: var(--kk-primary); background: rgba(var(--kk-rgb), .07); }
+.sb-idx { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(var(--kk-rgb), .4); flex-shrink: 0; min-width: 28px; margin-top: 2px; }
+.sb-active .sb-idx { color: var(--kk-primary); }
+
+@keyframes sbFlash {
+  0%   { box-shadow: inset 0 0 0 2px rgba(var(--kk-rgb), .55); border-radius: 8px; }
+  100% { box-shadow: inset 0 0 0 2px rgba(var(--kk-rgb), 0);   border-radius: 8px; }
+}
+.sb-flash { animation: sbFlash .75s ease-out; }
+
+
+/* ── 9. COMPONENTI EXTRA (Codice, Liste, Bottoni) ────────── */
+
+/* Code Blocks */
+.code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; font-family: 'JetBrains Mono', monospace; margin: 1.25rem 0; }
+.code-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border); background: rgba(124,92,252,0.04); }
+.code-dots { display: flex; gap: 6px; }
+.code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.dot-red { background: #ff5f57; } .dot-yellow { background: #ffbd2e; } .dot-green-dot { background: #28c840; }
+.code-body { padding: 1.25rem 1.5rem; font-size: 12px; line-height: 1.85; color: #c4b5fd; overflow-x: auto; }
+
+/* Diagrammi di Stato */
+.state-diagram { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 1rem 0; }
+.state-box { padding: 4px 12px; border-radius: var(--r-pill); font-size: 12px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+.arrow { color: var(--text-muted); font-size: 16px; }
+
+/* Bottoni (Usano il tema principale) */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; border-radius: var(--r-md);
+  font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; border: none;
+}
+.btn-theme { background: rgba(var(--kk-rgb), 0.12); color: var(--kk-primary); border: 1px solid rgba(var(--kk-rgb), 0.3); }
+.btn-theme:hover { background: rgba(var(--kk-rgb), 0.25); transform: translateY(-2px); color: var(--text-primary); }
+.btn-ghost { background: transparent; border: 1px solid var(--border-hover); color: var(--text-secondary); }
+.btn-ghost:hover { border-color: var(--kk-primary); color: var(--text-primary); }
+
+hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+.back-btn-wrap { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 4rem; display: flex; gap: 12px; flex-wrap: wrap; }
+
+footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; }
+footer p { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; line-height: 2; }
+footer a { color: var(--kk-primary); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+
+/* ── 10. RESPONSIVE (MEDIA QUERIES) ──────────────────────── */
+
+@media (max-width: 900px) {
+  .so-sidebar { display: none; } /* Su mobile la sidebar scompare, si aprirà solo con toggle JS se lo vuoi implementare nel CSS/JS in modo diverso */
+}
+
+@media (max-width: 768px) {
+  nav .nav-links { display: none; }
+}
+
+@media (max-width: 500px) {
+  nav { padding: 0 1.25rem; }
+  .page-hero { padding: 7rem 1.25rem 2rem; }
+  .content-wrap { padding: 2rem 1.25rem; }
+}
