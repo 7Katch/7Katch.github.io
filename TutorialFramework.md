@@ -286,7 +286,7 @@ Deve essere posta all'inizio del `body`. Contiene il pulsante Hamburger per apri
 
   <div class="nav-right">
     <a href="../" class="nav-back">← Indice</a>
-    <a href="[https://7Katch.github.io](https://7Katch.github.io)" class="nav-back">⌂ Home</a>
+    <a href="/" class="nav-back">⌂ Home</a>
   </div>
 </nav>
 ```
