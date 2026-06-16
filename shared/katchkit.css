@@ -190,7 +190,11 @@ nav {
 
 .content-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 6rem; }
 
-.section-block { margin-bottom: 3rem; scroll-margin-top: calc(var(--nav-h) + 1.25rem); }
+.section-block {
+   margin-bottom: 3rem;
+   scroll-margin-top: calc(var(--nav-h) + 1.25rem);
+   padding : 20px; 
+}
 .section-block p { font-size: 14px; color: var(--text-secondary); line-height: 1.85; margin-bottom: 0.75rem; }
 .section-block p:last-child { margin-bottom: 0; }
 
@@ -300,7 +304,7 @@ code.inline {
 }
 .sb-flash {
    animation: sbFlash .75s ease-out; 
-   padding : 20px;
+   
 }
 
 
@@ -360,7 +364,7 @@ footer a:hover { text-decoration: underline; }
   max-width: 100%;     /* Evita che l'immagine esca dal suo contenitore */
   height: auto;
   border-radius: var(--r-md, 10px); /* Mantiene i bordi arrotondati del sito */
-  border: 1px solid var(--border);  /* Sottile bordo per dare profondità */
+  border: 1.5px solid var(--kk-primary);  /* Sottile bordo per dare profondità */
 }
 
 /* RESPONSIVE: Su schermi piccoli (es. smartphone) incolonna gli elementi */
@@ -377,8 +381,9 @@ footer a:hover { text-decoration: underline; }
 /* ── 10. RESPONSIVE (MEDIA QUERIES) ──────────────────────── */
 
 @media (max-width: 900px) {
-  .so-sidebar { display: none; } /* Su mobile la sidebar scompare, si aprirà solo con toggle JS se lo vuoi implementare nel CSS/JS in modo diverso */
-}
+  /* Su mobile la sidebar scompare, si aprirà solo con toggle JS se lo vuoi implementare nel CSS/JS in modo diverso */
+    /* .so-sidebar { display: none; } */
+  }   
 
 @media (max-width: 768px) {
   nav .nav-links { display: none; }

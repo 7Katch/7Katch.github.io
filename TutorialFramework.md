@@ -290,3 +290,45 @@ Deve essere posta all'inizio del `body`. Contiene il pulsante Hamburger per apri
   </div>
 </nav>
 ```
+
+## 🗂 10. Auto-Generazione dell'Indice e della Sidebar (Content-First)
+
+KatchKit utilizza un approccio a "Singola Fonte di Verità" (Single Source of Truth). Questo significa che **non devi scrivere a mano** né le card della griglia centrale né i bottoni della sidebar laterale. Ti basta scrivere una semplice lista puntata al centro della pagina e il motore JavaScript costruirà tutto il layout automaticamente!
+
+### Passo 1: La Sidebar Vuota
+Nel tuo HTML, la sezione delle pagine della sidebar deve rimanere **completamente vuota**. Ci penserà JS a popolarla.
+
+```html
+<aside class="so-sidebar">
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul> 
+</aside>
+```
+
+### Passo 2: L'Indice Centrale (La tua Fonte di Verità)
+Nel punto esatto in cui vuoi far apparire la griglia delle card (subito sotto il titolo della pagina), inserisci il div `.index-grid` con l'attributo `data-prefix` (che indica il numero del capitolo, es. "03" o "06").
+All'interno, scrivi una normalissima lista HTML `<ul>` con i titoli dei tuoi sottoargomenti.
+
+```html
+<div class="index-grid" data-prefix="03">
+  <ul>
+    <li>Benefici del Multithreading</li>
+    <li>Concorrenza vs Parallelismo</li>
+    <li>Data & Task parallelism</li>
+    <li>Legge di Amdahl</li>
+    <li>User Thread e Kernel Thread</li>
+  </ul>
+</div>
+```
+
+**✨ Magia di KatchKit:** Quando la pagina si carica, il framework distruggerà questa semplice lista testuale e la trasformerà in una bellissima griglia di card cliccabili. Contemporaneamente, creerà i collegamenti speculari nella sidebar laterale, calcolando da solo i numeri progressivi e impostando tutti i `data-target` per lo scroll fluido!
+
+### Passo 3: Scrivere i Paragrafi
+Assicurati che i capitoli nel corpo della pagina abbiano un ID progressivo standard (`section-1`, `section-2`, ecc.), in modo che l'indice auto-generato sappia esattamente dove puntare.
+
+```html
+<div class="section-block" id="section-1">
+  <h2><span class="dot"></span> Benefici del Multithreading</h2>
+  <p>Testo del paragrafo...</p>
+</div>
+```

@@ -7,6 +7,7 @@ const KatchKitCore = {
 
   // Funzione principale che avvia tutto
   init: function () {
+    this.initAutoNavigation(); // l'auto-numerazione della barra laterale
     this.initScrollSpy();
     this.initSidebarToggle();
     this.initDefinitions();
@@ -140,7 +141,7 @@ const KatchKitCore = {
       }
     });
   },
-  initLatex: function() {
+  initLatex: function () {
     // 1. Diciamo a MathJax come vogliamo scrivere le formule
     window.MathJax = {
       tex: {
@@ -159,8 +160,69 @@ const KatchKitCore = {
 
     // 3. Iniettiamo lo script nella "testa" della pagina
     document.head.appendChild(scriptMathJax);
+  },
+
+  // Modulo 5: Auto-Generazione (Dalla Griglia -> Alla Sidebar)
+  initAutoNavigation: function () {
+    // 1. Trova i due contenitori
+    const indexGrid = document.querySelector('.index-grid');
+    const sidebarList = document.querySelector('.sb-sections');
+
+    if (!indexGrid) return;
+
+    // 2. Legge il prefisso dal div della griglia
+    const prefix = indexGrid.getAttribute('data-prefix');
+    if (!prefix) return;
+
+    // 3. Trova la lista <ul> semplice che hai scritto nell'HTML
+    const sourceList = indexGrid.querySelector('ul');
+    if (!sourceList) return;
+
+    const listItems = sourceList.querySelectorAll('li');
+
+    // 4. Svuota fisicamente l'HTML della griglia e della sidebar
+    indexGrid.innerHTML = '';
+    if (sidebarList) sidebarList.innerHTML = '';
+
+    // 5. Ricostruisce tutto in modo dinamico
+    listItems.forEach((li, index) => {
+      const num = String(index + 1).padStart(2, '0');
+      const targetId = `section-${index + 1}`;
+      const titleTesto = li.textContent.trim();
+
+      // --- A. COSTRUISCE LA CARD NELLA GRIGLIA CENTRALE ---
+      const gridItem = document.createElement('div');
+      gridItem.className = 'index-item';
+      gridItem.setAttribute('data-target', targetId);
+
+      // Accessibilità
+      gridItem.setAttribute('tabindex', '0');
+      gridItem.setAttribute('role', 'button');
+      gridItem.setAttribute('aria-label', `Vai a: ${titleTesto}`);
+
+      gridItem.innerHTML = `
+        <div class="idx-num">${prefix}.${num}</div>
+        <div class="idx-name">${titleTesto}</div>
+      `;
+      indexGrid.appendChild(gridItem);
+
+      // --- B. COSTRUISCE IL BOTTONE NELLA SIDEBAR LATERALE ---
+      if (sidebarList) {
+        const sidebarItem = document.createElement('li');
+        sidebarItem.setAttribute('data-sid', targetId);
+        sidebarItem.innerHTML = `
+          <button class="sb-link" data-target="${targetId}">
+            <span class="sb-idx">${prefix}.${num}</span>
+            <span>${titleTesto}</span>
+          </button>
+        `;
+        sidebarList.appendChild(sidebarItem);
+      }
+    });
   }
 };
+
+
 
 // ── BOOTSTRAP DEL FRAMEWORK ───────────────────────────────────────
 // Appena il DOM è caricato, KatchKitCore si avvia automaticamente
