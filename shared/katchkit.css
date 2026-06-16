@@ -50,6 +50,15 @@
 /* PRESET: PURPLE (Viola base) */
 .theme-purple { --kk-primary: #a78bfa; --kk-rgb: 167, 139, 250; --kk-grad-end: #7c5cfc; }
 
+/* PRESET: BLUE (Blu tecnologico - Perfetto per Reti o Cloud) */
+.theme-blue { --kk-primary: #60a5fa; --kk-rgb: 96, 165, 250; --kk-grad-end: #3b82f6; }
+
+/* PRESET: ROSE (Rosa acceso - Molto elegante e moderno) */
+.theme-rose { --kk-primary: #f472b6; --kk-rgb: 244, 114, 182; --kk-grad-end: #db2777; }
+
+/* PRESET: SLATE (Grigio/Argento - Monocromatico, per argomenti neutri o matematici) */
+.theme-slate { --kk-primary: #94a3b8; --kk-rgb: 148, 163, 184; --kk-grad-end: #64748b; }
+
 
 /* ── 2. RESET E BASE HTML ────────────────────────────────── */
 
