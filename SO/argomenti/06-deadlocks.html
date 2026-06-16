@@ -1,402 +1,279 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>06 · Deadlocks — SO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../so.css">
-<style>
-  .nav-logo{color:var(--coral)}.nav-back:hover{color:var(--coral);border-color:rgba(248,113,113,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(248,113,113,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#f87171 55%,#ef4444 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coral);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--coral)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(248,113,113,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--coral);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--coral);background:rgba(248,113,113,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(248,113,113,.12);color:var(--coral);border:1px solid rgba(248,113,113,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--coral)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--coral)}.index-item .idx-num{color:var(--coral);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
-</style>
-
-<style id="so-sb-css">
-/* ── Sidebar fissa ──────────────────────────────────────────────────── */
-:root { --sb-w: 240px; }
-
-/* Shift tutto il body a destra della sidebar */
-body {
-  padding-left: var(--sb-w);
-}
-
-/* La navbar si allunga a coprire anche la sidebar */
-nav {
-  left: 0 !important;
-  right: 0 !important;
-  padding-left: calc(var(--sb-w) + 1.5rem) !important;
-}
-
-/* Sidebar: fixed, piena altezza, sotto la navbar */
-.so-sidebar {
-  position: fixed;
-  top: var(--nav-h);
-  left: 0;
-  width: var(--sb-w);
-  height: calc(100vh - var(--nav-h));
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: rgba(8,8,16,0.97);
-  border-right: 1px solid var(--border);
-  z-index: 90;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 3rem;
-  /* thin scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(248,113,113,.25) transparent;
-}
-.so-sidebar::-webkit-scrollbar       { width: 3px; }
-.so-sidebar::-webkit-scrollbar-track { background: transparent; }
-.so-sidebar::-webkit-scrollbar-thumb { background: rgba(248,113,113,.3); border-radius: 3px; }
-
-/* Section labels (titolini) */
-.sb-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 1rem 1rem .45rem;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-shrink: 0;
-}
-.sb-label::before {
-  content: '';
-  display: inline-block;
-  width: 10px; height: 1px;
-  background: rgba(248,113,113,.55);
-  flex-shrink: 0;
-}
-
-/* ── Lista macroargomenti (tutte le pagine) ─────────────────────────── */
-.sb-pages {
-  list-style: none;
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: .5rem;
-  margin-bottom: .25rem;
-}
-.sb-pages li { display: block; }
-.sb-pages li a,
-.sb-pages li .sb-cur {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color .15s, background .15s;
-  border-left: 2px solid transparent;
-  line-height: 1.35;
-}
-.sb-pages li a:hover {
-  color: var(--text-secondary);
-  background: rgba(248,113,113,.04);
-  border-left-color: rgba(248,113,113,.25);
-}
-/* Pagina corrente */
-.sb-pages li .sb-cur {
-  color: var(--coral);
-  font-weight: 700;
-  border-left-color: var(--coral);
-  background: rgba(248,113,113,.07);
-}
-.sb-pdot {
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: currentColor;
-  flex-shrink: 0;
-  opacity: .45;
-}
-.sb-cur .sb-pdot { opacity: 1; }
-
-/* ── Lista sezioni (questa pagina) ─────────────────────────────────── */
-.sb-sections {
-  list-style: none;
-  flex: 1;
-}
-.sb-sections li { display: block; }
-.sb-sections li .sb-link {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  padding: 5px 1rem;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-decoration: none;
-  border-left: 2px solid transparent;
-  transition: color .15s, background .15s, border-color .15s;
-  line-height: 1.4;
-  cursor: pointer;
-  width: 100%;
-  background: none;
-  border-top: none; border-right: none; border-bottom: none;
-  font-family: 'Inter', sans-serif;
-  text-align: left;
-}
-.sb-sections li .sb-link:hover {
-  color: var(--text-secondary);
-  background: rgba(248,113,113,.04);
-  border-left-color: rgba(248,113,113,.3);
-}
-.sb-sections li.sb-active .sb-link {
-  color: var(--coral);
-  font-weight: 600;
-  border-left-color: var(--coral);
-  background: rgba(248,113,113,.07);
-}
-.sb-idx {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: rgba(248,113,113,.4);
-  flex-shrink: 0;
-  min-width: 28px;
-  margin-top: 2px;
-}
-.sb-active .sb-idx { color: var(--coral); }
-
-/* ── Index-grid cards clickable ─────────────────────────────────────── */
-.index-item {
-  cursor: pointer;
-  transition: background .15s, border-color .15s, transform .12s;
-  user-select: none;
-}
-.index-item:hover {
-  background: var(--bg-card-hover);
-  border-left-color: var(--coral);
-  transform: translateY(-1px);
-}
-.index-item:active { transform: translateY(0); }
-
-/* ── Section flash on jump ─────────────────────────────────────────── */
-.section-block { scroll-margin-top: calc(var(--nav-h) + 1.25rem); }
-@keyframes sbFlash {
-  0%   { box-shadow: inset 0 0 0 2px rgba(248,113,113,.55); border-radius: 8px; }
-  100% { box-shadow: inset 0 0 0 2px rgba(248,113,113,0);   border-radius: 8px; }
-}
-.sb-flash { animation: sbFlash .75s ease-out; }
-
-/* ── Mobile: sidebar nascosta, padding rimosso ──────────────────────── */
-@media (max-width: 900px) {
-  .so-sidebar { display: none; }
-  body { padding-left: 0 !important; }
-  nav  { padding-left: 2.5rem !important; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06 · Deadlocks — SO</title>
+  <link rel="stylesheet" href="/shared/katchkit.css">
 </head>
-<body class="dot-grid">
-<aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-    <li><div class="sb-cur"><span class="sb-pdot"></span>06 · Deadlocks</div></li>
-    <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-    <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-    <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-    <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-    <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-    <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections">
-    <li data-sid="section-1">
-      <div class="sb-link" data-target="section-1">
-        <span class="sb-idx">06.01</span>
-        <span>Condizioni Necessarie (Coffman)</span>
+
+<body class="dot-grid theme-coral">
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>06 · Deadlocks</div>
+      </li>
+      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
+      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
+      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
+      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
+      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
+      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections">
+    </ul>
+  </aside>
+
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// SO · Sistemi Operativi</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back">← Indice SO</a>
+      <a href="/" class="nav-back">⌂ Home</a>
+    </div>
+  </nav>
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow">Macroargomento 06 ·Problemi</span>
+    <div class="topic-num">06 / 13</div>
+    <h1 class="topic-hero-title">Deadlocks</h1>
+    <p class="hero-sub" style="max-width:640px">Condizioni di Coffman, grafo di allocazione risorse, prevenzione,
+      evitamento (Algoritmo del Banchiere), rilevamento e recovery dallo stallo.</p>
+  </div>
+  <hr class="divider">
+  <div class="content-wrap">
+    <div class="nav-breadcrumb">
+      <a href="/">7Katch.github.io</a><span>/</span>
+      <a href="../">SO</a><span>/</span>
+      <span>06 · Deadlocks</span>
+    </div>
+    <div class="theme-box">Questa pagina copre i <strong>6 sottoargomenti</strong> del
+      macroargomento 6: lo stallo nei sistemi concorrenti e le strategie per gestirlo.</div>
+    <div class="index-grid" data-prefix="06">
+      <ul>
+        <li>Modello del sistema e strategie (Coffman)</li>
+        <li>Grafo di allocazione</li>
+        <li>Prevenzione e teorema sul deadlock</li>
+        <li>Algoritmo del Banchiere</li>
+        <li>Rilevamento</li>
+        <li>Recovery</li>
+      </ul>
+    </div>
+
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Modello del Sistema e Strategie (Coffman) <span class="sub-tag">fondamentale</span>
+      </h2>
+      <p>In un sistema operativo, un processo o thread utilizza una risorsa seguendo sempre un ciclo rigoroso in 3 fasi:
+        <span class="keyword">Richiesta</span>, <span class="keyword">Uso</span> e <span
+          class="keyword">Rilascio</span>.
+      </p>
+
+      <div class="theme-box">
+        <strong>Metodi per gestire i deadlocks:</strong> Esistono tre approcci fondamentali per affrontare il
+        problema:
+        <ul style="margin-top: 8px; margin-bottom: 0;">
+          <li><strong>Prevenzione ed Evitamento:</strong> assicurarsi che il sistema non entri mai in stato di
+            deadlock.</li>
+          <li><strong>Rilevamento e Recovery:</strong> permettere al sistema di entrare in deadlock e poi
+            riprendersi.</li>
+          <li><strong>Ignorare il problema:</strong> far finta che il deadlock non sia mai esistito nel sistema. (Questo
+            è l'approccio standard in molti SO per i processi utente).</li>
+        </ul>
       </div>
-    </li>
-    <li data-sid="section-2">
-      <div class="sb-link" data-target="section-2">
-        <span class="sb-idx">06.02</span>
-        <span>Grafo di Allocazione delle Risorse</span>
+
+      <h2><span class="dot"></span> Condizioni Necessarie (Coffman) <span class="sub-tag">fondamento</span></h2>
+      <p>Un <span class="keyword">deadlock</span> è una situazione in cui un insieme di processi è bloccato in attesa di
+        risorse detenute da altri processi dello stesso insieme, formando un ciclo di attese senza via d'uscita. Il
+        sistema si blocca completamente senza possibilità di progredire.</p>
+      <p>Coffman et al. (1971) identificarono le quattro condizioni che devono essere <em>tutte simultaneamente</em>
+        soddisfatte perché si verifichi un deadlock:</p>
+      <p><span class="keyword">1. Mutual Exclusion</span>: almeno una risorsa è non condivisibile (solo un processo alla
+        volta può usarla).
+      </p>
+      <p> <span class="keyword">2. Hold and Wait</span>: un processo detiene almeno una risorsa e
+        aspetta di acquisirne altre detenute da altri processi.</p>
+      <p><span class="keyword">3. No Preemption</span>: le
+        risorse non possono essere sottratte forzatamente a un processo; possono solo essere rilasciate volontariamente.
+      </p>
+      <p>
+        <span class="keyword">4. Circular Wait</span>: esiste una catena circolare di processi, dove ognuno aspetta una
+        risorsa detenuta dal successivo nella catena.
+      </p>
+    </div>
+
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Grafo di Allocazione delle Risorse</h2>
+      <p>Il <span class="keyword">Resource Allocation Graph (RAG)</span> è uno strumento grafico per analizzare lo stato
+        del sistema. I nodi sono di due tipi: <span class="keyword">processi</span> (cerchi) e <span
+          class="keyword">risorse</span> (rettangoli con punti che rappresentano le istanze). Gli archi sono di due
+        tipi: un arco da processo a risorsa ($P_i\rightarrow R_j$) indica una <em>richiesta</em>; un arco da risorsa a
+        processo ($R_j\rightarrow P_i$)
+        indica un'<em>assegnazione</em>.</p>
+      <p>Se il grafo non ha cicli → nessun deadlock. Se c'è un ciclo e ogni tipo di risorsa ha una sola istanza →
+        deadlock certo. Se ci sono istanze multiple → il ciclo è condizione necessaria ma non sufficiente; serve analisi
+        ulteriore.</p>
+
+      <h2><span class="dot"></span>Esempio di grafo di allocazione delle risorse</h2>
+      <div class="kk-flex-media">
+        <img src="../risorse/img13.png" alt="">
+
       </div>
-    </li>
-    <li data-sid="section-3">
-      <div class="sb-link" data-target="section-3">
-        <span class="sb-idx">06.03</span>
-        <span>Prevenzione del Deadlock</span>
+    </div>
+
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Prevenzione del Deadlock</h2>
+      <p>La <span class="keyword">prevenzione</span> agisce a livello di design del sistema, garantendo che almeno una
+        delle quattro condizioni di Coffman non possa mai verificarsi. È l'approccio più conservativo.</p>
+      <p>Eliminare la <span class="keyword">Mutual Exclusion</span> è impossibile per risorse intrinsecamente non
+        condivisibili. Eliminare <span class="keyword">Hold and Wait</span>: richiedere che ogni processo acquisisca
+        tutte le risorse necessarie prima di iniziare, oppure che rilasci tutto ciò che ha prima di richiedere nuove
+        risorse. Eliminare <span class="keyword">No Preemption</span>: il SO può sottrarre risorse a un processo
+        (funziona per risorse il cui stato è facilmente salvabile, come registri CPU). Eliminare <span
+          class="keyword">Circular Wait</span>: imporre un ordinamento globale sulle risorse (ogni risorsa ha un numero
+        unico) e obbligare ogni processo a richiedere le risorse in ordine crescente; questa è la strategia più pratica.
+      </p>
+      <h2><span class="dot"></span>Teorema sul deadlock <span class="sub-tag">fondamentale</span></h2>
+      <p>
+        $\text{Se il grafo non contiene cicli }\implies \text{Non ci sono deadlock}$
+        $\text{Se il grafo contiene cicli e } R_i=1 \ \forall i \implies \text{Deadlock}$
+        $\text{Se il grafo contiene cicli e } R_i>1 \ \forall i \implies \text{Possibile deadlock}$
+      </p>
+    </div>
+
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Algoritmo del Banchiere (Deadlock Avoidance)</h2>
+      <p>L'<span class="keyword">Algoritmo del Banchiere</span> di Dijkstra è la strategia di evitamento più famosa. Il
+        SO, prima di concedere una risorsa, simula l'allocazione e verifica se il sistema rimarrebbe in uno <span
+          class="keyword">stato sicuro</span>: uno stato da cui esiste almeno una <em>sequenza sicura</em> di
+        completamento di tutti i processi, anche nel caso pessimistico in cui ogni processo richieda il massimo delle
+        risorse dichiarate.</p>
+      <p>Richiede che ogni processo dichiari preventivamente il massimo numero di istanze di ogni risorsa che potrà
+        richiedere. Usa quattro strutture dati: <span class="keyword">Available</span> (risorse disponibili), <span
+          class="keyword">Max</span> (massimo dichiarato per processo), <span class="keyword">Allocation</span> (risorse
+        attualmente assegnate), <span class="keyword">Need</span> (= Max − Allocation). La verifica di sicurezza ha
+        complessità $O(n^2\cdot m)$ dove n è il numero di processi e m il numero di tipi di risorse. In pratica è poco
+        usato
+        perché richiede informazioni sui massimi che raramente sono note in anticipo.</p>
+
+      <div class="theme-box" style="overflow-x: auto; text-align: center; margin: 1.5rem 0;">
+        
+        \begin{equation}
+        Need_{i,j} = Max_{i,j} - Allocation_{i,j}
+        \end{equation}
+        \begin{array}{c | ccc | ccc | ccc}
+        \text{Processo} & & \text{Allocation} & & & \text{Max} & & & \text{Need} & \\
+        & A & B & C & A & B & C & A & B & C \\
+        \hline
+        P_0 & 0 & 1 & 0 & 7 & 5 & 3 & 7 & 4 & 3 \\
+        P_1 & 2 & 0 & 0 & 3 & 2 & 2 & 1 & 2 & 2 \\
+        P_2 & 3 & 0 & 2 & 9 & 0 & 2 & 6 & 0 & 0 \\
+        P_3 & 2 & 1 & 1 & 2 & 2 & 2 & 0 & 1 & 1 \\
+        P_4 & 0 & 0 & 2 & 4 & 3 & 3 & 4 & 3 & 1 \\
+        \end{array}
+
+        
+
       </div>
-    </li>
-    <li data-sid="section-4">
-      <div class="sb-link" data-target="section-4">
-        <span class="sb-idx">06.04</span>
-        <span>Algoritmo del Banchiere (Deadlock Avoidance)</span>
+
+      <h2><span class="dot"></span> Avoidance con Grafo (Singola Istanza)</h2>
+      <p>L'Algoritmo del Banchiere è ideale per risorse con istanze multiple. Se il sistema ha solo
+        <em>singole istanze</em> per ogni tipo di risorsa, l'Avoidance si fa usando una variante del Resource Allocation
+        Graph che introduce i <span class="keyword">Claim Edge</span> (Archi di Rivendicazione).
+      </p>
+
+      <div class="split-card">
+        <div class="split-card-text">
+          <ul>
+            <li>Un <strong>Claim Edge</strong> ($T_i \rightarrow R_j$) è rappresentato da una linea tratteggiata e
+              indica che il processo <em>potrebbe</em> richiedere la risorsa.</li>
+            <li>Quando il thread richiede la risorsa, il claim edge si converte in un <strong>Request Edge</strong>
+              normale.</li>
+            <li>La richiesta viene concessa (diventando un <strong>Assignment Edge</strong>) <em>solo se</em> la
+              conversione non crea cicli nel grafo. Le risorse devono essere dichiarate in
+              anticipo.</li>
+          </ul>
+        </div>
+        <div class="split-card-visual kk-flex-media">
+          <img src="../risorse/img12.png" alt="">
+        </div>
       </div>
-    </li>
-    <li data-sid="section-5">
-      <div class="sb-link" data-target="section-5">
-        <span class="sb-idx">06.05</span>
-        <span>Rilevamento del Deadlock</span>
+    </div>
+
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Rilevamento del Deadlock (Wait-for Graph)</h2>
+      <p>Nell'approccio del <span class="keyword">rilevamento</span> il SO non previene né evita i deadlock, ma li
+        lascia avvenire e li rileva periodicamente.</p>
+
+        <div class="kk-flex-row">
+          <div class="kk-flex-text">
+          <p><span class="keyword">Caso 1: Singola Istanza (Wait-for Graph)</span><br>
+        Il SO mantiene un <span class="keyword">Wait-for graph</span>, dove i nodi sono esclusivamente i thread. Un arco
+        $T_i \rightarrow T_j$ indica che $T_i$ sta aspettando una risorsa detenuta da
+        $T_j$. Il sistema invoca periodicamente un algoritmo: se ci sono cicli, ci sono deadlock.</p>
+      
+        </div>
+      <div class="kk-flex-media" style="flex: 0 0 65%">
+        <img style="width:50%" src="../risorse/img14.png" alt="">
       </div>
-    </li>
-    <li data-sid="section-6">
-      <div class="sb-link" data-target="section-6">
-        <span class="sb-idx">06.06</span>
-        <span>Recovery dal Deadlock</span>
+        </div>
+      <p><span class="keyword">Caso 2: Istanze Multiple</span><br>
+        Si utilizza un algoritmo simile, con matrici <em>Allocation</em>, <em>Request</em> e <em>Available</em>.</p>
+
+      <div class="callout">
+        <span class="callout-icon">⏱️</span>
+        <strong>Quando rilevare?</strong> Se l'algoritmo viene invocato in modo arbitrario (troppo raramente),
+        potrebbero esserci diversi cicli nel grafo, rendendo impossibile stabilire quale dei thread bloccati abbia
+        causato il deadlock.
       </div>
-    </li>
-  </ul>
-</aside>
+    </div>
 
-<nav>
-  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
-  <div class="nav-right">
-    <a href="../index.html" class="nav-back">← Indice SO</a>
-    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> Recovery dal Deadlock</h2>
+      <p>Una volta rilevato un deadlock, il SO deve ripristinare il funzionamento normale. Ci sono due macro-strategie:
+        <span class="keyword">Process Termination</span> e <span class="keyword">Resource Preemption</span>.
+      </p>
+      <p>Con la <span class="keyword">terminazione dei processi</span>, il SO può abbortire tutti i processi nel
+        deadlock (drastico, semplice) o abbortirli uno alla volta, verificando dopo ognuno se il deadlock è risolto
+        (meno impattante ma costoso). Il processo da abbortire viene scelto in base a criteri di costo: priorità, tempo
+        già consumato, risorse detenute, tipo di processo.</p>
+      <p>Con la <span class="keyword">preemption delle risorse</span>, il SO sottrae risorse a un processo
+        <em>vittima</em> scelto e le assegna ad altri. Il processo vittima deve essere riportato a uno stato precedente
+        (<span class="keyword">rollback</span> a un checkpoint). Problemi: scegliere la vittima minimizzando il costo,
+        evitare la starvation (la stessa vittima non deve essere sempre scelta).
+      </p>
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <strong>Preemption e Starvation:</strong> Con la preemption delle risorse, il SO sottrae risorse a un processo
+        vittima e fa un <em>rollback</em> a uno stato safe. Alcuni thread potrebbero però venire scelti <em>sempre</em>
+        come vittime (Starvation). Per evitare ciò, si deve includere il <strong>numero di rollback</strong> subiti dal
+        thread all'interno del calcolo dei fattori di costo.
+      </div>
+    </div>
+
+    <div class="back-btn-wrap">
+      <a href="05-sincronizzazione.html" class="btn btn-ghost">← 05 · Sincronizzazione</a>
+      <a href="../" class="btn btn-amber">↑ Indice SO</a>
+      <a href="07-main-memory.html" class="btn btn-ghost">07 · Main Memory →</a>
+    </div>
   </div>
-</nav>
-<div class="hero" style="min-height:55vh">
-  <div class="hero-glow"></div>
-  <span class="hero-eyebrow" style="background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--coral)">Macroargomento 06 · Problemi</span>
-  <div class="topic-num">06 / 13</div>
-  <h1 class="topic-hero-title">Deadlocks</h1>
-  <p class="hero-sub" style="max-width:640px">Condizioni di Coffman, grafo di allocazione risorse, prevenzione, evitamento (Algoritmo del Banchiere), rilevamento e recovery dallo stallo.</p>
-</div>
-<hr class="divider">
-<div class="content-wrap">
-  <div class="nav-breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
-    <a href="../index.html">SO</a><span>/</span>
-    <span>06 · Deadlocks</span>
-  </div>
-  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(248,113,113,.25)">Questa pagina copre i <strong style="color:var(--coral)">6 sottoargomenti</strong> del macroargomento 6: lo stallo nei sistemi concorrenti e le strategie per gestirlo.</div>
-  <div class="index-grid">
-    <div class="index-item" data-target="section-1"><div class="idx-num">06.01</div><div class="idx-name">Condizioni di Coffman</div></div>
-    <div class="index-item" data-target="section-2"><div class="idx-num">06.02</div><div class="idx-name">Grafo di allocazione</div></div>
-    <div class="index-item" data-target="section-3"><div class="idx-num">06.03</div><div class="idx-name">Prevenzione</div></div>
-    <div class="index-item" data-target="section-4"><div class="idx-num">06.04</div><div class="idx-name">Algoritmo del Banchiere</div></div>
-    <div class="index-item" data-target="section-5"><div class="idx-num">06.05</div><div class="idx-name">Rilevamento</div></div>
-    <div class="index-item" data-target="section-6"><div class="idx-num">06.06</div><div class="idx-name">Recovery</div></div>
-  </div>
+  <footer>
+    <p>// <a href="/">7Katch.github.io</a> · SO · 06 · Deadlocks</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
+  </footer>
 
-  <div class="section-block" id="section-1">
-    <h2><span class="dot"></span> Condizioni Necessarie (Coffman) <span class="sub-tag">fondamento</span></h2>
-    <p>Un <span class="keyword">deadlock</span> è una situazione in cui un insieme di processi è bloccato in attesa di risorse detenute da altri processi dello stesso insieme, formando un ciclo di attese senza via d'uscita. Il sistema si blocca completamente senza possibilità di progredire.</p>
-    <p>Coffman et al. (1971) identificarono le quattro condizioni che devono essere <em>tutte simultaneamente</em> soddisfatte perché si verifichi un deadlock:</p>
-    <p><span class="keyword">1. Mutual Exclusion</span>: almeno una risorsa è non condivisibile (solo un processo alla volta può usarla). <span class="keyword">2. Hold and Wait</span>: un processo detiene almeno una risorsa e aspetta di acquisirne altre detenute da altri processi. <span class="keyword">3. No Preemption</span>: le risorse non possono essere sottratte forzatamente a un processo; possono solo essere rilasciate volontariamente. <span class="keyword">4. Circular Wait</span>: esiste una catena circolare di processi, dove ognuno aspetta una risorsa detenuta dal successivo nella catena.</p>
-  </div>
-
-  <div class="section-block" id="section-2">
-    <h2><span class="dot"></span> Grafo di Allocazione delle Risorse</h2>
-    <p>Il <span class="keyword">Resource Allocation Graph (RAG)</span> è uno strumento grafico per analizzare lo stato del sistema. I nodi sono di due tipi: <span class="keyword">processi</span> (cerchi) e <span class="keyword">risorse</span> (rettangoli con punti che rappresentano le istanze). Gli archi sono di due tipi: un arco da processo a risorsa (P→R) indica una <em>richiesta</em>; un arco da risorsa a processo (R→P) indica un'<em>assegnazione</em>.</p>
-    <p>Se il grafo non ha cicli → nessun deadlock. Se c'è un ciclo e ogni tipo di risorsa ha una sola istanza → deadlock certo. Se ci sono istanze multiple → il ciclo è condizione necessaria ma non sufficiente; serve analisi ulteriore.</p>
-  </div>
-
-  <div class="section-block" id="section-3">
-    <h2><span class="dot"></span> Prevenzione del Deadlock</h2>
-    <p>La <span class="keyword">prevenzione</span> agisce a livello di design del sistema, garantendo che almeno una delle quattro condizioni di Coffman non possa mai verificarsi. È l'approccio più conservativo.</p>
-    <p>Eliminare la <span class="keyword">Mutual Exclusion</span> è impossibile per risorse intrinsecamente non condivisibili. Eliminare <span class="keyword">Hold and Wait</span>: richiedere che ogni processo acquisisca tutte le risorse necessarie prima di iniziare, oppure che rilasci tutto ciò che ha prima di richiedere nuove risorse. Eliminare <span class="keyword">No Preemption</span>: il SO può sottrarre risorse a un processo (funziona per risorse il cui stato è facilmente salvabile, come registri CPU). Eliminare <span class="keyword">Circular Wait</span>: imporre un ordinamento globale sulle risorse (ogni risorsa ha un numero unico) e obbligare ogni processo a richiedere le risorse in ordine crescente; questa è la strategia più pratica.</p>
-  </div>
-
-  <div class="section-block" id="section-4">
-    <h2><span class="dot"></span> Algoritmo del Banchiere (Deadlock Avoidance)</h2>
-    <p>L'<span class="keyword">Algoritmo del Banchiere</span> di Dijkstra è la strategia di evitamento più famosa. Il SO, prima di concedere una risorsa, simula l'allocazione e verifica se il sistema rimarrebbe in uno <span class="keyword">stato sicuro</span>: uno stato da cui esiste almeno una <em>sequenza sicura</em> di completamento di tutti i processi, anche nel caso pessimistico in cui ogni processo richieda il massimo delle risorse dichiarate.</p>
-    <p>Richiede che ogni processo dichiari preventivamente il massimo numero di istanze di ogni risorsa che potrà richiedere. Usa quattro strutture dati: <span class="keyword">Available</span> (risorse disponibili), <span class="keyword">Max</span> (massimo dichiarato per processo), <span class="keyword">Allocation</span> (risorse attualmente assegnate), <span class="keyword">Need</span> (= Max − Allocation). La verifica di sicurezza ha complessità O(n² × m) dove n è il numero di processi e m il numero di tipi di risorse. In pratica è poco usato perché richiede informazioni sui massimi che raramente sono note in anticipo.</p>
-  </div>
-
-  <div class="section-block" id="section-5">
-    <h2><span class="dot"></span> Rilevamento del Deadlock</h2>
-    <p>Nell'approccio del <span class="keyword">rilevamento</span> il SO non previene né evita i deadlock, ma li lascia avvenire e li rileva periodicamente. L'algoritmo di rilevamento è simile a quello del banchiere, ma senza la dichiarazione dei massimi: lavora sull'allocazione corrente e sui wait-for graph.</p>
-    <p>La frequenza del rilevamento è un trade-off: troppo frequente → overhead elevato; troppo raro → il sistema rimane in deadlock per lungo tempo. In pratica si può avviare il rilevamento quando l'utilizzo della CPU scende bruscamente (sintomo di possibile deadlock) o ogni N secondi.</p>
-  </div>
-
-  <div class="section-block" id="section-6">
-    <h2><span class="dot"></span> Recovery dal Deadlock</h2>
-    <p>Una volta rilevato un deadlock, il SO deve ripristinare il funzionamento normale. Ci sono due macro-strategie: <span class="keyword">Process Termination</span> e <span class="keyword">Resource Preemption</span>.</p>
-    <p>Con la <span class="keyword">terminazione dei processi</span>, il SO può abbortire tutti i processi nel deadlock (drastico, semplice) o abbortirli uno alla volta, verificando dopo ognuno se il deadlock è risolto (meno impattante ma costoso). Il processo da abbortire viene scelto in base a criteri di costo: priorità, tempo già consumato, risorse detenute, tipo di processo.</p>
-    <p>Con la <span class="keyword">preemption delle risorse</span>, il SO sottrae risorse a un processo <em>vittima</em> scelto e le assegna ad altri. Il processo vittima deve essere riportato a uno stato precedente (<span class="keyword">rollback</span> a un checkpoint). Problemi: scegliere la vittima minimizzando il costo, evitare la starvation (la stessa vittima non deve essere sempre scelta).</p>
-  </div>
-
-  <div class="back-btn-wrap">
-    <a href="05-sincronizzazione.html" class="btn btn-ghost">← 05 · Sincronizzazione</a>
-    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-    <a href="07-main-memory.html" class="btn btn-ghost">07 · Main Memory →</a>
-  </div>
-</div>
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 06 · Deadlocks</p>
-  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
-</footer>
-
-<script id="so-sb-js">
-(function () {
-  var IDS = ["section-1","section-2","section-3","section-4","section-5","section-6"];
-
-  /* smooth scroll + flash */
-  function goTo(id) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    el.classList.remove('sb-flash');
-    void el.offsetWidth;                         // force reflow
-    el.classList.add('sb-flash');
-    el.addEventListener('animationend', function () {
-      el.classList.remove('sb-flash');
-    }, { once: true });
-    setActive(id);
-  }
-
-  /* highlight sidebar item */
-  function setActive(id) {
-    document.querySelectorAll('.sb-sections li').forEach(function (li) {
-      li.classList.toggle('sb-active', li.getAttribute('data-sid') === id);
-    });
-    /* auto-scroll sidebar so active item is visible */
-    var sb  = document.querySelector('.so-sidebar');
-    var act = document.querySelector('.sb-sections li.sb-active');
-    if (sb && act) {
-      var liTop = act.offsetTop;
-      var liH   = act.offsetHeight;
-      if (liTop < sb.scrollTop || liTop + liH > sb.scrollTop + sb.clientHeight) {
-        sb.scrollTop = liTop - sb.clientHeight / 2 + liH / 2;
-      }
-    }
-  }
-
-  /* wire index-grid cards */
-  document.querySelectorAll('.index-item[data-target]').forEach(function (card) {
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('role', 'button');
-    var name = (card.querySelector('.idx-name') || {}).textContent || '';
-    card.setAttribute('aria-label', 'Vai a: ' + name.trim());
-    card.addEventListener('click', function () { goTo(card.dataset.target); });
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(card.dataset.target); }
-    });
-  });
-
-  /* wire sidebar section links */
-  document.querySelectorAll('.sb-link[data-target]').forEach(function (el) {
-    el.addEventListener('click', function () { goTo(el.dataset.target); });
-  });
-
-  /* IntersectionObserver — aggiorna active mentre scorri */
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) setActive(e.target.id);
-      });
-    }, { rootMargin: '-8% 0px -72% 0px', threshold: 0 });
-
-    IDS.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-  }
-
-  /* attivo iniziale */
-  if (IDS.length) setActive(IDS[0]);
-}());
-</script>
+  <script src="/shared/katchkit.js"></script>
 </body>
+
 </html>
