@@ -1,427 +1,1131 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>07 · Main Memory — SO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../so.css">
-<style>
-  .nav-logo{color:var(--teal)}.nav-back:hover{color:var(--teal);border-color:rgba(34,211,238,.4)}.hero-glow{background:radial-gradient(ellipse,rgba(34,211,238,.07) 0%,transparent 65%)}.topic-hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.25rem;background:linear-gradient(135deg,#f0eeff 0%,#22d3ee 55%,#06b6d4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.topic-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}.topic-num::before{content:'';display:inline-block;width:20px;height:1px;background:var(--teal)}.content-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}.section-block{margin-bottom:3rem}.section-block h2{font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(34,211,238,.2);display:flex;align-items:center;gap:10px}.section-block h2 .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}.section-block p{font-size:14px;color:var(--text-secondary);line-height:1.85;margin-bottom:.75rem}.section-block p:last-child{margin-bottom:0}code.inline{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--teal);background:rgba(34,211,238,.08);padding:1px 6px;border-radius:4px}.keyword{color:var(--text-primary);font-weight:600}.sub-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 7px;border-radius:var(--r-pill);background:rgba(34,211,238,.12);color:var(--teal);border:1px solid rgba(34,211,238,.3);letter-spacing:.04em;margin-left:8px;vertical-align:middle;font-weight:600}.nav-breadcrumb{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:2.5rem}.nav-breadcrumb a{color:var(--text-muted);transition:color .2s}.nav-breadcrumb a:hover{color:var(--teal)}.nav-breadcrumb span{color:var(--border-hover)}.back-btn-wrap{display:flex;gap:12px;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:2.5rem}.index-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;border-left:2px solid var(--teal)}.index-item .idx-num{color:var(--teal);font-size:10px;margin-bottom:2px;font-family:'JetBrains Mono',monospace}.index-item .idx-name{color:var(--text-secondary);font-size:12px;font-family:'Inter',sans-serif;font-weight:600}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07 · Main Memory — SO</title>
 
-<style id="so-sb-css">
-/* ── Sidebar fissa ──────────────────────────────────────────────────── */
-:root { --sb-w: 240px; }
-
-/* Shift tutto il body a destra della sidebar */
-body {
-  padding-left: var(--sb-w);
-}
-
-/* La navbar si allunga a coprire anche la sidebar */
-nav {
-  left: 0 !important;
-  right: 0 !important;
-  padding-left: calc(var(--sb-w) + 1.5rem) !important;
-}
-
-/* Sidebar: fixed, piena altezza, sotto la navbar */
-.so-sidebar {
-  position: fixed;
-  top: var(--nav-h);
-  left: 0;
-  width: var(--sb-w);
-  height: calc(100vh - var(--nav-h));
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: rgba(8,8,16,0.97);
-  border-right: 1px solid var(--border);
-  z-index: 90;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 3rem;
-  /* thin scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(34,211,238,.25) transparent;
-}
-.so-sidebar::-webkit-scrollbar       { width: 3px; }
-.so-sidebar::-webkit-scrollbar-track { background: transparent; }
-.so-sidebar::-webkit-scrollbar-thumb { background: rgba(34,211,238,.3); border-radius: 3px; }
-
-/* Section labels (titolini) */
-.sb-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 1rem 1rem .45rem;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-shrink: 0;
-}
-.sb-label::before {
-  content: '';
-  display: inline-block;
-  width: 10px; height: 1px;
-  background: rgba(34,211,238,.55);
-  flex-shrink: 0;
-}
-
-/* ── Lista macroargomenti (tutte le pagine) ─────────────────────────── */
-.sb-pages {
-  list-style: none;
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: .5rem;
-  margin-bottom: .25rem;
-}
-.sb-pages li { display: block; }
-.sb-pages li a,
-.sb-pages li .sb-cur {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color .15s, background .15s;
-  border-left: 2px solid transparent;
-  line-height: 1.35;
-}
-.sb-pages li a:hover {
-  color: var(--text-secondary);
-  background: rgba(34,211,238,.04);
-  border-left-color: rgba(34,211,238,.25);
-}
-/* Pagina corrente */
-.sb-pages li .sb-cur {
-  color: var(--teal);
-  font-weight: 700;
-  border-left-color: var(--teal);
-  background: rgba(34,211,238,.07);
-}
-.sb-pdot {
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: currentColor;
-  flex-shrink: 0;
-  opacity: .45;
-}
-.sb-cur .sb-pdot { opacity: 1; }
-
-/* ── Lista sezioni (questa pagina) ─────────────────────────────────── */
-.sb-sections {
-  list-style: none;
-  flex: 1;
-}
-.sb-sections li { display: block; }
-.sb-sections li .sb-link {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  padding: 5px 1rem;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-decoration: none;
-  border-left: 2px solid transparent;
-  transition: color .15s, background .15s, border-color .15s;
-  line-height: 1.4;
-  cursor: pointer;
-  width: 100%;
-  background: none;
-  border-top: none; border-right: none; border-bottom: none;
-  font-family: 'Inter', sans-serif;
-  text-align: left;
-}
-.sb-sections li .sb-link:hover {
-  color: var(--text-secondary);
-  background: rgba(34,211,238,.04);
-  border-left-color: rgba(34,211,238,.3);
-}
-.sb-sections li.sb-active .sb-link {
-  color: var(--teal);
-  font-weight: 600;
-  border-left-color: var(--teal);
-  background: rgba(34,211,238,.07);
-}
-.sb-idx {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: rgba(34,211,238,.4);
-  flex-shrink: 0;
-  min-width: 28px;
-  margin-top: 2px;
-}
-.sb-active .sb-idx { color: var(--teal); }
-
-/* ── Index-grid cards clickable ─────────────────────────────────────── */
-.index-item {
-  cursor: pointer;
-  transition: background .15s, border-color .15s, transform .12s;
-  user-select: none;
-}
-.index-item:hover {
-  background: var(--bg-card-hover);
-  border-left-color: var(--teal);
-  transform: translateY(-1px);
-}
-.index-item:active { transform: translateY(0); }
-
-/* ── Section flash on jump ─────────────────────────────────────────── */
-.section-block { scroll-margin-top: calc(var(--nav-h) + 1.25rem); }
-@keyframes sbFlash {
-  0%   { box-shadow: inset 0 0 0 2px rgba(34,211,238,.55); border-radius: 8px; }
-  100% { box-shadow: inset 0 0 0 2px rgba(34,211,238,0);   border-radius: 8px; }
-}
-.sb-flash { animation: sbFlash .75s ease-out; }
-
-/* ── Mobile: sidebar nascosta, padding rimosso ──────────────────────── */
-@media (max-width: 900px) {
-  .so-sidebar { display: none; }
-  body { padding-left: 0 !important; }
-  nav  { padding-left: 2.5rem !important; }
-}
-</style>
+  <link rel="stylesheet" href="/shared/katchkit.css">
 </head>
-<body class="dot-grid">
-<aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-    <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-    <li><div class="sb-cur"><span class="sb-pdot"></span>07 · Main Memory</div></li>
-    <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-    <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-    <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-    <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-    <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections">
-    <li data-sid="section-1">
-      <div class="sb-link" data-target="section-1">
-        <span class="sb-idx">07.01</span>
-        <span>Allocazione Contigua della Memoria</span>
+
+<body class="dot-grid theme-teal">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
+      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>07 · Main Memory</div>
+      </li>
+      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
+      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
+      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
+      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
+      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections">
+      <li data-sid="s1">
+        <div class="sb-link" data-target="s1"><span class="sb-idx">07.01</span><span>Spazio di Indirizzamento</span>
+        </div>
+      </li>
+      <li data-sid="s2">
+        <div class="sb-link" data-target="s2"><span class="sb-idx">07.02</span><span>Memoria Fisica, Logica e
+            Virtuale</span></div>
+      </li>
+      <li data-sid="s3">
+        <div class="sb-link" data-target="s3"><span class="sb-idx">07.03</span><span>Frammentazione Interna</span></div>
+      </li>
+      <li data-sid="s4">
+        <div class="sb-link" data-target="s4"><span class="sb-idx">07.04</span><span>Frammentazione Esterna</span></div>
+      </li>
+      <li data-sid="s5">
+        <div class="sb-link" data-target="s5"><span class="sb-idx">07.05</span><span>Paginazione &amp; Page Table</span>
+        </div>
+      </li>
+      <li data-sid="s6">
+        <div class="sb-link" data-target="s6"><span class="sb-idx">07.06</span><span>Demand Paging &amp; Page
+            Fault</span></div>
+      </li>
+      <li data-sid="s7">
+        <div class="sb-link" data-target="s7"><span class="sb-idx">07.07</span><span>Page Replacement</span></div>
+      </li>
+      <li data-sid="s8">
+        <div class="sb-link" data-target="s8"><span class="sb-idx">07.08</span><span>Algoritmi: LRU &amp; Seconda
+            Chance</span></div>
+      </li>
+      <li data-sid="s9">
+        <div class="sb-link" data-target="s9"><span class="sb-idx">07.09</span><span>Frequenza dei Page Fault</span>
+        </div>
+      </li>
+      <li data-sid="s10">
+        <div class="sb-link" data-target="s10"><span class="sb-idx">07.10</span><span>Working Set Model</span></div>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- ═══════ NAV ═══════ -->
+  <nav>
+    <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+    <div class="nav-right">
+      <a href="../index.html" class="nav-back">← Indice SO</a>
+      <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+    </div>
+  </nav>
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:var(--teal)">
+      Macroargomento 07 · Gestione Memoria
+    </span>
+    <div class="topic-num">07 / 13</div>
+    <h1 class="topic-hero-title">Main Memory</h1>
+    <p class="hero-sub" style="max-width:680px">
+      Spazio di indirizzamento, memoria fisica vs logica vs virtuale, frammentazione, paginazione, page table, demand
+      paging, page fault, algoritmi di sostituzione LRU e seconda chance, frequenza dei page fault e working set model.
+    </p>
+  </div>
+  <hr class="divider">
+
+  <!-- ═══════ CONTENT ═══════ -->
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">SO</a><span>/</span>
+      <span>07 · Main Memory</span>
+    </div>
+
+    <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(34,211,238,.25)">
+      Questa pagina copre i <strong style="color:var(--teal)">10 sottoargomenti</strong> core della gestione della
+      memoria principale, con illustrazioni, esempi numerici e algoritmi.
+    </div>
+
+    <!-- INDEX GRID -->
+    <div class="index-grid">
+      <div class="index-item" data-target="s1">
+        <div class="idx-num">07.01</div>
+        <div class="idx-name">Spazio di indirizzamento</div>
       </div>
-    </li>
-    <li data-sid="section-2">
-      <div class="sb-link" data-target="section-2">
-        <span class="sb-idx">07.02</span>
-        <span>Frammentazione</span>
+      <div class="index-item" data-target="s2">
+        <div class="idx-num">07.02</div>
+        <div class="idx-name">Fisica / Logica / Virtuale</div>
       </div>
-    </li>
-    <li data-sid="section-3">
-      <div class="sb-link" data-target="section-3">
-        <span class="sb-idx">07.03</span>
-        <span>Paginazione</span>
+      <div class="index-item" data-target="s3">
+        <div class="idx-num">07.03</div>
+        <div class="idx-name">Frammentazione interna</div>
       </div>
-    </li>
-    <li data-sid="section-4">
-      <div class="sb-link" data-target="section-4">
-        <span class="sb-idx">07.04</span>
-        <span>TLB — Translation Lookaside Buffer</span>
+      <div class="index-item" data-target="s4">
+        <div class="idx-num">07.04</div>
+        <div class="idx-name">Frammentazione esterna</div>
       </div>
-    </li>
-    <li data-sid="section-5">
-      <div class="sb-link" data-target="section-5">
-        <span class="sb-idx">07.05</span>
-        <span>Protezione della Memoria</span>
+      <div class="index-item" data-target="s5">
+        <div class="idx-num">07.05</div>
+        <div class="idx-name">Paginazione &amp; Page Table</div>
       </div>
-    </li>
-    <li data-sid="section-6">
-      <div class="sb-link" data-target="section-6">
-        <span class="sb-idx">07.06</span>
-        <span>Pagine Condivise</span>
+      <div class="index-item" data-target="s6">
+        <div class="idx-num">07.06</div>
+        <div class="idx-name">Demand Paging &amp; Page Fault</div>
       </div>
-    </li>
-    <li data-sid="section-7">
-      <div class="sb-link" data-target="section-7">
-        <span class="sb-idx">07.07</span>
-        <span>Segmentazione</span>
+      <div class="index-item" data-target="s7">
+        <div class="idx-num">07.07</div>
+        <div class="idx-name">Page Replacement</div>
       </div>
-    </li>
-    <li data-sid="section-8">
-      <div class="sb-link" data-target="section-8">
-        <span class="sb-idx">07.08</span>
-        <span>Segmentazione con Paginazione</span>
+      <div class="index-item" data-target="s8">
+        <div class="idx-num">07.08</div>
+        <div class="idx-name">LRU &amp; Seconda Chance</div>
       </div>
-    </li>
-  </ul>
-</aside>
+      <div class="index-item" data-target="s9">
+        <div class="idx-num">07.09</div>
+        <div class="idx-name">Frequenza Page Fault</div>
+      </div>
+      <div class="index-item" data-target="s10">
+        <div class="idx-num">07.10</div>
+        <div class="idx-name">Working Set Model</div>
+      </div>
+    </div>
 
-<nav>
-  <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
-  <div class="nav-right">
-    <a href="../index.html" class="nav-back">← Indice SO</a>
-    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
-  </div>
-</nav>
-<div class="hero" style="min-height:55vh">
-  <div class="hero-glow"></div>
-  <span class="hero-eyebrow" style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:var(--teal)">Macroargomento 07 · Gestione Memoria</span>
-  <div class="topic-num">07 / 13</div>
-  <h1 class="topic-hero-title">Main Memory</h1>
-  <p class="hero-sub" style="max-width:640px">Allocazione contigua, frammentazione, paginazione, TLB, protezione, pagine condivise e segmentazione. Come il SO gestisce la memoria fisica.</p>
-</div>
-<hr class="divider">
-<div class="content-wrap">
-  <div class="nav-breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
-    <a href="../index.html">SO</a><span>/</span>
-    <span>07 · Main Memory</span>
-  </div>
-  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(34,211,238,.25)">Questa pagina copre gli <strong style="color:var(--teal)">8 sottoargomenti</strong> del macroargomento 7: la gestione della memoria principale (RAM).</div>
-  <div class="index-grid">
-    <div class="index-item" data-target="section-1"><div class="idx-num">07.01</div><div class="idx-name">Allocazione contigua</div></div>
-    <div class="index-item" data-target="section-2"><div class="idx-num">07.02</div><div class="idx-name">Frammentazione</div></div>
-    <div class="index-item" data-target="section-3"><div class="idx-num">07.03</div><div class="idx-name">Paginazione</div></div>
-    <div class="index-item" data-target="section-4"><div class="idx-num">07.04</div><div class="idx-name">TLB</div></div>
-    <div class="index-item" data-target="section-5"><div class="idx-num">07.05</div><div class="idx-name">Protezione della memoria</div></div>
-    <div class="index-item" data-target="section-6"><div class="idx-num">07.06</div><div class="idx-name">Pagine condivise</div></div>
-    <div class="index-item" data-target="section-7"><div class="idx-num">07.07</div><div class="idx-name">Segmentazione</div></div>
-    <div class="index-item" data-target="section-8"><div class="idx-num">07.08</div><div class="idx-name">Segmentazione + paginazione</div></div>
-  </div>
+    <!-- ══════════════════════════════════════════════════
+       07.01 — SPAZIO DI INDIRIZZAMENTO
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s1">
+      <h2><span class="dot"></span> Spazio di Indirizzamento <span class="sub-tag">fondamento</span></h2>
+      <p>
+        Lo <span class="keyword">spazio di indirizzamento</span> è l'insieme di tutti gli indirizzi di memoria che un
+        processo può generare. Su un sistema a 32 bit è 2³² = 4 GB; su un sistema a 64 bit è teoricamente 2⁶⁴, ma in
+        pratica i SO usano 48 bit (256 TB) per indirizzamento virtuale. Lo spazio di indirizzamento di un processo è
+        <em>privato</em>: ogni processo vede solo il proprio, isolato dagli altri.
+      </p>
 
-  <div class="section-block" id="section-1">
-    <h2><span class="dot"></span> Allocazione Contigua della Memoria <span class="sub-tag">base</span></h2>
-    <p>Nell'<span class="keyword">allocazione contigua</span>, ogni processo occupa un singolo blocco di indirizzi fisici consecutivi. Il SO mantiene una lista di "buchi" liberi e ne sceglie uno di dimensione sufficiente quando un processo deve essere caricato. Tre strategie di scelta: <span class="keyword">First-fit</span> (primo buco abbastanza grande — veloce), <span class="keyword">Best-fit</span> (buco più piccolo sufficiente — minimizza lo spreco ma lascia frammenti minuscoli), <span class="keyword">Worst-fit</span> (buco più grande — lascia residui più grandi e potenzialmente utili).</p>
-    <p>Questo schema è semplice da implementare, ma soffre di <span class="keyword">frammentazione esterna</span>: dopo molte allocazioni e deallocazioni, la memoria libera si sparpaglia in tanti piccoli buchi non contigui, rendendo impossibile allocare processi grandi anche se la memoria totale libera sarebbe sufficiente. Una soluzione è la <span class="keyword">compattazione</span> (spostare i processi per unire i buchi), ma è costosa in termini di tempo.</p>
-  </div>
+      <div class="stat-row">
+        <div class="stat-pill"><span class="stat-pill-val">2³²</span><span class="stat-pill-label">indirizzi a 32 bit =
+            4 GB</span></div>
+        <div class="stat-pill"><span class="stat-pill-val">2⁴⁸</span><span class="stat-pill-label">indirizzi virtuali a
+            48 bit (usati in pratica)</span></div>
+        <div class="stat-pill"><span class="stat-pill-val">4 KB</span><span class="stat-pill-label">dimensione tipica di
+            una pagina</span></div>
+      </div>
 
-  <div class="section-block" id="section-2">
-    <h2><span class="dot"></span> Frammentazione</h2>
-    <p>La <span class="keyword">frammentazione esterna</span> si verifica quando la memoria libera totale è sufficiente per un nuovo processo, ma non è fisicamente contigua: esistono molti piccoli buchi separati da processi allocati. È il problema principale dell'allocazione contigua.</p>
-    <p>La <span class="keyword">frammentazione interna</span> è di natura opposta: si verifica quando il blocco di memoria assegnato a un processo è leggermente più grande di quello richiesto, e lo spazio in eccesso — pur facendo parte del blocco assegnato — non può essere usato da nessuno. È il costo inevitabile dell'allocazione per frame fissi nella paginazione: se un processo richiede 3.1 frame, riceve 4, sprecando 0.9 frame.</p>
-  </div>
+      <p>
+        Lo spazio è diviso in due metà: la <span class="keyword">user space</span> (dove risiedono codice, dati, stack e
+        heap del processo) e la <span class="keyword">kernel space</span> (mappata nello stesso spazio virtuale ma
+        protetta — non accessibile dal codice utente). Su Linux a 64 bit la divisione è a metà dello spazio a 48 bit:
+        0x0000'0000'0000'0000 – 0x0000'7FFF'FFFF'FFFF per user, 0xFFFF'8000'0000'0000 – 0xFFFF'FFFF'FFFF'FFFF per
+        kernel.
+      </p>
 
-  <div class="section-block" id="section-3">
-    <h2><span class="dot"></span> Paginazione</h2>
-    <p>La <span class="keyword">paginazione</span> è la soluzione fondamentale alla frammentazione esterna. L'idea: dividere sia la memoria fisica che lo spazio logico in blocchi di dimensione fissa. La memoria fisica è suddivisa in <span class="keyword">frame</span> (tipicamente 4 KB). Lo spazio di indirizzi logico di ogni processo è suddiviso in <span class="keyword">pagine</span> della stessa dimensione. Una <span class="keyword">page table</span> (una per processo) mappa ogni numero di pagina logica al numero di frame fisico corrispondente.</p>
-    <p>Il vantaggio è netto: le pagine di un processo possono stare in frame fisicamente sparsi in tutta la RAM — non è richiesta contiguità fisica. La traduzione degli indirizzi avviene nell'hardware (MMU — Memory Management Unit): l'indirizzo logico viene diviso in numero di pagina e offset; la page table fornisce il numero di frame; l'indirizzo fisico = (frame × dimensione_pagina) + offset.</p>
-  </div>
+      <!-- Illustrazione spazio di indirizzi -->
+      <div class="diag-wrap">
+        <svg width="520" height="240" viewBox="0 0 520 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- address bar -->
+          <rect x="20" y="20" width="120" height="200" rx="6" fill="rgba(8,8,16,0.8)" stroke="rgba(34,211,238,.25)"
+            stroke-width="1" />
+          <!-- segments -->
+          <rect x="21" y="21" width="118" height="30" rx="5" fill="rgba(248,113,113,.15)" stroke="rgba(248,113,113,.3)"
+            stroke-width="1" />
+          <text x="80" y="40" font-family="JetBrains Mono" font-size="10" fill="#f87171" text-anchor="middle">kernel
+            space</text>
+          <rect x="21" y="56" width="118" height="18" rx="3" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.2)"
+            stroke-width="1" />
+          <text x="80" y="68" font-family="JetBrains Mono" font-size="9" fill="#22d3ee" text-anchor="middle">stack
+            ↓</text>
+          <rect x="21" y="80" width="118" height="26" rx="3" fill="rgba(34,211,238,.04)" stroke="rgba(34,211,238,.1)"
+            stroke-width="1" />
+          <text x="80" y="96" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">(libero)</text>
+          <rect x="21" y="112" width="118" height="18" rx="3" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.2)"
+            stroke-width="1" />
+          <text x="80" y="124" font-family="JetBrains Mono" font-size="9" fill="#22d3ee" text-anchor="middle">heap
+            ↑</text>
+          <rect x="21" y="136" width="118" height="18" rx="3" fill="rgba(52,211,153,.1)" stroke="rgba(52,211,153,.25)"
+            stroke-width="1" />
+          <text x="80" y="148" font-family="JetBrains Mono" font-size="9" fill="#34d399" text-anchor="middle">bss /
+            data</text>
+          <rect x="21" y="160" width="118" height="18" rx="3" fill="rgba(124,92,252,.1)" stroke="rgba(124,92,252,.25)"
+            stroke-width="1" />
+          <text x="80" y="172" font-family="JetBrains Mono" font-size="9" fill="#a78bfa" text-anchor="middle">text
+            (codice)</text>
+          <rect x="21" y="182" width="118" height="37" rx="3" fill="rgba(255,255,255,.03)"
+            stroke="rgba(255,255,255,.08)" stroke-width="1" />
+          <text x="80" y="199" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.3)"
+            text-anchor="middle">null guard</text>
+          <!-- addresses -->
+          <text x="148" y="38" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)">0xFFFF…FFFF</text>
+          <text x="148" y="68" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">0x7FFF…</text>
+          <text x="148" y="124" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">indirizzi
+            crescenti</text>
+          <text x="148" y="172" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">0x0040…</text>
+          <text x="148" y="210" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)">0x0000…0000</text>
+          <!-- arrows -->
+          <line x1="142" y1="36" x2="150" y2="36" stroke="rgba(34,211,238,.3)" stroke-width="1" />
+          <line x1="142" y1="68" x2="150" y2="68" stroke="rgba(34,211,238,.2)" stroke-width="1" />
+          <line x1="142" y1="171" x2="150" y2="171" stroke="rgba(34,211,238,.2)" stroke-width="1" />
+          <line x1="142" y1="210" x2="150" y2="210" stroke="rgba(34,211,238,.3)" stroke-width="1" />
+          <!-- title -->
+          <text x="80" y="12" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)" text-anchor="middle"
+            letter-spacing="1">VIRTUAL ADDRESS SPACE</text>
+        </svg>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:-.5rem">Layout tipico dello spazio
+        di indirizzamento virtuale di un processo Linux a 64 bit.</p>
+    </div>
 
-  <div class="section-block" id="section-4">
-    <h2><span class="dot"></span> TLB — Translation Lookaside Buffer</h2>
-    <p>Ogni accesso alla memoria con paginazione richiede due accessi RAM: uno per leggere la page table e trovare il frame, uno per accedere al dato reale. Questo raddoppia la latenza, rendendola inaccettabile.</p>
-    <p>Il <span class="keyword">TLB</span> è una cache hardware piccola ma velocissima (tipicamente 64–1024 entry) che memorizza le traduzioni pagina→frame usate di recente. Un <span class="keyword">TLB hit</span> (la pagina è in cache) richiede ~1 ciclo di clock. Un <span class="keyword">TLB miss</span> (la pagina non è in cache) richiede un accesso alla page table in RAM (~100 cicli) e poi aggiorna il TLB. Con un hit rate tipico del 99%+, l'overhead effettivo della paginazione è meno dell'1%.</p>
-    <p>Al context switch tra processi, il TLB deve essere svuotato (flush) o etichettato con un identificatore di processo (ASID — Address Space Identifier, usato nei processori ARM) per evitare che un processo acceda al TLB di un altro.</p>
-  </div>
+    <!-- ══════════════════════════════════════════════════
+       07.02 — FISICA vs LOGICA vs VIRTUALE
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s2">
+      <h2><span class="dot"></span> Memoria Fisica, Logica e Virtuale <span class="sub-tag">concetti chiave</span></h2>
 
-  <div class="section-block" id="section-5">
-    <h2><span class="dot"></span> Protezione della Memoria</h2>
-    <p>La paginazione offre un meccanismo naturale per la protezione. Ogni entry della page table include <span class="keyword">bit di protezione</span>: read (R), write (W), execute (X). Il tentativo di scrivere su una pagina read-only, o di eseguire codice da una pagina non-executable (NX bit), genera una <span class="keyword">trap</span> (segmentation fault su Linux, access violation su Windows).</p>
-    <p>Un bit speciale, il <span class="keyword">valid/invalid bit</span>, indica se una pagina è effettivamente allocata per quel processo. Accedere a una pagina con bit invalid genera un page fault (può essere un errore del processo, oppure un segnale al SO che la pagina è su disco e va caricata — demand paging). Questo meccanismo isola i processi tra loro e dal kernel, garantendo che un processo non possa leggere o modificare la memoria di un altro.</p>
-  </div>
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="compare-col">
+          <div class="compare-col-head teal">Memoria Fisica</div>
+          <div class="compare-col-body">
+            <div class="compare-row">La RAM vera, i chip fisici installati nel sistema.</div>
+            <div class="compare-row">Indirizzi fisici: prodotti dalla MMU dopo traduzione.</div>
+            <div class="compare-row">Limitata dalla RAM installata (es. 16 GB).</div>
+            <div class="compare-row">Condivisa tra tutti i processi e il kernel.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head amber">Memoria Logica</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Lo spazio di indirizzi visto dal processo in esecuzione.</div>
+            <div class="compare-row">Indirizzi logici: generati dalla CPU durante l'esecuzione.</div>
+            <div class="compare-row">Ogni processo ha il proprio spazio logico separato.</div>
+            <div class="compare-row">La MMU traduce logico → fisico a runtime.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head green">Memoria Virtuale</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Astrazione che estende la memoria logica oltre la RAM fisica.</div>
+            <div class="compare-row">Usa il disco come estensione (swap/paging area).</div>
+            <div class="compare-row">Permette processi più grandi della RAM disponibile.</div>
+            <div class="compare-row">Gestita tramite demand paging e page replacement.</div>
+          </div>
+        </div>
+      </div>
 
-  <div class="section-block" id="section-6">
-    <h2><span class="dot"></span> Pagine Condivise</h2>
-    <p>La paginazione permette a più processi di mappare lo stesso frame fisico nelle proprie page table, ottenendo <span class="keyword">memoria condivisa</span> senza copie. Questo è usato in tre scenari principali.</p>
-    <p>Le <span class="keyword">librerie condivise</span> (shared libraries, file <code class="inline">.so</code> su Linux, <code class="inline">.dll</code> su Windows): il codice di <code class="inline">libc</code> è caricato in un solo frame fisico e mappato in read-only nei processi che la usano — potenzialmente migliaia. La <span class="keyword">Copy-on-Write (CoW) dopo fork()</span>: padre e figlio condividono inizialmente gli stessi frame fisici; solo quando uno dei due modifica una pagina, il kernel la duplica e assegna la copia al modificatore. La <span class="keyword">shared memory IPC</span> (<code class="inline">shm_open</code> + <code class="inline">mmap</code>): processi espliciti che vogliono comunicare mappano la stessa regione fisica.</p>
-  </div>
+      <!-- Flusso di traduzione indirizzi -->
+      <p>La <span class="keyword">MMU (Memory Management Unit)</span> è l'unità hardware che traduce ogni indirizzo
+        logico in fisico in modo trasparente. La traduzione avviene ad ogni accesso alla memoria:</p>
 
-  <div class="section-block" id="section-7">
-    <h2><span class="dot"></span> Segmentazione</h2>
-    <p>La <span class="keyword">segmentazione</span> è un approccio alternativo alla paginazione che riflette la visione logica del programmatore. Lo spazio degli indirizzi è diviso in segmenti di dimensione variabile, ognuno corrispondente a una struttura logica del programma: segmento codice, segmento dati, segmento stack, segmento heap, segmenti per le librerie.</p>
-    <p>Una <span class="keyword">segment table</span> mappa ogni segmento con una coppia (base, limite): l'indirizzo fisico è base + offset, e il limite garantisce che l'offset non superi la dimensione del segmento. La segmentazione è più naturale per il programmatore (ogni struttura ha il proprio spazio) e permette protezioni diverse per segmenti diversi. Il suo svantaggio è la frammentazione esterna, poiché i segmenti hanno dimensioni variabili.</p>
-  </div>
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span>
+          <span>MMU address translation</span>
+        </div>
+        <div class="terminal-body">
+          <span class="t-comment">// CPU esegue: MOV rax, [0x40001234] ← indirizzo LOGICO</span><br>
+          <span class="t-dim">──────────────────────────────────────────────</span><br>
+          indirizzo logico &nbsp;<span class="t-addr">0x40001234</span><br>
+          pagina <span class="t-dim">(bits 47..12)</span>&nbsp;&nbsp;&nbsp;<span class="t-key">0x40001</span>
+          &nbsp;→&nbsp; page table lookup<br>
+          offset <span class="t-dim">(bits 11..0)</span>&nbsp;&nbsp;&nbsp;<span class="t-val">0x234</span><br>
+          <span class="t-dim">──────────────────────────────────────────────</span><br>
+          frame fisico trovato&nbsp;&nbsp;<span class="t-ok">0xB3</span><br>
+          indirizzo fisico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-ok">0xB3234</span> <span
+            class="t-comment">= (0xB3 &lt;&lt; 12) | 0x234</span><br>
+          <span class="t-dim">──────────────────────────────────────────────</span><br>
+          <span class="t-ok">✓</span> dato letto dalla RAM fisica all'indirizzo <span class="t-ok">0xB3234</span>
+        </div>
+      </div>
 
-  <div class="section-block" id="section-8">
-    <h2><span class="dot"></span> Segmentazione con Paginazione</h2>
-    <p>I processori x86 (in modalità protetta legacy) usano un ibrido: ogni segmento ha la propria page table. L'indirizzo logico viene prima tradotto tramite la segment table per ottenere un indirizzo lineare, poi la page table converte l'indirizzo lineare in fisico. Questo combina i benefici della visione logica della segmentazione con l'assenza di frammentazione esterna della paginazione.</p>
-    <p>Nella pratica, i SO moderni su x86-64 (Linux, Windows) usano la segmentazione in modo quasi trasparente (tutti i segmenti hanno base 0 e limite massimo, il modello è di fatto "flat") e delegano tutta la gestione alla paginazione, più flessibile e uniforme.</p>
-  </div>
+      <div class="callout">
+        <span class="callout-icon">💡</span>
+        Il processo non sa mai dove i suoi dati risiedono fisicamente in RAM — conosce solo gli indirizzi logici. Questo
+        è il principio fondamentale dell'<strong style="color:var(--teal)">astrazione della memoria</strong>.
+      </div>
+    </div>
 
-  <div class="back-btn-wrap">
-    <a href="06-deadlocks.html" class="btn btn-ghost">← 06 · Deadlocks</a>
-    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-    <a href="08-virtual-memory.html" class="btn btn-ghost">08 · Virtual Memory →</a>
-  </div>
-</div>
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 07 · Main Memory</p>
-  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
-</footer>
+    <!-- ══════════════════════════════════════════════════
+       07.03 — FRAMMENTAZIONE INTERNA
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s3">
+      <h2><span class="dot"></span> Frammentazione Interna <span class="sub-tag">paginazione</span></h2>
+      <p>
+        La <span class="keyword">frammentazione interna</span> si verifica quando la memoria assegnata a un processo è
+        <em>maggiore</em> di quella effettivamente richiesta. Lo spazio in eccesso — pur all'interno del blocco allocato
+        — non può essere usato da nessun altro processo, andando sprecato.
+      </p>
+      <p>
+        Con la paginazione a frame di dimensione fissa (es. 4 KB), se un processo richiede 13 KB, riceve 4 frame (16
+        KB). I 3 KB finali del quarto frame sono <span class="keyword">frammentazione interna</span>: appartengono al
+        processo, ma sono inutilizzati.
+      </p>
 
-<script id="so-sb-js">
-(function () {
-  var IDS = ["section-1","section-2","section-3","section-4","section-5","section-6","section-7","section-8"];
+      <!-- Illustrazione frammentazione interna -->
+      <div class="diag-wrap">
+        <svg width="480" height="180" viewBox="0 0 480 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- titolo -->
+          <text x="10" y="14" font-family="JetBrains Mono" font-size="10" fill="rgba(34,211,238,.7)"
+            letter-spacing="1">ESEMPIO: processo richiede 13 KB, page size = 4 KB</text>
+          <!-- 4 frame fisici -->
+          <!-- frame 1 -->
+          <rect x="10" y="28" width="90" height="130" rx="5" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.3)"
+            stroke-width="1.5" />
+          <rect x="11" y="29" width="88" height="128" rx="4" fill="rgba(34,211,238,.06)" />
+          <text x="55" y="50" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">FRAME 0</text>
+          <rect x="14" y="55" width="82" height="98" rx="3" fill="rgba(52,211,153,.15)" stroke="rgba(52,211,153,.3)"
+            stroke-width="1" />
+          <text x="55" y="108" font-family="JetBrains Mono" font-size="9" fill="#34d399" text-anchor="middle">4
+            KB</text>
+          <text x="55" y="120" font-family="JetBrains Mono" font-size="8" fill="#34d399"
+            text-anchor="middle">usati</text>
+          <!-- frame 2 -->
+          <rect x="115" y="28" width="90" height="130" rx="5" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.3)"
+            stroke-width="1.5" />
+          <text x="160" y="50" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">FRAME 1</text>
+          <rect x="119" y="55" width="82" height="98" rx="3" fill="rgba(52,211,153,.15)" stroke="rgba(52,211,153,.3)"
+            stroke-width="1" />
+          <text x="160" y="108" font-family="JetBrains Mono" font-size="9" fill="#34d399" text-anchor="middle">4
+            KB</text>
+          <text x="160" y="120" font-family="JetBrains Mono" font-size="8" fill="#34d399"
+            text-anchor="middle">usati</text>
+          <!-- frame 3 -->
+          <rect x="220" y="28" width="90" height="130" rx="5" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.3)"
+            stroke-width="1.5" />
+          <text x="265" y="50" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">FRAME 2</text>
+          <rect x="224" y="55" width="82" height="98" rx="3" fill="rgba(52,211,153,.15)" stroke="rgba(52,211,153,.3)"
+            stroke-width="1" />
+          <text x="265" y="108" font-family="JetBrains Mono" font-size="9" fill="#34d399" text-anchor="middle">4
+            KB</text>
+          <text x="265" y="120" font-family="JetBrains Mono" font-size="8" fill="#34d399"
+            text-anchor="middle">usati</text>
+          <!-- frame 4 — parziale -->
+          <rect x="325" y="28" width="90" height="130" rx="5" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.3)"
+            stroke-width="1.5" />
+          <text x="370" y="50" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">FRAME 3</text>
+          <!-- parte usata 1 KB -->
+          <rect x="329" y="55" width="82" height="30" rx="3" fill="rgba(52,211,153,.15)" stroke="rgba(52,211,153,.3)"
+            stroke-width="1" />
+          <text x="370" y="73" font-family="JetBrains Mono" font-size="9" fill="#34d399" text-anchor="middle">1 KB
+            usato</text>
+          <!-- parte sprecata 3 KB — ROSSO -->
+          <rect x="329" y="89" width="82" height="64" rx="3" fill="rgba(248,113,113,.12)" stroke="rgba(248,113,113,.35)"
+            stroke-width="1" stroke-dasharray="4,3" />
+          <text x="370" y="118" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">3 KB
+            sprecati</text>
+          <text x="370" y="130" font-family="JetBrains Mono" font-size="8" fill="#f87171" text-anchor="middle">↑ framm.
+            interna</text>
+          <!-- legenda -->
+          <rect x="430" y="80" width="12" height="12" rx="2" fill="rgba(52,211,153,.2)" stroke="rgba(52,211,153,.4)"
+            stroke-width="1" />
+          <text x="446" y="91" font-family="Inter" font-size="10" fill="rgba(200,211,224,.6)">usato</text>
+          <rect x="430" y="100" width="12" height="12" rx="2" fill="rgba(248,113,113,.15)" stroke="rgba(248,113,113,.4)"
+            stroke-width="1" stroke-dasharray="3,2" />
+          <text x="446" y="111" font-family="Inter" font-size="10" fill="rgba(200,211,224,.6)">sprecato</text>
+          <!-- totale -->
+          <text x="10" y="172" font-family="JetBrains Mono" font-size="10" fill="rgba(200,211,224,.5)">Richiesto: 13 KB
+            · Allocato: 16 KB · Sprecato: 3 KB · Spreco: 18.75%</text>
+        </svg>
+      </div>
 
-  /* smooth scroll + flash */
-  function goTo(id) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    el.classList.remove('sb-flash');
-    void el.offsetWidth;                         // force reflow
-    el.classList.add('sb-flash');
-    el.addEventListener('animationend', function () {
-      el.classList.remove('sb-flash');
-    }, { once: true });
-    setActive(id);
-  }
+      <div class="formula-card">
+        <span class="formula-label">Spreco medio</span>
+        <span class="formula-expr">framm. interna media = page_size / 2</span>
+        <span style="font-size:12px;color:var(--text-muted)">Con page_size = 4 KB → spreco medio ≈ 2 KB per
+          processo</span>
+      </div>
 
-  /* highlight sidebar item */
-  function setActive(id) {
-    document.querySelectorAll('.sb-sections li').forEach(function (li) {
-      li.classList.toggle('sb-active', li.getAttribute('data-sid') === id);
-    });
-    /* auto-scroll sidebar so active item is visible */
-    var sb  = document.querySelector('.so-sidebar');
-    var act = document.querySelector('.sb-sections li.sb-active');
-    if (sb && act) {
-      var liTop = act.offsetTop;
-      var liH   = act.offsetHeight;
-      if (liTop < sb.scrollTop || liTop + liH > sb.scrollTop + sb.clientHeight) {
-        sb.scrollTop = liTop - sb.clientHeight / 2 + liH / 2;
-      }
-    }
-  }
+      <p>
+        Ridurre la page size diminuisce la frammentazione interna, ma aumenta la dimensione delle page table e riduce
+        l'efficienza del TLB. I SO moderni usano sia 4 KB che <span class="keyword">huge pages</span> (2 MB o 1 GB) per
+        workload specifici (database, macchine virtuali).
+      </p>
+    </div>
 
-  /* wire index-grid cards */
-  document.querySelectorAll('.index-item[data-target]').forEach(function (card) {
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('role', 'button');
-    var name = (card.querySelector('.idx-name') || {}).textContent || '';
-    card.setAttribute('aria-label', 'Vai a: ' + name.trim());
-    card.addEventListener('click', function () { goTo(card.dataset.target); });
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(card.dataset.target); }
-    });
-  });
+    <!-- ══════════════════════════════════════════════════
+       07.04 — FRAMMENTAZIONE ESTERNA
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s4">
+      <h2><span class="dot"></span> Frammentazione Esterna <span class="sub-tag">allocazione contigua</span></h2>
+      <p>
+        La <span class="keyword">frammentazione esterna</span> è il problema opposto: la memoria libera totale è
+        sufficiente per soddisfare una richiesta, ma non è fisicamente contigua. Esistono molti piccoli buchi sparsi tra
+        i processi allocati, nessuno dei quali abbastanza grande da solo.
+      </p>
+      <p>
+        È il problema principale dell'<span class="keyword">allocazione contigua</span> (dove ogni processo deve
+        occupare un blocco unico di RAM consecutiva). Dopo molti cicli di allocazione/deallocazione, la RAM si riduce in
+        frammenti inutilizzabili.
+      </p>
 
-  /* wire sidebar section links */
-  document.querySelectorAll('.sb-link[data-target]').forEach(function (el) {
-    el.addEventListener('click', function () { goTo(el.dataset.target); });
-  });
+      <!-- Illustrazione frammentazione esterna -->
+      <div class="diag-wrap">
+        <svg width="480" height="220" viewBox="0 0 480 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="14" font-family="JetBrains Mono" font-size="10" fill="rgba(34,211,238,.7)"
+            letter-spacing="1">MEMORIA FISICA — dopo molte allocazioni/deallocazioni</text>
+          <!-- RAM bar verticale -->
+          <!-- blocco 0: Proc A -->
+          <rect x="30" y="24" width="100" height="34" rx="4" fill="rgba(34,211,238,.15)" stroke="rgba(34,211,238,.3)"
+            stroke-width="1.2" />
+          <text x="80" y="45" font-family="JetBrains Mono" font-size="10" fill="#22d3ee" text-anchor="middle">Processo A
+            20 KB</text>
+          <!-- buco 1 -->
+          <rect x="30" y="60" width="100" height="16" rx="3" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.3)"
+            stroke-width="1" stroke-dasharray="4,3" />
+          <text x="80" y="72" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">buco 8
+            KB</text>
+          <!-- blocco: Proc B -->
+          <rect x="30" y="78" width="100" height="50" rx="4" fill="rgba(124,92,252,.12)" stroke="rgba(124,92,252,.3)"
+            stroke-width="1.2" />
+          <text x="80" y="107" font-family="JetBrains Mono" font-size="10" fill="#a78bfa" text-anchor="middle">Processo
+            B 25 KB</text>
+          <!-- buco 2 -->
+          <rect x="30" y="130" width="100" height="10" rx="3" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.3)"
+            stroke-width="1" stroke-dasharray="4,3" />
+          <text x="80" y="139" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">buco 5
+            KB</text>
+          <!-- blocco: Proc C -->
+          <rect x="30" y="142" width="100" height="30" rx="4" fill="rgba(52,211,153,.12)" stroke="rgba(52,211,153,.3)"
+            stroke-width="1.2" />
+          <text x="80" y="161" font-family="JetBrains Mono" font-size="10" fill="#34d399" text-anchor="middle">Processo
+            C 15 KB</text>
+          <!-- buco 3 -->
+          <rect x="30" y="174" width="100" height="12" rx="3" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.3)"
+            stroke-width="1" stroke-dasharray="4,3" />
+          <text x="80" y="184" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">buco 6
+            KB</text>
+          <!-- end -->
+          <rect x="30" y="188" width="100" height="24" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.1)"
+            stroke-width="1" />
+          <text x="80" y="204" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.4)"
+            text-anchor="middle">fine RAM</text>
 
-  /* IntersectionObserver — aggiorna active mentre scorri */
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) setActive(e.target.id);
-      });
-    }, { rootMargin: '-8% 0px -72% 0px', threshold: 0 });
+          <!-- freccia richiesta processo D -->
+          <text x="160" y="130" font-family="Inter" font-size="12" fill="rgba(248,113,113,.9)" font-weight="600">← Vuole
+            entrare:</text>
+          <text x="160" y="148" font-family="JetBrains Mono" font-size="11" fill="#f87171">Processo D 18 KB</text>
+          <text x="160" y="165" font-family="Inter" font-size="11" fill="rgba(200,211,224,.5)">Totale buchi: 8+5+6 = 19
+            KB ✓</text>
+          <text x="160" y="182" font-family="Inter" font-size="11" fill="#f87171">Nessun buco ≥ 18 KB contiguo ✗</text>
 
-    IDS.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-  }
+          <!-- simbolo X grande -->
+          <circle cx="390" cy="145" r="28" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.35)"
+            stroke-width="2" />
+          <text x="390" y="152" font-family="JetBrains Mono" font-size="28" fill="#f87171" text-anchor="middle"
+            font-weight="700">✗</text>
 
-  /* attivo iniziale */
-  if (IDS.length) setActive(IDS[0]);
-}());
-</script>
+          <!-- legenda in basso -->
+          <rect x="10" y="207" width="10" height="8" rx="2" fill="rgba(248,113,113,.12)" stroke="rgba(248,113,113,.3)"
+            stroke-width="1" stroke-dasharray="3,2" />
+          <text x="24" y="215" font-family="Inter" font-size="10" fill="rgba(200,211,224,.5)">buco libero (non
+            contiguo)</text>
+        </svg>
+      </div>
+
+      <p>
+        La soluzione tradizionale è la <span class="keyword">compattazione</span>: spostare tutti i processi verso
+        un'estremità della RAM per unire tutti i buchi in uno solo. È efficace ma costosa — richiede di copiare
+        potenzialmente gigabyte di dati e di aggiornare tutti i puntatori. La soluzione moderna è la <span
+          class="keyword">paginazione</span>, che elimina il requisito di contiguità fisica.
+      </p>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        La <strong style="color:#fbbf24">regola del 50%</strong>: con strategia First-fit, statisticamente circa un
+        terzo dei blocchi va sprecato per frammentazione esterna. Per ogni 2 blocchi allocati, ce n'è circa 1 di
+        frammento libero inutilizzabile.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       07.05 — PAGINAZIONE & PAGE TABLE
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s5">
+      <h2><span class="dot"></span> Paginazione &amp; Page Table <span class="sub-tag">soluzione chiave</span></h2>
+      <p>
+        La <span class="keyword">paginazione</span> divide sia la memoria fisica che lo spazio logico in blocchi di
+        dimensione fissa. La RAM fisica è suddivisa in <span class="keyword">frame</span>; lo spazio logico di ogni
+        processo in <span class="keyword">pagine</span> della stessa dimensione. Una <span class="keyword">page
+          table</span> (una per processo) mappa ogni numero di pagina al frame fisico corrispondente. La paginazione
+        elimina completamente la frammentazione esterna — le pagine possono stare in frame qualsiasi, sparsi per la RAM.
+      </p>
+
+      <!-- Split card: schema traduzione -->
+      <div class="split-card">
+        <div class="split-card-text">
+          <p
+            style="font-size:13px;font-weight:600;color:var(--teal);margin-bottom:.75rem;font-family:'JetBrains Mono',monospace;">
+            Struttura dell'indirizzo logico</p>
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1rem">Un indirizzo logico a 32 bit con page
+            size 4 KB (2¹²) si divide:</p>
+          <div class="formula-card" style="margin:0 0 1rem">
+            <span class="formula-label">bit 31..12</span>
+            <span class="formula-expr">Page Number (p)</span>
+          </div>
+          <div class="formula-card" style="margin:0">
+            <span class="formula-label">bit 11..0</span>
+            <span class="formula-expr">Offset (d) — 12 bit = 4096 byte</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-secondary);margin-top:1rem">
+            La MMU legge la page table[p] → ottiene il frame fisico <code class="inline">f</code>.<br>
+            Indirizzo fisico = <code class="inline">f × 4096 + d</code>
+          </p>
+        </div>
+        <div class="split-card-visual">
+          <svg width="220" height="200" viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- indirizzo logico -->
+            <text x="110" y="14" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)"
+              text-anchor="middle">INDIRIZZO LOGICO</text>
+            <rect x="10" y="20" width="90" height="24" rx="3" fill="rgba(34,211,238,.1)" stroke="rgba(34,211,238,.3)"
+              stroke-width="1" />
+            <text x="55" y="36" font-family="JetBrains Mono" font-size="10" fill="#22d3ee" text-anchor="middle">p (20
+              bit)</text>
+            <rect x="103" y="20" width="50" height="24" rx="3" fill="rgba(251,191,36,.1)" stroke="rgba(251,191,36,.3)"
+              stroke-width="1" />
+            <text x="128" y="36" font-family="JetBrains Mono" font-size="10" fill="#fbbf24"
+              text-anchor="middle">d</text>
+            <rect x="156" y="20" width="54" height="24" rx="3" fill="rgba(251,191,36,.1)" stroke="rgba(251,191,36,.3)"
+              stroke-width="1" />
+            <text x="183" y="36" font-family="JetBrains Mono" font-size="9" fill="#fbbf24" text-anchor="middle">(12
+              bit)</text>
+            <!-- freccia verso page table -->
+            <line x1="55" y1="44" x2="55" y2="70" stroke="rgba(34,211,238,.4)" stroke-width="1.5" />
+            <polygon points="50,68 55,78 60,68" fill="rgba(34,211,238,.4)" />
+            <!-- page table -->
+            <text x="55" y="92" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)"
+              text-anchor="middle">PAGE TABLE</text>
+            <rect x="15" y="98" width="80" height="16" rx="2" fill="rgba(8,8,16,.6)" stroke="rgba(34,211,238,.15)"
+              stroke-width="1" />
+            <text x="55" y="110" font-family="JetBrains Mono" font-size="8" fill="rgba(200,211,224,.4)"
+              text-anchor="middle">p=0 → f=3</text>
+            <rect x="15" y="116" width="80" height="16" rx="2" fill="rgba(34,211,238,.1)" stroke="rgba(34,211,238,.3)"
+              stroke-width="1" />
+            <text x="55" y="128" font-family="JetBrains Mono" font-size="8" fill="#22d3ee" text-anchor="middle">p=1 →
+              f=7 ←</text>
+            <rect x="15" y="134" width="80" height="16" rx="2" fill="rgba(8,8,16,.6)" stroke="rgba(34,211,238,.15)"
+              stroke-width="1" />
+            <text x="55" y="146" font-family="JetBrains Mono" font-size="8" fill="rgba(200,211,224,.4)"
+              text-anchor="middle">p=2 → f=1</text>
+            <!-- freccia verso indirizzo fisico -->
+            <line x1="95" y1="124" x2="130" y2="124" stroke="rgba(52,211,153,.5)" stroke-width="1.5" />
+            <polygon points="128,119 138,124 128,129" fill="rgba(52,211,153,.5)" />
+            <!-- frame + offset -->
+            <text x="175" y="114" font-family="JetBrains Mono" font-size="9" fill="rgba(52,211,153,.7)"
+              text-anchor="middle">FISICO</text>
+            <rect x="140" y="118" width="34" height="20" rx="3" fill="rgba(52,211,153,.1)" stroke="rgba(52,211,153,.3)"
+              stroke-width="1" />
+            <text x="157" y="132" font-family="JetBrains Mono" font-size="10" fill="#34d399"
+              text-anchor="middle">f=7</text>
+            <rect x="177" y="118" width="34" height="20" rx="3" fill="rgba(251,191,36,.08)"
+              stroke="rgba(251,191,36,.25)" stroke-width="1" />
+            <text x="194" y="132" font-family="JetBrains Mono" font-size="10" fill="#fbbf24"
+              text-anchor="middle">d</text>
+            <!-- etichetta finale -->
+            <text x="175" y="158" font-family="JetBrains Mono" font-size="8" fill="rgba(52,211,153,.6)"
+              text-anchor="middle">= 0x7000 + d</text>
+            <!-- TLB hint -->
+            <rect x="10" y="170" width="200" height="22" rx="4" fill="rgba(34,211,238,.05)"
+              stroke="rgba(34,211,238,.15)" stroke-width="1" />
+            <text x="110" y="185" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+              text-anchor="middle">TLB: cache per traduzioni frequenti</text>
+          </svg>
+        </div>
+      </div>
+
+      <p>
+        La <span class="keyword">page table</span> è una struttura dati che il kernel mantiene in RAM per ogni processo.
+        Con pagine da 4 KB su 32 bit, una page table ha 2²⁰ = 1M entry. Con entry da 4 byte ciascuna, la page table
+        occupa 4 MB per processo — troppo. Per questo i SO moderni usano <span class="keyword">page table
+          multilivello</span> (2 o 4 livelli su x86-64), allocando solo le parti della page table effettivamente usate.
+      </p>
+
+      <div class="algo-card">
+        <div class="algo-card-header">⚡ TLB — Translation Lookaside Buffer</div>
+        <div class="algo-steps">
+          <div class="algo-step"><span class="algo-step-n">1.</span> La CPU genera un indirizzo logico con numero di
+            pagina <code class="inline">p</code>.</div>
+          <div class="algo-step"><span class="algo-step-n">2.</span> La MMU cerca <code class="inline">p</code> nel TLB
+            (cache hardware, ~1 ciclo di clock). Se trovato → <strong style="color:#34d399">TLB hit</strong>: frame
+            fisico disponibile immediatamente.</div>
+          <div class="algo-step"><span class="algo-step-n">3.</span> Se non trovato → <strong style="color:#f87171">TLB
+              miss</strong>: accesso alla page table in RAM (~100 cicli). Il risultato viene inserito nel TLB.</div>
+          <div class="algo-step"><span class="algo-step-n">4.</span> Con hit rate tipico >99%, l'overhead medio è
+            &lt;1%.</div>
+          <div class="algo-step"><span class="algo-step-n">5.</span> Al context switch: TLB flush (o uso di ASID su ARM
+            per evitare il flush).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       07.06 — DEMAND PAGING & PAGE FAULT
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s6">
+      <h2><span class="dot"></span> Demand Paging &amp; Page Fault <span class="sub-tag">memoria virtuale</span></h2>
+      <p>
+        Il <span class="keyword">demand paging</span> è la tecnica che permette di caricare in RAM solo le pagine di un
+        processo che sono effettivamente richieste, invece di caricare l'intero programma all'avvio. Le pagine non
+        ancora caricate risiedono su disco (nella <em>swap area</em> o nel file eseguibile) e vengono portate in RAM
+        solo al primo accesso.
+      </p>
+
+      <div class="callout ok">
+        <span class="callout-icon">✅</span>
+        Il demand paging permette di eseguire processi più grandi della RAM disponibile, e di avviare i programmi più
+        velocemente (solo le pagine necessarie vengono caricate subito).
+      </div>
+
+      <p>
+        Ogni entry della page table ha un <span class="keyword">valid/invalid bit</span>. Se il processo accede a una
+        pagina con bit = invalid, la MMU genera un'eccezione hardware: il <span class="keyword">page fault</span>.
+      </p>
+
+      <div class="algo-card">
+        <div class="algo-card-header">🔄 Sequenza gestione Page Fault</div>
+        <div class="algo-steps">
+          <div class="algo-step"><span class="algo-step-n">1.</span> Il processo accede a un indirizzo logico → la
+            pagina ha valid bit = 0.</div>
+          <div class="algo-step"><span class="algo-step-n">2.</span> La MMU genera un'eccezione di <strong
+              style="color:#f87171">page fault</strong>. Il controllo passa al kernel.</div>
+          <div class="algo-step"><span class="algo-step-n">3.</span> Il kernel verifica: è un accesso valido (la pagina
+            appartiene al processo)? Se no → segmentation fault, il processo viene terminato.</div>
+          <div class="algo-step"><span class="algo-step-n">4.</span> Il kernel cerca un <strong
+              style="color:#22d3ee">frame libero</strong> in RAM. Se non c'è → page replacement (scegli una pagina
+            vittima da rimuovere).</div>
+          <div class="algo-step"><span class="algo-step-n">5.</span> Il kernel carica la pagina mancante da disco nel
+            frame trovato.</div>
+          <div class="algo-step"><span class="algo-step-n">6.</span> Aggiorna la page table: imposta il frame number e
+            valid bit = 1.</div>
+          <div class="algo-step"><span class="algo-step-n">7.</span> Riprende l'esecuzione del processo dall'istruzione
+            che aveva causato il fault.</div>
+        </div>
+      </div>
+
+      <!-- Terminal: esempio page fault log -->
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span>
+          <span>kernel: page fault handler</span>
+        </div>
+        <div class="terminal-body">
+          <span class="t-comment">// processo 1234 accede a 0x00C04000</span><br>
+          <span class="t-key">page_fault</span>(<span class="t-val">pid</span>=1234, <span
+            class="t-val">addr</span>=<span class="t-addr">0x00C04000</span>)<br>
+          &nbsp;&nbsp;<span class="t-comment">// check VMA: indirizzo appartiene al processo?</span><br>
+          &nbsp;&nbsp;vma lookup → <span class="t-ok">OK</span> <span class="t-comment">(heap region)</span><br>
+          &nbsp;&nbsp;<span class="t-comment">// cerca frame libero</span><br>
+          &nbsp;&nbsp;free_frame → <span class="t-ok">frame #42</span><br>
+          &nbsp;&nbsp;<span class="t-comment">// carica pagina da swap</span><br>
+          &nbsp;&nbsp;swap_in → <span class="t-ok">disk block 0x1F2 → frame #42</span> <span
+            class="t-dim">[~5ms]</span><br>
+          &nbsp;&nbsp;<span class="t-comment">// aggiorna page table</span><br>
+          &nbsp;&nbsp;pte[0xC04] = <span class="t-ok">{ frame:42, valid:1, dirty:0 }</span><br>
+          &nbsp;&nbsp;<span class="t-comment">// riprende il processo</span><br>
+          <span class="t-ok">resume</span> pid=1234 @ <span class="t-addr">0x00C04000</span>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        Il page fault richiede un accesso al disco (~5-10 ms), mentre un normale accesso RAM è ~100 ns — un fattore
+        50.000x più lento. Minimizzare i page fault è critico per le prestazioni.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       07.07 — PAGE REPLACEMENT
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s7">
+      <h2><span class="dot"></span> Page Replacement <span class="sub-tag">quando la RAM è piena</span></h2>
+      <p>
+        Quando la RAM è piena e occorre caricare una nuova pagina, il kernel deve scegliere una pagina <span
+          class="keyword">vittima</span> da rimuovere. Se la pagina vittima è stata modificata (il suo <span
+          class="keyword">dirty bit</span> è 1), deve essere scritta su disco prima di essere sovrascritta. Se non è
+        stata modificata, può essere scartata direttamente.
+      </p>
+
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="compare-col-head coral">Obiettivo: minimizzare page fault</div>
+          <div class="compare-col-body">
+            <div class="compare-row">L'algoritmo ottimale (OPT) rimpiazza la pagina che non verrà usata per il tempo più
+              lungo. Non implementabile in tempo reale (richiede conoscenza del futuro).</div>
+            <div class="compare-row">Usato come benchmark teorico per confrontare algoritmi reali.</div>
+            <div class="compare-row">Un buon algoritmo di replacement si avvicina il più possibile a OPT.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head green">Dirty bit &amp; costo</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Se dirty=0: la pagina è identica alla copia su disco → basta marcarla libera (0
+              I/O).</div>
+            <div class="compare-row">Se dirty=1: la pagina è stata modificata → va scritta su disco prima di liberarla
+              (~5 ms).</div>
+            <div class="compare-row">Un buon algoritmo preferisce vittime con dirty=0 per ridurre gli I/O.</div>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        Esistono due tipi di page replacement: <span class="keyword">locale</span> (la pagina vittima appartiene allo
+        stesso processo che ha causato il fault) e <span class="keyword">globale</span> (la vittima può appartenere a
+        qualsiasi processo). Il replacement globale è usato da Linux e Windows perché permette di adattare dinamicamente
+        la quantità di frame per processo.
+      </p>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       07.08 — LRU & SECONDA CHANCE
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s8">
+      <h2><span class="dot"></span> Algoritmi: LRU &amp; Seconda Chance <span class="sub-tag">implementazione</span>
+      </h2>
+
+      <p>
+        L'algoritmo <span class="keyword">LRU (Least Recently Used)</span> rimpiazza la pagina che non è stata usata da
+        più tempo. Si basa sul principio di <em>locality of reference</em>: le pagine usate di recente hanno più
+        probabilità di essere usate ancora a breve. LRU approssima bene l'algoritmo OPT.
+      </p>
+
+      <!-- Esempio LRU numerico -->
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:.5rem">
+        Esempio: 3 frame disponibili, sequenza di accessi: 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3
+      </p>
+      <div style="overflow-x:auto">
+        <table class="lru-table">
+          <thead>
+            <tr>
+              <th>Accesso</th>
+              <th>Frame 0</th>
+              <th>Frame 1</th>
+              <th>Frame 2</th>
+              <th>Evento</th>
+              <th>Vittima</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>7</td>
+              <td>7</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="fault">FAULT</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>7</td>
+              <td>0</td>
+              <td>—</td>
+              <td class="fault">FAULT</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>7</td>
+              <td>0</td>
+              <td>1</td>
+              <td class="fault">FAULT</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>2</td>
+              <td>0</td>
+              <td>1</td>
+              <td class="fault">FAULT</td>
+              <td class="evict">evict 7</td>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>2</td>
+              <td>0</td>
+              <td>1</td>
+              <td class="hit">HIT</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>2</td>
+              <td>0</td>
+              <td>3</td>
+              <td class="fault">FAULT</td>
+              <td class="evict">evict 1</td>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>2</td>
+              <td>0</td>
+              <td>3</td>
+              <td class="hit">HIT</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>4</td>
+              <td>0</td>
+              <td>3</td>
+              <td class="fault">FAULT</td>
+              <td class="evict">evict 2</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>4</td>
+              <td>2</td>
+              <td>3</td>
+              <td class="fault">FAULT</td>
+              <td class="evict">evict 0</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>4</td>
+              <td>2</td>
+              <td>3</td>
+              <td class="hit">HIT</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>0</td>
+              <td>2</td>
+              <td>3</td>
+              <td class="fault">FAULT</td>
+              <td class="evict">evict 4</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>0</td>
+              <td>2</td>
+              <td>3</td>
+              <td class="hit">HIT</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:.5rem">Totale: 8 page fault su 12 accessi. HIT rate =
+        33%.</p>
+
+      <p style="margin-top:1.5rem">
+        LRU puro richiede di marcare ogni accesso a ogni pagina con un timestamp — impossibile implementarlo
+        efficientemente in hardware. Si usano due approssimazioni pratiche:
+      </p>
+
+      <div class="algo-card" style="margin-top:1rem">
+        <div class="algo-card-header">🔄 Algoritmo Seconda Chance (Clock Algorithm)</div>
+        <div class="algo-steps">
+          <div class="algo-step"><span class="algo-step-n">1.</span> I frame sono organizzati in un buffer circolare
+            (come un orologio). Ogni frame ha un <strong style="color:#22d3ee">reference bit (R)</strong>, settato a 1
+            dall'hardware ogni volta che la pagina viene acceduta.</div>
+          <div class="algo-step"><span class="algo-step-n">2.</span> Quando serve una vittima, la lancetta dell'orologio
+            avanza.</div>
+          <div class="algo-step"><span class="algo-step-n">3.</span> Se la pagina puntata ha R=1: <em>seconda
+              chance</em> — azzera R a 0, avanza la lancetta senza rimpiazzare. La pagina ottiene un'altra opportunità.
+          </div>
+          <div class="algo-step"><span class="algo-step-n">4.</span> Se la pagina puntata ha R=0: è la vittima — viene
+            rimpiazzata.</div>
+          <div class="algo-step"><span class="algo-step-n">5.</span> Nel caso peggiore (tutti R=1), la lancetta fa un
+            giro completo e rimpiazza la prima pagina (ora R=0).</div>
+        </div>
+      </div>
+
+      <!-- Clock algorithm SVG -->
+      <div class="diag-wrap">
+        <svg width="320" height="200" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="160" y="14" font-family="JetBrains Mono" font-size="10" fill="rgba(34,211,238,.6)"
+            text-anchor="middle">CLOCK ALGORITHM — 8 frame</text>
+          <!-- cerchio -->
+          <circle cx="160" cy="108" r="72" fill="none" stroke="rgba(34,211,238,.15)" stroke-width="1.5" />
+          <!-- 8 frame sul cerchio -->
+          <!-- calcoliamo le posizioni: angoli 0°,45°,90°,... -->
+          <!-- frame 0: top (270°) -->
+          <rect x="140" y="30" width="40" height="22" rx="4" fill="rgba(34,211,238,.1)" stroke="rgba(34,211,238,.3)"
+            stroke-width="1.2" />
+          <text x="160" y="45" font-family="JetBrains Mono" font-size="9" fill="#22d3ee" text-anchor="middle">p5
+            R=1</text>
+          <!-- frame 1: top-right (315°) -->
+          <rect x="195" y="43" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
+            stroke-width="1" />
+          <text x="215" y="58" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">p2 R=1</text>
+          <!-- frame 2: right (0°) -->
+          <rect x="215" y="97" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
+            stroke-width="1" />
+          <text x="235" y="112" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">p8 R=1</text>
+          <!-- frame 3: bottom-right (45°) -->
+          <rect x="195" y="150" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
+            stroke-width="1" />
+          <text x="215" y="165" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">p3 R=0</text>
+          <!-- frame 4: bottom (90°) -->
+          <rect x="140" y="170" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
+            stroke-width="1" />
+          <text x="160" y="185" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">p7 R=1</text>
+          <!-- frame 5: bottom-left -->
+          <rect x="85" y="150" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
+            stroke-width="1" />
+          <text x="105" y="165" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+            text-anchor="middle">p1 R=1</text>
+          <!-- frame 6: left -->
+          <rect x="65" y="97" width="40" height="22" rx="4" fill="rgba(248,113,113,.12)" stroke="rgba(248,113,113,.35)"
+            stroke-width="1.5" />
+          <text x="85" y="112" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">p4
+            R=0</text>
+          <!-- frame 7: top-left -->
+          <rect x="85" y="43" width="40" height="22" rx="4" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.25)"
+            stroke-width="1" />
+          <text x="105" y="58" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)"
+            text-anchor="middle">p6 R=1</text>
+          <!-- lancetta orologio -->
+          <line x1="160" y1="108" x2="79" y2="110" stroke="rgba(251,191,36,.8)" stroke-width="2.5"
+            stroke-linecap="round" />
+          <circle cx="160" cy="108" r="4" fill="rgba(251,191,36,.9)" />
+          <!-- etichetta lancetta -->
+          <text x="56" y="128" font-family="JetBrains Mono" font-size="8" fill="#fbbf24">← lancetta</text>
+          <!-- etichetta vittima -->
+          <text x="4" y="80" font-family="JetBrains Mono" font-size="8" fill="#f87171">vittima!</text>
+          <text x="4" y="91" font-family="JetBrains Mono" font-size="8" fill="#f87171">R=0</text>
+        </svg>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:-.5rem">La lancetta punta a p4
+        (R=0): è la vittima. Le pagine con R=1 ricevono seconda chance (R→0) e la lancetta avanza.</p>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       07.09 — FREQUENZA DEI PAGE FAULT
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s9">
+      <h2><span class="dot"></span> Frequenza dei Page Fault <span class="sub-tag">controllo del thrashing</span></h2>
+      <p>
+        La <span class="keyword">frequenza dei page fault (PFF)</span> misura quanti page fault per unità di tempo
+        genera un processo. È l'indicatore principale per decidere se un processo ha troppa poca o troppa RAM.
+      </p>
+
+      <!-- SVG: curva PFF vs frame -->
+      <div class="diag-wrap">
+        <svg width="480" height="200" viewBox="0 0 480 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- assi -->
+          <line x1="50" y1="160" x2="450" y2="160" stroke="rgba(34,211,238,.2)" stroke-width="1.5" />
+          <line x1="50" y1="20" x2="50" y2="162" stroke="rgba(34,211,238,.2)" stroke-width="1.5" />
+          <!-- label assi -->
+          <text x="240" y="182" font-family="Inter" font-size="11" fill="rgba(200,211,224,.5)"
+            text-anchor="middle">Numero di frame assegnati</text>
+          <text x="14" y="90" font-family="Inter" font-size="10" fill="rgba(200,211,224,.5)" text-anchor="middle"
+            transform="rotate(-90,14,90)">Page Fault Rate</text>
+          <!-- curva iperbolica approssimata -->
+          <path d="M 60 25 C 80 25, 100 40, 120 65 C 150 100, 180 128, 220 142 C 270 155, 330 158, 440 160"
+            stroke="rgba(34,211,238,.7)" stroke-width="2.5" fill="none" stroke-linecap="round" />
+          <!-- soglia alta (troppo pochi frame → thrashing) -->
+          <line x1="50" y1="55" x2="450" y2="55" stroke="rgba(248,113,113,.35)" stroke-width="1"
+            stroke-dasharray="6,4" />
+          <text x="455" y="58" font-family="JetBrains Mono" font-size="9" fill="#f87171">limite alto</text>
+          <!-- soglia bassa (troppi frame → spreco) -->
+          <line x1="50" y1="140" x2="450" y2="140" stroke="rgba(52,211,153,.35)" stroke-width="1"
+            stroke-dasharray="6,4" />
+          <text x="455" y="143" font-family="JetBrains Mono" font-size="9" fill="#34d399">limite basso</text>
+          <!-- zona ottimale -->
+          <rect x="50" y="55" width="400" height="85" fill="rgba(34,211,238,.04)" stroke="none" />
+          <text x="240" y="100" font-family="Inter" font-size="11" fill="rgba(34,211,238,.6)" text-anchor="middle">zona
+            ottimale — PFF controllata</text>
+          <!-- zona thrashing -->
+          <rect x="50" y="20" width="100" height="35" fill="rgba(248,113,113,.06)" stroke="none" />
+          <text x="100" y="42" font-family="JetBrains Mono" font-size="9" fill="#f87171"
+            text-anchor="middle">THRASHING</text>
+          <!-- tick x -->
+          <line x1="150" y1="158" x2="150" y2="162" stroke="rgba(34,211,238,.3)" stroke-width="1" />
+          <text x="150" y="172" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)"
+            text-anchor="middle">pochi</text>
+          <line x1="300" y1="158" x2="300" y2="162" stroke="rgba(34,211,238,.3)" stroke-width="1" />
+          <text x="300" y="172" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)"
+            text-anchor="middle">molti</text>
+        </svg>
+      </div>
+
+      <p>
+        Il kernel usa la PFF per il <span class="keyword">frame allocation control</span>:
+      </p>
+
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="compare-col-head coral">PFF troppo alta → thrashing</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Il processo genera page fault così frequentemente che passa più tempo ad aspettare
+              I/O che ad eseguire.</div>
+            <div class="compare-row">Il kernel alloca più frame al processo, o sospende altri processi per liberare RAM.
+            </div>
+            <div class="compare-row">Se tutto il sistema è in thrashing → swap storm: la CPU è quasi inattiva mentre il
+              disco è al 100%.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head green">PFF troppo bassa → spreco</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Il processo ha più frame di quanti ne usa il suo working set.</div>
+            <div class="compare-row">Il kernel può riallocare frame a processi che ne hanno più bisogno.</div>
+            <div class="compare-row">Indica potenziale per caricare più processi in RAM simultaneamente (aumento del
+              grado di multiprogrammazione).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-card">
+        <span class="formula-label">Tempo effettivo di accesso</span>
+        <span class="formula-expr">EAT = (1−p)·t_mem + p·t_fault</span>
+        <span style="font-size:12px;color:var(--text-muted)">p=prob. page fault, t_mem≈100ns, t_fault≈10ms → anche 0.1%
+          di fault → EAT 100× peggiore</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       07.10 — WORKING SET MODEL
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="s10">
+      <h2><span class="dot"></span> Working Set Model <span class="sub-tag">locality</span></h2>
+      <p>
+        Il <span class="keyword">working set model</span> si basa sul principio di <span class="keyword">locality of
+          reference</span>: durante qualsiasi finestra temporale, un processo usa solo un piccolo sottoinsieme delle sue
+        pagine. Il <span class="keyword">working set W(t, Δ)</span> è l'insieme delle pagine usate nelle ultime Δ unità
+        di tempo (la <em>finestra temporale</em>).
+      </p>
+      <p>
+        La dimensione del working set <code class="inline">|W(t, Δ)|</code> indica quanti frame il processo ha bisogno
+        in questo momento per girare senza thrashing. Se la somma dei working set di tutti i processi supera il numero
+        di frame disponibili → thrashing inevitabile.
+      </p>
+
+      <!-- Illustrazione working set -->
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:.75rem">
+        Sequenza di riferimenti a pagine: <strong style="color:#22d3ee">1, 2, 1, 5, 7, 7, 1, 3, 4, 3, 4, 4, 3, 4, 5, 4,
+          1, 6, 3, 7</strong><br>
+        Finestra temporale Δ = 5 accessi. La finestra scorre sull'accesso corrente (cursore giallo):
+      </p>
+
+      <div class="ws-window" id="ws-demo">
+        <!-- generato da JS -->
+      </div>
+      <div id="ws-info"
+        style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);margin:.5rem 0 1rem"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="ws-prev"
+          style="padding:5px 14px;font-size:12px;font-family:'JetBrains Mono',monospace;border-radius:6px;border:1px solid rgba(34,211,238,.3);background:rgba(34,211,238,.07);color:#22d3ee;cursor:pointer">←
+          prev</button>
+        <button id="ws-next"
+          style="padding:5px 14px;font-size:12px;font-family:'JetBrains Mono',monospace;border-radius:6px;border:1px solid rgba(34,211,238,.3);background:rgba(34,211,238,.07);color:#22d3ee;cursor:pointer">next
+          →</button>
+        <span id="ws-pos"
+          style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(34,211,238,.5);align-self:center"></span>
+      </div>
+
+      <div class="algo-card" style="margin-top:1.75rem">
+        <div class="algo-card-header">📐 Working Set → Frame Allocation</div>
+        <div class="algo-steps">
+          <div class="algo-step"><span class="algo-step-n">1.</span> Il kernel stima periodicamente <code
+              class="inline">|W(t, Δ)|</code> per ogni processo tramite i reference bit (approssimazione con interrupt
+            periodici).</div>
+          <div class="algo-step"><span class="algo-step-n">2.</span> Calcola D = Σ|Wi| (somma dei working set di tutti i
+            processi).</div>
+          <div class="algo-step"><span class="algo-step-n">3.</span> Se D > numero frame totali → thrashing. Sospendi un
+            processo per liberare i suoi frame.</div>
+          <div class="algo-step"><span class="algo-step-n">4.</span> Se D &lt;&lt; frame totali → carica un nuovo
+            processo per aumentare l'utilizzo della CPU.</div>
+          <div class="algo-step"><span class="algo-step-n">5.</span> Linux implementa questo con la <strong
+              style="color:#22d3ee">swap tendency</strong> e il <strong style="color:#22d3ee">kswapd daemon</strong> che
+            agisce in base alla memoria libera disponibile.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="callout-icon">🎯</span>
+        Il working set cambia nel tempo man mano che il programma entra in fasi diverse (es. inizializzazione → loop
+        principale → I/O → cleanup). Il kernel deve tracciarlo dinamicamente e riallocare i frame di conseguenza.
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="back-btn-wrap">
+      <a href="06-deadlocks.html" class="btn btn-ghost">← 06 · Deadlocks</a>
+      <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+      <a href="08-virtual-memory.html" class="btn btn-ghost">08 · Virtual Memory →</a>
+    </div>
+
+  </div><!-- /content-wrap -->
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 07 · Main Memory</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">argomentoStyle.css</span></p>
+  </footer>
+
+  <!-- ═══════ SCRIPTS ═══════ -->
+  <script src="/shared/katchkit.js"></script>
 </body>
+
 </html>
