@@ -151,11 +151,18 @@
 
     <div class="section-block" id="section-6">
       <h2><span class="dot"></span> Multilevel Queue</h2>
-      <p>La ready queue viene divisa in più <span class="keyword">code separate</span>, ognuna per una categoria di
+      <div class="kk-flex-row">
+        <div class="kk">
+                <p>La ready queue viene divisa in più <span class="keyword">code separate</span>, ognuna per una categoria di
         processi (foreground interattivi, background batch, processi di sistema). Ogni coda ha il proprio algoritmo
         interno (Round Robin per il foreground, FCFS per il batch) e una propria priorità rispetto alle altre code.</p>
       <p>I processi non si spostano tra code. Il principale svantaggio è la rigidità: un processo batch che diventa
         interattivo rimane comunque nella coda a bassa priorità.</p>
+        </div>
+        <div class="kk-flex-media">
+          <img src="../risorse/img10.png" alt="" srcset="">
+        </div>
+      </div>
     </div>
 
     <div class="section-block" id="section-7">
