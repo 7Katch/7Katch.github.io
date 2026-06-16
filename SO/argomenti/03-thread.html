@@ -197,9 +197,9 @@
     <div class="section-block" id="section-4">
       <h2><span class="dot"></span> Legge di Amdahl</h2>
       <p>La <span class="keyword">Legge di Amdahl</span> quantifica il limite teorico dello speedup ottenibile
-        parallelizzando un programma con N core. La formula è: <strong style="color:var(--text-primary)">Speedup = 1 /
-          (S + (1-S)/N)</strong>, dove S è la frazione di codice che rimane seriale (non parallelizzabile) e N è il
-        numero di core.</p>
+        parallelizzando un programma con N core. La formula è:</p>
+        <p><span class="keyword">\begin{equation} Speedup = 1 / (S + (1-S)/N)\end{equation}</span></p>
+        <p>dove S è la frazione di codice che rimane seriale (non parallelizzabile) e N è il numero di core.</p>
       <p>Il risultato è sorprendente: se solo il 5% del codice è seriale (S=0.05), anche con infiniti core lo speedup
         massimo è solo 20×. La legge mostra perché ridurre la parte seriale è fondamentale: portare S da 10% a 1% può
         triplicare il guadagno ottenibile dall'hardware parallelo.</p>

@@ -10,6 +10,7 @@ const KatchKitCore = {
     this.initScrollSpy();
     this.initSidebarToggle();
     this.initDefinitions();
+    this.initLatex();
   },
 
   // Modulo 1: Scroll e navigazione (Spy & Flash)
@@ -138,6 +139,26 @@ const KatchKitCore = {
         header.innerHTML = libroIcona + testoAttuale;
       }
     });
+  },
+  initLatex: function() {
+    // 1. Diciamo a MathJax come vogliamo scrivere le formule
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      chtml: {
+        scale: 1.1 // Rende le formule leggermente più grandi e leggibili
+      }
+    };
+
+    // 2. Creiamo il tag <script> virtuale che punta al server di MathJax
+    const scriptMathJax = document.createElement('script');
+    scriptMathJax.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    scriptMathJax.async = true; // Non blocca il caricamento del resto della pagina
+
+    // 3. Iniettiamo lo script nella "testa" della pagina
+    document.head.appendChild(scriptMathJax);
   }
 };
 
