@@ -94,15 +94,20 @@
         (variabili, file, strutture dati) che non può essere eseguito da più di un processo/thread alla volta. Per
         garantire la correttezza, ogni soluzione al problema della sezione critica deve soddisfare tre requisiti.</p>
       <p><span class="keyword">Mutua esclusione</span>: al massimo un processo alla volta esegue la propria sezione
-        critica. <span class="keyword">Progress</span>: la decisione su chi entra nella sezione critica non può essere
-        rimandata indefinitamente; solo i processi che vogliono entrare partecipano alla decisione. <span
+        critica.</p>
+        <p>
+           <span class="keyword">Progress</span>: la decisione su chi entra nella sezione critica non può essere
+        rimandata indefinitamente; solo i processi che vogliono entrare partecipano alla decisione. 
+        </p>
+        <p>
+        <span
           class="keyword">Bounded waiting</span>: esiste un limite al numero di volte che altri processi possono entrare
         nella sezione critica dopo che un processo ha fatto richiesta e prima che quella richiesta venga soddisfatta
         (nessuna starvation).</p>
     </div>
 
     <div class="section-block" id="section-3">
-      <h2><span class="dot"></span> Mutex Lock</h2>
+      <h2><span class="dot"></span> Mutex Lock <span class="sub-tag">fondamentale</span></h2>
       <p>Il <span class="keyword">mutex</span> (mutual exclusion lock) è il meccanismo di sincronizzazione più semplice.
         Ha due stati (locked/unlocked) e due operazioni atomiche: <code class="inline">acquire()</code> prima della
         sezione critica e <code class="inline">release()</code> dopo. Se un thread chiama <code
@@ -116,8 +121,8 @@
     </div>
 
     <div class="section-block" id="section-4">
-      <h2><span class="dot"></span> Semafori</h2>
-      <p>Un <span class="keyword">semaforo</span> è una variabile intera con due operazioni atomiche: <code
+      <h2><span class="dot"></span> Semafori <span class="sub-tag">fondamentale</span></h2> 
+      <p>Un <span class="keyword">semaforo</span> è una variabile intera <span class="keyword">gestita dal programmatore </span>con due operazioni atomiche: <code
           class="inline">wait(S)</code> (anche detta P o down) e <code class="inline">signal(S)</code> (anche detta V o
         up). <code class="inline">wait(S)</code> decrementa S e blocca il thread se S è diventato negativo. <code
           class="inline">signal(S)</code> incrementa S e sblocca un thread in attesa se ce n'è uno.</p>
@@ -131,8 +136,8 @@
     </div>
 
     <div class="section-block" id="section-5">
-      <h2><span class="dot"></span> Monitor</h2>
-      <p>Il <span class="keyword">monitor</span> è un costrutto di alto livello che combina dati condivisi, operazioni
+      <h2><span class="dot"></span> Monitor <span class="sub-tag">fondamentale</span></h2>
+      <p>Il <span class="keyword">monitor</span> è un costrutto di alto livello <span class="keyword">gestito dal compilatore o il runtime </span>che combina dati condivisi, operazioni
         su quei dati e sincronizzazione in un'unica struttura. Il compilatore garantisce che solo un thread alla volta
         esegua una procedura del monitor. In Java, la parola chiave <code class="inline">synchronized</code> trasforma
         un metodo in una procedura di monitor.</p>
@@ -143,7 +148,7 @@
     </div>
 
     <div class="section-block" id="section-6">
-      <h2><span class="dot"></span> Problema Produttore-Consumatore</h2>
+      <h2><span class="dot"></span> Problema Produttore-Consumatore (Bounded-buffer)</h2>
       <p>Il <span class="keyword">problema del buffer limitato</span>: un produttore genera elementi e li inserisce in
         un buffer di capacità N; un consumatore li preleva. Il problema richiede sincronizzazione su tre fronti: il
         produttore non può inserire in un buffer pieno; il consumatore non può prelevare da un buffer vuoto; l'accesso
@@ -154,6 +159,9 @@
           class="inline">wait(empty)</code>, inserisce, <code class="inline">signal(full)</code>; il consumatore fa
         <code class="inline">wait(full)</code>, preleva, <code class="inline">signal(empty)</code>.
       </p>
+      <div class="kk-flex-media">
+        <img src="../risorse/img11.png" alt="">
+      </div>
     </div>
 
     <div class="section-block" id="section-7">
