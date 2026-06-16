@@ -32,52 +32,19 @@
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
-    <ul class="sb-sections">
-      <li data-sid="s1">
-        <div class="sb-link" data-target="s1"><span class="sb-idx">07.01</span><span>Spazio di Indirizzamento</span>
-        </div>
-      </li>
-      <li data-sid="s2">
-        <div class="sb-link" data-target="s2"><span class="sb-idx">07.02</span><span>Memoria Fisica, Logica e
-            Virtuale</span></div>
-      </li>
-      <li data-sid="s3">
-        <div class="sb-link" data-target="s3"><span class="sb-idx">07.03</span><span>Frammentazione Interna</span></div>
-      </li>
-      <li data-sid="s4">
-        <div class="sb-link" data-target="s4"><span class="sb-idx">07.04</span><span>Frammentazione Esterna</span></div>
-      </li>
-      <li data-sid="s5">
-        <div class="sb-link" data-target="s5"><span class="sb-idx">07.05</span><span>Paginazione &amp; Page Table</span>
-        </div>
-      </li>
-      <li data-sid="s6">
-        <div class="sb-link" data-target="s6"><span class="sb-idx">07.06</span><span>Demand Paging &amp; Page
-            Fault</span></div>
-      </li>
-      <li data-sid="s7">
-        <div class="sb-link" data-target="s7"><span class="sb-idx">07.07</span><span>Page Replacement</span></div>
-      </li>
-      <li data-sid="s8">
-        <div class="sb-link" data-target="s8"><span class="sb-idx">07.08</span><span>Algoritmi: LRU &amp; Seconda
-            Chance</span></div>
-      </li>
-      <li data-sid="s9">
-        <div class="sb-link" data-target="s9"><span class="sb-idx">07.09</span><span>Frequenza dei Page Fault</span>
-        </div>
-      </li>
-      <li data-sid="s10">
-        <div class="sb-link" data-target="s10"><span class="sb-idx">07.10</span><span>Working Set Model</span></div>
-      </li>
-    </ul>
+    <ul class="sb-sections"></ul>
   </aside>
 
   <!-- ═══════ NAV ═══════ -->
   <nav>
-    <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// SO · Sistemi Operativi</a>
+    </div>
+
     <div class="nav-right">
-      <a href="../index.html" class="nav-back">← Indice SO</a>
-      <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+      <a href="../" class="nav-back">← Indice SO</a>
+      <a href="/" class="nav-back">⌂ Home</a>
     </div>
   </nav>
 
@@ -106,59 +73,31 @@
       <span>07 · Main Memory</span>
     </div>
 
-    <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(34,211,238,.25)">
+    <div class="theme-box">
       Questa pagina copre i <strong style="color:var(--teal)">10 sottoargomenti</strong> core della gestione della
       memoria principale, con illustrazioni, esempi numerici e algoritmi.
     </div>
 
     <!-- INDEX GRID -->
-    <div class="index-grid">
-      <div class="index-item" data-target="s1">
-        <div class="idx-num">07.01</div>
-        <div class="idx-name">Spazio di indirizzamento</div>
-      </div>
-      <div class="index-item" data-target="s2">
-        <div class="idx-num">07.02</div>
-        <div class="idx-name">Fisica / Logica / Virtuale</div>
-      </div>
-      <div class="index-item" data-target="s3">
-        <div class="idx-num">07.03</div>
-        <div class="idx-name">Frammentazione interna</div>
-      </div>
-      <div class="index-item" data-target="s4">
-        <div class="idx-num">07.04</div>
-        <div class="idx-name">Frammentazione esterna</div>
-      </div>
-      <div class="index-item" data-target="s5">
-        <div class="idx-num">07.05</div>
-        <div class="idx-name">Paginazione &amp; Page Table</div>
-      </div>
-      <div class="index-item" data-target="s6">
-        <div class="idx-num">07.06</div>
-        <div class="idx-name">Demand Paging &amp; Page Fault</div>
-      </div>
-      <div class="index-item" data-target="s7">
-        <div class="idx-num">07.07</div>
-        <div class="idx-name">Page Replacement</div>
-      </div>
-      <div class="index-item" data-target="s8">
-        <div class="idx-num">07.08</div>
-        <div class="idx-name">LRU &amp; Seconda Chance</div>
-      </div>
-      <div class="index-item" data-target="s9">
-        <div class="idx-num">07.09</div>
-        <div class="idx-name">Frequenza Page Fault</div>
-      </div>
-      <div class="index-item" data-target="s10">
-        <div class="idx-num">07.10</div>
-        <div class="idx-name">Working Set Model</div>
-      </div>
+    <div class="index-grid" data-prefix="07">
+      <ul>
+        <li>Spazio di indirizzamento</li>
+        <li>Fisica / Logica / Virtuale</li>
+        <li>Frammentazione interna</li>
+        <li>Frammentazione esterna</li>
+        <li>Paginazione &amp; Page Table</li>
+        <li>Demand Paging &amp; Page Fault</li>
+        <li>Page Replacement</li>
+        <li>LRU &amp; Seconda Chance</li>
+        <li>Frequenza Page Fault</li>
+        <li>Working Set Model</li>
+      </ul>
     </div>
 
     <!-- ══════════════════════════════════════════════════
        07.01 — SPAZIO DI INDIRIZZAMENTO
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s1">
+    <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Spazio di Indirizzamento <span class="sub-tag">fondamento</span></h2>
       <p>
         Lo <span class="keyword">spazio di indirizzamento</span> è l'insieme di tutti gli indirizzi di memoria che un
@@ -243,7 +182,7 @@
     <!-- ══════════════════════════════════════════════════
        07.02 — FISICA vs LOGICA vs VIRTUALE
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s2">
+    <div class="section-block" id="section-2">
       <h2><span class="dot"></span> Memoria Fisica, Logica e Virtuale <span class="sub-tag">concetti chiave</span></h2>
 
       <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
@@ -311,7 +250,7 @@
     <!-- ══════════════════════════════════════════════════
        07.03 — FRAMMENTAZIONE INTERNA
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s3">
+    <div class="section-block" id="section-3">
       <h2><span class="dot"></span> Frammentazione Interna <span class="sub-tag">paginazione</span></h2>
       <p>
         La <span class="keyword">frammentazione interna</span> si verifica quando la memoria assegnata a un processo è
@@ -412,7 +351,7 @@
     <!-- ══════════════════════════════════════════════════
        07.04 — FRAMMENTAZIONE ESTERNA
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s4">
+    <div class="section-block" id="section-4">
       <h2><span class="dot"></span> Frammentazione Esterna <span class="sub-tag">allocazione contigua</span></h2>
       <p>
         La <span class="keyword">frammentazione esterna</span> è il problema opposto: la memoria libera totale è
@@ -507,7 +446,7 @@
     <!-- ══════════════════════════════════════════════════
        07.05 — PAGINAZIONE & PAGE TABLE
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s5">
+    <div class="section-block" id="section-5">
       <h2><span class="dot"></span> Paginazione &amp; Page Table <span class="sub-tag">soluzione chiave</span></h2>
       <p>
         La <span class="keyword">paginazione</span> divide sia la memoria fisica che lo spazio logico in blocchi di
@@ -627,7 +566,7 @@
     <!-- ══════════════════════════════════════════════════
        07.06 — DEMAND PAGING & PAGE FAULT
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s6">
+    <div class="section-block" id="section-6">
       <h2><span class="dot"></span> Demand Paging &amp; Page Fault <span class="sub-tag">memoria virtuale</span></h2>
       <p>
         Il <span class="keyword">demand paging</span> è la tecnica che permette di caricare in RAM solo le pagine di un
@@ -702,7 +641,7 @@
     <!-- ══════════════════════════════════════════════════
        07.07 — PAGE REPLACEMENT
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s7">
+    <div class="section-block" id="section-7">
       <h2><span class="dot"></span> Page Replacement <span class="sub-tag">quando la RAM è piena</span></h2>
       <p>
         Quando la RAM è piena e occorre caricare una nuova pagina, il kernel deve scegliere una pagina <span
@@ -744,7 +683,7 @@
     <!-- ══════════════════════════════════════════════════
        07.08 — LRU & SECONDA CHANCE
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s8">
+    <div class="section-block" id="section-8">
       <h2><span class="dot"></span> Algoritmi: LRU &amp; Seconda Chance <span class="sub-tag">implementazione</span>
       </h2>
 
@@ -963,7 +902,7 @@
     <!-- ══════════════════════════════════════════════════
        07.09 — FREQUENZA DEI PAGE FAULT
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s9">
+    <div class="section-block" id="section-9">
       <h2><span class="dot"></span> Frequenza dei Page Fault <span class="sub-tag">controllo del thrashing</span></h2>
       <p>
         La <span class="keyword">frequenza dei page fault (PFF)</span> misura quanti page fault per unità di tempo
@@ -1048,7 +987,7 @@
     <!-- ══════════════════════════════════════════════════
        07.10 — WORKING SET MODEL
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="s10">
+    <div class="section-block" id="section-10">
       <h2><span class="dot"></span> Working Set Model <span class="sub-tag">locality</span></h2>
       <p>
         Il <span class="keyword">working set model</span> si basa sul principio di <span class="keyword">locality of
@@ -1126,6 +1065,52 @@
 
   <!-- ═══════ SCRIPTS ═══════ -->
   <script src="/shared/katchkit.js"></script>
+  <script>
+    (function(){
+      // I dati specifici per il tuo esempio
+      var refs = [1,2,1,5,7,7,1,3,4,3,4,4,3,4,5,4,1,6,3,7];
+      var delta = 5;
+      var cursor = delta - 1; // parte dalla posizione 4
+
+      function update() {
+        var wrap = document.getElementById('ws-demo');
+        var info = document.getElementById('ws-info');
+        var pos  = document.getElementById('ws-pos');
+        if (!wrap) return;
+
+        // Costruisce le celle visive
+        var html = '';
+        var windowStart = Math.max(0, cursor - delta + 1);
+        for (var i = 0; i < refs.length; i++) {
+          var cls = 'ws-cell';
+          if (i === cursor) cls += ' cursor';
+          else if (i >= windowStart && i < cursor) cls += ' active';
+          html += '<div class="' + cls + '">' + refs[i] + '</div>';
+        }
+        wrap.innerHTML = html;
+
+        // Calcola il working set corrente (rimuove i duplicati)
+        var ws = {};
+        for (var j = windowStart; j <= cursor; j++) ws[refs[j]] = true;
+        var wsArr = Object.keys(ws).sort(function(a,b){return a-b;});
+
+        // Aggiorna il testo informativo
+        info.textContent = 'Finestra [t-' + (delta-1) + '..t] → W = { ' + wsArr.join(', ') + ' }  →  |W| = ' + wsArr.length + ' frame necessari';
+        pos.textContent = 'accesso ' + (cursor+1) + '/' + refs.length;
+      }
+
+      // Event Listeners per i pulsanti Prev e Next
+      document.getElementById('ws-next').addEventListener('click', function(){
+        if (cursor < refs.length - 1) { cursor++; update(); }
+      });
+      document.getElementById('ws-prev').addEventListener('click', function(){
+        if (cursor > delta - 1) { cursor--; update(); }
+      });
+      
+      // Inizializza la demo all'apertura della pagina
+      update();
+    }());
+  </script>
 </body>
 
 </html>
