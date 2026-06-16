@@ -74,6 +74,15 @@
         <li>Many-to-One</li>
         <li>One-to-One</li>
         <li>Many-to-Many</li>
+        <li>Librerie Thread</li>
+        <li>Implicit Threading</li>
+        <li>Modello Fork-join</li>
+        <li>Modello Thread pools</li>
+        <li>Problemi con il Threading</li>
+        <li>Semantica di fork() e exec()</li>
+        <li>Gestione dei segnali</li>
+        <li>Cancellazione di un thread</li>
+        <li>Thread-local storage</li>
       </ul>
     </div>
 
@@ -225,6 +234,124 @@
         user thread si blocca, un altro può usare il kernel thread libero. È il modello più flessibile ma anche il più
         complesso da implementare. Alcune implementazioni lo combinano con il modello Two-level: alcuni thread critici
         sono mappati One-to-One, gli altri Many-to-Many.</p>
+    </div>
+
+
+    <div class="section-block" id="section-10">
+      <h2><span class="dot"></span> Librerie Thread</h2>
+      <p>
+        Esistono delle librerie che prevedono al programmatore un API per accedere e gestire i thread
+        Un esempio è la libreria <code class="inline">PThreads</code> a.k.a. <code class="inline">POSIX Threads</code>
+      </p>
+    </div>
+
+    <div class="section-block" id="section-11">
+      <h2><span class="dot"></span> Implicit Threading</h2>
+      <p>I programmatori potrebbero creare e terminare i threads in modo implicito e a lungo andare potrebbe risultare
+        difficile effettuare i debugging</p>
+      <div class="card-def">
+        <div class="card-def-header">soluzione</div>
+        <div class="card-def-content">
+          <p>Si possono optare per le seguenti soluzioni</p>
+          <ol>
+            <li>Fork-join</li>
+            <li>Thread-pools</li>
+            <li>OpenMP</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="section-block" id="section-12">
+      <h2><span class="dot"></span> Modello Fork-join</h2>
+      <p>Al thread viene chiamato il <code class="inline">fork()</code> e successivamente il <code
+          class="inline">join()</code></p>
+      <div class="kk-flex-media">
+        <img src="../risorse/img9.png" alt="" srcset="">
+      </div>
+    </div>
+    <div class="section-block" id="section-13">
+      <h2><span class="dot"></span> Modello Thread pools</h2>
+      <p>Vengono creati un numero finito di threads in attesa a lavorare.</p>
+      <p>I vantaggi sono i seguenti</p>
+      <ul>
+        <li>Solitamente più efficiente assegnare ad un thread già esistente che a crearne uno nuovo</li>
+        <li>Permette di vincolare il numero di thread nell'applicazione (o nelle applicazioni) alla dimensione del
+          pool.</li>
+        <li>Separare il compito (task) da eseguire dai meccanismi di creazione del task stesso facilita diverse
+          strategie di esecuzione:</li>
+        <li>Ad esempio, le API di Windows supportano i pool di thread.</li>
+      </ul>
+    </div>
+    <div class="section-block" id="section-14">
+      <h2><span class="dot"></span> Problemi con il Threading</h2>
+      <p></p>
+    </div>
+    <div class="section-block" id="section-15">
+      <h2><span class="dot"></span> Semantica di fork() e exec()</h2>
+      <p>Nei sistemi multithread, il comportamento delle system call per la creazione di processi subisce delle
+        variazioni importanti:</p>
+      <ul>
+        <li><span class="keyword">fork()</span>: I fork creano una copia di tutti i thread o solo del thread chiamante?
+          I sistemi UNIX moderni offrono solitamente <em>entrambe</em> le versioni della <code
+            class="inline">fork()</code> per supportare ciascuna modalità a seconda della necessità.</li>
+        <li><span class="keyword">exec()</span>: Questa system call solitamente rimpiazza l'intero processo in
+          esecuzione, includendo <em>tutti</em> i suoi thread.</li>
+      </ul>
+      <p>L'uso combinato: se una <code class="inline">exec()</code> viene chiamata immediatamente dopo una <code
+          class="inline">fork()</code>, duplicare tutti i thread risulta inutile, motivo per cui si preferisce usare la
+        fork che duplica solo il thread chiamante.</p>
+    </div>
+    <div class="section-block" id="section-16">
+      <h2><span class="dot"></span> Gestione dei segnali</h2>
+      <h2><span class="dot"></span> Gestione dei Segnali</h2>
+      <p>I segnali sono usati (soprattutto nei sistemi UNIX) come <span class="keyword">software interrupt</span> per
+        notificare a un processo che un particolare evento è accaduto. Il ciclo di vita di un segnale prevede che:</p>
+      <ol>
+        <li>Il segnale venga generato da un particolare evento.</li>
+        <li>Il segnale venga spedito a un processo.</li>
+        <li>Il segnale venga gestito da un apposito gestore (<span class="keyword">Default</span> o <span
+            class="keyword">User-defined</span>).</li>
+      </ol>
+
+      <div class="theme-box">
+        <strong>Il dilemma Multithreading:</strong> Dove viene spedito il segnale in un sistema multi-thread? Ci sono 4
+        approcci possibili:
+        <ul style="margin-top: 10px; margin-bottom: 0;">
+          <li>Al singolo thread a cui il segnale fa riferimento.</li>
+          <li>A <em>tutti</em> i thread del processo.</li>
+          <li>A <em>certi</em> thread specifici del processo.</li>
+          <li>Assegnare a un thread specifico (dedicato) la ricezione di <em>tutti</em> i segnali per l'intero processo.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="section-block" id="section-17">
+      <h2><span class="dot"></span> Cancellazione di un thread</h2>
+      <h2><span class="dot"></span> Cancellazione Thread</h2>
+      <p>L'interruzione di un thread prima che abbia completato il suo compito è detta cancellazione. Il thread che deve
+        essere cancellato prende il nome di <span class="keyword">target thread</span>. Esistono 2 approcci principali:
+      </p>
+      <ul>
+        <li><span class="keyword">Cancellazione Asincrona:</span> Termina il target thread immediatamente.</li>
+        <li><span class="keyword">Deferred Cancellation (Differita):</span> Permette al target di controllare
+          periodicamente (in punti sicuri) se deve essere cancellato.</li>
+      </ul>
+
+      <p><strong>Cancellazione di un Pthread:</strong></p>
+      <p>Nel caso dei Pthread, la cancellazione invocata dal codice è solo una <em>richiesta</em>; l'effettiva
+        terminazione dipende dallo stato del thread. Se la cancellation mode è disabilitata, la richiesta rimane in
+        stallo fino a quando il thread non la abilita. Il tipo di cancellazione di default è la <em>Deferred</em>.
+      </p>
+    </div>
+    <div class="section-block" id="section-18">
+      <h2><span class="dot"></span> Thread-local storage</h2>
+    <h2><span class="dot"></span> Thread-Local Storage (TLS)</h2>
+  <p>Il <span class="keyword">Thread-Local Storage (TLS)</span> è uno spazio di archiviazione che permette ad ogni thread di avere la propria copia unica e privata dei dati.</p>
+  <ul>
+    <li>Risulta molto utile quando non abbiamo pieno controllo della creazione del thread (come ad esempio può verificarsi nella creazione di un <em>thread implicito</em> o nei Thread Pool).</li>
+    <li><strong>Differenza dalle variabili locali:</strong> Le variabili locali sono visibili solo nella funzione chiamante in cui sono dichiarate; i dati TLS, invece, sono visibili attraverso tutte le chiamate a funzione all'interno di quello specifico thread.</li>
+    <li>Sono molto simili ai dati <code class="inline">static</code> globali, ma con la differenza che sono <em>unici per ogni thread</em> creato.</li>
+  </ul>
     </div>
 
     <div class="back-btn-wrap">
