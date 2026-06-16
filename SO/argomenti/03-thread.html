@@ -284,7 +284,19 @@
     </div>
     <div class="section-block" id="section-14">
       <h2><span class="dot"></span> Problemi con il Threading</h2>
-      <p></p>
+      <p>
+        1.	Semantica e comportamento delle system calls fork() e exec()
+          a.	I fork creano una copia di tutti threads, o solo del thread chiamante?
+          2.	Segnali
+          a.	I software interrupt per comunicare gli eventi tra i processi
+          3.	Cancellazione Thread
+          a.	Un thread può terminare immediatamente oppure controllare periodicamente se deve essere cancellato
+          4.	Thread-local-storage (TLS)
+          a.	Storage unico per ogni thread
+          5.	Attivazioni scheduler
+          a.	Comunicazione tra il kernel thread e lo user-threads
+
+      </p>
     </div>
     <div class="section-block" id="section-15">
       <h2><span class="dot"></span> Semantica di fork() e exec()</h2>
@@ -303,7 +315,6 @@
     </div>
     <div class="section-block" id="section-16">
       <h2><span class="dot"></span> Gestione dei segnali</h2>
-      <h2><span class="dot"></span> Gestione dei Segnali</h2>
       <p>I segnali sono usati (soprattutto nei sistemi UNIX) come <span class="keyword">software interrupt</span> per
         notificare a un processo che un particolare evento è accaduto. Il ciclo di vita di un segnale prevede che:</p>
       <ol>
@@ -327,7 +338,6 @@
     </div>
     <div class="section-block" id="section-17">
       <h2><span class="dot"></span> Cancellazione di un thread</h2>
-      <h2><span class="dot"></span> Cancellazione Thread</h2>
       <p>L'interruzione di un thread prima che abbia completato il suo compito è detta cancellazione. Il thread che deve
         essere cancellato prende il nome di <span class="keyword">target thread</span>. Esistono 2 approcci principali:
       </p>
@@ -344,7 +354,6 @@
       </p>
     </div>
     <div class="section-block" id="section-18">
-      <h2><span class="dot"></span> Thread-local storage</h2>
     <h2><span class="dot"></span> Thread-Local Storage (TLS)</h2>
   <p>Il <span class="keyword">Thread-Local Storage (TLS)</span> è uno spazio di archiviazione che permette ad ogni thread di avere la propria copia unica e privata dei dati.</p>
   <ul>
