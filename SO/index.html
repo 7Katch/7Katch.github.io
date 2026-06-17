@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -221,8 +221,8 @@
 <nav>
   <a href="#" class="nav-logo">// SO · Sistemi Operativi</a>
   <div class="nav-right">
-    <a href="../EDIDS/index.html" class="nav-back">← EDIDS</a>
-    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+    <a href="../EDIDS/index.html" class="nav-back"><i class="bi bi-arrow-left"></i> EDIDS</a>
+    <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
   </div>
 </nav>
 
@@ -326,8 +326,7 @@
     <a href="argomenti/06-deadlocks.html" class="overview-card ov-coral" style="cursor:pointer">
       <div class="ov-num">06 · Problemi</div>
       <div class="ov-title">Deadlocks</div>
-      <div class="ov-sub">Condizioni necessarie · Grafo di allocazione · Prevenzione · Rilevamento · Recovery</div>
-    </a>
+      <div class="ov-sub">Condizioni necessar    </a>
     <a href="argomenti/07-main-memory.html" class="overview-card ov-teal" style="cursor:pointer">
       <div class="ov-num">07 · Memoria</div>
       <div class="ov-title">Main Memory</div>
@@ -407,7 +406,7 @@
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
               <div class="sub-title">Struttura "Computer System"</div>
-              <div class="sub-desc">Architettura a strati: hardware → kernel → sistema operativo → applicazioni → utente. Ogni livello espone servizi al livello superiore.</div>
+              <div class="sub-desc">Architettura a strati: hardware <i class="bi bi-arrow-right"></i> kernel <i class="bi bi-arrow-right"></i> sistema operativo <i class="bi bi-arrow-right"></i> applicazioni <i class="bi bi-arrow-right"></i> utente. Ogni livello espone servizi al livello superiore.</div>
             </div>
           </div>
           <div class="sub-item">
@@ -517,7 +516,7 @@
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
               <div class="sub-title">Stato del processo</div>
-              <div class="sub-desc">Ciclo di vita: <strong style="color:var(--text-primary)">New</strong> → <strong style="color:var(--green)">Ready</strong> → <strong style="color:var(--amber)">Running</strong> → <strong style="color:var(--teal)">Waiting</strong> → <strong style="color:var(--coral)">Terminated</strong>. Le transizioni sono gestite dallo scheduler e dagli eventi I/O.</div>
+              <div class="sub-desc">Ciclo di vita: <strong style="color:var(--text-primary)">New</strong> <i class="bi bi-arrow-right"></i> <strong style="color:var(--green)">Ready</strong> <i class="bi bi-arrow-right"></i> <strong style="color:var(--amber)">Running</strong> <i class="bi bi-arrow-right"></i> <strong style="color:var(--teal)">Waiting</strong> <i class="bi bi-arrow-right"></i> <strong style="color:var(--coral)">Terminated</strong>. Le transizioni sono gestite dallo scheduler e dagli eventi I/O.</div>
             </div>
           </div>
           <div class="sub-item">
@@ -531,8 +530,7 @@
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
               <div class="sub-title">Creazione dei processi</div>
-              <div class="sub-desc">In Unix/Linux tramite <code style="color:var(--amber);font-size:11px">fork()</code>: crea un processo figlio identico al padre. Il figlio poi chiama <code style="color:var(--amber);font-size:11px">exec()</code> per caricare un nuovo programma. Il padre può attendere con <code style="color:var(--amber);font-size:11px">wait()</code>.</div>
-            </div>
+              <div class="sub-desc">In Unix/Linux tramite <code style="colo            </div>
           </div>
           <div class="sub-item">
             <div class="sub-dot" style="background:var(--amber)"></div>
@@ -587,9 +585,7 @@
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
               <div class="sub-title">Pipes</div>
-              <div class="sub-desc">Canale di comunicazione unidirezionale tra processi correlati (ordinarie) o non correlati (named pipe/FIFO). Implementa un buffer FIFO nel kernel. Usate intensamente nelle shell Unix (<code style="color:var(--amber);font-size:11px">ls | grep foo</code>).</div>
-            </div>
-          </div>
+              <div class="sub-desc">Canale di comunicazione unidirezionale tra processi correlati (ordinarie) o non correlati (named pipe/FIFO). Implementa un buffer FIFO nel kernel. Usate intensamente nelle shell Unix (<code style="color:var(--amber);font-size:11px">ls | grep foo</code>          </div>
           <div class="sub-item">
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
@@ -658,25 +654,23 @@
               <div class="sub-desc">Definisce come i thread utente si mappano sui thread kernel. Determina parallelismo reale e overhead.</div>
             </div>
           </div>
-          <div class="sub-item">
-            <div class="sub-dot" style="background:var(--amber)"></div>
-            <div>
+          <div class="sub-            <div>
               <div class="sub-title">Many-to-One</div>
-              <div class="sub-desc">Molti thread utente → 1 thread kernel. La libreria gestisce il multiplexing. Se un thread si blocca in I/O, tutti si bloccano. Nessun parallelismo reale. Usato in sistemi senza supporto kernel ai thread.</div>
+              <div class="sub-desc">Molti thread utente <i class="bi bi-arrow-right"></i> 1 thread kernel. La libreria gestisce il multiplexing. Se un thread si blocca in I/O, tutti si bloccano. Nessun parallelismo reale. Usato in sistemi senza supporto kernel ai thread.</div>
             </div>
           </div>
           <div class="sub-item">
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
               <div class="sub-title">One-to-One</div>
-              <div class="sub-desc">Ogni thread utente → 1 thread kernel. Parallelismo reale su multicore. Overhead maggiore per ogni creazione. Modello usato da Linux e Windows.</div>
+              <div class="sub-desc">Ogni thread utente <i class="bi bi-arrow-right"></i> 1 thread kernel. Parallelismo reale su multicore. Overhead maggiore per ogni creazione. Modello usato da Linux e Windows.</div>
             </div>
           </div>
           <div class="sub-item">
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
               <div class="sub-title">Many-to-Many</div>
-              <div class="sub-desc">N thread utente → M thread kernel (M ≤ N). Compromesso: parallelismo reale + flessibilità. Il kernel crea thread sufficienti e la libreria li gestisce. Thread pool pattern.</div>
+              <div class="sub-desc">N thread utente <i class="bi bi-arrow-right"></i> M thread kernel (M ≤ N). Compromesso: parallelismo reale + flessibilità. Il kernel crea thread sufficienti e la libreria li gestisce. Thread pool pattern.</div>
             </div>
           </div>
         </div>
@@ -785,7 +779,7 @@
             <div class="sub-dot" style="background:var(--accent-soft)"></div>
             <div>
               <div class="sub-title">Race Condition <span class="sub-tag">problema</span></div>
-              <div class="sub-desc">Situazione in cui il risultato dipende dall'ordine di esecuzione di thread/processi concorrenti. Esempio classico: due thread incrementano la stessa variabile senza sincronizzazione → risultato non deterministico.</div>
+              <div class="sub-desc">Situazione in cui il risultato dipende dall'ordine di esecuzione di thread/processi concorrenti. Esempio classico: due thread incrementano la stessa variabile senza sincronizzazione <i class="bi bi-arrow-right"></i> risultato non deterministico.</div>
             </div>
           </div>
           <div class="sub-item">
@@ -834,7 +828,7 @@
             <div class="sub-dot" style="background:var(--accent-soft)"></div>
             <div>
               <div class="sub-title">Problema dei 5 Filosofi</div>
-              <div class="sub-desc">Classico problema di sincronizzazione: 5 filosofi, 5 bacchette condivise. Ogni filosofo ne serve 2. Naive solution → deadlock. Soluzioni: asimmetria, pickup atomico, semaforo limite (max 4 filosofi a tavola).</div>
+              <div class="sub-desc">Classico problema di sincronizzazione: 5 filosofi, 5 bacchette condivise. Ogni filosofo ne serve 2. Naive solution <i class="bi bi-arrow-right"></i> deadlock. Soluzioni: asimmetria, pickup atomico, semaforo limite (max 4 filosofi a tavola).</div>
             </div>
           </div>
         </div>
@@ -867,7 +861,7 @@
             <div class="sub-dot coral"></div>
             <div>
               <div class="sub-title">Grafo di Allocazione delle Risorse</div>
-              <div class="sub-desc">Grafo diretto: processi (cerchi) e risorse (rettangoli). Arco P→R = richiesta; arco R→P = assegnazione. Se il grafo ha un ciclo con risorse a istanza singola → deadlock. Con istanze multiple → possibile ma non certo.</div>
+              <div class="sub-desc">Grafo diretto: processi (cerchi) e risorse (rettangoli). Arco P<i class="bi bi-arrow-right"></i>R = richiesta; arco R<i class="bi bi-arrow-right"></i>P = assegnazione. Se il grafo ha un ciclo con risorse a istanza singola <i class="bi bi-arrow-right"></i> deadlock. Con istanze multiple <i class="bi bi-arrow-right"></i> possibile ma non certo.</div>
             </div>
           </div>
           <div class="sub-item">
@@ -943,14 +937,14 @@
             <div class="sub-dot teal"></div>
             <div>
               <div class="sub-title">Paginazione</div>
-              <div class="sub-desc">La memoria fisica è divisa in frame di dimensione fissa; lo spazio logico in pagine della stessa dimensione. La page table mappa pagine logiche → frame fisici. Elimina la frammentazione esterna ma introduce overhead della tabella.</div>
+              <div class="sub-desc">La memoria fisica è divisa in frame di dimensione fissa; lo spazio logico in pagine della stessa dimensione. La page table mappa pagine logiche <i class="bi bi-arrow-right"></i> frame fisici. Elimina la frammentazione esterna ma introduce overhead della tabella.</div>
             </div>
           </div>
           <div class="sub-item">
             <div class="sub-dot teal"></div>
             <div>
               <div class="sub-title">TLB — Translation Lookaside Buffer</div>
-              <div class="sub-desc">Cache hardware delle traduzioni pagina→frame più recenti. Riduce drasticamente il costo della traduzione degli indirizzi. TLB hit: 1 ciclo. TLB miss: accesso alla page table in memoria (~100 cicli). Hit rate tipico: 99%+.</div>
+              <div class="sub-desc">Cache hardware delle traduzioni pagina<i class="bi bi-arrow-right"></i>frame più recenti. Riduce drasticamente il costo della traduzione degli indirizzi. TLB hit: 1 ciclo. TLB miss: accesso alla page table in memoria (~100 cicli). Hit rate tipico: 99%+.</div>
             </div>
           </div>
           <div class="sub-item">
@@ -1039,7 +1033,7 @@
             <div class="sub-dot teal"></div>
             <div>
               <div class="sub-title">Working Set Model</div>
-              <div class="sub-desc">Il working set è l'insieme di pagine accedute nelle ultime Δ referenze. Se la somma dei working set supera i frame disponibili → thrashing imminente. Il SO monitora i working set per allocare frame adeguati.</div>
+              <div class="sub-desc">Il working set è l'insieme di pagine accedute nelle ultime Δ referenze. Se la somma dei working set supera i frame disponibili <i class="bi bi-arrow-right"></i> thrashing imminente. Il SO monitora i working set per allocare frame adeguati.</div>
             </div>
           </div>
           <div class="sub-item">
@@ -1209,7 +1203,7 @@
             <div class="sub-dot green"></div>
             <div>
               <div class="sub-title">Concetti base: file e directory <span class="sub-tag">fondamento</span></div>
-              <div class="sub-desc">Un file è una collezione di dati con un nome. La directory mappa nomi → file (o altre directory). Strutture: singolo livello, a due livelli, ad albero, con link (grafo aciclico o generale).</div>
+              <div class="sub-desc">Un file è una collezione di dati con un nome. La directory mappa nomi <i class="bi bi-arrow-right"></i> file (o altre directory). Strutture: singolo livello, a due livelli, ad albero, con link (grafo aciclico o generale).</div>
             </div>
           </div>
           <div class="sub-item">
@@ -1385,8 +1379,8 @@
 
   <!-- BACK BUTTONS -->
   <div class="back-btn-wrap" style="padding-left:0;padding-right:0;">
-    <a href="https://7Katch.github.io" class="btn btn-ghost">⌂ Home</a>
-    <a href="../EDIDS/index.html" class="btn btn-amber">← EDIDS</a>
+    <a href="https://7Katch.github.io" class="btn btn-ghost"><i class="bi bi-house"></i> Home</a>
+    <a href="../EDIDS/index.html" class="btn btn-amber"><i class="bi bi-arrow-left"></i> EDIDS</a>
   </div>
 
 </div><!-- /acc-section -->

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -257,8 +257,8 @@ nav {
 <nav>
   <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
   <div class="nav-right">
-    <a href="../index.html" class="nav-back">← Indice SO</a>
-    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+    <a href="../index.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
   </div>
 </nav>
 <div class="hero" style="min-height:55vh">
@@ -289,7 +289,7 @@ nav {
   <div class="section-block" id="section-1">
     <h2><span class="dot"></span> Concetti Base: File e Directory <span class="sub-tag">fondamento</span></h2>
     <p>Un <span class="keyword">file</span> è la più piccola unità di storage logico: una sequenza di byte con un nome, dei metadati (permessi, proprietario, dimensione, timestamp) e un contenuto. Il SO astrae i dettagli fisici del disco e presenta i file tramite operazioni uniformi: <code class="inline">open()</code>, <code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">close()</code>.</p>
-    <p>Una <span class="keyword">directory</span> è una struttura speciale che mappa nomi a file (o ad altre directory). In Unix, una directory è anch'essa un file, il cui contenuto è una tabella di coppie (nome → inode number). Le strutture di directory possono essere: a singolo livello (tutti i file in un'unica directory — primitivo), a due livelli (una directory per utente), ad <span class="keyword">albero</span> (la struttura gerarchica usata da tutti i SO moderni), o con link (grafo aciclico o generale, che permette a un file di apparire in più directory).</p>
+    <p>Una <span class="keyword">directory</span> è una struttura speciale che mappa nomi a file (o ad altre directory). In Unix, una directory è anch'essa un file, il cui contenuto è una tabella di coppie (nome <i class="bi bi-arrow-right"></i> inode number). Le strutture di directory possono essere: a singolo livello (tutti i file in un'unica directory — primitivo), a due livelli (una directory per utente), ad <span class="keyword">albero</span> (la struttura gerarchica usata da tutti i SO moderni), o con link (grafo aciclico o generale, che permette a un file di apparire in più directory).</p>
   </div>
 
   <div class="section-block" id="section-2">
@@ -330,9 +330,9 @@ nav {
   </div>
 
   <div class="back-btn-wrap">
-    <a href="10-mass-storage.html" class="btn btn-ghost">← 10 · Mass-Storage</a>
+    <a href="10-mass-storage.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 10 · Mass-Storage</a>
     <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-    <a href="12-embedded-systems.html" class="btn btn-ghost">12 · Embedded Systems →</a>
+    <a href="12-embedded-systems.html" class="btn btn-ghost">12 · Embedded Systems <i class="bi bi-arrow-right"></i></a>
   </div>
 </div>
 <footer>

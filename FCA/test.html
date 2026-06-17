@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -163,8 +163,8 @@
 <nav>
   <a href="#" class="nav-logo">// FCA · Controlli Automatici</a>
   <div class="nav-right">
-    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
-    <a href="../SO/index.html" class="nav-back">SO →</a>
+    <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    <a href="../SO/index.html" class="nav-back">SO <i class="bi bi-arrow-right"></i></a>
   </div>
 </nav>
 
@@ -236,7 +236,7 @@
     <div class="overview-card ov-amber">
       <div class="ov-num">06 · Strumenti</div>
       <div class="ov-title">Equilibrio & Ricettario</div>
-      <div class="ov-sub">ker A · 𝟙ᵀA=0 · procedura sistematica · errori comuni · casi 2×2→4×4</div>
+      <div class="ov-sub">ker A · 𝟙ᵀA=0 · procedura sistematica · errori comuni · casi 2×2<i class="bi bi-arrow-right"></i>4×4</div>
     </div>
   </div>
 </div>
@@ -325,8 +325,8 @@
           <div>
             <div class="sub-title">Differenza cruciale α vs γ</div>
             <div class="sub-desc">
-              <strong style="color:var(--teal)">α_ij</strong>: il flusso j→i <em>preleva</em> da j. Quindi compare in a_ij (positivo) e <em>riduce</em> a_jj (negativo). È un trasferimento fisico della risorsa.<br>
-              <strong style="color:var(--teal)">γ_ij</strong>: il flusso j→i è <em>generato</em> da j ma non lo riduce. Compare in a_ij (positivo) ma <em>non</em> riduce a_jj. Esempio: un batterio che si divide non scompare generando i figli.
+              <strong style="color:var(--teal)">α_ij</strong>: il flusso j<i class="bi bi-arrow-right"></i>i <em>preleva</em> da j. Quindi compare in a_ij (positivo) e <em>riduce</em> a_jj (negativo). È un trasferimento fisico della risorsa.<br>
+              <strong style="color:var(--teal)">γ_ij</strong>: il flusso j<i class="bi bi-arrow-right"></i>i è <em>generato</em> da j ma non lo riduce. Compare in a_ij (positivo) ma <em>non</em> riduce a_jj. Esempio: un batterio che si divide non scompare generando i figli.
             </div>
           </div>
         </div>
@@ -356,7 +356,7 @@
             <div class="sub-title">Elementi fuori diagonale di A: a_ij con i≠j</div>
             <div class="sub-desc">
               <div class="fbox-block">\[ a_{ij} = \alpha_{ji} + \gamma_{ji} \]</div>
-              = somma di tutti i coefficienti degli archi <strong style="color:var(--teal)">da j verso i</strong> nel grafo. Se non esiste arco j→i: a_ij = 0. I fuori-diagonale sono sempre <strong>≥ 0</strong>.
+              = somma di tutti i coefficienti degli archi <strong style="color:var(--teal)">da j verso i</strong> nel grafo. Se non esiste arco j<i class="bi bi-arrow-right"></i>i: a_ij = 0. I fuori-diagonale sono sempre <strong>≥ 0</strong>.
             </div>
           </div>
         </div>
@@ -390,9 +390,9 @@
             <div class="sub-title">Procedura passo-passo dal grafo alle matrici</div>
             <div class="sub-desc">
               <strong style="color:var(--teal)">① Elenca</strong> i compartimenti x₁…xₙ e gli ingressi u₁…uₚ.<br>
-              <strong style="color:var(--teal)">② Per ogni arco j→i</strong> (tra compartimenti): aggiungi il coeff. α o γ in posizione (i,j) di A; se è α, sottrailo anche da a_jj.<br>
-              <strong style="color:var(--teal)">③ Per ogni arco sorgente→i</strong>: metti +β in riga i della colonna di u corrispondente in B.<br>
-              <strong style="color:var(--teal)">④ Per ogni arco i→pozzo</strong>: metti −β in riga i di B e sottrai β da a_ii.<br>
+              <strong style="color:var(--teal)">② Per ogni arco j<i class="bi bi-arrow-right"></i>i</strong> (tra compartimenti): aggiungi il coeff. α o γ in posizione (i,j) di A; se è α, sottrailo anche da a_jj.<br>
+              <strong style="color:var(--teal)">③ Per ogni arco sorgente<i class="bi bi-arrow-right"></i>i</strong>: metti +β in riga i della colonna di u corrispondente in B.<br>
+              <strong style="color:var(--teal)">④ Per ogni arco i<i class="bi bi-arrow-right"></i>pozzo</strong>: metti −β in riga i di B e sottrai β da a_ii.<br>
               <strong style="color:var(--teal)">⑤ Verifica</strong>: fuori-diag ≥ 0, diag ≤ 0, Σ_colonna(A) ≤ 0 (= 0 se conservativo).
             </div>
           </div>
@@ -415,11 +415,11 @@
     <div class="acc-header">
       <div class="acc-left">
         <span class="acc-num">01.3</span>
-        <span class="acc-title">Esempi Completi: Serbatoi 1→2→3 compartimenti</span>
+        <span class="acc-title">Esempi Completi: Serbatoi 1<i class="bi bi-arrow-right"></i>2<i class="bi bi-arrow-right"></i>3 compartimenti</span>
         <span class="acc-badge ab-teal">Esempi TC</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px">
-        <span class="diff-pill diff-base">Base → Medio</span>
+        <span class="diff-pill diff-base">Base <i class="bi bi-arrow-right"></i> Medio</span>
         <span class="acc-count">5 esempi</span>
         <span class="acc-chevron">▼</span>
       </div>
@@ -456,7 +456,7 @@
             <div class="sub-desc">
               Solo valvola di uscita β₁₁·u₁(t), nessuna dinamica autonoma.
               <div class="mblock-latex">\[ \dot{x}_{1} = -\beta_{11}\,u_{1}   \to   A = [0] \]</div>, <span class="fbox-inline -inline coral">\( \( B = [-1] \) \)</span></span>
-              Se u₁ = ū costante: <span class="fbox-inline">\( x_{1}(t) = x_{1}(0) - \bar{u}\,t \)</span>. A=[0] → integratore puro: nessuna forza di ripristino.
+              Se u₁ = ū costante: <span class="fbox-inline">\( x_{1}(t) = x_{1}(0) - \bar{u}\,t \)</span>. A=[0] <i class="bi bi-arrow-right"></i> integratore puro: nessuna forza di ripristino.
             </div>
           </div>
         </div>
@@ -492,7 +492,7 @@ A = [[-\alpha_{12}, 0], [\alpha_{12}, 0]]
 A = [[-\alpha_{12}, 0, \alpha_{31}], [\alpha_{12}, -\alpha_{20}, \alpha_{32}], [0, 0, -\alpha_{31}-\alpha_{32}]]
 \end{aligned}
 \]</div><br><span class="fbox-inline -inline amber">\( \( B = [[1,0],[0,0],[0,1]] \) \)</span></span>
-              Check: 𝟙ᵀA = [0, −α₂₀, 0] ≠ 0 → sistema NON conservativo (perdita in x₂).
+              Check: 𝟙ᵀA = [0, −α₂₀, 0] ≠ 0 <i class="bi bi-arrow-right"></i> sistema NON conservativo (perdita in x₂).
             </div>
           </div>
         </div>
@@ -521,7 +521,7 @@ A = [[-\alpha_{12}, 0, \alpha_{31}], [\alpha_{12}, -\alpha_{20}, \alpha_{32}], [
           <div>
             <div class="sub-title">Setup — 4 città, grafo simmetrico</div>
             <div class="sub-desc">
-              4 compartimenti = 4 città. Strade (α) e autostrade (2α) bidirezionali con stessi coefficienti → grafo simmetrico → A simmetrica. Nessun ingresso/uscita: sistema isolato conservativo.<br>
+              4 compartimenti = 4 città. Strade (α) e autostrade (2α) bidirezionali con stessi coefficienti <i class="bi bi-arrow-right"></i> grafo simmetrico <i class="bi bi-arrow-right"></i> A simmetrica. Nessun ingresso/uscita: sistema isolato conservativo.<br>
               Ogni città i: <span class="fbox-inline">\( \dot{x}ᵢ = \alpha\,(somma veicoli vicini pesati) - \alpha\,(gradi uscenti)\,xᵢ \)</span>
             </div>
           </div>
@@ -556,9 +556,9 @@ A = \alpha\,[[-4, 2, 1, 1], \\
         <div class="sub-item">
           <div class="sub-dot teal"></div>
           <div>
-            <div class="sub-title">Chiusura della strada 1→2 (perturbazione)</div>
+            <div class="sub-title">Chiusura della strada 1<i class="bi bi-arrow-right"></i>2 (perturbazione)</div>
             <div class="sub-desc">
-              Al tempo t*: α₁₂ cambia da 2α a 0. Si modificano a₁₁ (−4α→−2α) e a₂₁ (2α→0).<br>
+              Al tempo t*: α₁₂ cambia da 2α a 0. Si modificano a₁₁ (−4α<i class="bi bi-arrow-right"></i>−2α) e a₂₁ (2α<i class="bi bi-arrow-right"></i>0).<br>
               <div class="mblock-latex">\[
 \begin{aligned}
 A_{new} = \alpha\,[[-2, 2, 1, 1], \\
@@ -618,7 +618,7 @@ A_{new} = \alpha\,[[-2, 2, 1, 1], \\
             <div class="sub-title">Vincoli sulla matrice A nel TD</div>
             <div class="sub-desc">
               Per garantire che la risorsa rimanga non negativa: <span class="fbox-inline amber">\( A_{ij} \geq 0 \)</span> per tutti i,j.<br>
-              Per conservazione: somma di ogni <strong>colonna</strong> = 1 → <span class="fbox-inline amber">\( \mathbf{1}^{\top}A = \mathbf{1}^{\top} \)</span> (matrice <em>sub-stocastica per colonne</em> se c'è perdita, <em>stocastica</em> se conservativa).<br>
+              Per conservazione: somma di ogni <strong>colonna</strong> = 1 <i class="bi bi-arrow-right"></i> <span class="fbox-inline amber">\( \mathbf{1}^{\top}A = \mathbf{1}^{\top} \)</span> (matrice <em>sub-stocastica per colonne</em> se c'è perdita, <em>stocastica</em> se conservativa).<br>
               Confronto con TC: in TC A ha diag ≤ 0; in TD A ha tutti gli elementi ≥ 0.
             </div>
           </div>
@@ -639,7 +639,7 @@ A_{new} = \alpha\,[[-2, 2, 1, 1], \\
           <div>
             <div class="sub-title">Dal grafo a A_discreta: regola pratica</div>
             <div class="sub-desc">
-              Ogni arco j→i con peso p_ij: <span class="fbox-inline amber">\( A_{ij} = p_{ij} \)</span> (frazione di x_j che va in i). La risorsa che "resta" nel compartimento j: <span class="fbox-inline amber">\( A_{jj} = 1 - \Sigma_{i\neqj} p_{ij} - perdita_{j} \)</span>.<br>
+              Ogni arco j<i class="bi bi-arrow-right"></i>i con peso p_ij: <span class="fbox-inline amber">\( A_{ij} = p_{ij} \)</span> (frazione di x_j che va in i). La risorsa che "resta" nel compartimento j: <span class="fbox-inline amber">\( A_{jj} = 1 - \Sigma_{i\neqj} p_{ij} - perdita_{j} \)</span>.<br>
               Differenza chiave rispetto al TC: le uscite non si sottraggono sulla diagonale con segno negativo, ma si tiene traccia della <em>frazione che rimane</em>.
             </div>
           </div>
@@ -676,7 +676,7 @@ x_{1}(k+1) = (1-\alpha)\,x_{1}(k) + u(k) \\
 A = [1-\alpha]
 \end{aligned}
 \]</div>,  <span class="fbox-inline -inline amber">\( \( B = [1] \) \)</span></span>
-              Equilibrio con u = ū costante: <span class="fbox-inline amber">\( \bar{x} = \bar{u}/\alpha \)</span> (inverti A: 0 = (1−α)x̄ + ū → x̄ = ū/α).
+              Equilibrio con u = ū costante: <span class="fbox-inline amber">\( \bar{x} = \bar{u}/\alpha \)</span> (inverti A: 0 = (1−α)x̄ + ū <i class="bi bi-arrow-right"></i> x̄ = ū/α).
             </div>
           </div>
         </div>
@@ -775,7 +775,7 @@ A = [[1-\alpha,  \beta ], \\
             <div class="sub-desc">
               La distribuzione stazionaria π* soddisfa: <span class="fbox-inline coral">\( P\,\pi* = \pi* \)</span><br>
               cioè π* è autovettore di P con autovalore λ=1. Normalizzazione: <span class="fbox-inline coral">\( \mathbf{1}^{\top}\pi* = 1 \)</span> (somma prob = 1).<br>
-              Per una catena irriducibile e aperiodica: π* è unica e π(k) → π* per k→∞ indipendentemente da π(0).
+              Per una catena irriducibile e aperiodica: π* è unica e π(k) <i class="bi bi-arrow-right"></i> π* per k<i class="bi bi-arrow-right"></i>∞ indipendentemente da π(0).
             </div>
           </div>
         </div>
@@ -817,8 +817,8 @@ P = [[0.7, 0.3, 0.2], \\
           <div>
             <div class="sub-title">PageRank di Google — 4 pagine</div>
             <div class="sub-desc">
-              Ogni pagina web = stato. P_ij = 1/(out-degree di j) se esiste link j→i, altrimenti 0. Il rank di ogni pagina è π*_i (probabilità stazionaria del surfer casuale).
-              <div class="mblock-latex">\[ P_{ij} = 1/|{link uscenti da j}| \]</div>  se esiste il link j→i<br><span class="fbox-inline -inline coral">\( \( P_{ij} = 0 \) \)</span>  altrimenti</span>
+              Ogni pagina web = stato. P_ij = 1/(out-degree di j) se esiste link j<i class="bi bi-arrow-right"></i>i, altrimenti 0. Il rank di ogni pagina è π*_i (probabilità stazionaria del surfer casuale).
+              <div class="mblock-latex">\[ P_{ij} = 1/|{link uscenti da j}| \]</div>  se esiste il link j<i class="bi bi-arrow-right"></i>i<br><span class="fbox-inline -inline coral">\( \( P_{ij} = 0 \) \)</span>  altrimenti</span>
               Con 4 pagine: matrice 4×4. Il ranking è il vettore π* ottenuto dall'autovettore di P con λ=1.
             </div>
           </div>
@@ -867,7 +867,7 @@ Q = [[-\lambda,  \mu], \\
 [ \lambda, -\mu]]
 \end{aligned}
 \]</div></span>
-              Distribuzione stazionaria (ker Q): <span class="fbox-inline coral">\( \pi*_{1} = \mu/(\lambda+\mu) \)</span>, <span class="fbox-inline coral">\( \pi*_{2} = \lambda/(\lambda+\mu) \)</span>. Identico alla catena discreta con α=λΔt, β=μΔt nel limite Δt→0.
+              Distribuzione stazionaria (ker Q): <span class="fbox-inline coral">\( \pi*_{1} = \mu/(\lambda+\mu) \)</span>, <span class="fbox-inline coral">\( \pi*_{2} = \lambda/(\lambda+\mu) \)</span>. Identico alla catena discreta con α=λΔt, β=μΔt nel limite Δt<i class="bi bi-arrow-right"></i>0.
             </div>
           </div>
         </div>
@@ -918,7 +918,7 @@ Q = [[-\lambda,  \mu], \\
             <div class="sub-desc">
               S = suscettibili, I = infetti, R = rimossi/guariti. N = S+I+R costante.
               <div class="mblock-latex">\[ \dot{S} = -\beta\,S\,I/N \]</div>              [contagio: non lineare!]<br>İ = <span class="fbox-inline -inline">\( \( \beta\,S\,I/N \) \)</span> <span class="fbox-inline -inline coral">\( \( - \delta\,I \) \)</span>     [nuovi infetti − guarigioni]<br>Ṙ = <span class="fbox-inline -inline green">\( \( + \delta\,I \) \)</span>     [guariti]</span>
-              Conservazione: Ṡ+İ+Ṙ = 0 → S+I+R = N = costante. Sistema conservativo ma non lineare.
+              Conservazione: Ṡ+İ+Ṙ = 0 <i class="bi bi-arrow-right"></i> S+I+R = N = costante. Sistema conservativo ma non lineare.
             </div>
           </div>
         </div>
@@ -962,7 +962,7 @@ A_{lin} = [[-\beta,   0,  0, 0], \\
           <div>
             <div class="sub-title">Controllo: vaccinazione come ingresso</div>
             <div class="sub-desc">
-              u₁(t) = tasso di vaccinazione (individui S → R per unità di tempo).
+              u₁(t) = tasso di vaccinazione (individui S <i class="bi bi-arrow-right"></i> R per unità di tempo).
               <div class="mblock-latex">\[
 \begin{aligned}
 \dot{S} = -\beta\,I - u_{1} \\
@@ -1073,7 +1073,7 @@ A = -L - \kappaI
         <span class="acc-badge ab-purple">Fisici</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px">
-        <span class="diff-pill diff-base">Base → Medio</span>
+        <span class="diff-pill diff-base">Base <i class="bi bi-arrow-right"></i> Medio</span>
         <span class="acc-count">4 argomenti</span>
         <span class="acc-chevron">▼</span>
       </div>
@@ -1119,7 +1119,7 @@ A = [[-1/(RC),  1/C ], \\
 [-1/L,     0  ]]
 \end{aligned}
 \]</div><br><br><span class="fbox-inline -inline purple">\( \( B = [0, 1/L]^{\top} \) \)</span></span>
-              Autovalori: λ = [−1/(2RC) ± √(1/(2RC)² − 1/LC)]. Con 1/(2RC)² &lt; 1/LC: autovalori complessi coniugati → oscillazioni smorzate. Frequenza nat.: ω₀ = 1/√(LC), smorzamento: ζ = 1/(2R)·√(L/C).
+              Autovalori: λ = [−1/(2RC) ± √(1/(2RC)² − 1/LC)]. Con 1/(2RC)² &lt; 1/LC: autovalori complessi coniugati <i class="bi bi-arrow-right"></i> oscillazioni smorzate. Frequenza nat.: ω₀ = 1/√(LC), smorzamento: ζ = 1/(2R)·√(L/C).
             </div>
           </div>
         </div>
@@ -1152,7 +1152,7 @@ A = [[-1/(RC),  1/C ], \\
         <span class="acc-badge ab-purple">Fisici</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px">
-        <span class="diff-pill diff-base">Base → Avanzato</span>
+        <span class="diff-pill diff-base">Base <i class="bi bi-arrow-right"></i> Avanzato</span>
         <span class="acc-count">4 argomenti</span>
         <span class="acc-chevron">▼</span>
       </div>
@@ -1333,8 +1333,8 @@ A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
               Sostituendo in ẋ = Ax + Bu:
               <div class="mblock-latex">\[ 0 = A\,\bar{x} + B\,\bar{u} \]</div></span>
               Se A invertibile: <span class="fbox-inline amber">\( \bar{x} = -A⁻¹\,B\,\bar{u} \)</span><br>
-              Se A singolare (det A = 0 → sistema conservativo): infinite soluzioni
-              → aggiungere il vincolo di conservazione <span class="fbox-inline amber">\( \mathbf{1}^{\top}\,\bar{x} = N_{tot} \)</span>.
+              Se A singolare (det A = 0 <i class="bi bi-arrow-right"></i> sistema conservativo): infinite soluzioni
+              <i class="bi bi-arrow-right"></i> aggiungere il vincolo di conservazione <span class="fbox-inline amber">\( \mathbf{1}^{\top}\,\bar{x} = N_{tot} \)</span>.
             </div>
           </div>
         </div>
@@ -1400,7 +1400,7 @@ A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
     <div class="acc-header">
       <div class="acc-left">
         <span class="acc-num">06.2</span>
-        <span class="acc-title">Procedura Completa Grafo → LTI e Errori Comuni</span>
+        <span class="acc-title">Procedura Completa Grafo <i class="bi bi-arrow-right"></i> LTI e Errori Comuni</span>
         <span class="acc-badge ab-amber">Ricettario Esame</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px">
@@ -1435,7 +1435,7 @@ A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
           <div>
             <div class="sub-title">③ Costruisci A elemento per elemento</div>
             <div class="sub-desc">
-              <strong style="color:var(--amber)">Fuori diagonale a_ij (i ≠ j)</strong>: coefficiente dell'arco j → i nel grafo.
+              <strong style="color:var(--amber)">Fuori diagonale a_ij (i ≠ j)</strong>: coefficiente dell'arco j <i class="bi bi-arrow-right"></i> i nel grafo.
               Se non esiste l'arco: a_ij = 0. I fuori-diagonali sono sempre ≥ 0.<br>
               <strong style="color:var(--amber)">Diagonale a_ii</strong>: meno la somma di tutti i coefficienti degli archi
               <em>uscenti</em> da i (verso altri compartimenti + verso ambiente α_i0).
@@ -1469,9 +1469,9 @@ A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
             <div class="sub-desc">Risolvi 0 = Ax̄ + Bū. Se A singolare: aggiungi 𝟙ᵀx̄ = N_tot.
               Verifica calcolando A·x̄ + B·ū = 0.
               Se richiesta l'analisi di stabilità: calcola gli autovalori di A.
-              Re(λ) &lt; 0 per tutti gli autovalori → stabile asintoticamente.
-              Re(λ) = 0 (e non &gt; 0) → stabile marginalmente.
-              Almeno un Re(λ) &gt; 0 → instabile.</div>
+              Re(λ) &lt; 0 per tutti gli autovalori <i class="bi bi-arrow-right"></i> stabile asintoticamente.
+              Re(λ) = 0 (e non &gt; 0) <i class="bi bi-arrow-right"></i> stabile marginalmente.
+              Almeno un Re(λ) &gt; 0 <i class="bi bi-arrow-right"></i> instabile.</div>
           </div>
         </div>
       </div>
@@ -1485,7 +1485,7 @@ A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
             <div class="sub-title">❌ Segno sbagliato su B per i prelievi</div>
             <div class="sub-desc">Se u_h è un prelievo (valvola di uscita), l'elemento di B è <span class="fbox-inline coral">\( -\beta \)</span> (negativo).
               Errore frequente: mettere +β pensando "u_h coinvolge il compartimento i".
-              Ricorda: u_h porta via risorsa → segno meno in B e non va nella diagonale di A.</div>
+              Ricorda: u_h porta via risorsa <i class="bi bi-arrow-right"></i> segno meno in B e non va nella diagonale di A.</div>
           </div>
         </div>
         <div class="sub-item">
@@ -1503,7 +1503,7 @@ A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
           <div>
             <div class="sub-title">❌ Confondere α e γ nella costruzione di A</div>
             <div class="sub-desc">
-              α_ji (trasferimento j → i): <em>preleva</em> da j e lo sposta in i.
+              α_ji (trasferimento j <i class="bi bi-arrow-right"></i> i): <em>preleva</em> da j e lo sposta in i.
               Appare in a_ij (positivo) e riduce a_jj (negativo).<br>
               γ_ji (generazione da j verso i): <em>non</em> riduce j.
               Appare in a_ij (positivo) ma <strong>non</strong> riduce a_jj.
@@ -1516,7 +1516,7 @@ A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
           <div>
             <div class="sub-title">❌ Verificare 𝟙ᵀA sulle righe invece che sulle colonne</div>
             <div class="sub-desc">La condizione di conservazione è sulla somma delle <strong>colonne</strong> di A.
-              𝟙ᵀA = 0 → ogni colonna di A somma a zero.
+              𝟙ᵀA = 0 <i class="bi bi-arrow-right"></i> ogni colonna di A somma a zero.
               Non verificare le righe: quello sarebbe A𝟙 = 0, che vale solo
               se A è simmetrica (grafo bidirezionale con stessi coefficienti).</div>
           </div>
@@ -1631,8 +1631,8 @@ A = [[-1/(R_{12}C_{1})-1/(R_1C_{1}),  1/(R_{12}C_{1}),    0        ], \\
 
 <!-- BACK BUTTONS -->
 <div class="back-btn-wrap" style="max-width:960px;margin:0 auto">
-  <a href="https://7Katch.github.io" class="btn btn-ghost">⌂ Home</a>
-  <a href="../SO/index.html" class="btn btn-ghost">SO →</a>
+  <a href="https://7Katch.github.io" class="btn btn-ghost"><i class="bi bi-house"></i> Home</a>
+  <a href="../SO/index.html" class="btn btn-ghost">SO <i class="bi bi-arrow-right"></i></a>
 </div>
 
 <footer>

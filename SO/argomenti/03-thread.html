@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -40,8 +40,8 @@
     </div>
 
     <div class="nav-right">
-      <a href="../" class="nav-back">← Indice SO</a>
-      <a href="/" class="nav-back">⌂ Home</a>
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice SO</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
     </div>
   </nav>
   <div class="hero" style="min-height:55vh">
@@ -89,8 +89,8 @@
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Benefici del Multithreading <span class="sub-tag">fondamento</span></h2>
       <div class="card-def">
-        <div class="card-def-header">definizione</div>
-        <div class="card-def-content">
+        <div class="header">definizione</div>
+        <div class="content">
           <p> Un <span class="keyword">thread</span> è un'unità di esecuzione all'interno di un processo. Tutti i thread
             di
             un processo condividono codice, dati globali e file aperti, ma ognuno ha il proprio stack, il proprio
@@ -147,7 +147,14 @@
       <h2><span class="dot"></span> Legge di Amdahl</h2>
       <p>La <span class="keyword">Legge di Amdahl</span> quantifica il limite teorico dello speedup ottenibile
         parallelizzando un programma con N core. La formula è:</p>
-      <p><span class="keyword">\begin{equation} Speedup = \frac{1}{S + \frac{1 - S}{N}} \end{equation}</span></p>
+      <div class="card-formula">
+        <div class="header">Formula legge di Amdahl</div>
+        <div class="content">
+          \begin{equation}
+          Speedup = \frac{1}{S + \frac{1 - S}{N}}
+          \end{equation}
+        </div>
+      </div>
       <p>dove</p>
       <ul>
 
@@ -179,7 +186,7 @@
         </div>
         <div class="kk-flex-media" style="flex: 0 0 50%">
           <img src="../risorse/img6.png" alt="">
-        </div </div>
+        </div>
 
       </div>
     </div>
@@ -250,8 +257,8 @@
       <p>I programmatori potrebbero creare e terminare i threads in modo implicito e a lungo andare potrebbe risultare
         difficile effettuare i debugging</p>
       <div class="card-def">
-        <div class="card-def-header">soluzione</div>
-        <div class="card-def-content">
+        <div class="header">soluzione</div>
+        <div class="content">
           <p>Si possono optare per le seguenti soluzioni</p>
           <ol>
             <li>Fork-join</li>
@@ -364,9 +371,9 @@
     </div>
 
     <div class="back-btn-wrap">
-      <a href="02-processi.html" class="btn btn-ghost">← 02 · Processi</a>
+      <a href="02-processi.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 02 · Processi</a>
       <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-      <a href="04-cpu-scheduling.html" class="btn btn-ghost">04 · CPU Scheduling →</a>
+      <a href="04-cpu-scheduling.html" class="btn btn-ghost">04 · CPU Scheduling <i class="bi bi-arrow-right"></i></a>
     </div>
   </div>
   <footer>

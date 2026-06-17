@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -39,8 +39,8 @@
     </div>
 
     <div class="nav-right">
-      <a href="../" class="nav-back">← Indice SO</a>
-      <a href="/" class="nav-back">⌂ Home</a>
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice SO</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
     </div>
   </nav>
 
@@ -88,8 +88,8 @@
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Concetto di Processo <span class="sub-tag">fondamento</span></h2>
       <div class="card-def">
-        <div class="card-def-header">Definizione</div>
-        <div class="card-def-content">
+        <div class="header">Definizione</div>
+        <div class="content">
           <p>Un <span class="keyword">programma</span> è passivo in ed è salvato in disco. </p>
           <p>Un <span class="keyword">processo</span> è un programma in esecuzione. </p>
         </div>
@@ -134,8 +134,8 @@
     <div class="section-block" id="section-2">
       <h2><span class="dot"></span> Process Control Block (PCB)</h2>
       <div class="card-def">
-        <div class="card-def-header">Definizione</div>
-        <div class="card-def-content">
+        <div class="header">Definizione</div>
+        <div class="content">
           <p>Il kernel rappresenta ogni processo con le sue informazioni tramite una struttura dati chiamata <span
               class="keyword">Process Control
               Block</span>. </p>
@@ -155,13 +155,13 @@
       <p>Durante la sua vita, un processo attraversa cinque stati principali:</p>
       <div class="state-diagram">
         <span class="state-box" style="background:rgba(90,80,128,0.3);color:var(--text-secondary)">New</span>
-        <span class="arrow">→</span>
+        <span class="arrow"><i class="bi bi-arrow-right"></i></span>
         <span class="state-box" style="background:rgba(52,211,153,0.15);color:var(--green)">Ready</span>
-        <span class="arrow">→</span>
+        <span class="arrow"><i class="bi bi-arrow-right"></i></span>
         <span class="state-box" style="background:rgba(251,191,36,0.15);color:var(--amber)">Running</span>
-        <span class="arrow">→</span>
+        <span class="arrow"><i class="bi bi-arrow-right"></i></span>
         <span class="state-box" style="background:rgba(34,211,238,0.15);color:var(--teal)">Waiting</span>
-        <span class="arrow">→</span>
+        <span class="arrow"><i class="bi bi-arrow-right"></i></span>
         <span class="state-box" style="background:rgba(248,113,113,0.15);color:var(--coral)">Terminated</span>
       </div>
       <ol>
@@ -178,8 +178,8 @@
 
       </div>
       <br>
-      <p>Le transizioni sono gestite dallo scheduler (Ready → Running, Running → Ready per preemption) e dagli eventi di
-        I/O (Running → Waiting, Waiting → Ready quando l'evento si verifica).</p>
+      <p>Le transizioni sono gestite dallo scheduler (Ready <i class="bi bi-arrow-right"></i> Running, Running <i class="bi bi-arrow-right"></i> Ready per preemption) e dagli eventi di
+        I/O (Running <i class="bi bi-arrow-right"></i> Waiting, Waiting <i class="bi bi-arrow-right"></i> Ready quando l'evento si verifica).</p>
     </div>
 
     <div class="section-block" id="section-4">
@@ -303,9 +303,9 @@
     </div>
 
     <div class="back-btn-wrap">
-      <a href="01-sistemi-operativi.html" class="btn btn-ghost">← 01 · Sistemi Operativi</a>
+      <a href="01-sistemi-operativi.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 01 · Sistemi Operativi</a>
       <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-      <a href="03-thread.html" class="btn btn-ghost">03 · Thread →</a>
+      <a href="03-thread.html" class="btn btn-ghost">03 · Thread <i class="bi bi-arrow-right"></i></a>
     </div>
   </div>
   <footer>

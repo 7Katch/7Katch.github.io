@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/shared/katchkit.css">
 </head>
 
-<body class="dot-grid">
+<body class="dot-grid theme-amber">
   <aside class="so-sidebar">
     <div class="sb-label">Macroargomenti</div>
     <ul class="sb-pages">
@@ -29,92 +29,20 @@
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
-    <ul class="sb-sections">
-      <li data-sid="section-1">
-        <div class="sb-link" data-target="section-1">
-          <span class="sb-idx">01.01</span>
-          <span>Definizione di Sistema Operativo</span>
-        </div>
-      </li>
-      <li data-sid="section-2">
-        <div class="sb-link" data-target="section-2">
-          <span class="sb-idx">01.02</span>
-          <span>Struttura del Computer System</span>
-        </div>
-      </li>
-      <li data-sid="section-3">
-        <div class="sb-link" data-target="section-3">
-          <span class="sb-idx">01.03</span>
-          <span>Sistemi Multiprocessori</span>
-        </div>
-      </li>
-      <li data-sid="section-4">
-        <div class="sb-link" data-target="section-4">
-          <span class="sb-idx">01.04</span>
-          <span>Architettura SMP & Multicore Design</span>
-        </div>
-      </li>
-      <li data-sid="section-5">
-        <div class="sb-link" data-target="section-5">
-          <span class="sb-idx">01.05</span>
-          <span>Non-Uniform Memory Access (NUMA)</span>
-        </div>
-      </li>
-      <li data-sid="section-6">
-        <div class="sb-link" data-target="section-6">
-          <span class="sb-idx">01.06</span>
-          <span>Servizi del Sistema Operativo</span>
-        </div>
-      </li>
-      <li data-sid="section-7">
-        <div class="sb-link" data-target="section-7">
-          <span class="sb-idx">01.07</span>
-          <span>System Calls</span>
-        </div>
-      </li>
-      <li data-sid="section-8">
-        <div class="sb-link" data-target="section-8">
-          <span class="sb-idx">01.08</span>
-          <span>Implementazione delle System Calls</span>
-        </div>
-      </li>
-      <li data-sid="section-9">
-        <div class="sb-link" data-target="section-9">
-          <span class="sb-idx">01.09</span>
-          <span>Esempi di System Calls per Categoria</span>
-        </div>
-      </li>
-      <li data-sid="section-10">
-        <div class="sb-link" data-target="section-10">
-          <span class="sb-idx">01.10</span>
-          <span>Struttura del Sistema Operativo</span>
-        </div>
-      </li>
-      <li data-sid="section-11">
-        <div class="sb-link" data-target="section-11">
-          <span class="sb-idx">01.11</span>
-          <span>Microkernels</span>
-        </div>
-      </li>
-      <li data-sid="section-12">
-        <div class="sb-link" data-target="section-12">
-          <span class="sb-idx">01.12</span>
-          <span>Moduli del Kernel</span>
-        </div>
-      </li>
-    </ul>
+    <ul class="sb-sections"></ul>
   </aside>
 
 
+  <!-- ═══════ NAV ═══════ -->
   <nav>
     <div class="nav-left">
       <button id="sidebar-toggle" aria-label="Menu"></button>
-      <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
+      <a href="../" class="nav-logo">// SO · Sistemi Operativi</a>
     </div>
 
     <div class="nav-right">
-      <a href="../index.html" class="nav-back">← Indice SO</a>
-      <a href="/" class="nav-back">⌂ Home</a>
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice SO</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
     </div>
   </nav>
 
@@ -137,74 +65,34 @@
   <div class="content-wrap">
 
     <div class="nav-breadcrumb">
-      <a href="https://7Katch.github.io">7Katch.github.io</a>
+      <a href="/">7Katch.github.io</a>
       <span>/</span>
       <a href="../">SO</a>
       <span>/</span>
       <span>01 · Sistemi Operativi</span>
     </div>
 
-    <!-- Index map -->
-    <!-- <div class="amber-box" style="margin-bottom:2rem">
-      Questa pagina copre i <strong style="color:var(--amber)">12 sottoargomenti</strong> del macroargomento 1, tratti
-      dai capitoli 1 e 2 del corso.
-    </div> -->
-
     <div class="theme-box">
       Questa pagina copre i <strong>12 sottoargomenti</strong> del macroargomento 1, tratti
       dai capitoli 1 e 2 del corso.
     </div>
-    <div class="index-grid">
-      <div class="index-item" data-target="section-1">
-        <div class="idx-num">01.01</div>
-        <div class="idx-name">Definizione di SO</div>
-      </div>
-      <div class="index-item" data-target="section-2">
-        <div class="idx-num">01.02</div>
-        <div class="idx-name">Struttura computer system</div>
-      </div>
-      <div class="index-item" data-target="section-3">
-        <div class="idx-num">01.03</div>
-        <div class="idx-name">Sistemi multiprocessori</div>
-      </div>
-      <div class="index-item" data-target="section-4">
-        <div class="idx-num">01.04</div>
-        <div class="idx-name">SMP & Multicore</div>
-      </div>
-      <div class="index-item" data-target="section-5">
-        <div class="idx-num">01.05</div>
-        <div class="idx-name">NUMA</div>
-      </div>
-      <div class="index-item" data-target="section-6">
-        <div class="idx-num">01.06</div>
-        <div class="idx-name">Servizi OS</div>
-      </div>
-      <div class="index-item" data-target="section-7">
-        <div class="idx-num">01.07</div>
-        <div class="idx-name">System Calls</div>
-      </div>
-      <div class="index-item" data-target="section-8">
-        <div class="idx-num">01.08</div>
-        <div class="idx-name">Implementazione syscall</div>
-      </div>
-      <div class="index-item" data-target="section-9">
-        <div class="idx-num">01.09</div>
-        <div class="idx-name">Esempi di syscall</div>
-      </div>
-      <div class="index-item" data-target="section-10">
-        <div class="idx-num">01.10</div>
-        <div class="idx-name">Struttura OS</div>
-      </div>
-      <div class="index-item" data-target="section-11">
-        <div class="idx-num">01.11</div>
-        <div class="idx-name">Microkernels</div>
-      </div>
-      <div class="index-item" data-target="section-12">
-        <div class="idx-num">01.12</div>
-        <div class="idx-name">Moduli</div>
-      </div>
+    <!--INDEX GRID -->
+    <div class="index-grid" data-prefix="01">
+      <ul>
+        <li>Definizione di SO</li>
+        <li>Struttura computer system</li>
+        <li>Sistemi multiprocessori</li>
+        <li>SMP & Multicore</li>
+        <li>NUMA</li>
+        <li>Servizi OS</li>
+        <li>System Calls</li>
+        <li>Implementazione syscall</li>
+        <li>Esempi di syscall</li>
+        <li>Struttura OS</li>
+        <li>Microkernels</li>
+        <li>Moduli</li>
+      </ul>
     </div>
-
     <!-- 01.01 -->
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Definizione di Sistema Operativo <span class="sub-tag">fondamento</span></h2>
@@ -430,7 +318,7 @@
       </p>
       <p>
         Lo svantaggio principale è la <span class="keyword">latenza di comunicazione</span>: ogni richiesta a un server
-        richiede almeno due context switch (user → kernel → user). Su sistemi ad alto carico questo overhead diventa
+        richiede almeno due context switch (user <i class="bi bi-arrow-right"></i> kernel <i class="bi bi-arrow-right"></i> user). Su sistemi ad alto carico questo overhead diventa
         visibile, motivo per cui i SO general-purpose hanno preferito il kernel monolitico modulare.
       </p>
     </div>
@@ -442,8 +330,8 @@
         I kernel moderni, Linux in primis, supportano i <span class="keyword">Loadable Kernel Modules (LKM)</span>
       </p>
       <div class="card-def">
-        <div class="card-def-header">Definizione </div>
-        <div class="card-def-content">
+        <div class="header">Definizione </div>
+        <div class="content">
           <p>
             <span class="keyword">Loadable Kernel Modules</span> : porzioni di codice compilate separatamente che
             possono essere inserite o rimosse dal kernel a runtime senza riavviare il sistema
@@ -464,8 +352,8 @@
 
     <!-- Navigation -->
     <div class="back-btn-wrap">
-      <a href="../" class="btn btn-amber">← Torna all'indice SO</a>
-      <a href="02-processi.html" class="btn btn-ghost">02 · Processi →</a>
+      <a href="../" class="btn btn-amber"><i class="bi bi-arrow-left"></i> Torna all'indice SO</a>
+      <a href="02-processi.html" class="btn btn-ghost">02 · Processi <i class="bi bi-arrow-right"></i></a>
     </div>
 
   </div>

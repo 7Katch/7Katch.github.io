@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -39,8 +39,8 @@
     </div>
 
     <div class="nav-right">
-      <a href="../" class="nav-back">← Indice SO</a>
-      <a href="/" class="nav-back">⌂ Home</a>
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice SO</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
     </div>
   </nav>
   <div class="hero" style="min-height:55vh">
@@ -84,8 +84,8 @@
         processo tiene la CPU finché non la rilascia volontariamente) o <span class="keyword">preemptive</span> (il SO
         può sottrarre la CPU al processo in esecuzione).</p>
       <div class="card-def">
-        <div class="card-def-header">definizione</div>
-        <div class="card-def-content">
+        <div class="header">definizione</div>
+        <div class="content">
           <p>I criteri di valutazione sono: <span class="keyword">CPU utilization</span> (massimizzare l'uso della CPU,
             idealmente 100%), <span class="keyword">Throughput</span> (processi completati per unità di tempo), <span
               class="keyword">Turnaround time</span> (tempo totale dalla sottomissione al completamento), <span
@@ -111,18 +111,22 @@
       <p>Esegue sempre il processo con il <span class="keyword">CPU burst più breve</span>. Garantisce il waiting time
         medio minimo teorico tra tutti gli algoritmi non preemptive, ma ha un difetto fondamentale: il SO non conosce in
         anticipo la durata del prossimo CPU burst.</p>
-        <h2><span class="dot"></span>Previsione seponenziale</h2>
+      <h2><span class="dot"></span>Previsione seponenziale</h2>
       <p>La soluzione è la <span class="keyword">previsione esponenziale</span>:
-        <p>
-          \begin{equation}
-          
-            \qquad \mathbf{\tau(n+1)} = \alpha\tau(n) + (1-\alpha)\tau(n)  
-          \end{equation}
-          dove $\tau(n)$ è la durata misurata del burst <span class="keyword">${n}$</span> e <span class="keyword">$\alpha$</span> è un parametro(tipicamente 0.5) controlla il peso dei burst recenti vs storici.
-          
-        </p>
-        <p>La
-        variante preemptive (SRTF — Shortest Remaining Time First) sospende il processo corrente se ne arriva uno con
+        <div class="card-formula">
+          <div class="header">Formula previsione</div>
+          <div class="content">
+            $\mathbf{\tau(n+1)} = \alpha\tau(n) + (1-\alpha)\tau(n)$
+          </div>
+        </div>
+      <p>
+        dove $\tau(n)$ è la durata misurata del burst <span class="keyword">${n}$</span> e <span
+          class="keyword">$\alpha$</span> è un parametro(tipicamente 0.5) controlla il peso dei burst recenti vs
+        storici.
+
+      </p>
+      <p>
+        La variante preemptive (SRTF — Shortest Remaining Time First) sospende il processo corrente se ne arriva uno con
         burst stimato minore.</p>
       <p>Il rischio è la <span class="keyword">starvation</span> dei processi lunghi: se continuano ad arrivare processi
         corti, i lunghi non vengono mai schedulati.</p>
@@ -135,7 +139,8 @@
         ready queue. Se il processo completa prima del quantum, rilascia la CPU spontaneamente.</p>
       <p>Il Round Robin è l'algoritmo ideale per i sistemi <span class="keyword">time-sharing</span> perché garantisce
         equità (nessun processo aspetta più di (n-1)×quantum) e ottima risposta per processi interattivi. La scelta del
-        quantum è cruciale: troppo piccolo → troppi context switch; troppo grande → degrada a FCFS.</p>
+        quantum è cruciale: troppo piccolo <i class="bi bi-arrow-right"></i> troppi context switch; troppo grande <i
+          class="bi bi-arrow-right"></i> degrada a FCFS.</p>
     </div>
 
     <div class="section-block" id="section-5">
@@ -153,11 +158,12 @@
       <h2><span class="dot"></span> Multilevel Queue</h2>
       <div class="kk-flex-row">
         <div class="kk">
-                <p>La ready queue viene divisa in più <span class="keyword">code separate</span>, ognuna per una categoria di
-        processi (foreground interattivi, background batch, processi di sistema). Ogni coda ha il proprio algoritmo
-        interno (Round Robin per il foreground, FCFS per il batch) e una propria priorità rispetto alle altre code.</p>
-      <p>I processi non si spostano tra code. Il principale svantaggio è la rigidità: un processo batch che diventa
-        interattivo rimane comunque nella coda a bassa priorità.</p>
+          <p>La ready queue viene divisa in più <span class="keyword">code separate</span>, ognuna per una categoria di
+            processi (foreground interattivi, background batch, processi di sistema). Ogni coda ha il proprio algoritmo
+            interno (Round Robin per il foreground, FCFS per il batch) e una propria priorità rispetto alle altre code.
+          </p>
+          <p>I processi non si spostano tra code. Il principale svantaggio è la rigidità: un processo batch che diventa
+            interattivo rimane comunque nella coda a bassa priorità.</p>
         </div>
         <div class="kk-flex-media">
           <img src="../risorse/img10.png" alt="" srcset="">
@@ -189,9 +195,10 @@
     </div>
 
     <div class="back-btn-wrap">
-      <a href="03-thread.html" class="btn btn-ghost">← 03 · Thread</a>
+      <a href="03-thread.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 03 · Thread</a>
       <a href="../" class="btn btn-amber">↑ Indice SO</a>
-      <a href="05-sincronizzazione.html" class="btn btn-ghost">05 · Sincronizzazione →</a>
+      <a href="05-sincronizzazione.html" class="btn btn-ghost">05 · Sincronizzazione <i
+          class="bi bi-arrow-right"></i></a>
     </div>
   </div>
   <footer>

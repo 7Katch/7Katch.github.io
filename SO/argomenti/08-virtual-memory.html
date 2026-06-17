@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -257,8 +257,8 @@ nav {
 <nav>
   <a href="../index.html" class="nav-logo">// SO · Sistemi Operativi</a>
   <div class="nav-right">
-    <a href="../index.html" class="nav-back">← Indice SO</a>
-    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+    <a href="../index.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice SO</a>
+    <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
   </div>
 </nav>
 <div class="hero" style="min-height:55vh">
@@ -319,19 +319,19 @@ nav {
   <div class="section-block" id="section-6">
     <h2><span class="dot"></span> Working Set Model</h2>
     <p>Il <span class="keyword">working set</span> di un processo è l'insieme delle pagine accedute nelle ultime Δ referenze di memoria (Δ è la finestra temporale, un parametro configurabile). Rappresenta la <em>località di riferimento</em> attuale del processo: le pagine che usa intensivamente in questo momento.</p>
-    <p>Il principio del working set: se un processo riceve abbastanza frame da contenere il suo working set, il tasso di page fault sarà basso. Se riceve meno frame del working set → thrashing. Il SO può monitorare la somma dei working set di tutti i processi: se supera i frame totali disponibili, il sistema è in pericolo di thrashing e va ridotto il grado di multiprogramming.</p>
+    <p>Il principio del working set: se un processo riceve abbastanza frame da contenere il suo working set, il tasso di page fault sarà basso. Se riceve meno frame del working set <i class="bi bi-arrow-right"></i> thrashing. Il SO può monitorare la somma dei working set di tutti i processi: se supera i frame totali disponibili, il sistema è in pericolo di thrashing e va ridotto il grado di multiprogramming.</p>
   </div>
 
   <div class="section-block" id="section-7">
     <h2><span class="dot"></span> Memory-Mapped Files</h2>
     <p>Invece di leggere un file con <code class="inline">read()</code> in un buffer separato, <code class="inline">mmap()</code> mappa il file direttamente nello spazio di indirizzi virtuale del processo. Accedere ai dati del file è come accedere a un array in memoria: un semplice pointer dereference. Il kernel gestisce il caricamento delle pagine del file tramite demand paging.</p>
-    <p>I vantaggi sono notevoli: eliminazione delle copie kernel→user (zero-copy in certi scenari), condivisione efficiente tra processi dello stesso file (la stessa pagina fisica), e semplicità di codice. È la base di molte librerie condivise (mappate in read-only da tutti i processi che le usano) e di database che gestiscono la propria cache (come PostgreSQL con shared_buffers).</p>
+    <p>I vantaggi sono notevoli: eliminazione delle copie kernel<i class="bi bi-arrow-right"></i>user (zero-copy in certi scenari), condivisione efficiente tra processi dello stesso file (la stessa pagina fisica), e semplicità di codice. È la base di molte librerie condivise (mappate in read-only da tutti i processi che le usano) e di database che gestiscono la propria cache (come PostgreSQL con shared_buffers).</p>
   </div>
 
   <div class="back-btn-wrap">
-    <a href="07-main-memory.html" class="btn btn-ghost">← 07 · Main Memory</a>
+    <a href="07-main-memory.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 07 · Main Memory</a>
     <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-    <a href="09-io-systems.html" class="btn btn-ghost">09 · I/O Systems →</a>
+    <a href="09-io-systems.html" class="btn btn-ghost">09 · I/O Systems <i class="bi bi-arrow-right"></i></a>
   </div>
 </div>
 <footer>

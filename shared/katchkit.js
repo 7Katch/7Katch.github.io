@@ -10,7 +10,7 @@ const KatchKitCore = {
     this.initAutoNavigation(); // l'auto-numerazione della barra laterale
     this.initScrollSpy();
     this.initSidebarToggle();
-    this.initDefinitions();
+    this.initCardsIcons();
     this.initLatex();
   },
 
@@ -94,15 +94,9 @@ const KatchKitCore = {
     const sidebar = document.querySelector('.so-sidebar');
 
     if (toggleBtn) {
-      // 1. INIEZIONE ICONA: Se il bottone è vuoto, disegna l'SVG
+      // 1. INIEZIONE ICONA: Se il bottone è vuoto, disegna l'icona Bootstrap
       if (!toggleBtn.innerHTML.trim()) {
-        toggleBtn.innerHTML = `
-          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        `;
+        toggleBtn.innerHTML = `<i class="bi bi-list" style="font-size: 1.5rem;"></i>`;
       }
 
       // 2. LOGICA DI APERTURA (solo se esiste anche la sidebar)
@@ -122,22 +116,41 @@ const KatchKitCore = {
     }
   },
 
-  // Modulo 3: Iniezione icone nelle Definizioni
-  initDefinitions: function () {
-    const defHeaders = document.querySelectorAll('.card-def-header');
-
-    const libroIcona = `
-      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-      </svg>
-    `;
-
+  // Modulo 3: Iniezione icone nelle Cards (Definizioni, Tip, Formule)
+  initCardsIcons: function () {
+    // --- Definizioni ---
+    const defHeaders = document.querySelectorAll('.card-def-header, .card-def .header');
+    const libroIcona = `<i class="bi bi-bookmark-fill"></i> `;
     defHeaders.forEach(function (header) {
-      // Controllo di sicurezza: inserisce l'icona solo se non c'è già
-      if (!header.querySelector('svg')) {
-        const testoAttuale = header.innerHTML;
-        header.innerHTML = libroIcona + testoAttuale;
+      if (!header.querySelector('.bi')) {
+        header.innerHTML = libroIcona + header.innerHTML;
+      }
+    });
+
+    // --- Tip ---
+    const tipHeaders = document.querySelectorAll('.card-tip .header');
+    const tipIcona = `<i class="bi bi-lightbulb-fill"></i> `;
+    tipHeaders.forEach(function (header) {
+      if (!header.querySelector('.bi')) {
+        header.innerHTML = tipIcona + header.innerHTML;
+      }
+    });
+
+    // --- Formule ---
+    const formulaHeaders = document.querySelectorAll('.card-formula .header');
+    const formulaIcona = `<i class="bi bi-calculator-fill"></i> `;
+    formulaHeaders.forEach(function (header) {
+      if (!header.querySelector('.bi')) {
+        header.innerHTML = formulaIcona + header.innerHTML;
+      }
+    });
+
+    // --- Warning ---
+    const warningHeaders = document.querySelectorAll('.card-warning .header');
+    const warningIcona = `<i class="bi bi-exclamation-triangle-fill"></i> `;
+    warningHeaders.forEach(function (header) {
+      if (!header.querySelector('.bi')) {
+        header.innerHTML = warningIcona + header.innerHTML;
       }
     });
   },

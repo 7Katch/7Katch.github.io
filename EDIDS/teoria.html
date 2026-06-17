@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -13,8 +13,8 @@
 <nav>
   <a href="index.html" class="nav-logo">// EDIDS · Teoria</a>
   <div class="nav-links-row">
-    <a href="index.html" class="nav-back">← EDIDS</a>
-    <a href="https://7Katch.github.io" class="nav-back">⌂ Home</a>
+    <a href="index.html" class="nav-back"><i class="bi bi-arrow-left"></i> EDIDS</a>
+    <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
   </div>
 </nav>
 
@@ -107,7 +107,7 @@
   </div>
 
   <div class="highlight-box">
-    ✅ Nel progetto del gioco: <strong>Controller</strong> → GameController; <strong>Low Coupling</strong> → uso di interfacce Observer; <strong>Information Expert</strong> → Player gestisce il proprio stato; <strong>Creator</strong> → GameSession crea i Player.
+    ✅ Nel progetto del gioco: <strong>Controller</strong> <i class="bi bi-arrow-right"></i> GameController; <strong>Low Coupling</strong> <i class="bi bi-arrow-right"></i> uso di interfacce Observer; <strong>Information Expert</strong> <i class="bi bi-arrow-right"></i> Player gestisce il proprio stato; <strong>Creator</strong> <i class="bi bi-arrow-right"></i> GameSession crea i Player.
   </div>
 </div>
 
@@ -277,8 +277,7 @@
     <span class="kw">implements</span> <span class="tp">IGameObserver</span> {
 
   <span class="kw">public void</span> <span class="fn">onScoreChange</span>(<span class="kw">int</span> s) {
-    display.<span class="fn">update</span>(<span class="str">"Score: "</span> + s);
-  }
+    display.<span cl  }
   <span class="kw">public void</span> <span class="fn">onLevelUp</span>(<span class="kw">int</span> l) {
     display.<span class="fn">showBanner</span>(<span class="str">"Level "</span> + l);
   }
@@ -357,8 +356,7 @@ sys.<span class="fn">addObserver</span>(<span class="kw">new</span> <span class=
     <span class="kw">return</span> p.<span class="fn">step</span>(d, 1); <span class="cm">// 1 tile</span>
   }
 }
-<span class="kw">public class</span> <span class="tp">FlyStrategy</span> <span class="kw">implements</span> <span class="tp">MovementStrategy</span> {
-  <span class="kw">public</span> <span class="tp">Position</span> <span class="fn">move</span>(<span class="tp">Position</span> p, <span class="tp">Direction</span> d) {
+<span class="kw">public class</span> <span clas  <span class="kw">public</span> <span class="tp">Position</span> <span class="fn">move</span>(<span class="tp">Position</span> p, <span class="tp">Direction</span> d) {
     <span class="kw">return</span> p.<span class="fn">step</span>(d, 3); <span class="cm">// 3 tiles</span>
   }
 }
@@ -429,8 +427,7 @@ player.<span class="fn">move</span>(Direction.UP); <span class="cm">// vola di 3
       </div>
     </div>
     <p class="pattern-desc">
-      Incapsula una richiesta come oggetto, permettendo parametrizzazione, accodamento e <strong>undo/redo</strong> delle azioni. Nel gioco: ogni azione del player (<code style="color:var(--teal);font-size:12px">MoveCommand</code>, <code style="color:var(--teal);font-size:12px">UseItemCommand</code>) può essere registrata e annullata.
-    </p>
+      Incapsula una richiesta come oggetto, permettendo parametrizzazione, accodamento e <str    </p>
     <div class="pattern-when">Usalo quando: hai bisogno di undo/redo, registrazione delle operazioni (log), o vuoi accodare azioni da eseguire in futuro.</div>
   </div>
 
@@ -547,7 +544,7 @@ player.<span class="fn">move</span>(Direction.UP); <span class="cm">// vola di 3
         <tr>
           <td>Tell, Don't Ask</td>
           <td class="tc-creo">principio</td>
-          <td>Dì agli oggetti cosa fare invece di chiedere il loro stato e decidere tu. Invece di controllare <code style="color:var(--accent-soft);font-size:11px">if player.lives == 0 → player.die()</code>, chiama direttamente <code style="color:var(--accent-soft);font-size:11px">player.takeDamage()</code> che gestisce internamente la morte.</td>
+          <td>Dì agli oggetti cosa fare invece di chiedere il loro stato e decidere tu. Invece di controllare <code style="color:var(--accent-soft);font-size:11px">if player.lives == 0 <i class="bi bi-arrow-right"></i> player.die()</code>, chiama direttamente <code style="color:var(--accent-soft);font-size:11px">player.takeDamage()</code> che gestisce internamente la morte.</td>
         </tr>
         <tr>
           <td>Fail Fast</td>
@@ -570,8 +567,8 @@ player.<span class="fn">move</span>(Direction.UP); <span class="cm">// vola di 3
 
 <!-- BACK BUTTONS -->
 <div class="back-btn-wrap">
-  <a href="index.html" class="back-btn btn-teal">← Torna a EDIDS</a>
-  <a href="https://7Katch.github.io" class="back-btn btn-ghost">⌂ Home</a>
+  <a href="index.html" class="back-btn btn-teal"><i class="bi bi-arrow-left"></i> Torna a EDIDS</a>
+  <a href="https://7Katch.github.io" class="back-btn btn-ghost"><i class="bi bi-house"></i> Home</a>
 </div>
 
 <footer>
