@@ -144,6 +144,9 @@ const KatchKitCore = {
   initLatex: function () {
     // 1. Diciamo a MathJax come vogliamo scrivere le formule
     window.MathJax = {
+      options:{
+        enableMenu: false
+      },
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']]
