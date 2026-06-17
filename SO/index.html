@@ -531,7 +531,8 @@
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
               <div class="sub-title">Creazione dei processi</div>
-              <div class="sub-desc">In Unix/Linux tramite <code style="colo            </div>
+              <div class="sub-desc">In Unix/Linux tramite <code style="color:var(--amber);font-size:11px">fork()</code> che crea un processo figlio (copia del padre). Il figlio può poi usare <code style="color:var(--amber);font-size:11px">exec()</code> per caricare un nuovo programma. Il padre può attendere il figlio con <code style="color:var(--amber);font-size:11px">wait()</code>.</div>
+            </div>
           </div>
           <div class="sub-item">
             <div class="sub-dot" style="background:var(--amber)"></div>
@@ -586,7 +587,9 @@
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
               <div class="sub-title">Pipes</div>
-              <div class="sub-desc">Canale di comunicazione unidirezionale tra processi correlati (ordinarie) o non correlati (named pipe/FIFO). Implementa un buffer FIFO nel kernel. Usate intensamente nelle shell Unix (<code style="color:var(--amber);font-size:11px">ls | grep foo</code>          </div>
+              <div class="sub-desc">Canale di comunicazione unidirezionale tra processi correlati (ordinarie) o non correlati (named pipe/FIFO). Implementa un buffer FIFO nel kernel. Usate intensamente nelle shell Unix (<code style="color:var(--amber);font-size:11px">ls | grep foo</code>).</div>
+            </div>
+          </div>
           <div class="sub-item">
             <div class="sub-dot" style="background:var(--amber)"></div>
             <div>
@@ -655,7 +658,9 @@
               <div class="sub-desc">Definisce come i thread utente si mappano sui thread kernel. Determina parallelismo reale e overhead.</div>
             </div>
           </div>
-          <div class="sub-            <div>
+          <div class="sub-item">
+            <div class="sub-dot" style="background:var(--amber)"></div>
+            <div>
               <div class="sub-title">Many-to-One</div>
               <div class="sub-desc">Molti thread utente <i class="bi bi-arrow-right"></i> 1 thread kernel. La libreria gestisce il multiplexing. Se un thread si blocca in I/O, tutti si bloccano. Nessun parallelismo reale. Usato in sistemi senza supporto kernel ai thread.</div>
             </div>
