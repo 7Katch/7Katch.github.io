@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08 · Condensatore e Induttore — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>08 · Cond. e Ind.</div></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 08 · Componenti</span>
+  <div class="topic-num" style="color:#60a5fa">08 / 10</div>
+  <h1 class="topic-hero-title">Bipoli Dinamici:<br>Condensatore e Induttore</h1>
+  <p class="hero-sub" style="max-width:640px">Introduzione ai componenti con memoria e al loro principio fondante: immagazzinare energia sotto forma di campo elettrico o magnetico.</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>08 · Condensatore e Induttore</span>
+  </div>
+  
+  <div class="theme-box">Questa pagina copre la Lezione 16 del programma, introducendo gli elementi "reattivi" in grado di differenziare/integrare grandezze elettriche e immagazzinare energia.</div>
+  
+  <div class="index-grid" data-prefix="08">
+      <ul>
+        <li>Bipoli con Memoria</li>
+        <li>Condensatore Ideale</li>
+        <li>Condensatore in Regime Stazionario</li>
+        <li>Induttore Ideale</li>
+        <li>Induttore in Regime Stazionario</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Bipoli con Memoria <span class="sub-tag">dinamica</span></h2>
+    <p>A differenza del resistore, in un bipolo dinamico o "con memoria" la relazione tra tensione e corrente ad un certo istante $t$ non è una semplice equazione algebrica, ma una <strong>equazione differenziale</strong> o integrale. Ciò significa che lo stato attuale dipende dall'intera "storia" passata delle sollecitazioni impresse al componente.</p>
+    <div class="info-box">Le grandezze che definiscono lo "stato energetico" del bipolo, dette variabili di stato (es. tensione sul condensatore, corrente nell'induttore), <strong>non possono subire discontinuità nel tempo</strong>, a meno che non si disponga di impulsi di energia infiniti (situazione impossibile). Questo garantisce che l'energia accumulata non presenti variazioni istantanee.</div>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Il Condensatore Ideale</h2>
+    <p>Il <span class="keyword">condensatore</span> è un bipolo dinamico passivo che modella gli effetti del <strong>campo elettrico</strong> indotto da una separazione di carica. Si caratterizza dalla sua capacità $C$, misurata in Farad (F).</p>
+    <div class="card-formula">
+      <div class="header">Equazione Caratteristica (Conv. Utilizzatori)</div>
+      <div class="content">
+        <div class="formula-text">$ i(t) = C \frac{dv(t)}{dt} $</div>
+        <div class="formula-desc">La corrente è proporzionale alla <em>derivata</em> della tensione nel tempo. O, equivalentemente in forma integrale: $ v(t) = v(t_0) + \frac{1}{C} \int_{t_0}^{t} i(\tau) d\tau $.</div>
+      </div>
+    </div>
+    <div class="checklist-box">
+      <div class="checklist-title">Proprietà Fondamentali</div>
+      <div class="check-item">
+        <div class="check-box done"><i class="bi bi-check"></i></div>
+        <div>
+          <strong style="color:var(--text-primary)">Continuità della tensione:</strong> Se la corrente rimane sempre finita, la tensione $v_C(t)$ risulta essere una funzione continua in ogni istante. Al contrario, la corrente può ammettere discontinuità o "salti".
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done"><i class="bi bi-check"></i></div>
+        <div>
+          <strong style="color:var(--text-primary)">Energia immagazzinata:</strong> $ w_e(t) = \frac{1}{2} C v^2(t) $. Tutta l'energia è concentrata nel campo elettrico interno al bipolo.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Il Condensatore in Regime Stazionario</h2>
+    <p>Un circuito in regime stazionario (DC o tensione costante) ha correnti e tensioni costanti nel tempo per $t \to \infty$. In queste condizioni, la derivata di una grandezza costante è zero.
+    <br><br>
+    Per il condensatore, essendo $v(t) = \text{costante}$, si avrà $\frac{dv}{dt} = 0 \implies i(t) = 0$. In corrente continua o regime stazionario, il condensatore <strong>si comporta come un circuito aperto</strong> ideale e blocca il flusso di carica statica.</p>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> L'Induttore Ideale</h2>
+    <p>L'<span class="keyword">induttore</span> è l'elemento complementare (duale) del condensatore. Modella gli effetti energetici del <strong>campo magnetico</strong> (flusso di induzione) creato da una corrente che vi scorre all'interno. La sua induttanza $L$ si misura in Henry (H).</p>
+    <div class="card-formula">
+      <div class="header">Equazione Caratteristica (Conv. Utilizzatori)</div>
+      <div class="content">
+        <div class="formula-text">$ v(t) = L \frac{di(t)}{dt} $</div>
+        <div class="formula-desc">La tensione è proporzionale alla <em>derivata</em> della corrente nel tempo. Forma integrale: $ i(t) = i(t_0) + \frac{1}{L} \int_{t_0}^{t} v(\tau) d\tau $.</div>
+      </div>
+    </div>
+    <div class="checklist-box">
+      <div class="checklist-title">Proprietà Fondamentali</div>
+      <div class="check-item">
+        <div class="check-box done"><i class="bi bi-check"></i></div>
+        <div>
+          <strong style="color:var(--text-primary)">Continuità della corrente:</strong> Se la tensione si mantiene sempre finita, la corrente $i_L(t)$ deve essere una funzione continua in ogni istante. Tentare di interrompere bruscamente una corrente in un induttore causa sovratensioni teoricamente infinite (extratensioni di apertura).
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done"><i class="bi bi-check"></i></div>
+        <div>
+          <strong style="color:var(--text-primary)">Energia immagazzinata:</strong> $ w_m(t) = \frac{1}{2} L i^2(t) $. Tutta l'energia è concentrata nel campo magnetico concatenato al circuito.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> L'Induttore in Regime Stazionario</h2>
+    <p>Analogamente al caso precedente, in regime stazionario la corrente è costante: $i(t) = \text{costante}$.
+    <br><br>
+    Di conseguenza, essendo $\frac{di}{dt} = 0 \implies v(t) = 0$. Pertanto, in corrente continua a transitorio esaurito, l'induttore ideale non oppone alcuna caduta di tensione e <strong>si comporta come un cortocircuito</strong> perfetto.</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="07-doppi-bipoli.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 07 · Doppi Bipoli</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+    <a href="09-regime-transitorio.html" class="btn btn-ghost">09 · Regime Transitorio <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 08 · Condensatore e Induttore</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

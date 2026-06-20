@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>09 · Regime Transitorio — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>09 · Regime Transitorio</div></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 09 · Regimi</span>
+  <div class="topic-num" style="color:#60a5fa">09 / 10</div>
+  <h1 class="topic-hero-title">Regime Transitorio<br>e Quasi-Stazionario</h1>
+  <p class="hero-sub" style="max-width:640px">Dallo studio dell'istante critico al transitorio nei circuiti lineari del primo e secondo ordine (circuiti RC, RL, RLC). L'evoluzione dinamica tra due stati stazionari.</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>09 · Regime Transitorio</span>
+  </div>
+  
+  <div class="theme-box">Questo modulo (Lezioni 17-18) copre il comportamento dei circuiti dinamici quando avviene una perturbazione (es. l'apertura o chiusura di un interruttore).</div>
+  
+  <div class="index-grid" data-prefix="09">
+      <ul>
+        <li>Regime Quasi-Stazionario</li>
+        <li>Studio dell'Istante Critico ($t=0$)</li>
+        <li>Circuito RC (Primo Ordine)</li>
+        <li>Circuito RL (Primo Ordine)</li>
+        <li>Circuito RLC (Secondo Ordine)</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Regime Quasi-Stazionario</h2>
+    <p>Il <span class="keyword">regime variabile quasi-stazionario</span> è l'ipotesi fisica che ci permette di studiare circuiti con grandezze variabili nel tempo. Approssima il sistema ipotizzando che gli effetti di ritardo elettromagnetico legati alla velocità della luce siano trascurabili, permettendoci di usare i modelli a parametri concentrati e le leggi di Kirchhoff <em>istante per istante</em> ($t$ diventa un semplice parametro del sistema).</p>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Studio dell'Istante Critico ($t=0$)</h2>
+    <p>Si definisce <span class="keyword">istante critico</span> $t = 0$ il momento in cui avviene un cambiamento improvviso nella topologia del circuito (es. deviatore che si sposta) o nell'eccitazione dei generatori indipendenti.
+    <br><br>
+    Per valutare l'evoluzione successiva, è fondamentale dividere il momento in $t = 0^-$ (subito prima) e $t = 0^+$ (subito dopo l'evento).</p>
+    <div class="checklist-box">
+      <div class="checklist-title">Regole di Continuità</div>
+      <div class="check-item">
+        <div class="check-box done"><i class="bi bi-check"></i></div>
+        <div>
+          <strong style="color:var(--text-primary)">Condensatore:</strong> La tensione è continua, quindi il valore iniziale è dato da: $v_C(0^+) = v_C(0^-)$. Al tempo $0^+$, il condensatore equivale topologicamente a un GIT di valore pari a $v_C(0^-)$.
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done"><i class="bi bi-check"></i></div>
+        <div>
+          <strong style="color:var(--text-primary)">Induttore:</strong> La corrente è continua, quindi $i_L(0^+) = i_L(0^-)$. Al tempo $0^+$, l'induttore equivale a un GIC di valore pari a $i_L(0^-)$.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Circuito RC (Primo Ordine)</h2>
+    <p>Il circuito dinamico più semplice: un resistore $R$ e un condensatore $C$ in serie a un generatore. Costituisce un'equazione differenziale lineare del primo ordine. L'evoluzione della tensione sul condensatore ha sempre forma esponenziale.</p>
+    
+    <div class="card-formula">
+      <div class="header">Andamento Generale (Risposta Completa RC)</div>
+      <div class="content">
+        <div class="formula-text">$ v_C(t) = v_C(\infty) + \left[ v_C(0) - v_C(\infty) \right] \cdot e^{-t / \tau} $</div>
+        <div class="formula-desc">Valida per $t > 0$. $v_C(\infty)$ è la soluzione a regime (particolare). $\tau = RC$ è la <span class="keyword">Costante di Tempo</span>.</div>
+      </div>
+    </div>
+    <ul style="font-size:14px; line-height:1.8;">
+      <li><strong>Carica (generatore DC attivo):</strong> Se parte scarico ($v_C(0)=0$), la tensione sale come $ v_C(t) = E \cdot (1 - e^{-t / RC}) $.</li>
+      <li><strong>Scarica (generatore cortocircuitato):</strong> $v_C(\infty) = 0$, la tensione decade esponenzialmente $ v_C(t) = V_0 \cdot e^{-t / RC} $.</li>
+    </ul>
+    <p>Il transitorio si considera fisicamente estinto dopo circa $5\tau$ (valore raggiunto $\approx 99.3\%$).</p>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Circuito RL (Primo Ordine)</h2>
+    <p>Simmetrico (duale) al circuito RC. La variabile di stato protagonista è la corrente nell'induttore $i_L(t)$. L'equazione differenziale lineare produce andamenti analoghi a quelli capacitivi ma scambiando tensione e corrente.</p>
+    
+    <div class="card-formula">
+      <div class="header">Costante di Tempo Induttiva</div>
+      <div class="content">
+        <div class="formula-text">$ \tau = \frac{L}{R} $</div>
+      </div>
+    </div>
+    <p>Analogamente, la corrente generale nell'induttore assume la forma $ i_L(t) = i_L(\infty) + \left[ i_L(0) - i_L(\infty) \right] \cdot e^{-t / \tau} $.</p>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Circuito RLC (Secondo Ordine)</h2>
+    <p>Un circuito che contiene <strong>sia induttori che condensatori</strong> darà origine a un'equazione differenziale (o integro-differenziale) del <strong>secondo ordine</strong>. A causa della presenza di due serbatoi di energia di natura diversa (campo elettrico ed elettro-magnetico), l'energia può oscillare (o "rimbalzare") tra i due elementi prima di essere interamente dissipata nel resistore.</p>
+    
+    <div class="compare-grid" style="margin-top:1.5rem">
+      <div class="compare-col" style="border:1px solid var(--border)">
+        <div class="compare-col-head blue">I tre possibili andamenti del Transitorio RLC</div>
+        <div class="compare-col-body" style="padding:15px">
+          <ul style="font-size:13px; color:var(--text-secondary); line-height:1.7; padding-left:1.2rem;">
+            <li><strong style="color:var(--text-primary)">Sovrasmorzato:</strong> (radici reali distinte) La resistenza è elevata; il sistema torna allo stato di quiete lentamente, senza mai oscillare o invertire la polarità.</li>
+            <li><strong style="color:var(--text-primary)">Smorzamento Critico:</strong> (radici reali coincidenti) Segna il confine tra regime non oscillante e oscillante. È l'andamento che raggiunge lo stato di riposo nel tempo più rapido possibile senza sovraccrescimenti.</li>
+            <li><strong style="color:var(--text-primary)">Sottosmorzato:</strong> (radici complesse coniugate) La resistenza è bassa; il sistema inizia un'oscillazione sinusoidale smorzata esponenzialmente. Si scambiano pacchetti di energia $L \leftrightarrow C$ ad ogni semiperiodo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="08-condensatore-induttore.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 08 · Cond. e Induttore</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+    <a href="10-regime-sinusoidale.html" class="btn btn-ghost">10 · Regime Sinusoidale <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 09 · Regime Transitorio</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

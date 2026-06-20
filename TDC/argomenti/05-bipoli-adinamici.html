@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 · Bipoli Adinamici — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>05 · Bipoli Adinamici</div></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 05 · Componenti</span>
+  <div class="topic-num" style="color:#60a5fa">05 / 10</div>
+  <h1 class="topic-hero-title">Bipoli Adinamici</h1>
+  <p class="hero-sub" style="max-width:640px">Dall'approfondimento di bipoli resistivi senza memoria e casi estremi come il cortocircuito o circuito aperto, al concetto di generatore reale e alle regole dei partitori serie e parallelo.</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>05 · Bipoli Adinamici</span>
+  </div>
+  
+  <div class="theme-box">Questa sezione illustra (Lezioni 7-8) i componenti il cui stato dipende solo dall'istante presente, e come interconnetterli.</div>
+  
+  <div class="index-grid" data-prefix="05">
+      <ul>
+        <li>Resistore Lineare e Non Lineare</li>
+        <li>Cortocircuito e Circuito Aperto</li>
+        <li>Generatori Reali</li>
+        <li>Connessione Serie e Partitore di Tensione</li>
+        <li>Connessione Parallelo e Partitore di Corrente</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Resistore Lineare e Non Lineare</h2>
+    <p>Un <span class="keyword">bipolo adinamico</span> (o senza memoria) è caratterizzato da una relazione algebrica istantanea tra tensione e corrente $f(v,i,t) = 0$. Dicesi tempo-invariante se la funzione $f$ non dipende esplicitamente dal tempo.</p>
+    <ul>
+      <li><strong style="color:var(--text-primary)">Resistore Lineare:</strong> Soddisfa la Legge di Ohm ($v = Ri$). La caratteristica $v$-$i$ è una retta passante per l'origine, con pendenza $R$. Bipolo passivo, simmetrico e dissipativo.</li>
+      <li><strong style="color:var(--text-primary)">Resistore Non Lineare:</strong> Relazione $v = f(i)$ non lineare (es. $v = k i^3$ o il Diodo ideale). La pendenza della caratteristica cambia a seconda del punto di lavoro.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Cortocircuito e Circuito Aperto</h2>
+    <p>Sono casi limite di componenti fondamentali dell'analisi di rete.</p>
+    
+    <div class="split-card">
+      <div class="split-card-text">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Cortocircuito Ideale</h3>
+        <p style="font-size:13px;color:var(--text-secondary); margin-bottom:0.5rem;">
+          Tensione identicamente nulla per qualsiasi valore di corrente.
+        </p>
+        <div class="formula-text" style="font-size:12px; font-weight:700;">$ v(t) = 0 \quad \forall i $</div>
+        <p style="font-size:12.5px;color:var(--text-secondary); margin-top:0.5rem;">
+          Corrisponde a un resistore con $R = 0$ oppure a un generatore ideale di tensione con $e = 0$.
+        </p>
+      </div>
+      <div class="split-card-text" style="border-top:1px solid var(--border)">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Circuito Aperto Ideale</h3>
+        <p style="font-size:13px;color:var(--text-secondary); margin-bottom:0.5rem;">
+          Corrente identicamente nulla per qualsiasi valore di tensione.
+        </p>
+        <div class="formula-text" style="font-size:12px; font-weight:700;">$ i(t) = 0 \quad \forall v $</div>
+        <p style="font-size:12.5px;color:var(--text-secondary); margin-top:0.5rem;">
+          Corrisponde a un resistore con $G = 0$ ($R \to \infty$) oppure a un generatore ideale di corrente con $j = 0$.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Generatori Reali</h2>
+    <p>I generatori reali approssimano il comportamento delle batterie (dove all'aumentare della corrente erogata, la tensione ai morsetti decresce a causa delle perdite interne o caduta ohmica del sistema chimico).</p>
+    
+    <div class="card-formula">
+      <div class="header">Generatore Reale di Tensione (di Thévenin)</div>
+      <div class="content">
+        Modello serie: un Generatore Ideale di Tensione (GIT) con in serie un resistore $R_i$ (resistenza interna).
+        <div class="formula-text" style="text-align:center; margin-top:10px;">$ v = E - R_i i $</div>
+        <div class="formula-desc">Scritta con la convenzione del generatore. La tensione a vuoto è $E$. Con i cortocircuitato, $I_{cc} = E / R_i$.</div>
+      </div>
+    </div>
+    
+    <div class="card-formula">
+      <div class="header">Generatore Reale di Corrente (di Norton)</div>
+      <div class="content">
+        Modello parallelo: un Generatore Ideale di Corrente (GIC) con in parallelo un resistore di conduttanza $G_i$.
+        <div class="formula-text" style="text-align:center; margin-top:10px;">$ i = J - G_i v $</div>
+        <div class="formula-desc">Scritta con la convenzione del generatore. I due modelli sono equivalenti se si impone $R_i = 1/G_i$ ed $E = R_i J$.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Connessione Serie e Partitore di Tensione</h2>
+    <p>Due o più bipoli sono in <span class="keyword">serie</span> se attraversati ininterrottamente dalla stessa identica corrente in ogni istante (sono collegati lungo uno stesso ramo senza biforcazioni ai nodi).</p>
+    <div class="formula-text" style="background:var(--code-bg); padding:10px; border-radius:var(--r-md); font-family:'JetBrains Mono', monospace; font-size:14px; text-align:center; color:#a5f3fc; margin-bottom:1rem; border:1px solid var(--border)">
+      $ R_{eq} = R_1 + R_2 + \dots + R_n = \sum_{k=1}^n R_k $
+    </div>
+    <p>In una serie di resistori, la tensione totale $v$ si suddivide (si "partisce") in quota proporzionale al valore delle resistenze stesse. Questo comportamento dà luogo al <strong>Teorema del Partitore di Tensione</strong>:</p>
+    <div class="card-formula">
+      <div class="header">Partitore di Tensione</div>
+      <div class="content">
+        <div class="formula-text">$ v_k = \frac{R_k}{R_{eq}} v $</div>
+        <div class="formula-desc">La tensione sul k-esimo resistore è pari alla tensione totale per la sua resistenza diviso la resistenza totale serie.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Connessione Parallelo e Partitore di Corrente</h2>
+    <p>Due o più bipoli sono in <span class="keyword">parallelo</span> se i loro terminali sono collegati direttamente alle stesse coppie di nodi, risultando quindi sottoposti alla medesima d.d.p. in ogni istante (per KVL).</p>
+    <div class="formula-text" style="background:var(--code-bg); padding:10px; border-radius:var(--r-md); font-family:'JetBrains Mono', monospace; font-size:14px; text-align:center; color:#a5f3fc; margin-bottom:1rem; border:1px solid var(--border)">
+      $ G_{eq} = G_1 + G_2 + \dots + G_n \implies \frac{1}{R_{eq}} = \sum_{k=1}^n \frac{1}{R_k} $
+    </div>
+    <p>In un parallelo di resistori, la corrente totale in ingresso $i$ si ripartisce in correnti di ramo che sono <em>direttamente proporzionali</em> alle conduttanze $G$, o analogamente, inversamente proporzionali alle resistenze. Da questo si deriva il <strong>Teorema del Partitore di Corrente</strong>:</p>
+    <div class="card-formula">
+      <div class="header">Partitore di Corrente</div>
+      <div class="content">
+        <div class="formula-text">$ i_k = \frac{G_k}{G_{eq}} i $</div>
+        <div class="formula-desc">Usando la resistenza, in caso di solo due rami in parallelo $R_1$ ed $R_2$, la formula tipica è $ i_1 = \frac{R_2}{R_1 + R_2} i $.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="04-topologia-reti.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 04 · Topologia</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+    <a href="06-analisi-teoremi.html" class="btn btn-ghost">06 · Analisi e Teoremi <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 05 · Bipoli Adinamici</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 · Regime Sinusoidale — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>10 · Regime Sinusoidale</div></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 10 · Regimi</span>
+  <div class="topic-num" style="color:#60a5fa">10 / 10</div>
+  <h1 class="topic-hero-title">Regime Sinusoidale<br>e Fasori</h1>
+  <p class="hero-sub" style="max-width:640px">Il metodo simbolico di Steinmetz. Trasformare le equazioni differenziali in algebra dei numeri complessi e analizzare i flussi di potenza in corrente alternata (AC).</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>10 · Regime Sinusoidale</span>
+  </div>
+  
+  <div class="theme-box">Sezione vitale per l'elettrotecnica e l'elettronica analogica (Lezioni 19-24), che introduce il dominio della frequenza e le grandezze complesse.</div>
+  
+  <div class="index-grid" data-prefix="10">
+      <ul>
+        <li>Grandezze Sinusoidali e Valore Efficace</li>
+        <li>Il Metodo dei Fasori</li>
+        <li>Impedenza e Ammettenza</li>
+        <li>Leggi di Kirchhoff Fasoriali</li>
+        <li>Potenza in AC (Attiva, Reattiva, Complessa)</li>
+        <li>Risonanza (Serie e Parallelo RLC)</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Grandezze Sinusoidali e Valore Efficace</h2>
+    <p>In <strong>corrente alternata (AC)</strong>, l'eccitazione dei generatori è costituita da funzioni sinusoidali del tempo (di pulsazione $\omega$ uniforme per tutta la rete in condizioni isofrequenziali).</p>
+    <div class="card-formula">
+      <div class="header">Funzione Sinusoidale Standard</div>
+      <div class="content">
+        <div class="formula-text">$ x(t) = X_M \cos(\omega t + \alpha) $</div>
+        <div class="formula-desc">$X_M$ è l'ampiezza (valore di picco), $\omega = 2\pi f$ è la pulsazione angolare (rad/s), $\alpha$ è la fase iniziale (rad).</div>
+      </div>
+    </div>
+    <p>Si definisce <span class="keyword">valore efficace (RMS - Root Mean Square)</span> il valore costante in tensione continua che dissiperenne la medesima potenza su un resistore in un periodo $T$. Per onde sinusoidali vale sempre:</p>
+    <div class="formula-text" style="font-size:14px; text-align:center; margin-bottom:1rem; font-weight:bold;">$ X_{eff} = \frac{X_M}{\sqrt{2}} $</div>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Il Metodo dei Fasori</h2>
+    <p>La trasformata di Steinmetz associa biunivocamente una grandezza sinusoidale a un <span class="keyword">numero complesso</span> detto <strong>Fasore</strong>, sbarazzandosi della dipendenza temporale $\cos(\omega t + \dots)$.</p>
+    <div class="card-formula">
+      <div class="header">Definizione di Fasore</div>
+      <div class="content">
+        <div class="formula-text">$ \bar{X} = X_{eff} \cdot e^{j \alpha} = X_{eff} \angle \alpha $</div>
+        <div class="formula-desc">Si noti l'utilizzo del Valore Efficace (in elettrotecnica) per il modulo, sebbene sia parimenti valido l'utilizzo del Valore Massimo. Si utilizza $j$ anziché $i$ per l'unità immaginaria, per non confonderla con la corrente.</div>
+      </div>
+    </div>
+    <div class="info-box">
+      <strong>Il Vantaggio Matematico:</strong> La derivata nel dominio del tempo $\frac{d}{dt}$ corrisponde semplicemente a moltiplicare il fasore per $j\omega$. L'integrale $\int dt$ equivale a dividere il fasore per $j\omega$. <em>Le equazioni integro-differenziali si trasformano così in semplici equazioni algebriche sui numeri complessi.</em>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Impedenza e Ammettenza</h2>
+    <p>Una volta trasformate correnti e tensioni in fasori, si può estendere la Legge di Ohm generalizzata ai bipoli dinamici introducendo l'<span class="keyword">Impedenza $\bar{Z}$</span> e l'<span class="keyword">Ammettenza $\bar{Y}$</span>.</p>
+    
+    <div class="checklist-box">
+      <div class="checklist-title">Le Impedenze dei tre Bipoli Base</div>
+      <div class="check-item">
+        <div class="check-box done">R</div>
+        <div>
+          <strong style="color:var(--text-primary)">Resistore:</strong> $\bar{Z}_R = R$. Tensione e corrente sono <strong>in fase</strong>. Impedenza puramente reale. Non c'è sfasamento.
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done">L</div>
+        <div>
+          <strong style="color:var(--text-primary)">Induttore:</strong> $\bar{Z}_L = j \omega L$. Tensione è <strong>in anticipo</strong> di 90° sulla corrente. Impedenza immaginaria pura (Reattanza Induttiva $X_L = \omega L$).
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done">C</div>
+        <div>
+          <strong style="color:var(--text-primary)">Condensatore:</strong> $\bar{Z}_C = \frac{1}{j \omega C} = -j \frac{1}{\omega C}$. Tensione è <strong>in ritardo</strong> di 90° sulla corrente. Impedenza immaginaria (Reattanza Capacitiva $X_C = -1/\omega C$).
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:1.5rem">In generale, $ \bar{Z} = R + jX $ (Resistenza + Reattanza) e l'ammettenza $ \bar{Y} = G + jB $ (Conduttanza + Suscettanza).</p>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Leggi di Kirchhoff Fasoriali e Rete Simbolica</h2>
+    <p>Dato un circuito lineare eccitato da generatori sinusoidali della stessa frequenza $f$, la rete giunge, a transitorio esaurito, a un <strong>regime sinusoidale permanente isofrequenziale</strong> in cui tutte le correnti e tensioni oscillano alla medesima frequenza.</p>
+    <p>Costruendo la <span class="keyword">Rete Simbolica</span> (sostituendo i componenti con le impedenze $\bar{Z}$ e i generatori con i fasori $\bar{E}, \bar{J}$), si dimostra che <strong>tutte le leggi adinamiche sono valide</strong> anche sui fasori:</p>
+    <ul style="font-size:14px; line-height:1.8; color:var(--text-secondary);">
+      <li>KVL: $ \sum_{\text{maglia}} \bar{V}_k = 0 $</li>
+      <li>KCL: $ \sum_{\text{nodo}} \bar{I}_k = 0 $</li>
+      <li>Tutti i teoremi di rete (Thévenin, Norton, Sovrapposizione, Nodale, Anelli) rimangono identici nel formalismo algebrico dei numeri complessi.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Potenza in AC (Attiva, Reattiva, Complessa)</h2>
+    <p>In corrente alternata l'analisi energetica si arricchisce. Il prodotto tra tensione e corrente (potenza istantanea) non è più sufficiente per descrivere flussi bidirezionali netti e scambi interni. Si introduce il calcolo fasoriale della <strong>Potenza Complessa $\bar{S}$</strong> (misurata in VA):</p>
+    <div class="card-formula">
+      <div class="header">Potenza Complessa</div>
+      <div class="content">
+        <div class="formula-text">$ \bar{S} = \bar{V} \cdot \bar{I}^* = P + jQ $</div>
+        <div class="formula-desc">$\bar{I}^*$ è il complesso coniugato della corrente. Se $ \bar{V} = V \angle \alpha $ e $ \bar{I} = I \angle \beta $, allora lo sfasamento tra tensione e corrente è $ \varphi = \alpha - \beta $.</div>
+      </div>
+    </div>
+    <div class="split-card" style="margin-top:1.5rem">
+      <div class="split-card-text">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Potenza Attiva (P)</h3>
+        <p style="font-size:13px;color:var(--text-secondary);">
+          $ P = V I \cos(\varphi) $ [Watt].
+          È il valore medio della potenza istantanea, rappresenta l'energia realmente dissipata o trasformata in lavoro utile. Responsabile dell'assorbimento nei resistori.
+        </p>
+      </div>
+      <div class="split-card-text" style="border-top:1px solid var(--border)">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Potenza Reattiva (Q)</h3>
+        <p style="font-size:13px;color:var(--text-secondary);">
+          $ Q = V I \sin(\varphi) $ [VAR].
+          È l'energia "palleggiata" continuamente tra campo elettrico (C) e magnetico (L), la cui media sul periodo è nulla. Induttori assorbono $Q>0$, Condensatori erogano $Q<0$.
+        </p>
+      </div>
+    </div>
+    <p style="margin-top:1rem">Il modulo $|\bar{S}| = \sqrt{P^2 + Q^2} = VI$ è la <strong>Potenza Apparente</strong>. Il termine $ \cos(\varphi) $ è il <strong>Fattore di Potenza</strong> della rete.</p>
+  </div>
+
+  <div class="section-block" id="section-6">
+    <h2><span class="dot"></span> Risonanza (Serie e Parallelo RLC)</h2>
+    <p>Quando in una rete la parte reattiva totale (immaginaria) dell'impedenza si annulla, corrente e tensione al generatore sono in fase (Fattore di Potenza = 1). In queste condizioni il circuito si dice in <strong>Risonanza</strong>.</p>
+    <div class="card-formula">
+      <div class="header">Pulsazione di Risonanza</div>
+      <div class="content">
+        <div class="formula-text">$ \omega_0 = \frac{1}{\sqrt{LC}} $</div>
+        <div class="formula-desc">A questa precisa frequenza, le reattanze induttiva $X_L$ e capacitiva $X_C$ sono uguali in modulo e di segno opposto e, vettorialmente, si "elidono".</div>
+      </div>
+    </div>
+    <p>Nella risonanza serie l'impedenza del bipolo RLC diventa minima e puramente resistiva ($Z = R$), massimizzando l'assorbimento di corrente. Nella risonanza parallelo l'impedenza diventa massima, bloccando l'assorbimento di corrente del gruppo oscillante.</p>
+  </div>
+
+  <div class="back-btn-wrap" style="justify-content: flex-start;">
+    <a href="09-regime-transitorio.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 09 · Regime Transitorio</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 10 · Regime Sinusoidale</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

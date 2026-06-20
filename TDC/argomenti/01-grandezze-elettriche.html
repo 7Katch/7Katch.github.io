@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 · Grandezze Fondamentali — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><div class="sb-cur"><span class="sb-pdot"></span>01 · Basi</div></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 01 · Basi</span>
+  <div class="topic-num" style="color:#60a5fa">01 / 10</div>
+  <h1 class="topic-hero-title">Grandezze Elettriche<br>Fondamentali</h1>
+  <p class="hero-sub" style="max-width:640px">Carica elettrica, corrente, densità di corrente e prime nozioni su campo elettrico. Il fondamento su cui si basa l'elettromagnetismo e la teoria dei circuiti.</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>01 · Grandezze Elettriche</span>
+  </div>
+  
+  <div class="theme-box">Questa pagina copre le grandezze basilari del corso (tratte dalle Lezioni 1 e 2), incluse le formule in $ \LaTeX $.</div>
+  
+  <div class="index-grid" data-prefix="01">
+      <ul>
+        <li>Carica Elettrica</li>
+        <li>Corrente Elettrica</li>
+        <li>Densità di Corrente</li>
+        <li>Legge di Continuità</li>
+        <li>Campo Elettrico</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Carica Elettrica <span class="sub-tag">fondamento</span></h2>
+    <p>La <span class="keyword">carica elettrica</span> è una proprietà intrinseca della materia (associata ai protoni, cariche positive, e agli elettroni, cariche negative). Nel Sistema Internazionale si misura in <strong>Coulomb (C)</strong>. I portatori di carica in un conduttore metallico sono gli elettroni liberi.</p>
+    <div class="card-formula">
+      <div class="header">Principio di conservazione della carica</div>
+      <div class="content">
+        <div class="formula-text">$ \Delta q_{tot} = 0 $</div>
+        <div class="formula-desc">La carica totale di un sistema isolato rimane costante nel tempo.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Corrente Elettrica</h2>
+    <p>Si definisce <span class="keyword">corrente elettrica</span> $ i(t) $ la rapidità con cui la carica netta fluisce attraverso una superficie orientata $ S $. È la derivata rispetto al tempo della carica $ q $.</p>
+    <div class="card-formula">
+      <div class="header">Definizione di Corrente</div>
+      <div class="content">
+        <div class="formula-text">$ i(t) = \frac{dq}{dt} $</div>
+        <div class="formula-desc">Unità di misura: Ampere (A), che equivale a $ 1 \text{ C/s} $.</div>
+      </div>
+    </div>
+    <p>Nei <strong>conduttori filiformi</strong> (dove lunghezza $\gg$ sezione trasversale), la corrente scorre longitudinalmente lungo l'asse del conduttore. Invertendo il verso di riferimento scelto per attraversare la superficie $S$, il valore della corrente cambia di segno.</p>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Densità di Corrente</h2>
+    <p>Il vettore <span class="keyword">densità di corrente</span> $ \vec{J} $ descrive il flusso di carica puntualmente nello spazio ed è legato alla velocità di deriva $ \vec{v}_d $ dei portatori (con densità volumetrica di carica $\rho_c$). L'unità di misura è $ \text{A/m}^2 $.</p>
+    <p>La corrente macroscopica $ i(t) $ che attraversa una superficie $ S $ è il flusso del vettore densità di corrente attraverso tale superficie:</p>
+    <div class="card-formula">
+      <div class="header">Relazione Integrale</div>
+      <div class="content">
+        <div class="formula-text">$ i(t) = \int_S \vec{J} \cdot \hat{n} \, dS $</div>
+        <div class="formula-desc">Dove $ \hat{n} $ è il versore normale alla superficie $ S $.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Legge di Continuità</h2>
+    <p>Applicando il principio di conservazione della carica a un volume chiuso racchiuso da una superficie $ S_c $, la corrente netta uscente da $ S_c $ deve eguagliare il tasso di diminuzione della carica interna.</p>
+    <div class="card-formula">
+      <div class="header">Legge di continuità in forma integrale</div>
+      <div class="content">
+        <div class="formula-text">$ \oint_{S_c} \vec{J} \cdot \hat{n} \, dS = - \frac{d q_{int}}{dt} $</div>
+      </div>
+    </div>
+    <p>A <span class="keyword">regime stazionario</span> (le derivate temporali sono nulle e $ dq_{int}/dt = 0 $), il flusso di $ \vec{J} $ uscente da qualsiasi superficie chiusa è nullo. Questo significa che a regime stazionario <strong>il campo di corrente è solenoidale</strong>.</p>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Campo Elettrico</h2>
+    <p>Una carica di prova $ q_0 $ in presenza di altre cariche sperimenta una forza $\vec{F}$. Si definisce il <span class="keyword">campo elettrico</span> $ \vec{E} $ (valutato per carica di prova in quiete) come il rapporto limite tra la forza e la carica di prova stessa:</p>
+    <div class="card-formula">
+      <div class="header">Campo Elettrico</div>
+      <div class="content">
+        <div class="formula-text">$ \vec{E}(P, t) = \lim_{q_0 \to 0} \frac{\vec{F}_e}{q_0} $</div>
+        <div class="formula-desc">Si misura in Volt/metro ($ \text{V/m} $).</div>
+      </div>
+    </div>
+    <p>Da qui nasce il concetto di forza specifica e, successivamente, integrando il campo elettrico lungo un percorso, il concetto di <strong>Tensione Elettrica</strong>.</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="../index.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+    <a href="02-tensione-modello-reti.html" class="btn btn-theme">02 · Modello Reti <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 01 · Basi</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

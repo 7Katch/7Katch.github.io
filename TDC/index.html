@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoria dei Circuiti — TDC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/katchkit.css">
+<style>
+  /* ── Page-specific overrides ── */
+  .nav-logo { color: var(--kk-primary); }
+  .nav-back:hover { color: var(--kk-primary); border-color: rgba(96,165,250,0.4); }
+
+  .hero-glow {
+    background: radial-gradient(ellipse, rgba(96,165,250,0.07) 0%, transparent 65%);
+  }
+
+  /* Tags intro */
+  .tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2rem;
+  }
+
+  /* Intro paragraph section */
+  .intro-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem 0;
+  }
+
+  /* Topic overview grid */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .overview-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.25rem 1.5rem;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    text-decoration: none;
+  }
+  .overview-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+    opacity: 0.7;
+  }
+  .overview-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+
+  .ov-blue::before  { background: #60a5fa; }
+  .ov-teal::before   { background: #22d3ee; }
+  .ov-purple::before { background: #a78bfa; }
+  .ov-green::before  { background: #34d399; }
+  .ov-amber::before  { background: #fbbf24; }
+  .ov-coral::before  { background: #f87171; }
+
+  .ov-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .ov-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+  }
+  .ov-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.6;
+  }
+
+  /* Accordions section */
+  .acc-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  /* Accordion color variants */
+  .acc-item.blue-theme { border-color: rgba(96,165,250,0.12); }
+  .acc-item.blue-theme.open { border-color: rgba(96,165,250,0.35); }
+  .acc-item.blue-theme .acc-header:hover { background: rgba(96,165,250,0.04); }
+  .acc-item.blue-theme.open .acc-chevron { color: #60a5fa; }
+  .acc-item.blue-theme .acc-title { color: var(--text-primary); }
+
+  /* Badge colour inside accordion */
+  .acc-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .ab-blue  { background: rgba(96,165,250,0.12);  color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
+
+  /* Sub-item tag inline */
+  .sub-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 1px 7px;
+    border-radius: var(--r-pill);
+    background: rgba(90,80,128,0.2);
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* Scroll hint */
+  .scroll-hint { animation: fadeInUp 1.5s ease 0.5s both; }
+  @keyframes fadeInUp {
+    from { opacity:0; transform: translateX(-50%) translateY(10px); }
+    to   { opacity:1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* Section divider label */
+  .divider-label {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .divider-label span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .divider-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .eyebrow-blue {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+  .eyebrow-blue::before { content:''; display:inline-block; width:20px; height:1px; background:#60a5fa; }
+</style>
+</head>
+<body class="dot-grid theme-blue">
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+  <div class="nav-right">
+    <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+
+  <span class="hero-eyebrow">
+    Teoria dei Circuiti
+  </span>
+
+  <h1 class="topic-hero-title">Teoria dei<br>Circuiti</h1>
+
+  <p class="hero-sub">
+    Dalle grandezze fondamentali e le leggi di Kirchhoff fino al regime sinusoidale, doppi bipoli e teoremi delle reti.
+  </p>
+
+  <!-- Stats bar -->
+  <div class="stats-bar" style="display: flex; gap: 2rem; border-radius:14px; border:1px solid var(--border); padding: 1rem 2rem; background: var(--bg-card); margin-top:1rem;">
+    <div class="stat-item" style="text-align: center;">
+      <div class="stat-number" style="color:var(--kk-primary); font-size: 2rem; font-weight: 800;">10</div>
+      <div class="stat-label" style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Macro argomenti</div>
+    </div>
+    <div class="stat-item" style="text-align: center;">
+      <div class="stat-number" style="color:var(--kk-primary); font-size: 2rem; font-weight: 800;">24</div>
+      <div class="stat-label" style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Lezioni</div>
+    </div>
+    <div class="stat-item" style="text-align: center;">
+      <div class="stat-number" style="color:var(--kk-primary); font-size: 2rem; font-weight: 800;">∞</div>
+      <div class="stat-label" style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Reti analizzate</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-hint-line" style="background:linear-gradient(to bottom, var(--kk-primary), transparent); width: 1px; height: 40px;"></div>
+    scroll
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- INTRO -->
+<div class="intro-section">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a>
+    <span>/</span>
+    <span>TDC</span>
+  </div>
+
+  <div class="eyebrow-blue">Panoramica del corso</div>
+  <h2 class="section-title">Di cosa parliamo</h2>
+  <p class="section-intro" style="margin-bottom:1.5rem">
+    Questo corso tratta l'analisi delle reti elettriche lineari, a partire dalle grandezze fondamentali, la topologia delle reti e i teoremi principali, analizzando il comportamento in regime stazionario, transitorio (quasi-stazionario) e sinusoidale.
+  </p>
+
+  <!-- Overview grid -->
+  <div class="overview-grid">
+    <a href="argomenti/01-grandezze-elettriche.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">01 · Basi</div>
+      <div class="ov-title">Grandezze Fondamentali</div>
+      <div class="ov-sub">Carica · Corrente · Densità di corrente · Legge di continuità · Campo elettrico</div>
+    </a>
+    <a href="argomenti/02-tensione-modello-reti.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">02 · Basi</div>
+      <div class="ov-title">Tensione e Modello Reti</div>
+      <div class="ov-sub">Tensione · F.e.m. · Modello reti elettriche · KVL e KCL</div>
+    </a>
+    <a href="argomenti/03-componenti-potenza.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">03 · Basi</div>
+      <div class="ov-title">Componenti e Potenza</div>
+      <div class="ov-sub">N-polo · Potenza · Bipolo passivo · Resistore ideale · Generatori ideali</div>
+    </a>
+    <a href="argomenti/04-topologia-reti.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">04 · Analisi</div>
+      <div class="ov-title">Topologia delle Reti</div>
+      <div class="ov-sub">Grafo · Nodi, rami, maglie · Albero e coalbero · Sistema di equazioni</div>
+    </a>
+    <a href="argomenti/05-bipoli-adinamici.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">05 · Componenti</div>
+      <div class="ov-title">Bipoli Adinamici</div>
+      <div class="ov-sub">Resistore · Cortocircuito · Generatori reali · Serie/Parallelo · Partitori</div>
+    </a>
+    <a href="argomenti/06-analisi-teoremi.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">06 · Analisi</div>
+      <div class="ov-title">Analisi e Teoremi</div>
+      <div class="ov-sub">Resistenza equivalente · Metodo nodale e anelli · Sovrapposizione · Thévenin · Norton</div>
+    </a>
+    <a href="argomenti/07-doppi-bipoli.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">07 · Componenti</div>
+      <div class="ov-title">Doppi Bipoli e Pilotati</div>
+      <div class="ov-sub">Rappresentazioni · Trasformatore ideale · Generatori pilotati ideali</div>
+    </a>
+    <a href="argomenti/08-condensatore-induttore.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">08 · Componenti</div>
+      <div class="ov-title">Condensatore e Induttore</div>
+      <div class="ov-sub">Energia · Continuità · Bipoli dinamici in regime stazionario</div>
+    </a>
+    <a href="argomenti/09-regime-transitorio.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">09 · Regimi</div>
+      <div class="ov-title">Regime Transitorio</div>
+      <div class="ov-sub">Regime quasi-stazionario · RC e RL · Carica e scarica · RLC serie</div>
+    </a>
+    <a href="argomenti/10-regime-sinusoidale.html" class="overview-card ov-blue" style="cursor:pointer">
+      <div class="ov-num">10 · Regimi</div>
+      <div class="ov-title">Regime Sinusoidale</div>
+      <div class="ov-sub">Fasori · Impedenza e ammettenza · Potenza complessa · Rete simbolica</div>
+    </a>
+  </div>
+
+  <div class="theme-box">
+    💡 Clicca su uno dei macroargomenti qui sopra o esplora l'elenco completo nell'accordion sottostante per approfondire. Le formule in questa sezione fanno uso di $ \LaTeX $ renderizzato tramite MathJax.
+  </div>
+</div>
+
+<hr class="divider" style="margin-top:2rem">
+
+<!-- ACCORDIONS -->
+<div class="acc-section">
+
+  <div class="divider-label">
+    <span>// programma completo</span>
+  </div>
+
+  <div class="accordion">
+
+    <!-- 01 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">01</span>
+          <span class="acc-title">Grandezze Elettriche Fondamentali</span>
+          <span class="acc-badge ab-blue">Basi</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">8 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Carica elettrica · Corrente elettrica $ i(t) = \frac{dq}{dt} $ · Densità di corrente $\vec{J}$ · Conduttori filiformi · Legge di continuità · Campo di corrente solenoidale · Campo elettrico $\vec{E}$ · Tensione elettrica $ v(t) = \int \vec{E} \cdot d\vec{l} $.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">02</span>
+          <span class="acc-title">Tensione e Modello Reti</span>
+          <span class="acc-badge ab-blue">Basi</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">8 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Differenza di potenziale (d.d.p.) · Forza elettromotrice (f.e.m.) da circuitazione · f.e.m. mozionale · Voltmetro ideale · Amperometro ideale · Introduzione al modello delle reti a parametri concentrati · Legge di Kirchhoff per le correnti (KCL) · Legge di Kirchhoff per le tensioni (KVL).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">03</span>
+          <span class="acc-title">Componenti e Potenza</span>
+          <span class="acc-badge ab-blue">Basi</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">9 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Componente n-polo · Definizione di porta · Potenza elettrica istantanea $ p(t) = v(t) i(t) $ · Conservazione della potenza (Teorema di Tellegen) · Bipolo passivo · Wattmetro ideale · Resistore ideale e legge di Ohm ($ v = R i $) · Generatore ideale di tensione (GIT) · Generatore ideale di corrente (GIC).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">04</span>
+          <span class="acc-title">Topologia delle Reti</span>
+          <span class="acc-badge ab-blue">Analisi</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">6 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Grafo di una rete · Nodi, rami, maglie e anelli · Insiemi di taglio · Albero e coalbero del grafo · Matrici di incidenza nodi-rami · Formulazione del sistema di equazioni base per una rete di bipoli (Tableau).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">05</span>
+          <span class="acc-title">Bipoli Adinamici</span>
+          <span class="acc-badge ab-blue">Componenti</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">8 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Bipoli adinamici generali · Cortocircuito e circuito aperto ideali · Generatori reali (serie GIT-R, parallelo GIC-G) · Connessioni in serie e partitore di tensione · Connessioni in parallelo e partitore di corrente · Trasformazioni stella-triangolo (Y-$\Delta$).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">06</span>
+          <span class="acc-title">Analisi e Teoremi</span>
+          <span class="acc-badge ab-blue">Analisi</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">8 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Resistenza equivalente a una porta ($ R_{eq} $) · Analisi nodale (metodo dei potenziali ai nodi) · Metodo delle correnti di anello (e forma modificata) · Sovrapposizione degli effetti · Teorema di sostituzione · Teorema di Thévenin · Teorema di Norton · Teorema del massimo trasferimento di potenza.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">07</span>
+          <span class="acc-title">Doppi Bipoli e Pilotati</span>
+          <span class="acc-badge ab-blue">Componenti</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">6 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Doppi bipoli adinamici ideali · Rappresentazioni (Matrici Z, Y, H, T) · Trasformatore ideale e sue proprietà · Generatori pilotati ideali (VCVS, VCCS, CCVS, CCCS) · Circuiti lineari con generatori pilotati · Teoremi di rete con componenti pilotati.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">08</span>
+          <span class="acc-title">Condensatore e Induttore</span>
+          <span class="acc-badge ab-blue">Componenti</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">8 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Condensatore ideale ($ i = C \frac{dv}{dt} $) · Proprietà con memoria e continuità della tensione · Energia immagazzinata $\frac{1}{2} C v^2$ · Condensatore a regime stazionario (circuito aperto) · Induttore ideale ($ v = L \frac{di}{dt} $) · Continuità della corrente · Energia $\frac{1}{2} L i^2$ · Induttore a regime stazionario (cortocircuito).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 09 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">09</span>
+          <span class="acc-title">Regime Transitorio</span>
+          <span class="acc-badge ab-blue">Regimi</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">8 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Regime variabile quasi-stazionario · Studio all'istante critico ($t = 0^-$ e $t = 0^+$) · Carica e scarica del condensatore (circuito RC, costante di tempo $\tau = RC$) · Carica e scarica dell'induttore (circuito RL, $\tau = L/R$) · Introduzione ai circuiti del secondo ordine (RLC serie e parallelo).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="acc-item blue-theme" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-left">
+          <span class="acc-num">10</span>
+          <span class="acc-title">Regime Sinusoidale</span>
+          <span class="acc-badge ab-blue">Regimi</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="acc-count">12 argomenti</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="sub-list">
+          <div class="sub-item" style="padding: 10px 15px; border-bottom: 1px solid var(--border);">
+            <div style="color:var(--text-secondary); font-size: 13px;">
+              Sinusoidi e valore efficace · Sfasamento e diagrammi temporali · Trasformata fasoriale · Richiami sui numeri complessi · Bipoli ideali in regime sinusoidale (Impedenza $Z$ e Ammettenza $Y$) · Leggi di Kirchhoff fasoriali · Rete simbolica · Potenza attiva ($P$), reattiva ($Q$), apparente ($S$) e complessa ($\bar{S}$) · Conservazione della potenza complessa · Risonanza.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /accordion -->
+
+</div><!-- /acc-section -->
+
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · Teoria dei Circuiti</p>
+</footer>
+
+<script>
+  function toggle(item) {
+    item.classList.toggle('open');
+    const body = item.querySelector('.acc-body');
+    if(item.classList.contains('open')) {
+        body.style.display = 'block';
+    } else {
+        body.style.display = 'none';
+    }
+  }
+
+  document.querySelectorAll('.acc-body').forEach(b => b.style.display = 'none');
+</script>
+<script src="../shared/katchkit.js"></script>
+
+</body>
+</html>

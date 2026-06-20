@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 · Topologia delle Reti — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>04 · Topologia</div></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 04 · Analisi</span>
+  <div class="topic-num" style="color:#60a5fa">04 / 10</div>
+  <h1 class="topic-hero-title">Topologia delle Reti</h1>
+  <p class="hero-sub" style="max-width:640px">Dal circuito al grafo. Lo studio matematico delle interconnessioni e la formulazione del sistema fondamentale di equazioni per la risoluzione di una rete elettrica.</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>04 · Topologia</span>
+  </div>
+  
+  <div class="theme-box">Questa pagina descrive (Lezione 6) gli elementi di topologia necessari a tradurre la fisica di un circuito in un sistema algebrico-differenziale determinato (Tableau).</div>
+  
+  <div class="index-grid" data-prefix="04">
+      <ul>
+        <li>Grafo di una Rete</li>
+        <li>Nodi e Lati</li>
+        <li>Maglie e Anelli</li>
+        <li>Insiemi di Taglio</li>
+        <li>Albero e Coalbero</li>
+        <li>Sistema di Equazioni Fondamentali</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Grafo di una Rete <span class="sub-tag">astrazione</span></h2>
+    <p>La topologia di una rete si descrive mediante un tracciato detto <span class="keyword">grafo</span>. Il grafo associato a una rete si ottiene tracciando un punto per ogni nodo della rete e un segmento (o arco) in corrispondenza di ogni bipolo della rete.</p>
+    <div class="info-box">Nel grafo, la natura del componente non ha importanza (che sia un resistore o un generatore diventa solo un "lato"). Interessa solo <em>come</em> i componenti sono collegati tra loro. Un grafo è detto <strong>connesso</strong> se si può passare da un qualsiasi nodo a qualsiasi altro muovendosi lungo i lati.</div>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Nodi e Lati</h2>
+    <ul>
+      <li><span class="keyword">Nodo ($n$)</span>: il punto in cui si uniscono due o più bipoli. In teoria dei grafi è un vertice.</li>
+      <li><span class="keyword">Lato ($\ell$)</span>: il ramo del circuito (cioè il bipolo stesso). In teoria dei grafi è l'arco (o edge) che connette una coppia di nodi.</li>
+    </ul>
+    <p>Un grafo è detto <strong>orientato</strong> se a ogni lato viene assegnato un verso (solitamente coincidente con il verso di riferimento scelto per la corrente del bipolo).</p>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Maglie e Anelli</h2>
+    <p>Una <span class="keyword">maglia</span> è un percorso chiuso nel grafo che ha la proprietà che ad ogni suo nodo convergono esattamente due lati del percorso stesso. Non ci sono nodi attraversati più di una volta.</p>
+    <p>Un <span class="keyword">anello</span> (o maglia elementare) è una maglia particolare di un grafo piano che orla una superficie piana priva di altri lati al suo interno. Il numero totale di anelli indipendenti è $m = \ell - n + 1$.</p>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Insiemi di Taglio</h2>
+    <p>Un <span class="keyword">insieme di taglio</span> è un sottoinsieme di lati la cui rimozione divide un grafo connesso in esattamente due sottografi separati. Per la KCL, la somma algebrica delle correnti dei rami appartenenti a un insieme di taglio è zero.</p>
+    <p>Un nodo stesso è un caso limite di insieme di taglio: l'insieme dei rami incidenti su quel nodo (taglio al nodo).</p>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Albero e Coalbero</h2>
+    <p>Dato un grafo connesso con $n$ nodi e $\ell$ lati:</p>
+    <ul>
+      <li><span class="keyword">Albero ($T$)</span>: Sottografo connesso che contiene <strong>tutti</strong> gli $n$ nodi ma nessuna maglia chiusa. È costituito da esattamente $n - 1$ lati (detti rami dell'albero).</li>
+      <li><span class="keyword">Coalbero ($L$)</span>: L'insieme dei lati rimanenti del grafo non inclusi nell'albero. Sono esattamente $\ell - (n - 1) = \ell - n + 1 = m$ lati (detti corde del coalbero).</li>
+    </ul>
+    <div class="card-formula">
+      <div class="header">Proprietà Fondamentali</div>
+      <div class="content">
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.6">L'aggiunta di una <em>singola corda</em> del coalbero all'albero crea esattamente <strong>una maglia fondamentale</strong>. Quindi ci sono tante maglie fondamentali quante sono le corde ($m$).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-6">
+    <h2><span class="dot"></span> Sistema di Equazioni Fondamentali (Tableau)</h2>
+    <p>Il problema dell'analisi di una rete di $\ell$ bipoli consiste nel trovare le $\ell$ tensioni $v_k$ e le $\ell$ correnti $i_k$ di ogni ramo, per un totale di $2\ell$ incognite. Dalla topologia e dalle relazioni di componente si ricava il <strong>Sistema Fondamentale</strong> formato da esattamente $2\ell$ equazioni linearmente indipendenti:</p>
+    
+    <div class="checklist-box">
+      <div class="checklist-title">Composizione del Sistema ($2\ell$ equazioni)</div>
+      <div class="check-item">
+        <div class="check-box done">1</div>
+        <div>
+          <strong style="color:var(--text-primary)">$n - 1$ equazioni KCL nodali:</strong> Equazioni di Kirchhoff per le correnti scritte a tutti i nodi tranne uno (nodo di riferimento) per evitare la ridondanza lineare.
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done">2</div>
+        <div>
+          <strong style="color:var(--text-primary)">$m = \ell - n + 1$ equazioni KVL alle maglie fondamentali:</strong> Equazioni di Kirchhoff per le tensioni calcolate per le maglie indipendenti (o anelli).
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done">3</div>
+        <div>
+          <strong style="color:var(--text-primary)">$\ell$ equazioni caratteristiche dei componenti:</strong> Equazioni costitutive di ciascuno dei bipoli (es. Legge di Ohm per i resistori $v=Ri$, $v=E$ per GIT, $i=J$ per GIC).
+        </div>
+      </div>
+    </div>
+    
+    <p style="margin-top:1.5rem">In totale: $(n-1) + (\ell - n + 1) + \ell = 2\ell$ equazioni indipendenti che, se il circuito ammette soluzione unica, descrivono in modo completo lo stato elettrico della rete (metodo del Tableau Sparse).</p>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="03-componenti-potenza.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 03 · Componenti</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+    <a href="05-bipoli-adinamici.html" class="btn btn-ghost">05 · Bipoli Adinamici <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 04 · Topologia</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

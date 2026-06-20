@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 · Tensione e Modello Reti — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>02 · Modello Reti</div></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 02 · Basi</span>
+  <div class="topic-num" style="color:#60a5fa">02 / 10</div>
+  <h1 class="topic-hero-title">Tensione e Modello<br>delle Reti Elettriche</h1>
+  <p class="hero-sub" style="max-width:640px">Dalla definizione di tensione come integrale del campo elettrico alle Leggi di Kirchhoff, introducendo i postulati a parametri concentrati.</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>02 · Modello Reti</span>
+  </div>
+  
+  <div class="theme-box">Questa pagina (Lezione 3) introduce il concetto di tensione, il modello a parametri concentrati e le due leggi fondamentali dell'analisi circuitale.</div>
+  
+  <div class="index-grid" data-prefix="02">
+      <ul>
+        <li>Tensione Elettrica</li>
+        <li>Forza Elettromotrice</li>
+        <li>Strumenti di Misura Ideali</li>
+        <li>Modello Reti a Parametri Concentrati</li>
+        <li>Leggi di Kirchhoff</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Tensione Elettrica <span class="sub-tag">fondamento</span></h2>
+    <p>Data una linea orientata $\ell$ (un percorso che unisce due punti A e B), si definisce <span class="keyword">tensione elettrica</span> $v(t)$ l'integrale di linea del campo elettrico lungo il percorso. L'unità di misura è il <strong>Volt (V)</strong>, che corrisponde al Lavoro per unità di carica (Joule/Coulomb).</p>
+    <div class="card-formula">
+      <div class="header">Definizione di Tensione</div>
+      <div class="content">
+        <div class="formula-text">$ v_{AB}(t) = \int_{A}^{B} \vec{E} \cdot d\vec{l} $</div>
+        <div class="formula-desc">A regime stazionario, il campo $\vec{E}$ è conservativo e la tensione corrisponde alla Differenza di Potenziale (d.d.p.) $U_A - U_B$.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Forza Elettromotrice (f.e.m.)</h2>
+    <p>Se la linea $\ell$ è un <strong>percorso chiuso</strong>, in regime non stazionario (es. campo magnetico variabile nel tempo), il campo elettrico non è conservativo e l'integrale di linea definisce la <span class="keyword">forza elettromotrice data dalla circuitazione</span>:</p>
+    <div class="card-formula">
+      <div class="header">f.e.m. circuitazione</div>
+      <div class="content">
+        <div class="formula-text">$ \text{f.e.m.} = \oint_{\ell} \vec{E} \cdot d\vec{l} $</div>
+      </div>
+    </div>
+    <p>Se il conduttore si sta anche muovendo all'interno di un campo magnetico $\vec{B}$ con velocità $\vec{v}_\ell$, si somma la cosiddetta <span class="keyword">forza elettromotrice mozionale</span>:</p>
+    <div class="card-formula">
+      <div class="header">f.e.m. mozionale</div>
+      <div class="content">
+        <div class="formula-text">$ \text{f.e.m.}_{moz} = \oint_{\ell} (\vec{v}_\ell \times \vec{B}) \cdot d\vec{l} $</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Strumenti di Misura Ideali</h2>
+    <div class="split-card">
+      <div class="split-card-text">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Voltmetro Ideale</h3>
+        <p style="font-size:13px;color:var(--text-secondary)">
+          Strumento che misura la tensione ai suoi capi senza perturbare il sistema. Si inserisce in <strong>parallelo</strong>. Un voltmetro ideale si comporta in modo equivalente a un circuito aperto (corrente assorbita nulla, $i = 0$).
+        </p>
+      </div>
+      <div class="split-card-text" style="border-top:1px solid var(--border)">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Amperometro Ideale</h3>
+        <p style="font-size:13px;color:var(--text-secondary)">
+          Strumento che misura la corrente che lo attraversa senza perturbare il sistema. Si inserisce in <strong>serie</strong>. Un amperometro ideale si comporta in modo equivalente a un cortocircuito (tensione ai suoi capi nulla, $v = 0$).
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Modello Reti a Parametri Concentrati</h2>
+    <p>La teoria dei circuiti adotta il modello delle reti elettriche a <strong>parametri concentrati</strong> (lumped elements). Si assume che l'intero sistema possa essere scomposto in componenti discreti idealizzati collegati da conduttori perfetti. Le approssimazioni alla base sono:</p>
+    <ul>
+      <li>I fenomeni si propagano istantaneamente (si trascurano i ritardi di propagazione elettromagnetica, condizione valida se le dimensioni fisiche del circuito sono trascurabili rispetto alla lunghezza d'onda).</li>
+      <li>Il campo magnetico esterno ai componenti è nullo. La f.e.m. indotta nei conduttori di collegamento è zero. Pertanto, la tensione tra due nodi è univocamente definita (indipendente dal percorso).</li>
+      <li>La carica non si accumula nei conduttori o nei nodi, e fluisce interamente nei rami del circuito.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Leggi di Kirchhoff</h2>
+    <p>Le conseguenze dirette del modello a parametri concentrati sono due leggi assiomatiche di conservazione che governano l'analisi di qualunque rete: KVL e KCL.</p>
+    
+    <div class="card-def">
+      <div class="header">Legge di Kirchhoff per le Tensioni (KVL)</div>
+      <div class="content">
+        La somma algebrica delle tensioni lungo qualsiasi <strong>maglia</strong> (percorso chiuso) del circuito è nulla a ogni istante $t$.
+        <div class="formula-text" style="text-align:center; margin-top:10px; font-weight:700;">$ \sum_{\text{maglia}} v_k(t) = 0 $</div>
+        <p style="font-size:12px; margin-top:10px; color:var(--text-secondary);">Deriva dall'ipotesi che la circuitazione del campo elettrico all'esterno dei componenti sia nulla (modello conservativo).</p>
+      </div>
+    </div>
+
+    <div class="card-def">
+      <div class="header" style="--card-color: #fbbf24; --card-rgb: 251, 191, 36; border-bottom: 1px solid #fbbf24; box-shadow: 0 4px 15px -2px rgba(251, 191, 36, 0.5), 0 0 5px rgba(251, 191, 36, 0.3); color:#fbbf24;">Legge di Kirchhoff per le Correnti (KCL)</div>
+      <div class="content">
+        La somma algebrica delle correnti in qualsiasi <strong>insieme di taglio</strong> (in particolare, in ogni <strong>nodo</strong>) del circuito è nulla a ogni istante $t$.
+        <div class="formula-text" style="text-align:center; margin-top:10px; font-weight:700;">$ \sum_{\text{nodo}} i_k(t) = 0 $</div>
+        <p style="font-size:12px; margin-top:10px; color:var(--text-secondary);">Deriva dall'ipotesi che la carica non si possa accumulare nei nodi (legge di continuità a maglie rimpicciolite ai nodi).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="01-grandezze-elettriche.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 01 · Basi</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+    <a href="03-componenti-potenza.html" class="btn btn-ghost">03 · Componenti <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 02 · Modello Reti</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

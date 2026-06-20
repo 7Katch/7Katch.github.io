@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>06 · Analisi e Teoremi — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>06 · Analisi e Teoremi</div></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 06 · Analisi</span>
+  <div class="topic-num" style="color:#60a5fa">06 / 10</div>
+  <h1 class="topic-hero-title">Metodi di Analisi<br>e Teoremi delle Reti</h1>
+  <p class="hero-sub" style="max-width:640px">Dall'analisi nodale a quella degli anelli, sovrapposizione degli effetti e la riduzione di reti complesse tramite i teoremi di Thévenin, Norton e il Massimo Trasferimento di Potenza.</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>06 · Analisi e Teoremi</span>
+  </div>
+  
+  <div class="theme-box">Questo modulo (Lezioni 9-13) introduce gli strumenti matematici standard dell'ingegneria elettrica per ridurre la dimensionalità dei sistemi e semplificare il calcolo dei circuiti complessi.</div>
+  
+  <div class="index-grid" data-prefix="06">
+      <ul>
+        <li>Resistenza Equivalente ($R_{eq}$)</li>
+        <li>Metodo dei Potenziali ai Nodi</li>
+        <li>Metodo delle Correnti di Anello</li>
+        <li>Sovrapposizione degli Effetti</li>
+        <li>Teorema di Sostituzione</li>
+        <li>Teoremi di Thévenin e Norton</li>
+        <li>Massimo Trasferimento di Potenza</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Resistenza Equivalente ($R_{eq}$)</h2>
+    <p>Una qualsiasi porzione di rete passiva (formata esclusivamente da resistori lineari) accessibile da due soli morsetti $A$ e $B$ equivale, ai fini dei morsetti esterni, a un <strong>singolo resistore ideale equivalente</strong>.
+    <br><br>
+    Il valore $R_{eq}$ si calcola riducendo progressivamente la rete combinando i blocchi di resistori disposti in <span class="keyword">serie</span> e in <span class="keyword">parallelo</span>. Se la rete non è riducibile con queste semplici regole, si può applicare una DDP di prova o usare le trasformazioni Stella-Triangolo ($Y-\Delta$).</p>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Metodo dei Potenziali ai Nodi (Analisi Nodale)</h2>
+    <p>Invece di risolvere per le $2\ell$ incognite totali, l'analisi nodale riduce il sistema a <strong>$n - 1$ incognite</strong>: i potenziali incogniti dei nodi rispetto a un nodo di riferimento (nodo di massa, $U_0 = 0$).</p>
+    <ul>
+      <li>Si definiscono le conduttanze di ciascun ramo.</li>
+      <li>Per ogni nodo (escluso il nodo massa) si applica la KCL, formulando le correnti incognite nei resistori in funzione della differenza di potenziale tra i due nodi di ciascun ramo (legge di Ohm: $i_{AB} = G \cdot (U_A - U_B)$).</li>
+      <li>I termini generati dai GIC si spostano nel termine noto delle equazioni.</li>
+      <li>Se ci sono GIT tra due nodi incogniti, si rende necessario introdurre una <strong>super-KCL</strong> o utilizzare l'analisi nodale modificata.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Metodo delle Correnti di Anello</h2>
+    <p>Ideale per reti piane. Le incognite si riducono alle correnti fittizie che circolano in ciascuno degli $m = \ell - n + 1$ anelli della rete, riducendo la dimensione del sistema lineare a <strong>$m$ equazioni</strong>.</p>
+    <ul>
+      <li>Si assegna una corrente di anello (es. in senso orario) a ciascun anello.</li>
+      <li>Si scrive la <strong>KVL per ogni anello</strong> esprimendo la caduta di tensione su ogni resistore mediante la legge di Ohm applicata alla somma algebrica delle correnti degli anelli che lo attraversano.</li>
+      <li>Se un ramo appartiene solo all'anello $x$, la sua corrente è unicamente $i_{ax}$. Se è condiviso fra due anelli $x$ e $y$, la sua corrente netta è $i_{ax} \pm i_{ay}$.</li>
+      <li>I generatori ideali di corrente richiedono di definire dei super-anelli o l'introduzione della caduta incognita sul GIC.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Principio di Sovrapposizione degli Effetti</h2>
+    <p>In una rete lineare, contenente resistori lineari e generatori indipendenti, l'effetto (tensione o corrente su qualsiasi ramo) causato dall'azione simultanea di tutti i generatori è pari alla somma algebrica degli effetti che si otterrebbero attivando <strong>un solo generatore indipendente per volta</strong>.</p>
+    <div class="checklist-box">
+      <div class="checklist-title">Come "spegnere" i generatori</div>
+      <div class="check-item">
+        <div class="check-box done"><i class="bi bi-check"></i></div>
+        <div>
+          <strong style="color:var(--text-primary)">GIT Spento:</strong> $e = 0$. Il generatore ideale di tensione si sostituisce con un <strong>cortocircuito</strong> ideale.
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done"><i class="bi bi-check"></i></div>
+        <div>
+          <strong style="color:var(--text-primary)">GIC Spento:</strong> $j = 0$. Il generatore ideale di corrente si sostituisce con un <strong>circuito aperto</strong> ideale.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Teorema di Sostituzione</h2>
+    <p>Se in una data rete è noto in via definitiva e univoca il funzionamento di un certo ramo ai cui capi è presente una tensione $\bar{v}$ e all'interno del quale circola una corrente $\bar{i}$, si può sostituire tale ramo con:</p>
+    <ul>
+      <li>Un <strong>Generatore Ideale di Tensione (GIT)</strong> il cui valore impresso è pari a $\bar{v}$.</li>
+      <li>Oppure un <strong>Generatore Ideale di Corrente (GIC)</strong> il cui valore impresso è pari a $\bar{i}$.</li>
+    </ul>
+    <p>La sostituzione non altera le tensioni e le correnti in tutti gli altri rami della rete.</p>
+  </div>
+
+  <div class="section-block" id="section-6">
+    <h2><span class="dot"></span> Teoremi di Thévenin e Norton</h2>
+    <p>Sono due dei teoremi più potenti nell'analisi circuitale. Permettono di "comprimere" l'intero comportamento di una rete attiva lineare, vista da una qualsiasi porta $A$-$B$, in un equivalente macroscopico ridotto ai minimi termini.</p>
+    
+    <div class="split-card">
+      <div class="split-card-text">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Equivalente di Thévenin</h3>
+        <p style="font-size:13px;color:var(--text-secondary); margin-bottom:1rem;">
+          La rete vista dai terminali A-B equivale alla <strong>serie</strong> formata da un GIT con f.e.m. $E_{th}$ e una resistenza equivalente $R_{th}$.
+        </p>
+        <ul style="font-size:12.5px;color:var(--text-secondary); padding-left:1.2rem; line-height:1.7;">
+          <li>$E_{th} = V_{AB0}$: è la tensione misurata ai morsetti <strong>a vuoto</strong> (morsetti staccati).</li>
+          <li>$R_{th} = R_{eq}$: è la resistenza equivalente calcolata "spegnendo" tutti i generatori indipendenti della rete attiva.</li>
+        </ul>
+      </div>
+      <div class="split-card-text" style="border-top:1px solid var(--border)">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Equivalente di Norton</h3>
+        <p style="font-size:13px;color:var(--text-secondary); margin-bottom:1rem;">
+          La stessa rete equivale al <strong>parallelo</strong> tra un GIC di intensità $J_N$ e una conduttanza equivalente $G_N$ (o resistenza $R_N$).
+        </p>
+        <ul style="font-size:12.5px;color:var(--text-secondary); padding-left:1.2rem; line-height:1.7;">
+          <li>$J_N = I_{cc}$: è la corrente di <strong>cortocircuito</strong> misurata se si pongono i terminali in C.C.</li>
+          <li>$G_N = 1/R_{th}$: è misurata sempre spegnendo tutti i generatori.</li>
+        </ul>
+        <p style="font-size:12px;color:var(--text-muted); margin-top:0.5rem;">Vale la relazione diretta: $J_N = E_{th} / R_{th}$.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-7">
+    <h2><span class="dot"></span> Teorema del Massimo Trasferimento di Potenza</h2>
+    <p>Ci si chiede quale deve essere il valore del resistore di <strong>carico $R_L$</strong>, da connettere a una rete attiva equivalente modellizzata come un generatore di Thévenin ($E_{th}$, $R_{th}$), per massimizzare la potenza dissipata unicamente sul carico.</p>
+    <div class="card-formula">
+      <div class="header">Condizione di Adattamento in Potenza</div>
+      <div class="content">
+        <div class="formula-text">$ R_L = R_{th} $</div>
+        <div class="formula-desc">La potenza massima si ottiene imponendo che la resistenza di carico eguagli la resistenza interna della sorgente di Thévenin.</div>
+      </div>
+    </div>
+    <p>Quando $R_L = R_{th}$, il circuito è "adattato". La tensione sul carico sarà esattamente la metà di quella a vuoto ($V_L = E_{th}/2$) e la potenza trasferita sarà $ P_{max} = \frac{E_{th}^2}{4 R_{th}} $.</p>
+    <div class="warn-box">
+      Attenzione: in questa condizione il rendimento (efficienza energetica $\eta$) del circuito è solo del 50%. Tanta energia viene trasferita al carico quanta ne viene internamente dissipata su $R_{th}$. L'adattamento in potenza si usa prevalentemente in elettronica e telecomunicazioni (segnali deboli, es. antenne o amplificatori audio), non nella trasmissione di potenza elettrica industriale dove si punta a rendimenti $\to 100\%$.
+    </div>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="05-bipoli-adinamici.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 05 · Bipoli Adinamici</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+    <a href="07-doppi-bipoli.html" class="btn btn-ghost">07 · Doppi Bipoli <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 06 · Analisi e Teoremi</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

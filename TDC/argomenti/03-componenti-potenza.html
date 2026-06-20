@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 · Componenti e Potenza — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>03 · Componenti</div></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><a href="07-doppi-bipoli.html"><span class="sb-pdot"></span>07 · Doppi Bipoli</a></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 03 · Basi</span>
+  <div class="topic-num" style="color:#60a5fa">03 / 10</div>
+  <h1 class="topic-hero-title">Componenti e Potenza</h1>
+  <p class="hero-sub" style="max-width:640px">Dall'n-polo al bipolo, il calcolo della potenza elettrica, il teorema di Tellegen e l'introduzione dei componenti ideali base (resistori e generatori).</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>03 · Componenti</span>
+  </div>
+  
+  <div class="theme-box">Questa pagina (Lezioni 4-5) copre le nozioni elementari su potenza assorbita/erogata e le relazioni caratteristiche dei bipoli ideali statici.</div>
+  
+  <div class="index-grid" data-prefix="03">
+      <ul>
+        <li>N-polo e Porta</li>
+        <li>Potenza Elettrica e Convenzioni</li>
+        <li>Teorema di Tellegen</li>
+        <li>Bipolo Passivo e Attivo</li>
+        <li>Resistore Ideale</li>
+        <li>Generatori Ideali (GIT e GIC)</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> N-polo e Porta <span class="sub-tag">base</span></h2>
+    <p>Un <span class="keyword">n-polo</span> è un componente accessibile dall'esterno tramite <em>n</em> morsetti (o terminali). La corrente netta che entra (o esce) da tutto l'n-polo è nulla (la somma delle correnti in tutti i morsetti deve fare zero per la KCL se applichiamo una superficie di taglio all'intero componente).</p>
+    <p>Si definisce <span class="keyword">porta</span> una coppia di morsetti di un componente in cui la corrente che entra da un morsetto è esattamente uguale alla corrente che esce dall'altro in ogni istante.</p>
+    <div class="info-box">Un <strong>bipolo</strong> è il componente più elementare, costituito da due morsetti che costituiscono una porta.</div>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Potenza Elettrica e Convenzioni</h2>
+    <p>La <span class="keyword">potenza elettrica istantanea</span> $p(t)$ erogata o assorbita da un componente (bipolo) è definita dal prodotto della tensione per la corrente. Si misura in <strong>Watt (W)</strong>.</p>
+    
+    <div class="compare-grid">
+      <div class="compare-col">
+        <div class="compare-col-head blue">Convenzione degli Utilizzatori</div>
+        <div class="compare-col-body">
+          <p style="font-size:12.5px;color:var(--text-secondary)">La corrente entra dal morsetto indicato col $+$ della tensione. Il prodotto $p(t) = v(t) \cdot i(t)$ rappresenta la <strong>potenza assorbita</strong> dal componente. Se $p > 0$, il componente assorbe energia; se $p < 0$, ne cede.</p>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-col-head amber">Convenzione dei Generatori</div>
+        <div class="compare-col-body">
+          <p style="font-size:12.5px;color:var(--text-secondary)">La corrente esce dal morsetto indicato col $+$ della tensione. Il prodotto $p(t) = v(t) \cdot i(t)$ rappresenta la <strong>potenza erogata</strong> (fornita al resto del circuito). Se $p > 0$, eroga energia; se $p < 0$, la assorbe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Teorema di Tellegen (Conservazione della Potenza)</h2>
+    <p>Per una rete elettrica in cui valgono KVL e KCL, la somma algebrica delle potenze assorbite (o erogate) da <em>tutti</em> i componenti è identicamente nulla in ogni istante.</p>
+    <div class="card-formula">
+      <div class="header">Teorema di Tellegen</div>
+      <div class="content">
+        <div class="formula-text">$ \sum_{k=1}^{n} v_k(t) i_k(t) = 0 $</div>
+        <div class="formula-desc">A patto che $v_k$ e $i_k$ soddisfino i vincoli topologici (KVL, KCL) e adottino la stessa convenzione per tutti i $k$.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Bipolo Passivo e Attivo</h2>
+    <p>Un bipolo si dice <span class="keyword">passivo</span> se l'energia netta che ha assorbito dal tempo $t_0$ (in cui lo stato energetico era nullo) fino ad un istante $t$ è sempre non negativa (mai in grado di fornire più energia di quanta ne abbia prima assorbita).</p>
+    <div class="formula-text" style="background:var(--code-bg); padding:10px; border-radius:var(--r-md); font-family:'JetBrains Mono', monospace; font-size:14px; text-align:center; color:#a5f3fc; margin-bottom:1rem; border:1px solid var(--border)">
+      $ W_a(t) = \int_{-\infty}^{t} p_a(\tau) d\tau \ge 0 \quad \forall t $
+    </div>
+    <p>Se esiste anche un solo andamento in cui questa disuguaglianza non viene rispettata, il bipolo si dice <strong>attivo</strong>.</p>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Resistore Ideale</h2>
+    <p>Il <span class="keyword">resistore ideale</span> è un bipolo adinamico passivo la cui relazione tra tensione e corrente (caratteristica) è data dalla <strong>Legge di Ohm</strong>. Non ha memoria, l'istante presente determina la tensione/corrente.</p>
+    <div class="card-formula">
+      <div class="header">Legge di Ohm (Conv. Utilizzatori)</div>
+      <div class="content">
+        <div class="formula-text">$ v(t) = R \cdot i(t) $</div>
+        <div class="formula-desc">$R$ è la resistenza (Ohm, $\Omega$). L'inverso $G = 1/R$ è la conduttanza (Siemens, S).</div>
+      </div>
+    </div>
+    <p>La potenza istantanea assorbita da un resistore (convenzione utilizzatori) è sempre $ p(t) = v(t)i(t) = R \cdot i^2(t) = \frac{v^2(t)}{R} \ge 0 $. Dunque il resistore è un bipolo dissipativo passivo.</p>
+  </div>
+
+  <div class="section-block" id="section-6">
+    <h2><span class="dot"></span> Generatori Ideali Indipendenti (GIT e GIC)</h2>
+    <p>Componenti attivi (modelli matematici ideali) che "impongono" una grandezza indipendente dal resto del circuito.</p>
+    <div class="split-card">
+      <div class="split-card-text">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Generatore Ideale di Tensione (GIT)</h3>
+        <p style="font-size:13px;color:var(--text-secondary); margin-bottom:0.5rem;">
+          Mantiene ai suoi morsetti una tensione $e(t)$ (o f.e.m. se costante) predefinita e invariabile, indipendentemente dalla corrente $i(t)$ che deve erogare o assorbire per farlo.
+        </p>
+        <p style="font-size:13px;color:var(--text-secondary); font-family:'JetBrains Mono',monospace;">v(t) = e(t),  ∀ i</p>
+      </div>
+      <div class="split-card-text" style="border-top:1px solid var(--border)">
+        <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Generatore Ideale di Corrente (GIC)</h3>
+        <p style="font-size:13px;color:var(--text-secondary); margin-bottom:0.5rem;">
+          Impone una corrente $j(t)$ che fluisce attraverso di esso in una direzione specifica, indipendentemente dalla tensione $v(t)$ ai suoi morsetti che si viene a creare.
+        </p>
+        <p style="font-size:13px;color:var(--text-secondary); font-family:'JetBrains Mono',monospace;">i(t) = j(t),  ∀ v</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="02-tensione-modello-reti.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 02 · Modello Reti</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+    <a href="04-topologia-reti.html" class="btn btn-ghost">04 · Topologia <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 03 · Componenti</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>

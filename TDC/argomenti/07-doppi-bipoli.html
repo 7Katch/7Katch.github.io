@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 · Doppi Bipoli e Pilotati — TDC</title>
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+</head>
+<body class="dot-grid theme-blue">
+<aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-grandezze-elettriche.html"><span class="sb-pdot"></span>01 · Basi</a></li>
+    <li><a href="02-tensione-modello-reti.html"><span class="sb-pdot"></span>02 · Modello Reti</a></li>
+    <li><a href="03-componenti-potenza.html"><span class="sb-pdot"></span>03 · Componenti</a></li>
+    <li><a href="04-topologia-reti.html"><span class="sb-pdot"></span>04 · Topologia</a></li>
+    <li><a href="05-bipoli-adinamici.html"><span class="sb-pdot"></span>05 · Bipoli Adinamici</a></li>
+    <li><a href="06-analisi-teoremi.html"><span class="sb-pdot"></span>06 · Analisi e Teoremi</a></li>
+    <li><div class="sb-cur"><span class="sb-pdot"></span>07 · Doppi Bipoli</div></li>
+    <li><a href="08-condensatore-induttore.html"><span class="sb-pdot"></span>08 · Cond. e Ind.</a></li>
+    <li><a href="09-regime-transitorio.html"><span class="sb-pdot"></span>09 · Regime Transitorio</a></li>
+    <li><a href="10-regime-sinusoidale.html"><span class="sb-pdot"></span>10 · Regime Sinusoidale</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"></button>
+      <a href="../" class="nav-logo">// TDC · Teoria dei Circuiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../" class="nav-back"><i class="bi bi-arrow-left"></i> Indice TDC</a>
+      <a href="/" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+<div class="hero" style="min-height:55vh">
+  <div class="hero-glow"></div>
+  <span class="hero-eyebrow" style="background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#60a5fa">Macroargomento 07 · Componenti</span>
+  <div class="topic-num" style="color:#60a5fa">07 / 10</div>
+  <h1 class="topic-hero-title">Doppi Bipoli e<br>Generatori Pilotati</h1>
+  <p class="hero-sub" style="max-width:640px">Passaggio ai componenti a due porte (quadripoli). Le diverse matrici di rappresentazione, il trasformatore ideale e il fondamentale concetto di generatore controllato.</p>
+</div>
+
+<hr class="divider">
+<div class="content-wrap">
+  <div class="nav-breadcrumb">
+    <a href="/">7Katch.github.io</a><span>/</span>
+    <a href="../index.html">TDC</a><span>/</span>
+    <span>07 · Doppi Bipoli</span>
+  </div>
+  
+  <div class="theme-box">Modulo basato sulle Lezioni 14-15. Mostra come modellizzare i componenti attivi essenziali come l'Amplificatore Operazionale, i Transistor e i Trasformatori di potenza.</div>
+  
+  <div class="index-grid" data-prefix="07">
+      <ul>
+        <li>Doppi Bipoli (Quadripoli)</li>
+        <li>Matrici di Rappresentazione (Z, Y, H, T)</li>
+        <li>Trasformatore Ideale</li>
+        <li>Generatori Pilotati Ideali</li>
+        <li>Circuiti con Generatori Pilotati</li>
+      </ul>
+  </div>
+
+  <div class="section-block" id="section-1">
+    <h2><span class="dot"></span> Doppi Bipoli (Quadripoli)</h2>
+    <p>Un <span class="keyword">doppio bipolo</span> è un 4-polo che presenta esternamente due <strong>porte</strong> ben distinte (Porta 1 e Porta 2). Ognuna deve soddisfare la "condizione di porta": la corrente che entra da un morsetto di una porta esce per intero dall'altro morsetto della stessa porta.</p>
+    <p>In un doppio bipolo le variabili descrittive esterne sono 4: tensione e corrente per la porta 1 ($v_1, i_1$), tensione e corrente per la porta 2 ($v_2, i_2$). Tutte le grandezze sono considerate in convenzione degli utilizzatori.</p>
+  </div>
+
+  <div class="section-block" id="section-2">
+    <h2><span class="dot"></span> Matrici di Rappresentazione (Z, Y, H, T)</h2>
+    <p>Un doppio bipolo lineare adinamico <strong>inerte</strong> (senza generatori indipendenti all'interno) è completamente caratterizzato da un sistema lineare che lega due variabili indipendenti (variabili di controllo) alle restanti due variabili dipendenti. La scelta determina la matrice caratteristica:</p>
+    
+    <div class="checklist-box">
+      <div class="checklist-title">Rappresentazioni principali del Doppio Bipolo</div>
+      <div class="check-item">
+        <div class="check-box done">Z</div>
+        <div>
+          <strong style="color:var(--text-primary)">Matrice delle Impedenze (Z):</strong> Variabili indipendenti $(i_1, i_2)$. Variabili dipendenti $(v_1, v_2)$. Usata solitamente per connessioni in <em>serie</em>.
+          <div style="font-family:'JetBrains Mono', monospace; font-size:12px; color:#a5f3fc; margin-top:5px;">[V] = [Z] * [I]</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done">Y</div>
+        <div>
+          <strong style="color:var(--text-primary)">Matrice delle Ammettenze (Y):</strong> Variabili indipendenti $(v_1, v_2)$. Variabili dipendenti $(i_1, i_2)$. È l'inversa della [Z]. Ideale per connessioni in <em>parallelo</em>.
+          <div style="font-family:'JetBrains Mono', monospace; font-size:12px; color:#a5f3fc; margin-top:5px;">[I] = [Y] * [V]</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done">H</div>
+        <div>
+          <strong style="color:var(--text-primary)">Matrice Ibrida (H):</strong> Variabili indipendenti $(i_1, v_2)$. Variabili dipendenti $(v_1, i_2)$. Utilizzata estensivamente nei modelli del transistor BJT.
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box done">T</div>
+        <div>
+          <strong style="color:var(--text-primary)">Matrice di Trasmissione (T / ABCD):</strong> Esprime le grandezze della porta 1 $(v_1, i_1)$ in funzione delle grandezze di uscita cambiate di segno $(v_2, -i_2)$. Ideale per connettere doppi bipoli in <em>cascata</em>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-3">
+    <h2><span class="dot"></span> Trasformatore Ideale</h2>
+    <p>Il <span class="keyword">Trasformatore Ideale</span> è un doppio bipolo inerte e dissipativo nullo che attua un trasferimento istantaneo della potenza (conservazione rigorosa della potenza: $p_1 + p_2 = 0$). È caratterizzato dal <strong>rapporto di trasformazione</strong> o rapporto spire $n$.</p>
+    <div class="card-formula">
+      <div class="header">Equazioni del Trasformatore Ideale</div>
+      <div class="content">
+        <div class="formula-text">$ v_1(t) = n \cdot v_2(t) $</div>
+        <div class="formula-text">$ i_1(t) = - \frac{1}{n} i_2(t) $</div>
+        <div class="formula-desc">Si noti il segno negativo sulla corrente, causato dalla convenzione degli utilizzatori usata su entrambe le porte. Questo componente non ammette né matrice Z né matrice Y, e si può rappresentare solo con matrici H, H' o T.</div>
+      </div>
+    </div>
+    <div class="info-box"><strong>Proprietà di Riflessione dell'Impedenza:</strong> Se si collega un resistore $R_L$ alla porta 2, il circuito visto dalla porta 1 apparirà come un resistore equivalente pari a $ R_{eq} = n^2 \cdot R_L $. È il principio fondante per i trasformatori di <em>adattamento d'impedenza</em>.</div>
+  </div>
+
+  <div class="section-block" id="section-4">
+    <h2><span class="dot"></span> Generatori Pilotati (o Controllati) Ideali</h2>
+    <p>Sono generatori la cui grandezza impressa (tensione o corrente) <strong>non è prefissata</strong> a priori, ma è proporzionale a una tensione o corrente presente in un'altra parte (ramo) della rete. Costituiscono i modelli lineari di transistori e operazionali e rendono il sistema <em>attivo non reciproco</em>.</p>
+    
+    <div class="compare-grid">
+      <div class="compare-col" style="border:1px solid var(--border)">
+        <div class="compare-col-head blue">4 Tipologie di Pilotati</div>
+        <div class="compare-col-body" style="padding:15px">
+          <ul style="font-size:13px; color:var(--text-secondary); line-height:1.7; padding-left:1.2rem;">
+            <li><strong style="color:var(--text-primary)">VCVS:</strong> Voltage-Controlled Voltage Source. L'amplificatore di tensione per eccellenza. Modello ideale dell'OpAmp. ($v_2 = \mu v_1$)</li>
+            <li><strong style="color:var(--text-primary)">VCCS:</strong> Voltage-Controlled Current Source. Modella l'amplificatore a transconduttanza (es. MOSFET o BJT in piccoli segnali). ($i_2 = g_m v_1$)</li>
+            <li><strong style="color:var(--text-primary)">CCVS:</strong> Current-Controlled Voltage Source. Amplificatore a transresistenza. ($v_2 = r_m i_1$)</li>
+            <li><strong style="color:var(--text-primary)">CCCS:</strong> Current-Controlled Current Source. Amplificatore di corrente (es. BJT). ($i_2 = \alpha i_1$)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" id="section-5">
+    <h2><span class="dot"></span> Circuiti Lineari con Generatori Pilotati</h2>
+    <p>La presenza di generatori pilotati modifica profondamente l'analisi di una rete.</p>
+    <ul>
+      <li>I metodi matriciali sistematici (Nodi, Anelli) rimangono validi, ma le equazioni addizionali fornite dai generatori pilotati spezzano la <em>simmetria</em> della matrice del sistema.</li>
+      <li><strong>Principio di Sovrapposizione:</strong> si possono "spegnere" <em>esclusivamente</em> i generatori indipendenti. I generatori pilotati non si spengono mai, perché il loro valore dipende dalla risposta del circuito stesso!</li>
+      <li><strong>Teoremi di Thévenin/Norton:</strong> per trovare la $R_{eq}$ non si può "leggere" direttamente il parallelo/serie (poiché i pilotati non si possono disattivare e restano come "resistori attivi"). Si deve procedere spegnendo i generatori <em>indipendenti</em>, applicando una DDP di prova ai morsetti $A-B$ (un GIT o GIC ausiliario) e misurando la corrente $I_{test}$, ricavando poi $R_{th} = V_{test}/I_{test}$. Un generatore pilotato può persino rendere la $R_{eq}$ <strong>negativa</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="back-btn-wrap">
+    <a href="06-analisi-teoremi.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 06 · Analisi e Teoremi</a>
+    <a href="../index.html" class="btn btn-theme">↑ Indice TDC</a>
+    <a href="08-condensatore-induttore.html" class="btn btn-ghost">08 · Cond. e Ind. <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+<footer>
+  <p>// <a href="/">7Katch.github.io</a> · TDC · 07 · Doppi Bipoli</p>
+</footer>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+</html>
