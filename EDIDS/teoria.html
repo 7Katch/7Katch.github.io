@@ -1,578 +1,204 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teoria — EDIDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css">
-</head>
-<body>
+<link rel="stylesheet" href="../shared/katchkit.css">
+<style>
+  .nav-logo { color: var(--accent-soft); }
+  .nav-back:hover { color: var(--accent-soft); border-color: rgba(124, 92, 252, 0.4); }
 
+  .hero-title-edids {
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #f0eeff 0%, #a78bfa 55%, #7c5cfc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+
+  .intro-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .overview-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.25rem 1.5rem;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+  }
+  .overview-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+    opacity: 0.7;
+  }
+  .overview-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+
+  .ov-amber::before  { background: var(--amber); }
+  .ov-teal::before   { background: var(--teal); }
+  .ov-green::before  { background: var(--green); }
+  .ov-coral::before  { background: var(--coral); }
+  .ov-purple::before { background: var(--accent-soft); }
+
+  .ov-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .ov-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+  }
+  .ov-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.6;
+  }
+
+  .divider-label {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .divider-label span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .divider-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body class="dot-grid">
+
+<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">// EDIDS · Teoria</a>
-  <div class="nav-links-row">
+  <div class="nav-right">
     <a href="index.html" class="nav-back"><i class="bi bi-arrow-left"></i> EDIDS</a>
     <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
   </div>
 </nav>
 
-<div class="page-hero">
-  <div class="breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a>
-    <span>/</span>
-    <a href="index.html">EDIDS</a>
-    <span>/</span>
-    <span>Teoria</span>
-  </div>
-  <div class="page-eyebrow">02 · Teoria</div>
-  <h1>Teoria dietro<br>al progetto</h1>
-  <p>Principi GRASP, pattern GoF e tecniche ricorrenti che ogni progettista di software orientato agli oggetti deve padroneggiare.</p>
-</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  
+  <span class="hero-eyebrow" style="background:rgba(124, 92, 252, 0.08);border-color:rgba(124, 92, 252, 0.3);color:var(--accent-soft)">
+    Ingegneria del Software
+  </span>
 
-<div class="toc">
-  <a href="#grasp"    class="toc-item">GRASP</a>
-  <a href="#singleton" class="toc-item">Singleton</a>
-  <a href="#observer" class="toc-item">Observer</a>
-  <a href="#patterns" class="toc-item">Altri Pattern GoF</a>
-  <a href="#tecniche" class="toc-item">Tecniche ricorrenti</a>
-</div>
+  <h1 class="hero-title-edids">Ingegneria del<br>Software</h1>
 
-<hr class="divider" style="max-width:900px;margin:1rem auto 0;">
-
-<!-- ===== GRASP ===== -->
-<div class="content-section" id="grasp">
-  <div class="section-eyebrow">Principi fondamentali</div>
-  <h2 class="section-title">GRASP Patterns</h2>
-  <p class="section-intro">
-    General Responsibility Assignment Software Patterns — 9 principi guida per assegnare responsabilità a classi e oggetti. Non sono pattern implementativi come il GoF: sono criteri di giudizio per prendere buone decisioni di design.
+  <p class="hero-sub">
+    Dalla raccolta dei requisiti al design orientato agli oggetti, fino al deployment in Cloud e alla manutenzione.
   </p>
+</div>
 
-  <div class="grasp-grid">
-    <div class="grasp-card">
-      <div class="grasp-icon">IE</div>
-      <h3>Information Expert</h3>
-      <p>Assegna la responsabilità alla classe che possiede le informazioni necessarie. Chi sa, fa. Nel gioco, <code style="color:var(--teal);font-size:11px">Player</code> calcola il proprio punteggio perché ha <code style="color:var(--teal);font-size:11px">score</code> e <code style="color:var(--teal);font-size:11px">lives</code>.</p>
-      <span class="grasp-tag">responsabilità</span>
-    </div>
-    <div class="grasp-card">
-      <div class="grasp-icon">CR</div>
-      <h3>Creator</h3>
-      <p>B crea A se B contiene, aggrega o usa strettamente A. <code style="color:var(--teal);font-size:11px">GameSession</code> crea i <code style="color:var(--teal);font-size:11px">Player</code> perché li aggrega e li contiene per tutta la sessione.</p>
-      <span class="grasp-tag">creazione</span>
-    </div>
-    <div class="grasp-card">
-      <div class="grasp-icon">LC</div>
-      <h3>Low Coupling</h3>
-      <p>Minimizza le dipendenze. <code style="color:var(--teal);font-size:11px">GameController</code> dipende dall'interfaccia <code style="color:var(--teal);font-size:11px">IGameObserver</code>, non dalle sue implementazioni concrete — cambiare la UI non tocca il controller.</p>
-      <span class="grasp-tag">accoppiamento</span>
-    </div>
-    <div class="grasp-card">
-      <div class="grasp-icon">HC</div>
-      <h3>High Cohesion</h3>
-      <p>Ogni classe ha responsabilità focalizzate e correlate. <code style="color:var(--teal);font-size:11px">Item</code> sa solo come applicarsi a un Player. Non gestisce sessioni, punteggi o livelli.</p>
-      <span class="grasp-tag">coesione</span>
-    </div>
-    <div class="grasp-card">
-      <div class="grasp-icon">CT</div>
-      <h3>Controller</h3>
-      <p>Gli eventi di sistema sono gestiti da un oggetto Controller che non è UI. <code style="color:var(--teal);font-size:11px">GameController</code> riceve <code style="color:var(--teal);font-size:11px">move()</code>, <code style="color:var(--teal);font-size:11px">collectItem()</code>, <code style="color:var(--teal);font-size:11px">endGame()</code> dall'interfaccia e orchestra la logica.</p>
-      <span class="grasp-tag">architettura</span>
-    </div>
-    <div class="grasp-card">
-      <div class="grasp-icon">PL</div>
-      <h3>Polymorphism</h3>
-      <p>Usa il polimorfismo invece di if/switch per variazioni di comportamento. Tipi di <code style="color:var(--teal);font-size:11px">Item</code> diversi (HealthItem, WeaponItem) implementano tutti <code style="color:var(--teal);font-size:11px">apply(player)</code> in modo diverso.</p>
-      <span class="grasp-tag">OOP</span>
-    </div>
-    <div class="grasp-card">
-      <div class="grasp-icon">PF</div>
-      <h3>Pure Fabrication</h3>
-      <p>Classe artificiale non del dominio per rispettare LC e HC. Un <code style="color:var(--teal);font-size:11px">GameRepository</code> o <code style="color:var(--teal);font-size:11px">ScoreService</code> non esiste nel dominio del gioco, ma risolve problemi di persistenza senza sporcare le classi di dominio.</p>
-      <span class="grasp-tag">astrazione</span>
-    </div>
-    <div class="grasp-card">
-      <div class="grasp-icon">IN</div>
-      <h3>Indirection</h3>
-      <p>Introduce un intermediario per disaccoppiare. L'interfaccia <code style="color:var(--teal);font-size:11px">IGameObserver</code> è un livello di indirezione tra <code style="color:var(--teal);font-size:11px">GameSystem</code> e le sue viste — la base del pattern Observer.</p>
-      <span class="grasp-tag">disaccoppiamento</span>
-    </div>
-    <div class="grasp-card">
-      <div class="grasp-icon">PV</div>
-      <h3>Protected Variations</h3>
-      <p>Identifica i punti di cambiamento e proteggi le parti stabili con interfacce. La logica di rendering può cambiare liberamente: <code style="color:var(--teal);font-size:11px">IGameObserver</code> garantisce che il core del gioco non sia mai impattato.</p>
-      <span class="grasp-tag">stabilità</span>
-    </div>
-  </div>
+<div class="divider-label">
+  <span>Gli Argomenti del Corso</span>
+</div>
 
-  <div class="highlight-box">
-    ✅ Nel progetto del gioco: <strong>Controller</strong> <i class="bi bi-arrow-right"></i> GameController; <strong>Low Coupling</strong> <i class="bi bi-arrow-right"></i> uso di interfacce Observer; <strong>Information Expert</strong> <i class="bi bi-arrow-right"></i> Player gestisce il proprio stato; <strong>Creator</strong> <i class="bi bi-arrow-right"></i> GameSession crea i Player.
+<div class="intro-section">
+  <div class="overview-grid">
+    <a href="argomenti/01-fondamenti.html" class="overview-card ov-purple">
+      <div class="ov-num">ARGOMENTO 01</div>
+      <div class="ov-title">Fondamenti di Ingegneria</div>
+      <div class="ov-sub">Differenza tra Software Engineering e Informatica, caratteristiche ed etica.</div>
+    </a>
+    
+    <a href="argomenti/02-ciclo-di-vita.html" class="overview-card ov-teal">
+      <div class="ov-num">ARGOMENTO 02</div>
+      <div class="ov-title">Modelli e Ciclo di Vita</div>
+      <div class="ov-sub">Waterfall vs Agile, Scrum ed Extreme Programming.</div>
+    </a>
+    
+    <a href="argomenti/03-ingegneria-requisiti.html" class="overview-card ov-green">
+      <div class="ov-num">ARGOMENTO 03</div>
+      <div class="ov-title">Ingegneria dei Requisiti</div>
+      <div class="ov-sub">User Stories, criteri INVEST, Gherkin e tecniche di elicitazione.</div>
+    </a>
+    
+    <a href="argomenti/04-architettura.html" class="overview-card ov-amber">
+      <div class="ov-num">ARGOMENTO 04</div>
+      <div class="ov-title">Architettura del Software</div>
+      <div class="ov-sub">Modello 4+1, C4, stili architetturali ed evoluzione a Microservizi.</div>
+    </a>
+    
+    <a href="argomenti/05-modellazione-design.html" class="overview-card ov-coral">
+      <div class="ov-num">ARGOMENTO 05</div>
+      <div class="ov-title">Modellazione e Design</div>
+      <div class="ov-sub">Dal dominio al codice, principi GRASP e Pattern della Gang of Four.</div>
+    </a>
+    
+    <a href="argomenti/06-strumenti-devops.html" class="overview-card ov-purple">
+      <div class="ov-num">ARGOMENTO 06</div>
+      <div class="ov-title">Strumenti DevOps e CI/CD</div>
+      <div class="ov-sub">Build Tools (Maven, Gradle), Git, CI e Containerizzazione.</div>
+    </a>
+    
+    <a href="argomenti/07-cloud-aws.html" class="overview-card ov-teal">
+      <div class="ov-num">ARGOMENTO 07</div>
+      <div class="ov-title">Sistemi Cloud (AWS)</div>
+      <div class="ov-sub">Paradigma Cloud, servizi Core AWS (EC2, S3) e Infrastructure as Code.</div>
+    </a>
+    
+    <a href="argomenti/08-evoluzione-riuso.html" class="overview-card ov-green">
+      <div class="ov-num">ARGOMENTO 08</div>
+      <div class="ov-title">Evoluzione e Riuso</div>
+      <div class="ov-sub">Refactoring di sistemi legacy, riuso del software e sicurezza (SBOM).</div>
+    </a>
   </div>
 </div>
 
-<!-- ===== SINGLETON ===== -->
-<div class="content-section" id="singleton">
-  <div class="section-eyebrow">GoF · Creazionale</div>
-  <h2 class="section-title">Singleton</h2>
-  <p class="section-intro">
-    Garantisce una sola istanza di una classe con un punto di accesso globale controllato. Nel gioco, <code style="color:var(--accent-soft)">GameSystem</code> è un Singleton: esiste un solo sistema di gioco attivo che gestisce livelli, regole e stato globale.
-  </p>
-
-  <div class="two-col">
-    <div>
-      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.8;margin-bottom:1rem">
-        Il costruttore è <strong style="color:var(--text-primary)">privato</strong>: nessuno può creare istanze dall'esterno. L'unico accesso avviene tramite il metodo statico <code style="color:var(--accent-soft);font-size:12px">getInstance()</code>, che crea l'istanza al primo invio e la restituisce sempre nelle chiamate successive.
-      </p>
-      <div class="pros-cons">
-        <div class="pros-cons-box pro">
-          <h5>Vantaggi</h5>
-          <ul>
-            <li>Istanza controllata</li>
-            <li>Accesso globale</li>
-            <li>Lazy initialization</li>
-            <li>Stato condiviso sicuro</li>
-          </ul>
-        </div>
-        <div class="pros-cons-box con">
-          <h5>Attenzione</h5>
-          <ul>
-            <li>Difficile da testare</li>
-            <li>Stato globale nascosto</li>
-            <li>Thread safety richiesta</li>
-            <li>Viola SRP (spesso)</li>
-          </ul>
-        </div>
-      </div>
-      <div class="warn-box" style="margin-top:1.25rem">
-        ⚠️ Nei sistemi moderni preferisci la <strong>Dependency Injection</strong>. Il Singleton va usato solo quando l'unicità è un requisito reale del dominio, non solo convenienza.
-      </div>
-    </div>
-
-    <div>
-      <div class="code-block">
-        <div class="code-header">
-          <div class="code-dots">
-            <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
-          </div>
-          <span class="code-filename">GameSystem.java</span>
-        </div>
-        <div class="code-body"><pre>
-<span class="cm">// «Singleton» — Thread-safe (Holder idiom)</span>
-<span class="kw">public class</span> <span class="tp">GameSystem</span> {
-
-  <span class="cm">// Holder: creato solo quando richiesto</span>
-  <span class="kw">private static class</span> <span class="tp">Holder</span> {
-    <span class="kw">private static final</span> <span class="tp">GameSystem</span>
-      INSTANCE = <span class="kw">new</span> <span class="tp">GameSystem</span>();
-  }
-
-  <span class="kw">private</span> <span class="fn">GameSystem</span>() {
-    <span class="cm">// inizializzazione livelli, regole…</span>
-  }
-
-  <span class="kw">public static</span> <span class="tp">GameSystem</span> <span class="fn">getInstance</span>() {
-    <span class="kw">return</span> <span class="tp">Holder</span>.INSTANCE;
-  }
-
-  <span class="kw">public boolean</span> <span class="fn">checkWin</span>(<span class="tp">Player</span> p) {
-    <span class="kw">return</span> p.<span class="fn">getScore</span>() >= winThreshold;
-  }
-
-  <span class="kw">public void</span> <span class="fn">nextLevel</span>() { ... }
-}
-
-<span class="cm">// Utilizzo da GameController</span>
-<span class="tp">GameSystem</span> sys = <span class="tp">GameSystem</span>.<span class="fn">getInstance</span>();
-<span class="kw">boolean</span> won = sys.<span class="fn">checkWin</span>(player);
-</pre></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== OBSERVER ===== -->
-<div class="content-section" id="observer">
-  <div class="section-eyebrow">GoF · Comportamentale</div>
-  <h2 class="section-title">Observer Pattern</h2>
-  <p class="section-intro">
-    Definisce una dipendenza uno-a-molti: quando il <strong>Subject</strong> cambia stato, tutti gli <strong>Observer</strong> registrati vengono notificati automaticamente. Nel gioco: <code style="color:var(--accent-soft)">GameSystem</code> è il Subject, <code style="color:var(--teal)">ScoreUI</code> e <code style="color:var(--teal)">SoundManager</code> sono Observer.
-  </p>
-
-  <div class="diagram-wrap">
-    <svg width="700" height="300" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', monospace">
-      <!-- IGameObserver interface -->
-      <rect x="400" y="10" width="180" height="85" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
-      <rect x="400" y="10" width="180" height="28" rx="6" fill="rgba(124,92,252,0.08)"/>
-      <text x="490" y="20" text-anchor="middle" fill="#a78bfa" font-size="9">«interface»</text>
-      <text x="490" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">IGameObserver</text>
-      <line x1="400" y1="38" x2="580" y2="38" stroke="rgba(124,92,252,0.2)" stroke-width="1"/>
-      <text x="410" y="53" fill="#22d3ee" font-size="9">+ onScoreChange(s: int)</text>
-      <text x="410" y="66" fill="#22d3ee" font-size="9">+ onLevelUp(level: int)</text>
-      <text x="410" y="79" fill="#22d3ee" font-size="9">+ onGameOver()</text>
-
-      <!-- GameSystem (Subject) -->
-      <rect x="30" y="10" width="195" height="115" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.5)" stroke-width="1.5"/>
-      <rect x="30" y="10" width="195" height="28" rx="6" fill="rgba(124,92,252,0.15)"/>
-      <text x="127" y="20" text-anchor="middle" fill="#a78bfa" font-size="9">«Singleton · Subject»</text>
-      <text x="127" y="32" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">GameSystem</text>
-      <line x1="30" y1="38" x2="225" y2="38" stroke="rgba(124,92,252,0.3)" stroke-width="1"/>
-      <text x="40" y="53" fill="#9488c2" font-size="9">− observers: List&lt;IGameObserver&gt;</text>
-      <line x1="30" y1="61" x2="225" y2="61" stroke="rgba(124,92,252,0.15)" stroke-width="1"/>
-      <text x="40" y="76" fill="#22d3ee" font-size="9">+ addObserver(o)</text>
-      <text x="40" y="89" fill="#22d3ee" font-size="9">+ removeObserver(o)</text>
-      <text x="40" y="102" fill="#22d3ee" font-size="9">− notifyAll(event)</text>
-      <text x="40" y="115" fill="#22d3ee" font-size="9">+ checkWin(): bool</text>
-
-      <!-- Arrow GameSystem -> IGameObserver -->
-      <line x1="225" y1="55" x2="400" y2="50" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <polygon points="396,45 406,50 396,55" fill="rgba(160,140,255,0.5)"/>
-      <text x="275" y="44" fill="#5a5080" font-size="9">notifies *</text>
-
-      <!-- ScoreUI -->
-      <rect x="400" y="155" width="180" height="80" rx="6" fill="#0f0f1a" stroke="rgba(52,211,153,0.4)" stroke-width="1.5"/>
-      <rect x="400" y="155" width="180" height="28" rx="6" fill="rgba(52,211,153,0.08)"/>
-      <text x="490" y="165" text-anchor="middle" fill="#34d399" font-size="9">«implements»</text>
-      <text x="490" y="177" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">ScoreUI</text>
-      <line x1="400" y1="183" x2="580" y2="183" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
-      <text x="410" y="198" fill="#22d3ee" font-size="9">+ onScoreChange(s)</text>
-      <text x="410" y="211" fill="#22d3ee" font-size="9">+ onLevelUp(l)</text>
-      <text x="410" y="224" fill="#22d3ee" font-size="9">+ onGameOver()</text>
-
-      <!-- SoundManager -->
-      <rect x="400" y="255" width="180" height="38" rx="6" fill="#0f0f1a" stroke="rgba(251,191,36,0.35)" stroke-width="1.5"/>
-      <rect x="400" y="255" width="180" height="18" rx="6" fill="rgba(251,191,36,0.06)"/>
-      <text x="490" y="265" text-anchor="middle" fill="#fbbf24" font-size="9">«implements»</text>
-      <text x="490" y="284" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">SoundManager</text>
-
-      <!-- implements arrows (dashed) -->
-      <line x1="490" y1="95" x2="490" y2="155" stroke="rgba(52,211,153,0.4)" stroke-width="1.2" stroke-dasharray="4,3"/>
-      <polygon points="485,149 490,159 495,149" fill="none" stroke="rgba(52,211,153,0.4)" stroke-width="1.2"/>
-      <line x1="490" y1="235" x2="490" y2="255" stroke="rgba(251,191,36,0.35)" stroke-width="1.2" stroke-dasharray="4,3"/>
-      <polygon points="485,249 490,259 495,249" fill="none" stroke="rgba(251,191,36,0.35)" stroke-width="1.2"/>
-
-      <!-- labels -->
-      <text x="500" y="128" fill="#5a5080" font-size="8">implements</text>
-      <text x="500" y="248" fill="#5a5080" font-size="8">implements</text>
-    </svg>
-  </div>
-
-  <div class="two-col">
-    <div class="code-block">
-      <div class="code-header">
-        <div class="code-dots">
-          <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
-        </div>
-        <span class="code-filename">IGameObserver.java</span>
-      </div>
-      <div class="code-body"><pre>
-<span class="kw">public interface</span> <span class="tp">IGameObserver</span> {
-  <span class="kw">void</span> <span class="fn">onScoreChange</span>(<span class="kw">int</span> newScore);
-  <span class="kw">void</span> <span class="fn">onLevelUp</span>(<span class="kw">int</span> level);
-  <span class="kw">void</span> <span class="fn">onGameOver</span>();
-}
-
-<span class="cm">// ScoreUI implementa l'Observer</span>
-<span class="kw">public class</span> <span class="tp">ScoreUI</span>
-    <span class="kw">implements</span> <span class="tp">IGameObserver</span> {
-
-  <span class="kw">public void</span> <span class="fn">onScoreChange</span>(<span class="kw">int</span> s) {
-    display.<span cl  }
-  <span class="kw">public void</span> <span class="fn">onLevelUp</span>(<span class="kw">int</span> l) {
-    display.<span class="fn">showBanner</span>(<span class="str">"Level "</span> + l);
-  }
-  <span class="kw">public void</span> <span class="fn">onGameOver</span>() {
-    display.<span class="fn">showGameOver</span>();
-  }
-}
-</pre></div>
-    </div>
-    <div class="code-block">
-      <div class="code-header">
-        <div class="code-dots">
-          <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
-        </div>
-        <span class="code-filename">GameSystem_notify.java</span>
-      </div>
-      <div class="code-body"><pre>
-<span class="cm">// Nel Subject: notifica tutti gli observer</span>
-<span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">IGameObserver</span>&gt; observers
-    = <span class="kw">new</span> <span class="tp">ArrayList</span>&lt;&gt;();
-
-<span class="kw">public void</span> <span class="fn">addObserver</span>(<span class="tp">IGameObserver</span> o) {
-  observers.<span class="fn">add</span>(o);
-}
-
-<span class="kw">private void</span> <span class="fn">notifyScoreChange</span>(<span class="kw">int</span> s) {
-  <span class="kw">for</span> (<span class="tp">IGameObserver</span> o : observers) {
-    o.<span class="fn">onScoreChange</span>(s);
-  }
-}
-
-<span class="cm">// Registrazione dal Controller</span>
-sys.<span class="fn">addObserver</span>(<span class="kw">new</span> <span class="tp">ScoreUI</span>());
-sys.<span class="fn">addObserver</span>(<span class="kw">new</span> <span class="tp">SoundManager</span>());
-</pre></div>
-    </div>
-  </div>
-
-  <div class="highlight-box">
-    ✅ L'Observer è il bridge tra il core del gioco e qualsiasi vista o effetto. Aggiungere un <code>AchievementTracker</code> non richiede modificare <code>GameSystem</code>: basta implementare <code>IGameObserver</code> e registrarlo.
-  </div>
-</div>
-
-<!-- ===== ALTRI PATTERN GOF ===== -->
-<div class="content-section" id="patterns">
-  <div class="section-eyebrow">GoF · I più usati nel progetto</div>
-  <h2 class="section-title">Altri Pattern GoF</h2>
-  <p class="section-intro">
-    I 23 pattern GoF si dividono in Creazionali, Strutturali e Comportamentali. Ecco i più frequenti in un progetto software come il gioco, con spiegazione e contesto d'uso.
-  </p>
-
-  <!-- STRATEGY -->
-  <div class="pattern-card pc-amber">
-    <div class="pattern-header">
-      <div class="pattern-title">Strategy</div>
-      <div class="pattern-badges">
-        <span class="badge badge-comp">Comportamentale</span>
-        <span class="badge badge-proj">Usato nel gioco</span>
-      </div>
-    </div>
-    <p class="pattern-desc">
-      Definisce una famiglia di algoritmi intercambiabili e li incapsula, rendendoli sostituibili a runtime. Nel gioco: la <strong>strategia di movimento</strong> del Player può variare — camminata normale, scivolata, volo — senza cambiare la classe Player.
-    </p>
-    <div class="code-block">
-      <div class="code-header">
-        <div class="code-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span></div>
-        <span class="code-filename">MovementStrategy.java</span>
-      </div>
-      <div class="code-body"><pre>
-<span class="kw">public interface</span> <span class="tp">MovementStrategy</span> {
-  <span class="tp">Position</span> <span class="fn">move</span>(<span class="tp">Position</span> current, <span class="tp">Direction</span> dir);
-}
-
-<span class="kw">public class</span> <span class="tp">WalkStrategy</span> <span class="kw">implements</span> <span class="tp">MovementStrategy</span> {
-  <span class="kw">public</span> <span class="tp">Position</span> <span class="fn">move</span>(<span class="tp">Position</span> p, <span class="tp">Direction</span> d) {
-    <span class="kw">return</span> p.<span class="fn">step</span>(d, 1); <span class="cm">// 1 tile</span>
-  }
-}
-<span class="kw">public class</span> <span clas  <span class="kw">public</span> <span class="tp">Position</span> <span class="fn">move</span>(<span class="tp">Position</span> p, <span class="tp">Direction</span> d) {
-    <span class="kw">return</span> p.<span class="fn">step</span>(d, 3); <span class="cm">// 3 tiles</span>
-  }
-}
-
-<span class="cm">// Player usa la strategia corrente</span>
-player.<span class="fn">setMovement</span>(<span class="kw">new</span> <span class="tp">FlyStrategy</span>());
-player.<span class="fn">move</span>(Direction.UP); <span class="cm">// vola di 3 tile</span>
-</pre></div>
-    </div>
-    <div class="pattern-when">Usalo quando: hai più varianti di un algoritmo che devono essere selezionabili a runtime, o per eliminare if/switch basati sul tipo di comportamento.</div>
-  </div>
-
-  <!-- FACTORY METHOD -->
-  <div class="pattern-card pc-accent">
-    <div class="pattern-header">
-      <div class="pattern-title">Factory Method</div>
-      <div class="pattern-badges">
-        <span class="badge badge-creo">Creazionale</span>
-      </div>
-    </div>
-    <p class="pattern-desc">
-      Definisce un'interfaccia per creare oggetti, delegando alle sottoclassi la scelta del tipo concreto. Nel gioco: <code style="color:var(--accent-soft);font-size:12px">ItemFactory</code> crea Item diversi (HealthPotion, Shield, Weapon) senza che il Controller conosca le classi concrete.
-    </p>
-    <div class="code-block">
-      <div class="code-header">
-        <div class="code-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span></div>
-        <span class="code-filename">ItemFactory.java</span>
-      </div>
-      <div class="code-body"><pre>
-<span class="kw">public abstract class</span> <span class="tp">ItemFactory</span> {
-  <span class="kw">public abstract</span> <span class="tp">Item</span> <span class="fn">createItem</span>(<span class="tp">String</span> type);
-}
-
-<span class="kw">public class</span> <span class="tp">LevelItemFactory</span> <span class="kw">extends</span> <span class="tp">ItemFactory</span> {
-  <span class="kw">public</span> <span class="tp">Item</span> <span class="fn">createItem</span>(<span class="tp">String</span> type) {
-    <span class="kw">return switch</span> (type) {
-      <span class="kw">case</span> <span class="str">"health"</span> -> <span class="kw">new</span> <span class="tp">HealthPotion</span>(+30);
-      <span class="kw">case</span> <span class="str">"weapon"</span> -> <span class="kw">new</span> <span class="tp">Sword</span>(<span class="str">"IronSword"</span>);
-      <span class="kw">default</span>      -> <span class="kw">new</span> <span class="tp">BasicItem</span>();
-    };
-  }
-}
-</pre></div>
-    </div>
-    <div class="pattern-when">Usalo quando: il codice che crea oggetti non deve conoscere il tipo concreto, o quando vuoi che sottoclassi decidano cosa istanziare.</div>
-  </div>
-
-  <!-- DECORATOR -->
-  <div class="pattern-card pc-teal">
-    <div class="pattern-header">
-      <div class="pattern-title">Decorator</div>
-      <div class="pattern-badges">
-        <span class="badge badge-strut">Strutturale</span>
-      </div>
-    </div>
-    <p class="pattern-desc">
-      Aggiunge responsabilità a un oggetto dinamicamente, come alternativa all'ereditarietà. Nel gioco: un Player può ricevere un'armatura (<code style="color:var(--teal);font-size:12px">ArmoredPlayer</code>) che riduce i danni subiti, senza modificare la classe Player originale.
-    </p>
-    <div class="pattern-when">Usalo quando: vuoi aggiungere funzionalità a oggetti singoli senza sottoclassi, o per combinare comportamenti in modo flessibile a runtime.</div>
-  </div>
-
-  <!-- COMMAND -->
-  <div class="pattern-card pc-coral">
-    <div class="pattern-header">
-      <div class="pattern-title">Command</div>
-      <div class="pattern-badges">
-        <span class="badge badge-comp">Comportamentale</span>
-      </div>
-    </div>
-    <p class="pattern-desc">
-      Incapsula una richiesta come oggetto, permettendo parametrizzazione, accodamento e <str    </p>
-    <div class="pattern-when">Usalo quando: hai bisogno di undo/redo, registrazione delle operazioni (log), o vuoi accodare azioni da eseguire in futuro.</div>
-  </div>
-
-  <!-- STATE -->
-  <div class="pattern-card pc-green">
-    <div class="pattern-header">
-      <div class="pattern-title">State</div>
-      <div class="pattern-badges">
-        <span class="badge badge-comp">Comportamentale</span>
-        <span class="badge badge-proj">Usato nel gioco</span>
-      </div>
-    </div>
-    <p class="pattern-desc">
-      Permette a un oggetto di cambiare comportamento al cambiare del suo stato interno. Nel gioco: <code style="color:var(--teal);font-size:12px">GameSession</code> può essere in stato <em>WAITING</em>, <em>RUNNING</em>, <em>PAUSED</em>, <em>ENDED</em> — ogni stato risponde diversamente agli stessi metodi.
-    </p>
-    <div class="code-block">
-      <div class="code-header">
-        <div class="code-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span></div>
-        <span class="code-filename">GameState.java</span>
-      </div>
-      <div class="code-body"><pre>
-<span class="kw">public interface</span> <span class="tp">GameState</span> {
-  <span class="kw">void</span> <span class="fn">onMove</span>(<span class="tp">GameSession</span> ctx, <span class="tp">Direction</span> d);
-  <span class="kw">void</span> <span class="fn">onPause</span>(<span class="tp">GameSession</span> ctx);
-}
-
-<span class="kw">public class</span> <span class="tp">RunningState</span> <span class="kw">implements</span> <span class="tp">GameState</span> {
-  <span class="kw">public void</span> <span class="fn">onMove</span>(<span class="tp">GameSession</span> ctx, <span class="tp">Direction</span> d) {
-    ctx.<span class="fn">getPlayer</span>().<span class="fn">move</span>(d); <span class="cm">// movimento normale</span>
-  }
-  <span class="kw">public void</span> <span class="fn">onPause</span>(<span class="tp">GameSession</span> ctx) {
-    ctx.<span class="fn">setState</span>(<span class="kw">new</span> <span class="tp">PausedState</span>());
-  }
-}
-
-<span class="kw">public class</span> <span class="tp">PausedState</span> <span class="kw">implements</span> <span class="tp">GameState</span> {
-  <span class="kw">public void</span> <span class="fn">onMove</span>(<span class="tp">GameSession</span> ctx, <span class="tp">Direction</span> d) {
-    <span class="cm">// ignorato: il gioco è in pausa</span>
-  }
-}
-</pre></div>
-    </div>
-    <div class="pattern-when">Usalo quando: un oggetto cambia comportamento drasticamente in base al suo stato e vuoi evitare if/switch giganti sullo stato corrente.</div>
-  </div>
-</div>
-
-<!-- ===== TECNICHE RICORRENTI ===== -->
-<div class="content-section" id="tecniche">
-  <div class="section-eyebrow">Buone pratiche</div>
-  <h2 class="section-title">Tecniche ricorrenti di design</h2>
-  <p class="section-intro">
-    Oltre ai pattern formali, esistono principi e tecniche che ogni progettista applica continuamente per mantenere il codice sano, evolutivo e testabile.
-  </p>
-
-  <div class="info-box">
-    📐 Questi non sono pattern GoF formali, ma regole pratiche nate dall'esperienza. In un progetto reale, li applicherai più spesso dei pattern stessi.
-  </div>
-
-  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:1.25rem">
-    <table class="tech-table">
-      <thead>
-        <tr>
-          <th>Tecnica</th>
-          <th>Categoria</th>
-          <th>Descrizione e applicazione nel progetto</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Program to Interface</td>
-          <td class="tc-creo">principio OOP</td>
-          <td>Dipendi da astrazioni, non da classi concrete. <code style="color:var(--accent-soft);font-size:11px">GameController</code> dipende da <code style="color:var(--accent-soft);font-size:11px">IGameObserver</code>, non da <code style="color:var(--accent-soft);font-size:11px">ScoreUI</code>.</td>
-        </tr>
-        <tr>
-          <td>Favor Composition over Inheritance</td>
-          <td class="tc-strut">principio OOP</td>
-          <td>Invece di ereditare comportamento, iniettalo come dipendenza. Player usa una <code style="color:var(--teal);font-size:11px">MovementStrategy</code> composta, non estende una classe base di movimento.</td>
-        </tr>
-        <tr>
-          <td>SOLID — Single Responsibility</td>
-          <td class="tc-comp">SOLID</td>
-          <td>Ogni classe ha un solo motivo per cambiare. <code style="color:var(--green);font-size:11px">Item.apply()</code> solo effetti; la persistenza è in un <code style="color:var(--green);font-size:11px">GameRepository</code> separato.</td>
-        </tr>
-        <tr>
-          <td>SOLID — Open/Closed</td>
-          <td class="tc-comp">SOLID</td>
-          <td>Aperto all'estensione, chiuso alla modifica. Aggiungere un nuovo tipo di Item non modifica <code style="color:var(--green);font-size:11px">GameSystem</code> — si aggiunge una nuova classe che implementa <code style="color:var(--green);font-size:11px">Item</code>.</td>
-        </tr>
-        <tr>
-          <td>SOLID — Liskov Substitution</td>
-          <td class="tc-comp">SOLID</td>
-          <td>Le sottoclassi devono essere usabili al posto della classe base senza rompere il comportamento. Ogni <code style="color:var(--green);font-size:11px">MovementStrategy</code> concreta è intercambiabile.</td>
-        </tr>
-        <tr>
-          <td>SOLID — Interface Segregation</td>
-          <td class="tc-comp">SOLID</td>
-          <td>Interfacce piccole e focalizzate. <code style="color:var(--green);font-size:11px">IGameObserver</code> ha solo 3 metodi specifici — non un'unica interfaccia gigante che tutti devono implementare.</td>
-        </tr>
-        <tr>
-          <td>SOLID — Dependency Inversion</td>
-          <td class="tc-comp">SOLID</td>
-          <td>I moduli di alto livello non dipendono da quelli di basso livello. <code style="color:var(--green);font-size:11px">GameController</code> (alto livello) dipende da <code style="color:var(--green);font-size:11px">IGameObserver</code> (astrazione), non da <code style="color:var(--green);font-size:11px">ScoreUI</code> (basso livello).</td>
-        </tr>
-        <tr>
-          <td>Dependency Injection</td>
-          <td class="tc-strut">tecnica</td>
-          <td>Le dipendenze vengono passate dall'esterno (costruttore, setter) invece di essere create internamente. Rende il codice testabile con mock e sostituibile senza modifiche.</td>
-        </tr>
-        <tr>
-          <td>Law of Demeter</td>
-          <td class="tc-creo">principio</td>
-          <td>Parla solo con i tuoi amici diretti. Evita <code style="color:var(--accent-soft);font-size:11px">player.getInventory().getItem(0).apply()</code>. Preferisci <code style="color:var(--accent-soft);font-size:11px">player.useFirstItem()</code>.</td>
-        </tr>
-        <tr>
-          <td>Tell, Don't Ask</td>
-          <td class="tc-creo">principio</td>
-          <td>Dì agli oggetti cosa fare invece di chiedere il loro stato e decidere tu. Invece di controllare <code style="color:var(--accent-soft);font-size:11px">if player.lives == 0 <i class="bi bi-arrow-right"></i> player.die()</code>, chiama direttamente <code style="color:var(--accent-soft);font-size:11px">player.takeDamage()</code> che gestisce internamente la morte.</td>
-        </tr>
-        <tr>
-          <td>Fail Fast</td>
-          <td class="tc-strut">tecnica</td>
-          <td>Valida i precondizioni all'inizio dei metodi e lancia eccezioni immediate. Meglio un'eccezione chiara in <code style="color:var(--teal);font-size:11px">collectItem(null)</code> che un NullPointerException remoto e difficile da tracciare.</td>
-        </tr>
-        <tr>
-          <td>Immutability</td>
-          <td class="tc-comp">tecnica</td>
-          <td>Oggetti di valore (Position, Score) immutabili eliminano bug di stato condiviso. <code style="color:var(--green);font-size:11px">Position.move(dir)</code> restituisce una nuova Position invece di modificare quella esistente.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="highlight-box" style="margin-top:1.5rem">
-    ✅ Regola d'oro: se devi spiegare ad alta voce perché una classe fa quella cosa, probabilmente sta violando High Cohesion o Single Responsibility. Il codice ben progettato si legge come prosa.
-  </div>
-</div>
-
-<!-- BACK BUTTONS -->
-<div class="back-btn-wrap">
-  <a href="index.html" class="back-btn btn-teal"><i class="bi bi-arrow-left"></i> Torna a EDIDS</a>
-  <a href="https://7Katch.github.io" class="back-btn btn-ghost"><i class="bi bi-house"></i> Home</a>
-</div>
+<hr class="divider" style="max-width:900px;margin:3rem auto 0;">
 
 <footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · EDIDS · Teoria</p>
+  <p>// 7Katch.github.io · EDIDS</p>
 </footer>
 
 </body>

@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05 · Modellazione & Design — EDIDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+  
+<nav>
+  <a href="index.html" class="nav-logo">// EDIDS · Teoria</a>
+  <div class="nav-links-row">
+    <a href="index.html" class="nav-back"><i class="bi bi-arrow-left"></i> EDIDS</a>
+    <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb">
+    <a href="https://7Katch.github.io">7Katch.github.io</a>
+    <span>/</span>
+    <a href="index.html">EDIDS</a>
+    <span>/</span>
+    <span>Teoria</span>
+  </div>
+  <div class="page-eyebrow">02 · Teoria</div>
+  <h1>Teoria dietro<br>al progetto</h1>
+  <p>Principi GRASP, pattern GoF e tecniche ricorrenti che ogni progettista di software orientato agli oggetti deve padroneggiare.</p>
+</div>
+
+<div class="toc">
+  <a href="#grasp"    class="toc-item">GRASP</a>
+  <a href="#singleton" class="toc-item">Singleton</a>
+  <a href="#observer" class="toc-item">Observer</a>
+  <a href="#patterns" class="toc-item">Altri Pattern GoF</a>
+  <a href="#tecniche" class="toc-item">Tecniche ricorrenti</a>
+</div>
+
+<hr class="divider" style="max-width:900px;margin:1rem auto 0;">
+
+<!-- ===== GRASP ===== -->
+<div class="content-section" id="grasp">
+  <div class="section-eyebrow">Principi fondamentali</div>
+  <h2 class="section-title">GRASP Patterns</h2>
+  <p class="section-intro">
+    General Responsibility Assignment Software Patterns — 9 principi guida per assegnare responsabilità a classi e oggetti. Non sono pattern implementativi come il GoF: sono criteri di giudizio per prendere buone decisioni di design.
+  </p>
+
+  <div class="grasp-grid">
+    <div class="grasp-card">
+      <div class="grasp-icon">IE</div>
+      <h3>Information Expert</h3>
+      <p>Assegna la responsabilità alla classe che possiede le informazioni necessarie. Chi sa, fa. Nel gioco, <code style="color:var(--teal);font-size:11px">Player</code> calcola il proprio punteggio perché ha <code style="color:var(--teal);font-size:11px">score</code> e <code style="color:var(--teal);font-size:11px">lives</code>.</p>
+      <span class="grasp-tag">responsabilità</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">CR</div>
+      <h3>Creator</h3>
+      <p>B crea A se B contiene, aggrega o usa strettamente A. <code style="color:var(--teal);font-size:11px">GameSession</code> crea i <code style="color:var(--teal);font-size:11px">Player</code> perché li aggrega e li contiene per tutta la sessione.</p>
+      <span class="grasp-tag">creazione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">LC</div>
+      <h3>Low Coupling</h3>
+      <p>Minimizza le dipendenze. <code style="color:var(--teal);font-size:11px">GameController</code> dipende dall'interfaccia <code style="color:var(--teal);font-size:11px">IGameObserver</code>, non dalle sue implementazioni concrete — cambiare la UI non tocca il controller.</p>
+      <span class="grasp-tag">accoppiamento</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">HC</div>
+      <h3>High Cohesion</h3>
+      <p>Ogni classe ha responsabilità focalizzate e correlate. <code style="color:var(--teal);font-size:11px">Item</code> sa solo come applicarsi a un Player. Non gestisce sessioni, punteggi o livelli.</p>
+      <span class="grasp-tag">coesione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">CT</div>
+      <h3>Controller</h3>
+      <p>Gli eventi di sistema sono gestiti da un oggetto Controller che non è UI. <code style="color:var(--teal);font-size:11px">GameController</code> riceve <code style="color:var(--teal);font-size:11px">move()</code>, <code style="color:var(--teal);font-size:11px">collectItem()</code>, <code style="color:var(--teal);font-size:11px">endGame()</code> dall'interfaccia e orchestra la logica.</p>
+      <span class="grasp-tag">architettura</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PL</div>
+      <h3>Polymorphism</h3>
+      <p>Usa il polimorfismo invece di if/switch per variazioni di comportamento. Tipi di <code style="color:var(--teal);font-size:11px">Item</code> diversi (HealthItem, WeaponItem) implementano tutti <code style="color:var(--teal);font-size:11px">apply(player)</code> in modo diverso.</p>
+      <span class="grasp-tag">OOP</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PF</div>
+      <h3>Pure Fabrication</h3>
+      <p>Classe artificiale non del dominio per rispettare LC e HC. Un <code style="color:var(--teal);font-size:11px">GameRepository</code> o <code style="color:var(--teal);font-size:11px">ScoreService</code> non esiste nel dominio del gioco, ma risolve problemi di persistenza senza sporcare le classi di dominio.</p>
+      <span class="grasp-tag">astrazione</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">IN</div>
+      <h3>Indirection</h3>
+      <p>Introduce un intermediario per disaccoppiare. L'interfaccia <code style="color:var(--teal);font-size:11px">IGameObserver</code> è un livello di indirezione tra <code style="color:var(--teal);font-size:11px">GameSystem</code> e le sue viste — la base del pattern Observer.</p>
+      <span class="grasp-tag">disaccoppiamento</span>
+    </div>
+    <div class="grasp-card">
+      <div class="grasp-icon">PV</div>
+      <h3>Protected Variations</h3>
+      <p>Identifica i punti di cambiamento e proteggi le parti stabili con interfacce. La logica di rendering può cambiare liberamente: <code style="color:var(--teal);font-size:11px">IGameObserver</code> garantisce che il core del gioco non sia mai impattato.</p>
+      <span class="grasp-tag">stabilità</span>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    ✅ Nel progetto del gioco: <strong>Controller</strong> <i class="bi bi-arrow-right"></i> GameController; <strong>Low Coupling</strong> <i class="bi bi-arrow-right"></i> uso di interfacce Observer; <strong>Information Expert</strong> <i class="bi bi-arrow-right"></i> Player gestisce il proprio stato; <strong>Creator</strong> <i class="bi bi-arrow-right"></i> GameSession crea i Player.
+  </div>
+</head>
+<body class="dot-grid theme-coral">
+  <aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-fondamenti.html"><span class="sb-pdot"></span>01 · Fondamenti</a></li>
+    <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
+    <li><a href="03-ingegneria-requisiti.html"><span class="sb-pdot"></span>03 · Requisiti</a></li>
+    <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
+    <li>
+      <div class="sb-cur"><span class="sb-pdot"></span>05 · Modellazione & Design</div>
+    </li>
+    <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
+    <li><a href="07-cloud-aws.html"><span class="sb-pdot"></span>07 · Cloud AWS</a></li>
+    <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+
+  <!-- ═══════ NAV ═══════ -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
+      <a href="../teoria.html" class="nav-logo">// EDIDS · Modellazione & Design</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../teoria.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice EDIDS</a>
+      <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(248, 113, 113, 0.08);border-color:rgba(248, 113, 113, 0.3);color:var(--coral)">
+      Macroargomento 05
+    </span>
+    <div class="topic-num">05 / 08</div>
+    <h1 class="topic-hero-title">Modellazione e Design (UML e Pattern)</h1>
+    <p class="hero-sub" style="max-width:640px">
+      Dal dominio al codice, Pattern GRASP e Design Pattern GoF.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="content-wrap">
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a>
+      <span>/</span>
+      <a href="../teoria.html">EDIDS</a>
+      <span>/</span>
+      <span>05 · Modellazione & Design</span>
+    </div>
+
+<div class="content-section">
+  <h2 class="section-title">Concetti chiave</h2>
+  <div class="checklist-box">
+    <div class="checklist-title">Appunti</div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Unified Modeling Language (UML):</strong> Linguaggio visivo standard per la modellazione. *   *Diagrammi Strutturali:* Class diagram, Component diagram, Deployment diagram, Package diagram. *   *Diagrammi Comportamentali:* Use Case diagram, Sequence diagram, Activity diagram, State diagram.</div></div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Dal Dominio al Codice (Model-Driven):</strong> Creazione del Domain Model (concetti del mondo reale) e passaggio al Design Class Model (struttura software) tramite *Forward engineering* e refactoring.</div></div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Design Pattern:</strong> Principi GRASP (es. Information Expert, Creator, Low Coupling) e Pattern della Gang of Four (GoF) (es. Factory, Singleton, Observer).</div></div>
+  </div>
+</div>
+
+    <!-- ═══════════════════════════════════════════
+     1. INFORMATION EXPERT
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="ie">
+        <div class="eyebrow">GRASP · 01</div>
+        <h2 class="section-title">Information Expert</h2>
+        <p class="section-intro">
+            Assegna la responsabilità alla classe che possiede le informazioni necessarie per adempierla. Il principio è
+            semplice: <strong>chi sa, fa</strong>. Non spostare i dati fuori dalla classe per elaborarli altrove.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">IE</div>
+                <h3>Definizione formale</h3>
+            </div>
+            <div class="card-desc">
+                Quando devi assegnare una responsabilità, inizia chiedendoti: <em>chi ha i dati per soddisfarla?</em>
+                Quella classe è l'esperta dell'informazione e dovrebbe gestire la responsabilità in modo autonomo.
+                Questo riduce l'accoppiamento, perché non è necessario esporre i dati verso l'esterno.
+            </div>
+            <span class="grasp-tag">responsabilità</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco (dal progetto)</div>
+                <p>
+                    <code>Player</code> ha <code>score</code> e <code>lives</code>. Quindi è <code>Player</code> a
+                    calcolare il proprio totale punti con <code>getTotalScore()</code>, non un manager esterno che legge
+                    i campi. Se il calcolo cambia, si modifica solo <code>Player</code>.
+                </p>
+            </div>
+
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — E-commerce</div>
+                <p>
+                    Un <code>Order</code> conosce i propri <code>OrderItem</code>. Quindi il totale dell'ordine si
+                    calcola con <code>order.getTotal()</code>, non con un servizio esterno che somma i prezzi dopo
+                    averli estratti uno a uno. <code>Order</code> è l'esperto del suo contenuto.
+                </p>
+            </div>
+
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — Biblioteca</div>
+                <p>
+                    Un oggetto <code>Book</code> conosce il proprio ISBN, titolo e autore. È lui a decidere se due libri
+                    sono uguali (<code>equals()</code>) e come si rappresenta come stringa (<code>toString()</code>).
+                    Non serve un <code>BookComparator</code> esterno che accede ai campi pubblici.
+                </p>
+            </div>
+
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — Scacchi</div>
+                <p>
+                    Un <code>ChessPiece</code> conosce la propria posizione e tipo. È lui a dire se una mossa è valida:
+                    <code>piece.isValidMove(from, to)</code>. Non è il <code>Board</code> che deve conoscere le regole
+                    di ogni singolo pezzo.
+                </p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ Violazione</div>
+                    <p>Un <code>GameController</code> legge <code>player.score</code> e <code>player.multiplier</code> e
+                        calcola il totale lui stesso. I dati stanno in <code>Player</code> ma la logica è altrove.</p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Corretto</div>
+                    <p><code>player.getTotal()</code> incapsula il calcolo dove stanno i dati. Il controller chiama
+                        un'unica operazione e non dipende dai dettagli interni.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-block" style="margin-top:1.25rem">
+            <div class="code-header">
+                <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+                </div>
+                <span class="code-filename">Player.java — Information Expert</span>
+            </div>
+            <div class="code-body">
+                <pre>
+<span class="kw">public class</span> <span class="tp">Player</span> {
+  <span class="kw">private int</span> baseScore;
+  <span class="kw">private double</span> multiplier;
+  <span class="kw">private int</span> bonusPoints;
+
+  <span class="cm">// ✅ Player è l'esperto: conosce tutti i dati necessari</span>
+  <span class="kw">public int</span> <span class="fn">getTotalScore</span>() {
+    <span class="kw">return</span> (int)(baseScore * multiplier) + bonusPoints;
+  }
+
+  <span class="cm">// ✅ Solo Player sa se ha ancora vite</span>
+  <span class="kw">public boolean</span> <span class="fn">isAlive</span>() {
+    <span class="kw">return</span> lives > 0;
+  }
+}
+
+<span class="cm">// ❌ Violazione — il controller non dovrebbe sapere come si calcola il punteggio</span>
+<span class="cm">// int total = (int)(player.baseScore * player.multiplier) + player.bonusPoints;</span>
+</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     2. CREATOR
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="cr">
+        <div class="eyebrow">GRASP · 02</div>
+        <h2 class="section-title">Creator</h2>
+        <p class="section-intro">
+            B dovrebbe creare istanze di A se: B <em>contiene</em> o <em>aggrega</em> A; B <em>registra</em> A; B
+            <em>usa strettamente</em> A; o B ha i dati di inizializzazione di A. La regola evita creazioni sparse
+            ovunque nel codice.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">CR</div>
+                <h3>Chi crea chi?</h3>
+            </div>
+            <div class="card-desc">
+                La responsabilità di creare un oggetto appartiene a chi ha il contesto per farlo in modo sensato.
+                Centralizzare la creazione riduce la dipendenza da dettagli costruttivi e rende il codice più testabile.
+            </div>
+            <span class="grasp-tag">creazione</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco</div>
+                <p><code>GameSession</code> aggrega i <code>Player</code> per tutta la sessione, quindi è
+                    <code>GameSession</code> a crearli: <code>new Player(name, startingLives)</code>. Ha anche i dati di
+                    configurazione iniziale.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — Fatturazione</div>
+                <p>Un <code>Invoice</code> aggrega le sue <code>InvoiceLine</code>. È <code>Invoice</code> ad aggiungere
+                    righe: <code>invoice.addLine(product, qty, price)</code>, non un servizio esterno che costruisce
+                    righe e le inietta.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — Forum</div>
+                <p>Un <code>Thread</code> contiene <code>Post</code>. Quando un utente risponde, è il
+                    <code>Thread</code> a creare il nuovo <code>Post</code>:
+                    <code>thread.addReply(author, content)</code>. Il <code>Thread</code> ha tutto il contesto: data,
+                    posizione nella sequenza, metadati.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — Gioco di carte</div>
+                <p>Un <code>Deck</code> (mazzo) aggrega e registra tutte le <code>Card</code>. È lui a crearle nella
+                    fase di setup: <code>deck.build()</code> genera le 52 carte. Nessun'altra classe deve sapere come si
+                    costruisce una carta.</p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ Violazione</div>
+                    <p>Un <code>GameController</code> fa <code>new Player(...)</code> in mezzo alla logica di gioco. Il
+                        controller non aggrega Player, quindi non è il responsabile naturale della creazione.</p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Corretto</div>
+                    <p><code>GameSession.startSession()</code> crea i <code>Player</code>. La sessione li possiede, li
+                        gestisce, e ha tutti i parametri di setup necessari.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="principle-link">
+            <strong>Collegamento →</strong>&nbsp; Creator e Factory Method sono complementari: quando la creazione
+            diventa complessa o richiede varianti, si passa a una Factory senza violare Creator — la Factory diventa il
+            creatore naturale.
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     3. LOW COUPLING
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="lc">
+        <div class="eyebrow">GRASP · 03</div>
+        <h2 class="section-title">Low Coupling</h2>
+        <p class="section-intro">
+            Minimizza le dipendenze tra classi. Un'alta dipendenza (high coupling) significa che una modifica in A
+            costringe a cambiare B, C, D. Con basso accoppiamento le classi sono intercambiabili e testabili in
+            isolamento.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">LC</div>
+                <h3>Forme di accoppiamento</h3>
+            </div>
+            <div class="card-desc">
+                L'accoppiamento può essere su tipi concreti (il peggiore), su interfacce (accettabile) o su astrazioni
+                (ottimale). L'obiettivo non è zero dipendenze — impossibile — ma dipendenze verso le astrazioni giuste.
+            </div>
+            <span class="grasp-tag">accoppiamento</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco</div>
+                <p><code>GameController</code> dipende da <code>IGameObserver</code>, non da <code>ScoreUI</code> o
+                    <code>SoundManager</code>. Cambiare tutta la UI non richiede toccare il controller.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — Repository pattern</div>
+                <p>Un servizio dipende da <code>IUserRepository</code>, non da <code>MySQLUserRepository</code>. In test
+                    si inietta un <code>InMemoryUserRepository</code>; in produzione si usa quello reale. Il servizio
+                    non cambia mai.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — Notifiche</div>
+                <p>Un <code>OrderService</code> non chiama direttamente <code>EmailSender.send()</code> e
+                    <code>SmsSender.send()</code>. Dipende da <code>INotifier</code>. Se si aggiunge WhatsApp, basta
+                    aggiungere un'implementazione — il servizio non si tocca.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — Logging</div>
+                <p>Le classi di business non chiamano <code>System.out.println()</code> né dipendono da Log4j. Dipendono
+                    da <code>ILogger</code>. L'implementazione può essere sostituita (console, file, cloud) senza
+                    toccare la logica applicativa.</p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ High Coupling</div>
+                    <p><code>GameController</code> importa e istanzia <code>ScoreUI</code>, <code>SoundManager</code>,
+                        <code>AchievementTracker</code>. Aggiungere un observer richiede modificare il controller.</p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Low Coupling</div>
+                    <p><code>GameController</code> ha una lista di <code>IGameObserver</code>. Si aggiungono observers a
+                        runtime senza toccare il controller. Testabile con mock.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     4. HIGH COHESION
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="hc">
+        <div class="eyebrow">GRASP · 04</div>
+        <h2 class="section-title">High Cohesion</h2>
+        <p class="section-intro">
+            Ogni classe dovrebbe avere responsabilità strettamente correlate e focalizzate. Una classe con bassa
+            coesione fa troppe cose diverse ed è difficile da capire, mantenere e riusare.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">HC</div>
+                <h3>Test della coesione</h3>
+            </div>
+            <div class="card-desc">
+                Prova a descrivere la classe in una frase senza usare "e". Se non ci riesci, probabilmente la classe ha
+                responsabilità multiple e andrebbe spezzata. Una classe coesa fa una cosa sola e la fa bene.
+            </div>
+            <span class="grasp-tag">coesione</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco</div>
+                <p><code>Item</code> sa solo come applicarsi a un <code>Player</code>: <code>apply(player)</code>. Non
+                    gestisce sessioni, non salva nulla, non notifica nessuno. Una responsabilità.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — Classe coesa</div>
+                <p><code>EmailValidator</code> fa una cosa: validare indirizzi email. Non invia email, non le salva nel
+                    DB, non le formatta. Ogni metodo è correlato alla validazione.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — Da spezzare</div>
+                <p>Una classe <code>UserManager</code> che: autentica utenti, manda email, aggiorna il profilo, calcola
+                    statistiche e scrive log — viola completamente High Cohesion. Va divisa in <code>AuthService</code>,
+                    <code>ProfileService</code>, <code>NotificationService</code>, <code>UserStatsService</code>.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — Valore immutabile</div>
+                <p><code>Money</code> (con importo e valuta) è altamente coesa: tutti i suoi metodi — somma, sottrai,
+                    converti, confronta — riguardano le operazioni su un valore monetario. Non fa nient'altro.</p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ Bassa coesione</div>
+                    <p>Una <code>GameManager</code> class che inizializza il gioco, gestisce l'input utente, salva lo
+                        stato, suona gli effetti audio e aggiorna la UI. Ogni parte è separata dalle altre.</p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Alta coesione</div>
+                    <p><code>GameSession</code> gestisce solo il ciclo di vita della partita. <code>InputHandler</code>
+                        solo l'input. <code>AudioManager</code> solo l'audio. Ciascuna ha responsabilità focalizzate.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="warn-box" style="margin-top:1.25rem">
+            <strong>⚠️ HC + LC vanno insieme:</strong> spezzare una classe può aumentare il coupling se non si usano
+            interfacce. I due principi si bilanciano: alta coesione interna a ogni classe, basso accoppiamento tra le
+            classi.
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     5. CONTROLLER
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="ct">
+        <div class="eyebrow">GRASP · 05</div>
+        <h2 class="section-title">Controller</h2>
+        <p class="section-intro">
+            Gli eventi di sistema (azioni dell'utente, richieste esterne) devono essere ricevuti da un oggetto
+            Controller che non è parte dell'UI. Il Controller coordina la risposta senza fare la logica di business da
+            solo.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">CT</div>
+                <h3>Due tipi di Controller</h3>
+            </div>
+            <div class="card-desc">
+                <strong style="color:var(--text-primary)">Facade Controller:</strong> un unico oggetto per tutti gli
+                eventi di sistema (es. <code>GameController</code> per tutti gli eventi del gioco). Adatto a sistemi più
+                semplici.<br><br>
+                <strong style="color:var(--text-primary)">Use Case Controller:</strong> un controller per ogni caso
+                d'uso (es. <code>LoginController</code>, <code>CheckoutController</code>). Più scalabile per
+                applicazioni grandi.
+            </div>
+            <span class="grasp-tag">architettura</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco</div>
+                <p><code>GameController</code> riceve <code>move(direction)</code>, <code>collectItem(itemId)</code>,
+                    <code>endGame()</code> dall'interfaccia e orchestra la logica: valida, aggiorna il modello, notifica
+                    gli observer. Non è UI.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — Web app (MVC)</div>
+                <p>In un'app web, <code>OrderController</code> riceve la request HTTP e chiama
+                    <code>orderService.placeOrder(dto)</code>. Non contiene logica di business — la delega al service
+                    layer. Non è una vista — restituisce dati al framework.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — ATM</div>
+                <p><code>ATMController</code> riceve gli eventi fisici (carta inserita, PIN digitato, importo
+                    selezionato) e coordina <code>CardReader</code>, <code>PinValidator</code>,
+                    <code>CashDispenser</code>. L'utente interagisce solo con lo schermo fisico, mai con questi oggetti
+                    direttamente.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — Sistema ospedaliero</div>
+                <p><code>AppointmentController</code> gestisce i casi d'uso "prenota visita" e "cancella appuntamento".
+                    Separa la UI (form web) dalla logica (controllo disponibilità, invio reminder) e dalla persistenza
+                    (repository).</p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ Sbagliato</div>
+                    <p>Un pulsante UI fa direttamente <code>player.lives--</code> e
+                        <code>scoreLabel.setText(...)</code>. La logica di gioco è nell'interfaccia grafica. Impossibile
+                        testare, riusare o cambiare la UI.</p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Corretto</div>
+                    <p>Il pulsante chiama <code>gameController.onPlayerHit()</code>. Il controller aggiorna il modello,
+                        il modello notifica gli observer, la UI si aggiorna da sola. Separazione netta.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-block" style="margin-top:1.25rem">
+            <div class="code-header">
+                <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+                </div>
+                <span class="code-filename">GameController.java</span>
+            </div>
+            <div class="code-body">
+                <pre>
+<span class="kw">public class</span> <span class="tp">GameController</span> {
+
+  <span class="kw">private final</span> <span class="tp">GameSession</span>    session;
+  <span class="kw">private final</span> <span class="tp">GameSystem</span>     system;
+  <span class="kw">private final</span> <span class="tp">List</span>&lt;<span class="tp">IGameObserver</span>&gt; observers;
+
+  <span class="cm">// Evento di sistema: l'utente si muove</span>
+  <span class="kw">public void</span> <span class="fn">onMove</span>(<span class="tp">Direction</span> dir) {
+    session.<span class="fn">getCurrentPlayer</span>().<span class="fn">move</span>(dir);   <span class="cm">// delega al modello</span>
+    <span class="fn">notifyAll</span>(<span class="tp">Event</span>.MOVE);                  <span class="cm">// notifica la vista</span>
+  }
+
+  <span class="cm">// Evento di sistema: raccoglie un item</span>
+  <span class="kw">public void</span> <span class="fn">onCollectItem</span>(<span class="tp">String</span> itemId) {
+    <span class="tp">Item</span> item = session.<span class="fn">getItem</span>(itemId);
+    item.<span class="fn">apply</span>(session.<span class="fn">getCurrentPlayer</span>());  <span class="cm">// Information Expert</span>
+    session.<span class="fn">removeItem</span>(itemId);
+    <span class="fn">notifyAll</span>(<span class="tp">Event</span>.ITEM_COLLECTED);
+  }
+}
+</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     6. POLYMORPHISM
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="pl">
+        <div class="eyebrow">GRASP · 06</div>
+        <h2 class="section-title">Polymorphism</h2>
+        <p class="section-intro">
+            Quando il comportamento varia in base al tipo, usa il polimorfismo invece di if/switch. Ogni tipo gestisce
+            la propria variazione implementando un'interfaccia comune.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">PL</div>
+                <h3>Polimorfismo vs. if/switch</h3>
+            </div>
+            <div class="card-desc">
+                Un <code>if (type == "HEALTH") ... else if (type == "WEAPON") ...</code> deve essere aggiornato ogni
+                volta che si aggiunge un tipo. Con il polimorfismo si aggiunge una nuova classe — il codice esistente
+                non si tocca (Open/Closed Principle).
+            </div>
+            <span class="grasp-tag">OOP</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco: tipi di Item</div>
+                <p><code>HealthPotion</code>, <code>Sword</code>, <code>Shield</code> implementano tutti
+                    <code>Item.apply(player)</code> in modo diverso. Il controller chiama
+                    <code>item.apply(player)</code> senza sapere il tipo concreto.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — Pagamenti</div>
+                <p><code>CreditCard</code>, <code>PayPal</code>, <code>BankTransfer</code> implementano
+                    <code>IPaymentMethod.charge(amount)</code>. <code>CheckoutService</code> chiama solo
+                    <code>method.charge(total)</code>, senza if/switch sul tipo di pagamento.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — Forme geometriche</div>
+                <p><code>Circle</code>, <code>Rectangle</code>, <code>Triangle</code> implementano
+                    <code>Shape.area()</code> e <code>Shape.perimeter()</code>. Un renderer chiama
+                    <code>shape.draw()</code> senza sapere quale forma sta disegnando.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — Report</div>
+                <p><code>PdfReport</code>, <code>ExcelReport</code>, <code>HtmlReport</code> implementano
+                    <code>IReport.generate(data)</code>. Il servizio di esportazione non cambia quando si aggiunge un
+                    nuovo formato.</p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ Senza polimorfismo</div>
+                    <p><code>if (item.type.equals("health")) player.heal(30);</code><br><code>else if (item.type.equals("weapon")) player.addWeapon(...);</code><br>Ogni
+                        nuovo tipo richiede di toccare questo blocco.</p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Con polimorfismo</div>
+                    <p><code>item.apply(player);</code><br>Ogni implementazione sa cosa fare. Aggiungere
+                        <code>ShieldItem</code> non modifica niente di esistente.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-block" style="margin-top:1.25rem">
+            <div class="code-header">
+                <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+                </div>
+                <span class="code-filename">Item.java — Polymorphism</span>
+            </div>
+            <div class="code-body">
+                <pre>
+<span class="kw">public interface</span> <span class="tp">Item</span> {
+  <span class="kw">void</span> <span class="fn">apply</span>(<span class="tp">Player</span> player);
+  <span class="tp">String</span> <span class="fn">getName</span>();
+}
+
+<span class="kw">public class</span> <span class="tp">HealthPotion</span> <span class="kw">implements</span> <span class="tp">Item</span> {
+  <span class="kw">private final int</span> healAmount;
+  <span class="kw">public void</span> <span class="fn">apply</span>(<span class="tp">Player</span> p) { p.<span class="fn">heal</span>(healAmount); }
+}
+
+<span class="kw">public class</span> <span class="tp">Sword</span> <span class="kw">implements</span> <span class="tp">Item</span> {
+  <span class="kw">private final int</span> damage;
+  <span class="kw">public void</span> <span class="fn">apply</span>(<span class="tp">Player</span> p) { p.<span class="fn">setAttack</span>(damage); }
+}
+
+<span class="kw">public class</span> <span class="tp">Shield</span> <span class="kw">implements</span> <span class="tp">Item</span> {
+  <span class="kw">private final int</span> defense;
+  <span class="kw">public void</span> <span class="fn">apply</span>(<span class="tp">Player</span> p) { p.<span class="fn">setDefense</span>(defense); }
+}
+
+<span class="cm">// ✅ Il controller non sa (e non deve sapere) qual è il tipo</span>
+<span class="kw">for</span> (<span class="tp">Item</span> item : collectedItems) {
+  item.<span class="fn">apply</span>(currentPlayer);
+}
+</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     7. PURE FABRICATION
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="pf">
+        <div class="eyebrow">GRASP · 07</div>
+        <h2 class="section-title">Pure Fabrication</h2>
+        <p class="section-intro">
+            Classe "artificiale" che non esiste nel dominio del problema, ma viene creata per rispettare Low Coupling e
+            High Cohesion. Risolve problemi tecnici (persistenza, logging, comunicazione) senza sporcare le classi di
+            dominio.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">PF</div>
+                <h3>Quando inventare una classe</h3>
+            </div>
+            <div class="card-desc">
+                Quando nessuna classe del dominio è il posto giusto per una responsabilità tecnica (salvare su DB,
+                inviare email, fare cache), si inventa una classe di servizio. Non deve avere senso nel dominio reale —
+                deve avere senso nel design.
+            </div>
+            <span class="grasp-tag">astrazione</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco</div>
+                <p><code>ScoreService</code> e <code>GameRepository</code> non esistono nel dominio del gioco, ma
+                    gestiscono persistenza e logica di punteggio senza inquinare <code>Player</code> o
+                    <code>GameSession</code> con dipendenze tecniche.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — E-commerce</div>
+                <p>Un <code>TaxCalculator</code> non è un'entità del dominio ordini, ma è necessario per calcolare le
+                    tasse. Meglio una classe dedicata che mettere la logica fiscale dentro <code>Order</code> o
+                    <code>Product</code>.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — Social network</div>
+                <p><code>FriendRecommendationEngine</code> non è un concetto del dominio "amicizia", ma è una Pure
+                    Fabrication che incapsula l'algoritmo di raccomandazione. L'utente non sa che esiste, ma il sistema
+                    ne ha bisogno.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — Mapper</div>
+                <p>Un <code>UserMapper</code> che converte tra <code>UserEntity</code> (DB) e <code>UserDTO</code> (API)
+                    è una Pure Fabrication. Non corrisponde a nulla nel dominio reale, ma risolve il problema del
+                    disaccoppiamento tra layer.</p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ Senza Pure Fabrication</div>
+                    <p><code>Player</code> contiene metodi per salvarsi su DB, inviare notifiche email e calcolare
+                        statistiche. Classe gonfia, dipendenze tecniche nel dominio, impossibile testare in isolamento.
+                    </p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Con Pure Fabrication</div>
+                    <p><code>Player</code> è solo logica di dominio. <code>PlayerRepository</code> gestisce la
+                        persistenza. <code>PlayerNotifier</code> le notifiche. Ciascuno testabile, sostituibile,
+                        indipendente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     8. INDIRECTION
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="in">
+        <div class="eyebrow">GRASP · 08</div>
+        <h2 class="section-title">Indirection</h2>
+        <p class="section-intro">
+            Introduce un intermediario per ridurre l'accoppiamento diretto tra due classi. L'intermediario assorbe le
+            dipendenze e consente a ciascun lato di evolversi indipendentemente.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">IN</div>
+                <h3>Il valore dell'intermediario</h3>
+            </div>
+            <div class="card-desc">
+                "All problems in computer science can be solved by another level of indirection." — David Wheeler.
+                L'indirezione è la base di pattern come Observer, Adapter, Proxy, Facade, e dell'intera architettura a
+                layer.
+            </div>
+            <span class="grasp-tag">disaccoppiamento</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco</div>
+                <p><code>IGameObserver</code> è il livello di indirezione tra <code>GameSystem</code> e
+                    <code>ScoreUI</code> / <code>SoundManager</code>. I due lati non si conoscono, comunicano solo
+                    attraverso l'interfaccia.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — Adapter</div>
+                <p>La tua app usa <code>IEmailService</code>. Oggi l'implementazione chiama SendGrid, domani Mailgun.
+                    L'adapter è l'intermediario che traduce l'interfaccia comune nell'API specifica del provider. L'app
+                    non cambia mai.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — Message Broker</div>
+                <p>Un microservizio A pubblica un evento su Kafka. Il microservizio B lo consuma. Non si conoscono
+                    direttamente. Kafka è il livello di indirezione che li disaccoppia: A e B possono scalare,
+                    aggiornarsi e fallire indipendentemente.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — DNS</div>
+                <p>Il DNS è indirezione pura: il client chiede "dove trovo google.com?" e riceve un IP. Se Google cambia
+                    server, aggiorna il DNS — tutti i client continuano a funzionare senza sapere nulla del cambio.</p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ Dipendenza diretta</div>
+                    <p><code>GameSystem</code> chiama <code>scoreUI.update()</code>, <code>soundManager.play()</code>,
+                        <code>achievementTracker.check()</code> direttamente. Aggiungere un effetto richiede modificare
+                        <code>GameSystem</code>.</p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Con indirezione</div>
+                    <p><code>GameSystem</code> chiama <code>notifyObservers(event)</code>. Chi vuole reagire implementa
+                        <code>IGameObserver</code> e si registra. <code>GameSystem</code> non conosce chi ascolta.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="principle-link">
+            <strong>Collegamento →</strong>&nbsp; Indirection e Pure Fabrication spesso coincidono: l'intermediario che
+            si introduce è spesso una Pure Fabrication (una classe che non esiste nel dominio, ma serve per
+            disaccoppiare).
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     9. PROTECTED VARIATIONS
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="pv">
+        <div class="eyebrow">GRASP · 09</div>
+        <h2 class="section-title">Protected Variations</h2>
+        <p class="section-intro">
+            Identifica i punti del sistema dove le variazioni sono prevedibili (algoritmi, formati, provider esterni,
+            regole di business) e proteggi le parti stabili con interfacce. Le variazioni sono libere; il nucleo stabile
+            non si tocca mai.
+        </p>
+
+        <div class="grasp-card">
+            <div class="card-head">
+                <div class="grasp-icon">PV</div>
+                <h3>Cosa è stabile, cosa cambia?</h3>
+            </div>
+            <div class="card-desc">
+                Il design migliore isola ciò che cambia da ciò che rimane stabile. Ciò che è stabile (interfaccia
+                pubblica, contratto) va protetto. Ciò che cambia (implementazione, algoritmo, fornitore) va isolato
+                dietro un'astrazione.
+            </div>
+            <span class="grasp-tag">stabilità</span>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+            <div class="example-item">
+                <div class="example-label">Esempio 1 — Gioco</div>
+                <p>Il rendering può cambiare (console, GUI Swing, web): <code>IGameObserver</code> protegge il core. La
+                    logica di gioco non cambia mai per colpa del rendering. Il contratto è stabile; l'implementazione è
+                    libera di variare.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 2 — Sorting</div>
+                <p><code>ISortStrategy</code> protegge il codice che ordina dati dalle variazioni di algoritmo
+                    (quicksort, mergesort, timsort). Si può cambiare l'algoritmo a runtime senza toccare chi usa il
+                    sort.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 3 — Provider di pagamento</div>
+                <p>Il contratto <code>IPaymentGateway</code> è stabile. Le implementazioni (<code>StripeGateway</code>,
+                    <code>PayPalGateway</code>) possono cambiare o aggiungersi. Il sistema di checkout non sa quale
+                    gateway usa e non cambia.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 4 — Serializzazione</div>
+                <p><code>ISerializer</code> con <code>serialize(obj)</code> e <code>deserialize(bytes)</code> protegge
+                    il codice dal formato: JSON, XML, Protobuf, MessagePack. Si cambia implementazione senza toccare la
+                    logica applicativa.</p>
+            </div>
+            <div class="example-item">
+                <div class="example-label">Esempio 5 — Cambio di database</div>
+                <p>L'interfaccia <code>IProductRepository</code> è stabile. Sotto c'è
+                    <code>PostgreSQLProductRepository</code>. Migrare a MongoDB significa scrivere
+                    <code>MongoProductRepository</code> senza toccare nessun servizio. Il contratto protegge tutto il
+                    resto.</p>
+            </div>
+
+            <div class="vs-row">
+                <div class="vs-box vs-bad">
+                    <div class="vs-label">❌ Non protetto</div>
+                    <p>Il codice di business chiama direttamente metodi specifici di Stripe. Cambiare provider significa
+                        riscrivere metà applicazione. Ogni variazione di API esterna si propaga nel codice interno.</p>
+                </div>
+                <div class="vs-box vs-good">
+                    <div class="vs-label">✅ Protetto</div>
+                    <p>Il codice di business chiama <code>IPaymentGateway.charge(amount)</code>. La variazione (quale
+                        provider) è isolata dietro l'interfaccia. Il business logic non cambia mai per motivi tecnici.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     TABELLA RIASSUNTIVA
+     ═══════════════════════════════════════════ -->
+    <div class="section" id="summary">
+        <div class="eyebrow">Tutti e 9 · Riepilogo</div>
+        <h2 class="section-title">Tabella riassuntiva</h2>
+        <p class="section-intro">Un colpo d'occhio su tutti i principi GRASP con la domanda chiave da porsi durante il
+            design.</p>
+
+        <div
+            style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Principio</th>
+                        <th>Categoria</th>
+                        <th>Domanda chiave</th>
+                        <th>Anti-pattern che risolve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Information Expert</strong></td>
+                        <td><span class="badge-sm b-resp">responsabilità</span></td>
+                        <td style="color:var(--text-secondary)">Chi ha i dati per fare questa cosa?</td>
+                        <td style="color:var(--text-muted);font-size:12px">Logica sparsa fuori dai dati</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Creator</strong></td>
+                        <td><span class="badge-sm b-resp">responsabilità</span></td>
+                        <td style="color:var(--text-secondary)">Chi aggrega / usa / conosce A?</td>
+                        <td style="color:var(--text-muted);font-size:12px">Creazione sparsa ovunque</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Low Coupling</strong></td>
+                        <td><span class="badge-sm b-arch">architettura</span></td>
+                        <td style="color:var(--text-secondary)">Dipendo da un'astrazione o da un concreto?</td>
+                        <td style="color:var(--text-muted);font-size:12px">Modifiche a cascata</td>
+                    </tr>
+                    <tr>
+                        <td><strong>High Cohesion</strong></td>
+                        <td><span class="badge-sm b-arch">architettura</span></td>
+                        <td style="color:var(--text-secondary)">Posso descrivere questa classe senza "e"?</td>
+                        <td style="color:var(--text-muted);font-size:12px">God class, classi bloated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Controller</strong></td>
+                        <td><span class="badge-sm b-arch">architettura</span></td>
+                        <td style="color:var(--text-secondary)">Chi riceve questo evento di sistema senza essere UI?
+                        </td>
+                        <td style="color:var(--text-muted);font-size:12px">Logica nell'interfaccia grafica</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Polymorphism</strong></td>
+                        <td><span class="badge-sm b-oop">OOP</span></td>
+                        <td style="color:var(--text-secondary)">Sto usando if/switch sul tipo? Posso sostituirlo?</td>
+                        <td style="color:var(--text-muted);font-size:12px">Switch sulle varianti di tipo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pure Fabrication</strong></td>
+                        <td><span class="badge-sm b-abs">astrazione</span></td>
+                        <td style="color:var(--text-secondary)">Nessuna classe di dominio è il posto giusto?</td>
+                        <td style="color:var(--text-muted);font-size:12px">Responsabilità tecniche nel dominio</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Indirection</strong></td>
+                        <td><span class="badge-sm b-arch">architettura</span></td>
+                        <td style="color:var(--text-secondary)">Posso aggiungere un intermediario tra questi due?</td>
+                        <td style="color:var(--text-muted);font-size:12px">Dipendenze dirette tra moduli</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Protected Variations</strong></td>
+                        <td><span class="badge-sm b-abs">astrazione</span></td>
+                        <td style="color:var(--text-secondary)">Cosa cambierà? Come proteggo il resto?</td>
+                        <td style="color:var(--text-muted);font-size:12px">Variazioni che si propagano</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="highlight-box" style="margin-top:1.75rem">
+            <strong>Regola pratica:</strong> Low Coupling e High Cohesion sono i due principi "madre" — tutti gli altri
+            sono modi specifici per raggiungerli. Se il design li rispetta, quasi certamente rispetta anche gli altri
+            sette.
+        </div>
+    </div>
+
+<!-- ===== SINGLETON ===== -->
+<div class="content-section" id="singleton">
+  <div class="section-eyebrow">GoF · Creazionale</div>
+  <h2 class="section-title">Singleton</h2>
+  <p class="section-intro">
+    Garantisce una sola istanza di una classe con un punto di accesso globale controllato. Nel gioco, <code style="color:var(--accent-soft)">GameSystem</code> è un Singleton: esiste un solo sistema di gioco attivo che gestisce livelli, regole e stato globale.
+  </p>
+
+  <div class="two-col">
+    <div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.8;margin-bottom:1rem">
+        Il costruttore è <strong style="color:var(--text-primary)">privato</strong>: nessuno può creare istanze dall'esterno. L'unico accesso avviene tramite il metodo statico <code style="color:var(--accent-soft);font-size:12px">getInstance()</code>, che crea l'istanza al primo invio e la restituisce sempre nelle chiamate successive.
+      </p>
+      <div class="pros-cons">
+        <div class="pros-cons-box pro">
+          <h5>Vantaggi</h5>
+          <ul>
+            <li>Istanza controllata</li>
+            <li>Accesso globale</li>
+            <li>Lazy initialization</li>
+            <li>Stato condiviso sicuro</li>
+          </ul>
+        </div>
+        <div class="pros-cons-box con">
+          <h5>Attenzione</h5>
+          <ul>
+            <li>Difficile da testare</li>
+            <li>Stato globale nascosto</li>
+            <li>Thread safety richiesta</li>
+            <li>Viola SRP (spesso)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warn-box" style="margin-top:1.25rem">
+        ⚠️ Nei sistemi moderni preferisci la <strong>Dependency Injection</strong>. Il Singleton va usato solo quando l'unicità è un requisito reale del dominio, non solo convenienza.
+      </div>
+    </div>
+
+    <div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots">
+            <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
+          </div>
+          <span class="code-filename">GameSystem.java</span>
+        </div>
+        <div class="code-body"><pre>
+<span class="cm">// «Singleton» — Thread-safe (Holder idiom)</span>
+<span class="kw">public class</span> <span class="tp">GameSystem</span> {
+
+  <span class="cm">// Holder: creato solo quando richiesto</span>
+  <span class="kw">private static class</span> <span class="tp">Holder</span> {
+    <span class="kw">private static final</span> <span class="tp">GameSystem</span>
+      INSTANCE = <span class="kw">new</span> <span class="tp">GameSystem</span>();
+  }
+
+  <span class="kw">private</span> <span class="fn">GameSystem</span>() {
+    <span class="cm">// inizializzazione livelli, regole…</span>
+  }
+
+  <span class="kw">public static</span> <span class="tp">GameSystem</span> <span class="fn">getInstance</span>() {
+    <span class="kw">return</span> <span class="tp">Holder</span>.INSTANCE;
+  }
+
+  <span class="kw">public boolean</span> <span class="fn">checkWin</span>(<span class="tp">Player</span> p) {
+    <span class="kw">return</span> p.<span class="fn">getScore</span>() >= winThreshold;
+  }
+
+  <span class="kw">public void</span> <span class="fn">nextLevel</span>() { ... }
+}
+
+<span class="cm">// Utilizzo da GameController</span>
+<span class="tp">GameSystem</span> sys = <span class="tp">GameSystem</span>.<span class="fn">getInstance</span>();
+<span class="kw">boolean</span> won = sys.<span class="fn">checkWin</span>(player);
+</pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OBSERVER ===== -->
+<div class="content-section" id="observer">
+  <div class="section-eyebrow">GoF · Comportamentale</div>
+  <h2 class="section-title">Observer Pattern</h2>
+  <p class="section-intro">
+    Definisce una dipendenza uno-a-molti: quando il <strong>Subject</strong> cambia stato, tutti gli <strong>Observer</strong> registrati vengono notificati automaticamente. Nel gioco: <code style="color:var(--accent-soft)">GameSystem</code> è il Subject, <code style="color:var(--teal)">ScoreUI</code> e <code style="color:var(--teal)">SoundManager</code> sono Observer.
+  </p>
+.hero-greeting { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted); margin-bottom: 0.5rem; }
+.hero-sub      { font-size: 1.05rem; color: var(--text-secondary); max-width: 500px; line-height: 1.8; font-weight: 300; }
+.hero-cta      { margin-top: 2rem; }
+
+/* Scroll hint — con animazione (SO) */
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.scroll-hint-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--accent-soft), transparent);
+  animation: scrollLine 2s ease infinite;
+}
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+
+/* ==========================================================================
+   4. PAGE HERO — non full-height (sottopagine)
+   ========================================================================== */
+.page-hero {
+  max-width: 900px; margin: 0 auto;
+  padding: 9rem 2rem 4rem; text-align: left; position: relative;
+}
+.page-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(124,92,252,0.05) 1px, transparent 1px);
+  background-size: 40px 40px; pointer-events: none; z-index: -1;
+}
+
+/* Page hero h1 — default viola, varianti con classe */
+.page-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, #f0eeff 0%, #a78bfa 60%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.page-hero h1.teal {
+  background: linear-gradient(135deg, #f0eeff 0%, #22d3ee 60%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+/* SO hero — titolo grande amber (classe o elemento standalone) */
+.page-hero h1.amber,
+.hero-title-so {
+  font-size: clamp(2.8rem, 8vw, 6rem); font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1.0; margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #f0eeff 0%, #fbbf24 55%, #f59e0b 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.page-hero p { font-size: 1rem; color: var(--text-secondary); max-width: 560px; line-height: 1.8; font-weight: 300; }
+
+/* Eyebrow — sezione / pagina
+   NOTA: nel file EDIDS originale .page-eyebrow/.section-eyebrow erano fissi
+   a color: var(--teal). Qui sono neutrali (accent-soft) con varianti applicabili
+   tramite classe .teal o .amber — retrocompatibile aggiungendo class="teal" */
+.page-eyebrow, .section-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent-soft); margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.page-eyebrow::before, .section-eyebrow::before {
+  content: ''; width: 20px; height: 1px; background: var(--accent);
+  display: inline-block; flex-shrink: 0;
+}
+/* Variante teal (Teoria, SO) */
+.page-eyebrow.teal,  .section-eyebrow.teal  { color: var(--teal); }
+.page-eyebrow.teal::before, .section-eyebrow.teal::before { background: var(--teal); }
+/* Variante amber (SO) */
+.page-eyebrow.amber, .section-eyebrow.amber { color: var(--amber); }
+.page-eyebrow.amber::before, .section-eyebrow.amber::before { background: var(--amber); }
+
+/* Eyebrow standalone amber (usato in SO senza ::before inline) */
+.eyebrow-amber {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;
+}
+.eyebrow-amber::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--amber); }
+
+
+/* ==========================================================================
+   5. BREADCRUMB
+   ========================================================================== */
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--text-muted); margin-bottom: 1.5rem; letter-spacing: 0.04em;
+}
+.hero .breadcrumb { justify-content: center; margin-top: 2rem; margin-bottom: 0; }
+.breadcrumb a { color: var(--accent-soft); }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb span { color: var(--text-muted); }
+
+
+/* ==========================================================================
+   6. TOC
+   ========================================================================== */
+.toc { max-width: 900px; margin: 0 auto 1rem; padding: 0 2rem; display: flex; gap: 8px; flex-wrap: wrap; }
+.toc-item {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 5px 14px; background: rgba(34,211,238,0.06);
+  border: 1px solid rgba(34,211,238,0.15); border-radius: var(--r-pill);
+  color: var(--text-muted); transition: all 0.2s; letter-spacing: 0.04em; white-space: nowrap;
+}
+.toc-item:hover        { color: var(--teal);        border-color: rgba(34,211,238,0.4); }
+.toc-item.amber:hover  { color: var(--amber);       border-color: rgba(251,191,36,0.4); }
+.toc-item.purple:hover { color: var(--accent-soft); border-color: var(--border-hover); }
+
+
+/* ==========================================================================
+   7. SECTIONS
+   ========================================================================== */
+.content-section, .materie-section {
+  max-width: 900px; margin: 0 auto;
+  padding: 5rem 2rem; border-bottom: 1px solid var(--border);
+}
+.content-section:last-of-type { border-bottom: none; }
+
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; gap: 1.5rem; }
+.section-title  { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem; line-height: 1.2; }
+.section-intro  { font-size: 14px; color: var(--text-secondary); max-width: 660px; line-height: 1.8; margin-bottom: 2.5rem; }
+
+/* Divisore con etichetta (SO — separa gruppi accordion) */
+.divider-label { max-width: 900px; margin: 3rem auto 1.5rem; padding: 0 2rem; display: flex; align-items: center; gap: 1rem; }
+.divider-label span { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+.divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+
+/* ==========================================================================
+   8. CARDS — homepage & hub
+   ========================================================================== */
+.materie-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.cards-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.cards-section { max-width: 1000px; margin: 0 auto; padding: 0 2rem 8rem; position: relative; z-index: 1; }
+
+.cards-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.cards-label::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--accent); }
+
+.materia-card, .section-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+  padding: 2.25rem; display: flex; transition: all 0.25s ease; position: relative; overflow: hidden;
+}
+.section-card { flex-direction: column; min-height: 380px; }
+
+.materia-card::before, .section-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.materia-card:hover, .section-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateY(-4px); }
+.materia-card:hover::before, .section-card:hover::before { opacity: 1; }
+
+.materia-card.disabled { opacity: 0.6; cursor: not-allowed; flex-direction: column; }
+.materia-card.disabled:hover { transform: none; background: var(--bg-card); border-color: var(--border); }
+
+/* Featured (homepage prima card) */
+.featured-left  { flex: 1; display: flex; flex-direction: column; }
+.featured-right { width: 240px; border-left: 1px solid var(--border); padding-left: 2rem; display: flex; align-items: center; }
+.featured-stats { display: flex; flex-direction: column; gap: 1.25rem; width: 100%; }
+.featured-stat  { display: flex; flex-direction: column; gap: 4px; }
+.featured-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+.featured-stat-value { font-size: 12px; color: var(--text-primary); font-weight: 500; }
+
+/* Elementi interni card */
+.card-top    { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.card-number { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 1.5rem; text-transform: uppercase; }
+.card-sigla  { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; }
+.materia-card h2, .materia-card .card-title, .section-card h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 0.75rem; }
+.card-desc, .section-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; }
+.section-card p { flex: 1; }
+.card-tags   { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+.card-topics { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.75rem; flex: 1; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+.card-meta   { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); }
+.card-arrow  { font-size: 16px; color: var(--text-muted); transition: transform 0.2s; }
+.materia-card:hover .card-arrow { transform: translateX(4px); color: var(--text-primary); }
+.card-status { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: var(--r-pill); }
+.status-active { background: rgba(52,211,153,0.10); color: var(--green); }
+.status-soon   { background: rgba(90,80,128,0.20);  color: var(--text-muted); }
+.topic-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
+.topic-dot  { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-soft); flex-shrink: 0; }
+.topic-dot.teal { background: var(--teal); }
+
+
+/* ==========================================================================
+   9. CARD ICONS
+   ========================================================================== */
+.card-icon, .card-icon-big {
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-weight: 700; flex-shrink: 0;
+}
+.card-icon     { width: 36px; height: 36px; font-size: 12px; }
+.card-icon-big { width: 56px; height: 56px; font-size: 20px; margin-bottom: 1.5rem; border: 1px solid var(--border-hover); border-radius: 14px; }
+.icon-purple { background: rgba(124,92,252,0.12); color: var(--accent-soft); }
+.icon-teal   { background: rgba(34,211,238,0.10); color: var(--teal); }
+.icon-green  { background: rgba(52,211,153,0.12); color: var(--green); }
+.icon-amber  { background: rgba(251,191,36,0.10); color: var(--amber); }
+.icon-coral  { background: rgba(248,113,113,0.10); color: var(--coral); }
+
+
+/* ==========================================================================
+   10. TAGS & BADGES
+   ========================================================================== */
+/* Tag base (EDIDS: piccolo, senza radius pill) */
+.tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 2px 8px; background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border); border-radius: 4px; color: var(--text-secondary);
+  display: inline-block;
+}
+/* Varianti pill colorate (SO intro + nuove pagine) */
+.tag.amber  { background: rgba(251,191,36,0.08);  border-color: rgba(251,191,36,0.25);  color: var(--amber);       border-radius: var(--r-pill); font-size: 11px; padding: 4px 12px; }
+.tag.teal   { background: rgba(34,211,238,0.08);  border-color: rgba(34,211,238,0.25);  color: var(--teal);        border-radius: var(--r-pill); font-size: 11px; padding: 4px 12px; }
+.tag.green  { background: rgba(52,211,153,0.08);  border-color: rgba(52,211,153,0.25);  color: var(--green);       border-radius: var(--r-pill); font-size: 11px; padding: 4px 12px; }
+.tag.coral  { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: var(--coral);       border-radius: var(--r-pill); font-size: 11px; padding: 4px 12px; }
+.tag.purple { background: var(--tag-bg);          border-color: var(--border-hover);    color: var(--accent-soft); border-radius: var(--r-pill); font-size: 11px; padding: 4px 12px; }
+.tag.muted  { background: rgba(90,80,128,0.15);   border-color: rgba(90,80,128,0.30);   color: var(--text-muted);  border-radius: var(--r-pill); font-size: 11px; padding: 4px 12px; }
+
+/* GoF / Pattern badges */
+.badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 3px 9px; border-radius: var(--r-pill); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.badge-creo  { background: rgba(124,92,252,0.12); color: var(--accent-soft); border: 1px solid rgba(124,92,252,0.3); }
+.badge-strut { background: rgba(34,211,238,0.10); color: var(--teal);        border: 1px solid rgba(34,211,238,0.3); }
+.badge-comp  { background: rgba(52,211,153,0.10); color: var(--green);       border: 1px solid rgba(52,211,153,0.3); }
+.badge-proj  { background: rgba(251,191,36,0.10); color: var(--amber);       border: 1px solid rgba(251,191,36,0.3); }
+
+/* Accordion badges (SO) */
+.acc-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 2px 8px; border-radius: var(--r-pill); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0; }
+.ab-amber  { background: rgba(251,191,36,0.12);  color: var(--amber);       border: 1px solid rgba(251,191,36,0.3); }
+.ab-teal   { background: rgba(34,211,238,0.10);  color: var(--teal);        border: 1px solid rgba(34,211,238,0.3); }
+.ab-green  { background: rgba(52,211,153,0.10);  color: var(--green);       border: 1px solid rgba(52,211,153,0.3); }
+.ab-coral  { background: rgba(248,113,113,0.10); color: var(--coral);       border: 1px solid rgba(248,113,113,0.3); }
+.ab-purple { background: rgba(124,92,252,0.12);  color: var(--accent-soft); border: 1px solid rgba(124,92,252,0.3); }
+
+/* AC badges (User Stories) */
+.ac-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+.ac-badge.happy { background: rgba(52,211,153,0.15);  color: var(--green); }
+.ac-badge.alt   { background: rgba(124,92,252,0.15);  color: var(--accent-soft); }
+.ac-badge.edge  { background: rgba(248,113,113,0.15); color: var(--coral); }
+
+
+/* ==========================================================================
+   11. BUTTONS
+   ========================================================================== */
+/* Base condivisa per tutti i bottoni */
+.btn-primary, .back-btn, .card-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: var(--r-md);
+  font-size: 13px; font-weight: 600; transition: all 0.2s;
+  text-decoration: none; border: none; cursor: pointer;
+}
+
+/* Varianti */
+.btn-primary, .btn-accent, .cta-purple { background: var(--accent); color: #fff; }
+.btn-primary:hover, .btn-accent:hover, .cta-purple:hover { background: #9571ff; transform: translateY(-1px); }
+
+.btn-ghost { background: transparent; border: 1px solid var(--border-hover); color: var(--text-secondary); }
+.btn-ghost:hover { border-color: var(--accent-soft); color: var(--text-primary); }
+
+.btn-teal, .cta-teal { background: rgba(34,211,238,0.10); color: var(--teal); border: 1px solid rgba(34,211,238,0.3); }
+.btn-teal:hover, .cta-teal:hover { background: rgba(34,211,238,0.18); transform: translateX(2px); }
+
+.btn-amber { background: rgba(251,191,36,0.10); color: var(--amber); border: 1px solid rgba(251,191,36,0.3); }
+.btn-amber:hover { background: rgba(251,191,36,0.20); }
+
+/* card-cta: bottone inline dentro card */
+.card-cta { padding: 12px 22px; margin-top: auto; width: fit-content; }
+
+/* Riga pulsanti ritorno */
+.back-btn-wrap { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 4rem; display: flex; gap: 12px; flex-wrap: wrap; }
+
+
+/* ==========================================================================
+   12. STATS BAR
+   ========================================================================== */
+.stats-bar {
+  display: flex; justify-content: center;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  background: rgba(15,15,26,0.6);
+}
+.stat-item { flex: 1; max-width: 200px; padding: 2rem 1.5rem; text-align: center; border-right: 1px solid var(--border); }
+.stat-item:last-child { border-right: none; }
+.stat-number { font-size: 2rem; font-weight: 900; color: var(--text-primary); letter-spacing: -0.03em; }
+.stat-label  { font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'JetBrains Mono', monospace; }
+
+
+/* ==========================================================================
+   13. INFO / CALLOUT BOXES
+   ========================================================================== */
+.info-box, .highlight-box, .warn-box, .amber-box, .teal-box {
+  border-radius: var(--r-md); padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 13px; line-height: 1.7;
+}
+.info-box      { background: var(--tag-bg);              border: 1px solid var(--border-hover);           color: var(--accent-soft); }
+.highlight-box { background: rgba(52,211,153,0.07);       border: 1px solid rgba(52,211,153,0.25);         color: var(--green); }
+.warn-box      { background: rgba(248,113,113,0.07);      border: 1px solid rgba(248,113,113,0.25);        color: var(--coral); }
+.amber-box     { background: rgba(251,191,36,0.07);       border: 1px solid rgba(251,191,36,0.25);         color: var(--amber); }
+.teal-box      { background: rgba(34,211,238,0.06);       border: 1px solid rgba(34,211,238,0.22);         color: var(--teal); }
+/* Override specifico: warn-box dentro content-section diventa amber (Singleton) */
+.content-section .warn-box { background: rgba(251,191,36,0.07); border-color: rgba(251,191,36,0.25); color: var(--amber); }
+
+
+/* ==========================================================================
+   14. CODE BLOCK
+   ========================================================================== */
+.code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; font-family: 'JetBrains Mono', monospace; margin: 1.25rem 0; }
+.code-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border); background: rgba(34,211,238,0.04); }
+.code-dots { display: flex; gap: 6px; }
+.code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.dot-red       { background: #ff5f57; }
+.dot-yellow    { background: #ffbd2e; }
+.dot-green-dot { background: #28c840; }
+.code-filename { font-size: 11px; color: var(--text-muted); letter-spacing: 0.04em; }
+.code-body { padding: 1.25rem 1.5rem; font-size: 12px; line-height: 1.85; color: #c4b5fd; overflow-x: auto; }
+.code-body pre { font-family: inherit; }
+.code-body .kw     { color: #f87171; }
+.code-body .fn     { color: #818cf8; }
+.code-body .cm     { color: #4f4673; font-style: italic; }
+.code-body .str    { color: #6ee7b7; }
+.code-body .tp     { color: #fbbf24; }
+.code-body .teal-c { color: #22d3ee; }
+
+
+/* ==========================================================================
+   15. GRASP GRID & PATTERN CARDS
+   ========================================================================== */
+.grasp-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(265px,1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+  border-radius: var(--r-xl); overflow: hidden; margin-bottom: 1.5rem;
+}
+.grasp-card       { background: var(--bg-card); padding: 1.5rem; transition: background 0.2s; }
+.grasp-card:hover { background: var(--bg-card-hover); }
+.grasp-card h3    { font-size: 14px; font-weight: 700; margin-bottom: 0.4rem; }
+.grasp-card p     { font-size: 12px; color: var(--text-secondary); line-height: 1.65; }
+.grasp-icon { width: 34px; height: 34px; border-radius: 8px; background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.25); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--teal); font-weight: 700; margin-bottom: 0.9rem; }
+.grasp-tag  { display: inline-block; margin-top: 0.75rem; padding: 2px 9px; background: rgba(34,211,238,0.08); border-radius: var(--r-pill); font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--teal); }
+
+.pattern-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; margin-bottom: 1.25rem; transition: all 0.2s; position: relative; overflow: hidden; }
+.pattern-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; opacity: 0; transition: opacity 0.3s; }
+.pattern-card:hover               { background: var(--bg-card-hover); border-color: var(--border-hover); }
+.pattern-card:hover::before       { opacity: 1; }
+.pattern-card.pc-teal::before     { background: linear-gradient(90deg, transparent, var(--teal), transparent); }
+.pattern-card.pc-amber::before    { background: linear-gradient(90deg, transparent, var(--amber), transparent); }
+.pattern-card.pc-coral::before    { background: linear-gradient(90deg, transparent, var(--coral), transparent); }
+.pattern-card.pc-green::before    { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+.pattern-card.pc-accent::before   { background: linear-gradient(90deg, transparent, var(--accent-soft), transparent); }
+.pattern-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; gap: 1rem; flex-wrap: wrap; }
+.pattern-title  { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; }
+.pattern-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.pattern-desc   { font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 1rem; }
+.pattern-when   { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding: 8px 12px; background: rgba(255,255,255,0.02); border-radius: var(--r-sm); border-left: 2px solid var(--text-muted); line-height: 1.7; }
+
+
+/* ==========================================================================
+
+  </div>
+
+  <footer>
+    <p>// 7Katch.github.io · EDIDS</p>
+  </footer>
+
+  <script>
+    // Semplice toggle per la sidebar mobile
+    const toggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.so-sidebar');
+    if(toggle && sidebar) {
+      toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

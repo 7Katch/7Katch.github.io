@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03 · Requisiti — EDIDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+  
+</head>
+<body class="dot-grid theme-green">
+  <aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-fondamenti.html"><span class="sb-pdot"></span>01 · Fondamenti</a></li>
+    <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
+    <li>
+      <div class="sb-cur"><span class="sb-pdot"></span>03 · Requisiti</div>
+    </li>
+    <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
+    <li><a href="05-modellazione-design.html"><span class="sb-pdot"></span>05 · Modellazione & Design</a></li>
+    <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
+    <li><a href="07-cloud-aws.html"><span class="sb-pdot"></span>07 · Cloud AWS</a></li>
+    <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+
+  <!-- ═══════ NAV ═══════ -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
+      <a href="../teoria.html" class="nav-logo">// EDIDS · Requisiti</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../teoria.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice EDIDS</a>
+      <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(52, 211, 153, 0.08);border-color:rgba(52, 211, 153, 0.3);color:var(--green)">
+      Macroargomento 03
+    </span>
+    <div class="topic-num">03 / 08</div>
+    <h1 class="topic-hero-title">Ingegneria dei Requisiti</h1>
+    <p class="hero-sub" style="max-width:640px">
+      Dall'elicitazione alle User Stories, criteri INVEST e Gherkin.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="content-wrap">
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a>
+      <span>/</span>
+      <a href="../teoria.html">EDIDS</a>
+      <span>/</span>
+      <span>03 · Requisiti</span>
+    </div>
+
+<div class="content-section">
+  <h2 class="section-title">Concetti chiave</h2>
+  <div class="checklist-box">
+    <div class="checklist-title">Appunti</div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Tipi di Requisiti:</strong> Requisiti utente (per i clienti) vs Requisiti di sistema (per gli sviluppatori); Requisiti funzionali vs Non funzionali (es. prestazioni, sicurezza).</div></div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>User Stories:</strong> Metodologia Agile per esprimere i requisiti, che devono rispettare i criteri **INVEST** (Independent, Negotiable, Valuable, Estimable, Small, Testable).</div></div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Criteri di Accettazione e Gherkin:</strong> Strutturazione formale dei test nel formato *Given-When-Then*.</div></div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Elicitazione e Specifica:</strong> Tecniche di raccolta dei requisiti (brainstorming, interviste, etnografia) e modellazione tramite Casi d'Uso (Use Cases).</div></div>
+  </div>
+</div>
+
+
+  </div>
+
+  <footer>
+    <p>// 7Katch.github.io · EDIDS</p>
+  </footer>
+
+  <script>
+    // Semplice toggle per la sidebar mobile
+    const toggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.so-sidebar');
+    if(toggle && sidebar) {
+      toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

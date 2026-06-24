@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07 · Cloud AWS — EDIDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+  
+</head>
+<body class="dot-grid theme-teal">
+  <aside class="so-sidebar">
+  <div class="sb-label">Macroargomenti</div>
+  <ul class="sb-pages">
+    <li><a href="01-fondamenti.html"><span class="sb-pdot"></span>01 · Fondamenti</a></li>
+    <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
+    <li><a href="03-ingegneria-requisiti.html"><span class="sb-pdot"></span>03 · Requisiti</a></li>
+    <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
+    <li><a href="05-modellazione-design.html"><span class="sb-pdot"></span>05 · Modellazione & Design</a></li>
+    <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
+    <li>
+      <div class="sb-cur"><span class="sb-pdot"></span>07 · Cloud AWS</div>
+    </li>
+    <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
+  </ul>
+  <div class="sb-label">In questa pagina</div>
+  <ul class="sb-sections"></ul>
+</aside>
+
+
+  <!-- ═══════ NAV ═══════ -->
+  <nav>
+    <div class="nav-left">
+      <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
+      <a href="../teoria.html" class="nav-logo">// EDIDS · Cloud AWS</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="../teoria.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice EDIDS</a>
+      <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(34, 211, 238, 0.08);border-color:rgba(34, 211, 238, 0.3);color:var(--teal)">
+      Macroargomento 07
+    </span>
+    <div class="topic-num">07 / 08</div>
+    <h1 class="topic-hero-title">Sistemi Cloud (AWS)</h1>
+    <p class="hero-sub" style="max-width:640px">
+      Paradigma Cloud, servizi Core AWS e Infrastructure come Codice.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="content-wrap">
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a>
+      <span>/</span>
+      <a href="../teoria.html">EDIDS</a>
+      <span>/</span>
+      <span>07 · Cloud AWS</span>
+    </div>
+
+<div class="content-section">
+  <h2 class="section-title">Concetti chiave</h2>
+  <div class="checklist-box">
+    <div class="checklist-title">Appunti</div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Paradigma Cloud:</strong> Passaggio dai server on-premise ("Pets", curati singolarmente) al cloud ("Cattle", risorse usa e getta gestite in IaaS, PaaS, SaaS).</div></div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Servizi Core AWS:</strong> *   *Storage e Database:* Object Storage (S3), Block Storage (EBS), File Storage (EFS), Database relazionali (RDS/Aurora) e NoSQL (DynamoDB, DocumentDB). *   *Compute:* Macchine virtuali (EC2), Container orchestrati (EKS) e architetture Serverless (Lambda).</div></div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Sicurezza e Rete (VPC):</strong> Recinti virtuali, Subnet pubbliche/private, Security Group (Stateful), Network ACL (Stateless) e gestione degli accessi con IAM e KMS (Crittografia).</div></div>
+    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Infrastructure as Code (IaC):</strong> Gestione dichiarativa dell'infrastruttura tramite strumenti come **Terraform** e AWS CDK.</div></div>
+  </div>
+</div>
+
+
+  </div>
+
+  <footer>
+    <p>// 7Katch.github.io · EDIDS</p>
+  </footer>
+
+  <script>
+    // Semplice toggle per la sidebar mobile
+    const toggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.so-sidebar');
+    if(toggle && sidebar) {
+      toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

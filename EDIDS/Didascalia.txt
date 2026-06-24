@@ -1,0 +1,57 @@
+Ecco la struttura testuale della mappa mentale, organizzata gerarchicamente con i macro-argomenti e i relativi sotto-argomenti estratti dalle lezioni:
+
+### 1. Fondamenti di Ingegneria del Software
+*   **Definizione e Obiettivi:** Differenza tra Ingegneria del Software (focalizzata sulla pratica, progettazione e consegna) e Informatica (teoria e fondamenti).
+*   **Caratteristiche del "Buon Software":** Manutenibilità, affidabilità (dependability), efficienza (tempi di risposta, uso memoria) e usabilità.
+*   **Etica e Impatto:** Responsabilità degli ingegneri, dilemmi etici e impatto globale dei fallimenti software (es. disastro Ariane 5, crash di CrowdStrike, hack della DAO).
+*   **Impatto dell'AI:** L'Intelligenza Artificiale come assistente in ogni fase (scrittura codice, testing, rilevamento ambiguità), che sposta il focus dallo scrivere codice all'orchestrazione e alla progettazione.
+
+### 2. Modelli e Ciclo di Vita del Software
+*   **Attività Centrali:** Specifica dei requisiti, Sviluppo (design e programmazione), Convalida (testing) ed Evoluzione (manutenzione).
+*   **Modelli di Processo:** Modello lineare (Waterfall) vs Modello Iterativo/Agile.
+*   **Metodologia Agile e Scrum:** 
+    *   Ruoli (Scrum Master, ecc.), 5 Eventi (es. Sprint Planning, Daily Scrum) e 3 Artefatti (Product Backlog, Sprint Backlog).
+*   **Extreme Programming (XP):** Pratiche come il Test-driven development, il refactoring e il Pair Programming.
+
+### 3. Ingegneria dei Requisiti
+*   **Tipi di Requisiti:** Requisiti utente (per i clienti) vs Requisiti di sistema (per gli sviluppatori); Requisiti funzionali vs Non funzionali (es. prestazioni, sicurezza).
+*   **User Stories:** Metodologia Agile per esprimere i requisiti, che devono rispettare i criteri **INVEST** (Independent, Negotiable, Valuable, Estimable, Small, Testable).
+*   **Criteri di Accettazione e Gherkin:** Strutturazione formale dei test nel formato *Given-When-Then*.
+*   **Elicitazione e Specifica:** Tecniche di raccolta dei requisiti (brainstorming, interviste, etnografia) e modellazione tramite Casi d'Uso (Use Cases).
+
+### 4. Architettura del Software
+*   **Concetti Base:** Strutturazione ad alto livello del sistema, differenze tra architettura (struttura globale) e design (algoritmi, procedure locali).
+*   **Modelli di Rappresentazione:**
+    *   **Modello 4+1 (Kruchten):** Viste Logica, di Sviluppo (Implementazione), di Processo e Fisica (Deployment), unite dai Casi d'uso.
+    *   **Modello C4:** Approccio gerarchico più leggero (System Context, Containers, Components, Code).
+*   **Pattern e Stili Architetturali:**
+    *   Strutturali: Layered (a livelli), Model-View-Controller (MVC).
+    *   Fisici/Deployment: Client-Server, Peer-to-Peer.
+    *   Di Comunicazione: Pipe-Filter, Event-Bus.
+*   **Evoluzione Architetturale:** Dal Monolite alla Service Oriented Architecture (SOA), fino all'architettura a Microservizi.
+
+### 5. Modellazione e Design (UML e Pattern)
+*   **Unified Modeling Language (UML):** Linguaggio visivo standard per la modellazione.
+    *   *Diagrammi Strutturali:* Class diagram, Component diagram, Deployment diagram, Package diagram.
+    *   *Diagrammi Comportamentali:* Use Case diagram, Sequence diagram, Activity diagram, State diagram.
+*   **Dal Dominio al Codice (Model-Driven):** Creazione del Domain Model (concetti del mondo reale) e passaggio al Design Class Model (struttura software) tramite *Forward engineering* e refactoring.
+*   **Design Pattern:** Principi GRASP (es. Information Expert, Creator, Low Coupling) e Pattern della Gang of Four (GoF) (es. Factory, Singleton, Observer).
+
+### 6. Strumenti di Sviluppo, DevOps e CI/CD
+*   **Build Tools:** Strumenti per la compilazione e gestione dipendenze come Make, Ant, **Maven** (uso del `pom.xml`, ciclo di vita e repository) e Gradle.
+*   **Source Code Management (SCM):** Evoluzione del controllo di versione dai modelli centralizzati (SVN) a quelli distribuiti (Git: commit, push, pull, branch, merge).
+*   **Automazione e Qualità:** Pratiche di **Continuous Integration (CI)** e Continuous Deployment (CD), analisi statica del codice (es. SonarQube) e test automatici.
+*   **Virtualizzazione e Container:** Soluzione dei problemi di ambiente di test/produzione tramite i container (es. Docker).
+
+### 7. Sistemi Cloud (AWS)
+*   **Paradigma Cloud:** Passaggio dai server on-premise ("Pets", curati singolarmente) al cloud ("Cattle", risorse usa e getta gestite in IaaS, PaaS, SaaS).
+*   **Servizi Core AWS:**
+    *   *Storage e Database:* Object Storage (S3), Block Storage (EBS), File Storage (EFS), Database relazionali (RDS/Aurora) e NoSQL (DynamoDB, DocumentDB).
+    *   *Compute:* Macchine virtuali (EC2), Container orchestrati (EKS) e architetture Serverless (Lambda).
+*   **Sicurezza e Rete (VPC):** Recinti virtuali, Subnet pubbliche/private, Security Group (Stateful), Network ACL (Stateless) e gestione degli accessi con IAM e KMS (Crittografia).
+*   **Infrastructure as Code (IaC):** Gestione dichiarativa dell'infrastruttura tramite strumenti come **Terraform** e AWS CDK.
+
+### 8. Evoluzione, Manutenzione e Riuso
+*   **Gestione del Cambiamento:** Affrontare l'evoluzione del software, i sistemi "Legacy" (obsoleti) e i "Bad smells" nel codice (es. codice duplicato) tramite reingegnerizzazione e refactoring.
+*   **Software Reuse (Riuso):** Sviluppo basato sul riuso di componenti, librerie Open Source e pattern, supportato dall'intelligenza artificiale per l'adattamento (Glue Code).
+*   **Sicurezza della Supply Chain:** Importanza della **SBOM** (Software Bill of Materials) per tracciare e gestire le vulnerabilità dei componenti di terze parti inclusi nel software.
