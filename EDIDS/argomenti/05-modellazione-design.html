@@ -9,13 +9,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../shared/katchkit.css">
   
-<nav>
-  <a href="index.html" class="nav-logo">// EDIDS · Teoria</a>
-  <div class="nav-links-row">
-    <a href="index.html" class="nav-back"><i class="bi bi-arrow-left"></i> EDIDS</a>
-    <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
-  </div>
-</nav>
+<site-navbar 
+    logo-text="// EDIDS · Teoria" 
+    back-url="index.html" 
+    back-text="EDIDS">
+  </site-navbar>
 
 <div class="page-hero">
   <div class="breadcrumb">
@@ -130,30 +128,18 @@
 
 
   <!-- ═══════ NAV ═══════ -->
-  <nav>
-    <div class="nav-left">
-      <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
-      <a href="../teoria.html" class="nav-logo">// EDIDS · Modellazione & Design</a>
-    </div>
+  <site-navbar 
+    logo-text="// EDIDS · Modellazione & Design" 
+    back-url="../teoria.html" 
+    back-text="Indice EDIDS">
+  </site-navbar>
 
-    <div class="nav-right">
-      <a href="../teoria.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice EDIDS</a>
-      <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
-    </div>
-  </nav>
-
-  <div class="hero" style="min-height:55vh">
-    <div class="hero-glow"></div>
-    <span class="hero-eyebrow"
-      style="background:rgba(248, 113, 113, 0.08);border-color:rgba(248, 113, 113, 0.3);color:var(--coral)">
-      Macroargomento 05
-    </span>
-    <div class="topic-num">05 / 08</div>
-    <h1 class="topic-hero-title">Modellazione e Design (UML e Pattern)</h1>
-    <p class="hero-sub" style="max-width:640px">
-      Dal dominio al codice, Pattern GRASP e Design Pattern GoF.
-    </p>
-  </div>
+    <site-hero 
+    eyebrow="Macroargomento 05" 
+    topic-num="05 / 08" 
+    title="Modellazione e Design (UML e Pattern)" 
+    sub="Dal dominio al codice, Pattern GRASP e Design Pattern GoF.">
+  </site-hero>
 
   <hr class="divider">
 

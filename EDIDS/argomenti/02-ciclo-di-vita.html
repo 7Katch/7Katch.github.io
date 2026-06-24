@@ -31,30 +31,18 @@
 
 
   <!-- ═══════ NAV ═══════ -->
-  <nav>
-    <div class="nav-left">
-      <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
-      <a href="../teoria.html" class="nav-logo">// EDIDS · Ciclo di Vita</a>
-    </div>
+  <site-navbar 
+    logo-text="// EDIDS · Ciclo di Vita" 
+    back-url="../teoria.html" 
+    back-text="Indice EDIDS">
+  </site-navbar>
 
-    <div class="nav-right">
-      <a href="../teoria.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice EDIDS</a>
-      <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
-    </div>
-  </nav>
-
-  <div class="hero" style="min-height:55vh">
-    <div class="hero-glow"></div>
-    <span class="hero-eyebrow"
-      style="background:rgba(34, 211, 238, 0.08);border-color:rgba(34, 211, 238, 0.3);color:var(--teal)">
-      Macroargomento 02
-    </span>
-    <div class="topic-num">02 / 08</div>
-    <h1 class="topic-hero-title">Modelli e Ciclo di Vita</h1>
-    <p class="hero-sub" style="max-width:640px">
-      Fasi dello sviluppo, modelli Waterfall vs Agile e framework Scrum.
-    </p>
-  </div>
+    <site-hero 
+    eyebrow="Macroargomento 02" 
+    topic-num="02 / 08" 
+    title="Modelli e Ciclo di Vita" 
+    sub="Fasi dello sviluppo, modelli Waterfall vs Agile e framework Scrum.">
+  </site-hero>
 
   <hr class="divider">
 
@@ -67,16 +55,372 @@
       <span>02 · Ciclo di Vita</span>
     </div>
 
-<div class="content-section">
-  <h2 class="section-title">Concetti chiave</h2>
-  <div class="checklist-box">
-    <div class="checklist-title">Appunti</div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Attività Centrali:</strong> Specifica dei requisiti, Sviluppo (design e programmazione), Convalida (testing) ed Evoluzione (manutenzione).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Modelli di Processo:</strong> Modello lineare (Waterfall) vs Modello Iterativo/Agile.</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Metodologia Agile e Scrum:</strong>  *   Ruoli (Scrum Master, ecc.), 5 Eventi (es. Sprint Planning, Daily Scrum) e 3 Artefatti (Product Backlog, Sprint Backlog).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Extreme Programming (XP):</strong> Pratiche come il Test-driven development, il refactoring e il Pair Programming.</div></div>
-  </div>
-</div>
+    <div class="index-grid" data-prefix="02">
+      <ul>
+        <li>Attività Centrali</li>
+        <li>Waterfall vs Agile</li>
+        <li>Metodologia Agile e Scrum</li>
+        <li>Extreme Programming (XP)</li>
+      </ul>
+    </div>
+
+    <!-- 02.01 -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Attività Centrali del Software</h2>
+      <p>
+        Indipendentemente dal modello di ciclo di vita scelto, lo sviluppo del software ruota sempre attorno a quattro <span class="keyword">attività centrali</span> fondamentali:
+      </p>
+      <ul>
+        <li><span class="keyword">Specifica dei Requisiti:</span> Definizione di cosa il sistema deve fare e quali sono i suoi vincoli operativi.</li>
+        <li><span class="keyword">Sviluppo (Design & Programmazione):</span> Progettazione dell'architettura e stesura del codice sorgente.</li>
+        <li><span class="keyword">Convalida (Testing):</span> Verifica che il software soddisfi i requisiti del cliente e sia privo di difetti critici.</li>
+        <li><span class="keyword">Evoluzione (Manutenzione):</span> Modifica e adattamento del software nel tempo per rispondere a nuovi bisogni del mercato o del cliente.</li>
+      </ul>
+    </div>
+
+    <!-- 02.02 -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Modelli di Processo: Waterfall vs Agile</h2>
+      <p>
+        I processi software possono essere strutturati in diversi modi. Il <span class="keyword">modello Waterfall</span> (a cascata) è un approccio lineare sequenziale dove ogni fase deve essere completata prima che inizi la successiva. Sebbene facile da gestire, è molto rigido verso i cambiamenti.
+      </p>
+      <p>
+        Al contrario, l'<span class="keyword">approccio Agile</span> è basato su cicli iterativi e incrementali. Il prodotto viene costruito e rilasciato in piccoli incrementi, permettendo al team di adattarsi rapidamente ai cambiamenti e di ottenere feedback continuo.
+      </p>
+      
+      <!-- Canvas Element -->
+      <div style="margin: 2rem 0; background: rgba(20,20,25,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; text-align: center; overflow-x: auto;">
+        <canvas id="lifecycleCanvas" width="800" height="350" style="max-width: 100%; height: auto; display: block; margin: 0 auto;"></canvas>
+      </div>
+      
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const canvas = document.getElementById('lifecycleCanvas');
+          if(!canvas) return;
+          const ctx = canvas.getContext('2d');
+          
+          // Helper: Draw Rounded Rect
+          function roundRect(x, y, w, h, r, bg, text) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+            
+            ctx.fillStyle = bg;
+            ctx.fill();
+            
+            if(text) {
+              ctx.fillStyle = "#fff";
+              ctx.font = "500 13px Inter, sans-serif";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              ctx.fillText(text, x + w/2, y + h/2);
+            }
+          }
+
+          function drawArrow(x1, y1, x2, y2, color) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - 10 * Math.cos(angle - Math.PI / 6), y2 - 10 * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - 10 * Math.cos(angle + Math.PI / 6), y2 - 10 * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+          }
+
+          // Clear
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // 1. Waterfall (Left Side)
+          ctx.fillStyle = "rgba(255,255,255,0.7)";
+          ctx.font = "600 16px Inter, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("Modello Waterfall", 200, 30);
+
+          const wfSteps = ["Requisiti", "Design", "Sviluppo", "Testing", "Deploy"];
+          const wfColors = ["#334155", "#334155", "#334155", "#334155", "#334155"];
+          const startX = 30;
+          const startY = 70;
+          
+          for(let i=0; i<wfSteps.length; i++) {
+            roundRect(startX + (i*35), startY + (i*45), 140, 36, 6, wfColors[i], wfSteps[i]);
+            if(i < wfSteps.length - 1) {
+              drawArrow(startX + (i*35) + 70, startY + (i*45) + 36, startX + ((i+1)*35) + 70, startY + ((i+1)*45), "rgba(255,255,255,0.3)");
+            }
+          }
+
+          // Line Separator
+          ctx.beginPath();
+          ctx.moveTo(400, 20);
+          ctx.lineTo(400, 330);
+          ctx.strokeStyle = "rgba(255,255,255,0.1)";
+          ctx.stroke();
+
+          // 2. Agile (Right Side)
+          ctx.fillStyle = "rgba(255,255,255,0.7)";
+          ctx.fillText("Modello Agile (Iterativo)", 600, 30);
+
+          const cx = 600;
+          const cy = 180;
+
+          // Draw multiple iterations
+          for(let iter=0; iter<3; iter++) {
+            const offsetX = (iter - 1) * 120;
+            const cycleCx = cx + offsetX;
+            
+            // Loop base
+            ctx.beginPath();
+            ctx.arc(cycleCx, cy, 35, 0, Math.PI * 2);
+            ctx.strokeStyle = iter === 2 ? "#7c5cfc" : "rgba(124, 92, 252, 0.4)";
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Arrow on loop
+            ctx.beginPath();
+            ctx.moveTo(cycleCx + 35, cy);
+            ctx.lineTo(cycleCx + 45, cy - 10);
+            ctx.lineTo(cycleCx + 25, cy - 10);
+            ctx.fillStyle = iter === 2 ? "#7c5cfc" : "rgba(124, 92, 252, 0.4)";
+            ctx.fill();
+
+            // Text
+            ctx.fillStyle = "rgba(255,255,255,0.9)";
+            ctx.font = "500 12px Inter, sans-serif";
+            ctx.fillText("Sprint " + (iter + 1), cycleCx, cy + 55);
+          }
+          
+          // Connect iterations
+          drawArrow(cx - 120 + 40, cy, cx - 40, cy, "rgba(255,255,255,0.3)");
+          drawArrow(cx + 40, cy, cx + 120 - 40, cy, "rgba(255,255,255,0.3)");
+          
+          // Output box
+          roundRect(cx + 120 - 40, cy - 18, 80, 36, 6, "#10b981", "Release");
+        });
+      </script>
+    </div>
+
+    <!-- 02.03 -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Metodologia Agile e Scrum</h2>
+      <p>
+        Il <span class="keyword">Manifesto Agile</span> pone l'accento sugli individui e le interazioni, sul software funzionante, sulla collaborazione con il cliente e sulla risposta al cambiamento. <span class="keyword">Scrum</span> è il framework Agile più diffuso per implementare questi principi, strutturando il lavoro in iterazioni a tempo fisso dette <span class="keyword">Sprint</span> (solitamente 2-4 settimane).
+      </p>
+
+      <!-- Scrum Canvas Element -->
+      <div style="margin: 2rem 0; background: rgba(20,20,25,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; text-align: center; overflow-x: auto;">
+        <canvas id="scrumCanvas" width="800" height="280" style="max-width: 100%; height: auto; display: block; margin: 0 auto;"></canvas>
+      </div>
+      
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const canvas = document.getElementById('scrumCanvas');
+          if(!canvas) return;
+          const ctx = canvas.getContext('2d');
+
+          function roundRect(x, y, w, h, r, bg, text, textColor = "#fff") {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+            
+            ctx.fillStyle = bg;
+            ctx.fill();
+            
+            if(text) {
+              ctx.fillStyle = textColor;
+              ctx.font = "500 13px Inter, sans-serif";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              ctx.fillText(text, x + w/2, y + h/2);
+            }
+          }
+
+          function drawArrow(x1, y1, x2, y2, color) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - 10 * Math.cos(angle - Math.PI / 6), y2 - 10 * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - 10 * Math.cos(angle + Math.PI / 6), y2 - 10 * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+          }
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+
+          // 1. Product Backlog
+          roundRect(20, 100, 100, 120, 6, "#334155");
+          roundRect(25, 105, 90, 20, 4, "#475569");
+          roundRect(25, 130, 90, 20, 4, "#475569");
+          roundRect(25, 155, 90, 20, 4, "#475569");
+          roundRect(25, 180, 90, 20, 4, "#475569");
+          ctx.fillStyle = "rgba(255,255,255,0.8)";
+          ctx.font = "600 14px Inter, sans-serif";
+          ctx.fillText("Product Backlog", 70, 70);
+          ctx.font = "400 12px Inter, sans-serif";
+          ctx.fillText("(Product Owner)", 70, 90);
+
+          drawArrow(130, 160, 200, 160, "rgba(255,255,255,0.3)");
+          ctx.fillText("Sprint Planning", 165, 150);
+
+          // 2. Sprint Backlog
+          roundRect(210, 110, 90, 100, 6, "#334155");
+          roundRect(215, 115, 80, 20, 4, "#7c5cfc");
+          roundRect(215, 140, 80, 20, 4, "#7c5cfc");
+          ctx.fillStyle = "rgba(255,255,255,0.8)";
+          ctx.font = "600 14px Inter, sans-serif";
+          ctx.fillText("Sprint Backlog", 255, 70);
+          ctx.font = "400 12px Inter, sans-serif";
+          ctx.fillText("(Dev Team)", 255, 90);
+
+          drawArrow(310, 160, 380, 160, "rgba(255,255,255,0.3)");
+
+          // 3. Sprint Circle
+          const cx = 460;
+          const cy = 160;
+          ctx.beginPath();
+          ctx.arc(cx, cy, 60, 0, Math.PI * 2);
+          ctx.strokeStyle = "#7c5cfc";
+          ctx.lineWidth = 6;
+          ctx.stroke();
+
+          // Sprint Arrowhead
+          ctx.beginPath();
+          ctx.moveTo(cx, cy - 60);
+          ctx.lineTo(cx + 15, cy - 70);
+          ctx.lineTo(cx + 15, cy - 50);
+          ctx.fillStyle = "#7c5cfc";
+          ctx.fill();
+
+          ctx.fillStyle = "rgba(255,255,255,0.9)";
+          ctx.font = "700 16px Inter, sans-serif";
+          ctx.fillText("SPRINT", cx, cy - 10);
+          ctx.font = "400 12px Inter, sans-serif";
+          ctx.fillText("1-4 Settimane", cx, cy + 15);
+
+          // Daily Scrum Circle (small)
+          ctx.beginPath();
+          ctx.arc(cx, cy + 60, 25, 0, Math.PI * 2);
+          ctx.strokeStyle = "#10b981";
+          ctx.lineWidth = 3;
+          ctx.stroke();
+          
+          ctx.beginPath();
+          ctx.moveTo(cx, cy + 35);
+          ctx.lineTo(cx + 8, cy + 28);
+          ctx.lineTo(cx + 8, cy + 42);
+          ctx.fillStyle = "#10b981";
+          ctx.fill();
+
+          ctx.fillStyle = "#10b981";
+          ctx.font = "600 11px Inter, sans-serif";
+          ctx.fillText("Daily 24h", cx, cy + 60);
+
+          drawArrow(530, 160, 620, 160, "rgba(255,255,255,0.3)");
+          ctx.fillStyle = "rgba(255,255,255,0.8)";
+          ctx.font = "400 12px Inter, sans-serif";
+          ctx.fillText("Review & Retro", 575, 150);
+
+          // 4. Increment
+          roundRect(630, 130, 100, 60, 8, "#10b981", "Incremento", "#000");
+          ctx.fillStyle = "rgba(255,255,255,0.8)";
+          ctx.font = "600 14px Inter, sans-serif";
+          ctx.fillText("Valore Rilasciato", 680, 70);
+        });
+      </script>
+
+      <p>
+        Scrum si basa su tre pilastri fondamentali: <strong>trasparenza</strong>, <strong>ispezione</strong> e <strong>adattamento</strong>. Per garantire che il framework funzioni, sono definiti ruoli, eventi e artefatti specifici:
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">I 3 Ruoli (Accountabilities)</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">Product Owner (PO):</span> Massimizza il valore del prodotto. È l'unico responsabile della gestione del Product Backlog (aggiunta, rimozione, prioritizzazione).</li>
+            <li><span class="keyword">Scrum Master:</span> È un "servant leader". Si assicura che il team comprenda e applichi correttamente Scrum e rimuove gli ostacoli (impediments) che frenano il team.</li>
+            <li><span class="keyword">Development Team:</span> Un team autorganizzato e cross-funzionale. Nessuno dice loro *come* trasformare il Backlog in Incrementi funzionanti.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">I 5 Eventi (Cerimonie)</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">Sprint:</span> Il contenitore di tutti gli altri eventi. Una time-box fissa in cui viene creato un incremento "Done".</li>
+            <li><span class="keyword">Sprint Planning:</span> Si pianifica il lavoro. Il PO spiega gli obiettivi, il Team seleziona gli elementi e definisce *come* li realizzerà.</li>
+            <li><span class="keyword">Daily Scrum:</span> Un meeting giornaliero di 15 minuti del Dev Team per ispezionare il progresso verso l'obiettivo dello sprint e adattare il piano per le 24 ore successive.</li>
+            <li><span class="keyword">Sprint Review:</span> Si mostra l'incremento agli stakeholder per ottenere feedback e si adatta il Product Backlog se necessario.</li>
+            <li><span class="keyword">Sprint Retrospective:</span> Il team ispeziona se stesso, identificando cosa è andato bene e cosa può essere migliorato nel processo per lo Sprint successivo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">I 3 Artefatti</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">Product Backlog:</span> Una lista ordinata e in continua evoluzione di tutto ciò che è necessario per il prodotto. L'impegno associato è l'<em>Obiettivo di Prodotto (Product Goal)</em>.</li>
+            <li><span class="keyword">Sprint Backlog:</span> Un sottoinsieme del Product Backlog, selezionato per lo Sprint, insieme al piano per consegnarlo. L'impegno associato è l'<em>Obiettivo di Sprint (Sprint Goal)</em>.</li>
+            <li><span class="keyword">Incremento:</span> Un passo concreto verso il Product Goal. Deve soddisfare la <em>Definition of Done (DoD)</em> per essere considerato completo e di valore.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02.04 -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Extreme Programming (XP)</h2>
+      <p>
+        L'<span class="keyword">Extreme Programming</span> è un'altra metodologia Agile fortemente orientata alla qualità del codice sorgente e al team working.
+      </p>
+      <p>
+        Pratiche fondamentali includono:
+      </p>
+      <ul>
+        <li><span class="keyword">Test-Driven Development (TDD):</span> Scrivere i test automatici prima di scrivere il codice di produzione.</li>
+        <li><span class="keyword">Refactoring continuo:</span> Migliorare costantemente la struttura del codice senza alterarne il comportamento esterno.</li>
+        <li><span class="keyword">Pair Programming:</span> Due programmatori lavorano insieme su un singolo computer, uno scrive (Driver) e l'altro revisiona (Observer), riducendo drasticamente il numero di bug.</li>
+      </ul>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="back-btn-wrap">
+      <a href="01-fondamenti.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 01 · Fondamenti</a>
+      <a href="03-ingegneria-requisiti.html" class="btn btn-ghost">03 · Requisiti <i class="bi bi-arrow-right"></i></a>
+    </div>
 
 
   </div>
@@ -85,15 +429,6 @@
     <p>// 7Katch.github.io · EDIDS</p>
   </footer>
 
-  <script>
-    // Semplice toggle per la sidebar mobile
-    const toggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.so-sidebar');
-    if(toggle && sidebar) {
-      toggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-      });
-    }
-  </script>
+  <script src="../../shared/katchkit.js"></script>
 </body>
 </html>

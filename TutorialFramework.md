@@ -49,38 +49,30 @@ KatchKit usa l'Ambra come colore di default. Per cambiare l'intero set di colori
 
 ### Navbar (Barra di navigazione superiore)
 
-Deve essere posta all'inizio del `body`. Contiene il pulsante Hamburger per la sidebar.
+Deve essere posta all'inizio del `body`. Utilizza il Web Component `<site-navbar>` che genera automaticamente la struttura HTML, il pulsante Hamburger e i link corretti tramite attributi.
 
 ```html
-<nav>
-  <div class="nav-left">
-    <button id="sidebar-toggle">
-      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-    <a href="../index.html" class="nav-logo">// SO · Nome Materia</a>
-  </div>
-  <div class="nav-right">
-    <a href="../index.html" class="nav-back">← Indice</a>
-  </div>
-</nav>
-
+<site-navbar 
+  logo-text="// SO · Nome Materia" 
+  back-url="../index.html" 
+  back-text="Indice">
+</site-navbar>
 ```
 
 ### Hero Section (Intestazione di Pagina)
 
-Il blocco visivo principale in alto. Si adatta automaticamente al tema.
+Il blocco visivo principale in alto. Si adatta automaticamente al tema. Ora è centralizzato tramite Web Component:
 
 ```html
-<div class="hero">
-  <div class="hero-glow"></div> <span class="hero-eyebrow">Macroargomento 01</span>
-  <div class="topic-num">01 / 13</div>
-  <h1 class="topic-hero-title">Titolo Gigante</h1>
-  <p class="hero-sub">Sottotitolo descrittivo che spiega di cosa parla la pagina.</p>
-</div>
+<site-hero 
+  eyebrow="Macroargomento 01" 
+  topic-num="01 / 13" 
+  title="Titolo Gigante" 
+  sub="Sottotitolo descrittivo che spiega di cosa parla la pagina.">
+</site-hero>
+```
+
+*(Nota: gli attributi `eyebrow`, `topic-num` e `sub` sono opzionali. Se omessi, le rispettive parti non verranno renderizzate).*
 
 ```
 
@@ -275,20 +267,15 @@ I bottoni possono essere inseriti ovunque. Il bottone `.btn-theme` prenderà aut
 ### Navbar (Barra di navigazione superiore)
 Deve essere posta all'inizio del `body`. Contiene il pulsante Hamburger per aprire e chiudere la Sidebar laterale.
 
-**✨ Magia di KatchKit:** Non hai bisogno di incollare codici SVG lunghissimi! Ti basta inserire un bottone vuoto con l'ID `sidebar-toggle`. Sarà il motore JavaScript del framework a disegnarci dentro l'icona al momento del caricamento. Abbiamo aggiunto anche `aria-label="Menu"` per renderlo accessibile agli screen reader.
+**✨ Magia di KatchKit:** La navbar è ora un **Web Component** (`<site-navbar>`). Invece di incollare decine di righe di HTML e icone in ogni pagina, ti basta usare questo singolo tag. Passando gli attributi `logo-text`, `back-url` e `back-text`, il motore JavaScript genererà automaticamente tutta la barra in modo centralizzato!
 
 ```html
-<nav>
-  <div class="nav-left">
-    <button id="sidebar-toggle" aria-label="Menu"></button>
-    <a href="../" class="nav-logo">// SO · Nome Materia</a>
-  </div>
-
-  <div class="nav-right">
-    <a href="../" class="nav-back">← Indice</a>
-    <a href="/" class="nav-back">⌂ Home</a>
-  </div>
-</nav>
+<site-navbar 
+  logo-text="// SO · Nome Materia" 
+  back-url="../index.html" 
+  back-text="Indice"
+  home-url="https://7Katch.github.io"> <!-- Opzionale, default: https://7Katch.github.io -->
+</site-navbar>
 ```
 
 ## 🗂 10. Auto-Generazione dell'Indice e della Sidebar (Content-First)

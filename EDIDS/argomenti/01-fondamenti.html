@@ -1,60 +1,52 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>01 · Fondamenti — EDIDS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../../shared/katchkit.css">
-  
+  <link rel="stylesheet" href="/shared/katchkit.css">
+
 </head>
-<body class="dot-grid theme-purple">
+
+<body class="dot-grid theme-blue">
   <aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li>
-      <div class="sb-cur"><span class="sb-pdot"></span>01 · Fondamenti</div>
-    </li>
-    <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
-    <li><a href="03-ingegneria-requisiti.html"><span class="sb-pdot"></span>03 · Requisiti</a></li>
-    <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
-    <li><a href="05-modellazione-design.html"><span class="sb-pdot"></span>05 · Modellazione & Design</a></li>
-    <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
-    <li><a href="07-cloud-aws.html"><span class="sb-pdot"></span>07 · Cloud AWS</a></li>
-    <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
-</aside>
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>01 · Fondamenti</div>
+      </li>
+      <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
+      <li><a href="03-ingegneria-requisiti.html"><span class="sb-pdot"></span>03 · Requisiti</a></li>
+      <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
+      <li><a href="05-modellazione-design.html"><span class="sb-pdot"></span>05 · Modellazione & Design</a></li>
+      <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
+      <li><a href="07-cloud-aws.html"><span class="sb-pdot"></span>07 · Cloud AWS</a></li>
+      <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
 
 
   <!-- ═══════ NAV ═══════ -->
-  <nav>
-    <div class="nav-left">
-      <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
-      <a href="../teoria.html" class="nav-logo">// EDIDS · Fondamenti</a>
-    </div>
+  <site-navbar 
+    logo-text="// EDIDS · Fondamenti" 
+    back-url="../teoria.html" 
+    back-text="Indice EDIDS">
+  </site-navbar>
 
-    <div class="nav-right">
-      <a href="../teoria.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice EDIDS</a>
-      <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
-    </div>
-  </nav>
-
-  <div class="hero" style="min-height:55vh">
-    <div class="hero-glow"></div>
-    <span class="hero-eyebrow"
-      style="background:rgba(124, 92, 252, 0.08);border-color:rgba(124, 92, 252, 0.3);color:var(--accent-soft)">
-      Macroargomento 01
-    </span>
-    <div class="topic-num">01 / 08</div>
-    <h1 class="topic-hero-title">Fondamenti di Ingegneria del Software</h1>
-    <p class="hero-sub" style="max-width:640px">
-      Definizione, obiettivi, caratteristiche del buon software ed etica.
-    </p>
-  </div>
+    <site-hero 
+    eyebrow="Macroargomento 01" 
+    topic-num="01 / 08" 
+    title="Elementi di Ingegneria <br> del Software" 
+    sub="Definizione, obiettivi, caratteristiche del buon software ed etica.">
+  </site-hero>
 
   <hr class="divider">
 
@@ -67,16 +59,85 @@
       <span>01 · Fondamenti</span>
     </div>
 
-<div class="content-section">
-  <h2 class="section-title">Concetti chiave</h2>
-  <div class="checklist-box">
-    <div class="checklist-title">Appunti</div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Definizione e Obiettivi:</strong> Differenza tra Ingegneria del Software (focalizzata sulla pratica, progettazione e consegna) e Informatica (teoria e fondamenti).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Caratteristiche del "Buon Software":</strong> Manutenibilità, affidabilità (dependability), efficienza (tempi di risposta, uso memoria) e usabilità.</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Etica e Impatto:</strong> Responsabilità degli ingegneri, dilemmi etici e impatto globale dei fallimenti software (es. disastro Ariane 5, crash di CrowdStrike, hack della DAO).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Impatto dell'AI:</strong> L'Intelligenza Artificiale come assistente in ogni fase (scrittura codice, testing, rilevamento ambiguità), che sposta il focus dallo scrivere codice all'orchestrazione e alla progettazione.</div></div>
-  </div>
-</div>
+    <div class="index-grid" data-prefix="01">
+      <ul>
+        <li>Definizione e Obiettivi</li>
+        <li>Caratteristiche del "Buon Software"</li>
+        <li>Etica e Impatto</li>
+        <li>Impatto dell'AI</li>
+      </ul>
+    </div>
+
+    <!-- 01.01 -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Definizione e Obiettivi</h2>
+      <p>
+        L'<span class="keyword">Ingegneria del Software</span> non è semplicemente la scrittura di codice, ma una
+        disciplina ingegneristica che copre tutti gli aspetti della produzione del software.
+        A differenza dell'<span class="keyword">Informatica</span>, che si concentra sulla teoria e sui fondamenti
+        matematici dei calcolatori, l'ingegneria del software è orientata alla <span class="keyword">pratica</span>,
+        alla progettazione strutturata e alla consegna di sistemi software funzionanti e affidabili, considerando anche
+        vincoli di tempo e di budget.
+      </p>
+    </div>
+
+    <!-- 01.02 -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Caratteristiche del "Buon Software"</h2>
+      <p>
+        Un software non è definito buono solo se esegue le funzioni richieste, ma deve rispettare determinati attributi
+        qualitativi essenziali:
+      </p>
+      <ul>
+        <li><span class="keyword">Manutenibilità:</span> Il software deve poter evolvere per soddisfare i cambiamenti
+          nei requisiti dei clienti.</li>
+        <li><span class="keyword">Affidabilità e Sicurezza (Dependability):</span> Include caratteristiche come
+          affidabilità, sicurezza e protezione. Il software non deve causare danni fisici o economici in caso di
+          fallimento del sistema.</li>
+        <li><span class="keyword">Efficienza:</span> Il software non deve sprecare risorse di sistema, prestando
+          attenzione ai <span class="keyword">tempi di risposta</span>, ai tempi di elaborazione e all'utilizzo della
+          memoria.</li>
+        <li><span class="keyword">Usabilità:</span> Il software deve essere utilizzabile dagli utenti a cui è destinato,
+          con un'interfaccia intuitiva e una documentazione adeguata.</li>
+      </ul>
+    </div>
+
+    <!-- 01.03 -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Etica e Impatto</h2>
+      <p>
+        Gli ingegneri del software hanno <span class="keyword">responsabilità</span> etiche e sociali. Un fallimento del
+        software può causare danni enormi, dimostrando l'importanza di standard rigorosi.
+      </p>
+      <p>
+        Esempi celebri di impatto globale includono il disastro dell'<span class="keyword">Ariane 5</span> (dovuto a un
+        overflow intero), il recente <span class="keyword">crash di CrowdStrike</span> (che ha paralizzato sistemi
+        informatici globali) e l'<span class="keyword">hack della DAO</span> nel mondo blockchain. Questi eventi
+        evidenziano l'importanza di test rigorosi e di una progettazione incentrata sulla sicurezza.
+      </p>
+    </div>
+
+    <!-- 01.04 -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Impatto dell'AI</h2>
+      <p>
+        L'<span class="keyword">Intelligenza Artificiale</span> sta rivoluzionando l'ingegneria del software fungendo da
+        assistente in ogni fase del ciclo di vita.
+      </p>
+      <p>
+        L'AI supporta dalla <span class="keyword">scrittura del codice</span> (es. Copilot) al <span
+          class="keyword">testing</span>, fino al rilevamento di ambiguità nei requisiti. Di conseguenza, il focus del
+        ruolo dell'ingegnere si sta spostando dalla semplice digitazione di codice all'<span
+          class="keyword">orchestrazione</span>, alla <span class="keyword">progettazione architetturale</span> e alla
+        validazione delle soluzioni generate.
+      </p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="back-btn-wrap">
+      <a href="../teoria.html" class="btn btn-amber"><i class="bi bi-arrow-left"></i> Torna all'indice EDIDS</a>
+      <a href="02-ciclo-di-vita.html" class="btn btn-ghost">02 · Ciclo di Vita <i class="bi bi-arrow-right"></i></a>
+    </div>
 
 
   </div>
@@ -85,15 +146,7 @@
     <p>// 7Katch.github.io · EDIDS</p>
   </footer>
 
-  <script>
-    // Semplice toggle per la sidebar mobile
-    const toggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.so-sidebar');
-    if(toggle && sidebar) {
-      toggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-      });
-    }
-  </script>
+  <script src="../../shared/katchkit.js"></script>
 </body>
+
 </html>

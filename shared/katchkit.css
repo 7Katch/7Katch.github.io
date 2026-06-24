@@ -124,7 +124,7 @@ body {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(124, 92, 252, 0.06) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(var(--kk-rgb), 0.06) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: -1;
@@ -1517,4 +1517,104 @@ footer a:hover {
   .content-wrap {
     padding: 2rem 1.25rem;
   }
+}
+
+/* ── 5. OVERVIEW CARDS (Per le pagine Indice/Teoria) ─────────────────── */
+
+.hero-title-edids {
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #f0eeff 0%, #a78bfa 55%, #7c5cfc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.intro-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.overview-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.25rem 1.5rem;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+}
+.overview-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  opacity: 0.7;
+}
+.overview-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+
+.ov-amber::before  { background: var(--amber); }
+.ov-teal::before   { background: var(--teal); }
+.ov-green::before  { background: var(--green); }
+.ov-coral::before  { background: var(--coral); }
+.ov-purple::before { background: var(--accent-soft); }
+
+.ov-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+.ov-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+}
+.ov-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.6;
+}
+
+.divider-label {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+.divider-label span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.divider-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }

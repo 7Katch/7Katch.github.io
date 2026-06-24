@@ -1,0 +1,25 @@
+{
+  "Site Navbar": {
+    "prefix": "navbar",
+    "body": [
+      "<site-navbar ",
+      "\tlogo-text=\"// ${1:Materia} \u00B7 ${2:Argomento}\" ",
+      "\tback-url=\"${3:../index.html}\" ",
+      "\tback-text=\"${4:Indice}\">",
+      "</site-navbar>"
+    ],
+    "description": "Inserisce il Web Component Navbar personalizzato di KatchKit"
+  },
+  "Site Hero": {
+    "prefix": "hero",
+    "body": [
+      "<site-hero ",
+      "\teyebrow=\"${1:Macroargomento 01}\" ",
+      "\ttopic-num=\"${2:01 / 01}\" ",
+      "\ttitle=\"${3:Titolo della pagina}\" ",
+      "\tsub=\"${4:Sottotitolo descrittivo.}\">",
+      "</site-hero>"
+    ],
+    "description": "Inserisce il Web Component Hero (Intestazione pagina)"
+  }
+}

@@ -90,29 +90,24 @@ const KatchKitCore = {
 
   // Modulo 2: Toggle Sidebar (Stile Gemini) + Iniezione Icona
   initSidebarToggle: function () {
-    const toggleBtn = document.getElementById('sidebar-toggle');
     const sidebar = document.querySelector('.so-sidebar');
 
-    if (toggleBtn) {
-      // 1. INIEZIONE ICONA: Se il bottone è vuoto, disegna l'icona Bootstrap
-      if (!toggleBtn.innerHTML.trim()) {
-        toggleBtn.innerHTML = `<i class="bi bi-list" style="font-size: 1.5rem;"></i>`;
+    // LOGICA DI APERTURA (Event Delegation)
+    document.addEventListener('click', function (e) {
+      const toggleBtn = e.target.closest('#sidebar-toggle');
+      
+      if (toggleBtn && sidebar) {
+        e.stopPropagation();
+        sidebar.classList.toggle('open');
+      } else if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target)) {
+        sidebar.classList.remove('open');
       }
+    });
 
-      // 2. LOGICA DI APERTURA (solo se esiste anche la sidebar)
-      if (sidebar) {
-        toggleBtn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          sidebar.classList.toggle('open');
-        });
-
-        // Chiude la sidebar se clicchi fuori (comodissimo su mobile!)
-        document.addEventListener('click', function (e) {
-          if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-            sidebar.classList.remove('open');
-          }
-        });
-      }
+    // INIEZIONE ICONA (Legacy per navbar statiche rimaste nel progetto)
+    const toggleBtnStatic = document.getElementById('sidebar-toggle');
+    if (toggleBtnStatic && !toggleBtnStatic.innerHTML.trim()) {
+      toggleBtnStatic.innerHTML = `<i class="bi bi-list" style="font-size: 1.5rem;"></i>`;
     }
   },
 
@@ -240,11 +235,75 @@ const KatchKitCore = {
 
 
 
+// ── WEB COMPONENTS ────────────────────────────────────────────────
+// Componente per la Navbar superiore per evitare codice HTML ridondante
+class SiteNavbar extends HTMLElement {
+  connectedCallback() {
+    this.style.display = 'block';
+
+    const logoText = this.getAttribute('logo-text') || '// Logo';
+    const backUrl = this.getAttribute('back-url') || '../teoria.html';
+    const backText = this.getAttribute('back-text') || 'Indice';
+    const homeUrl = this.getAttribute('home-url') || 'https://7Katch.github.io';
+
+    this.innerHTML = `
+      <nav>
+        <div class="nav-left">
+          <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
+          <a href="${backUrl}" class="nav-logo">${logoText}</a>
+        </div>
+
+        <div class="nav-right">
+          <a href="${backUrl}" class="nav-back"><i class="bi bi-arrow-left"></i> ${backText}</a>
+          <a href="${homeUrl}" class="nav-back"><i class="bi bi-house"></i> Home</a>
+        </div>
+      </nav>
+    `;
+  }
+}
+customElements.define('site-navbar', SiteNavbar);
+
+// Componente per l'Intestazione (Hero Section)
+class SiteHero extends HTMLElement {
+  connectedCallback() {
+    this.style.display = 'block';
+
+    const eyebrow = this.getAttribute('eyebrow');
+    const topicNum = this.getAttribute('topic-num');
+    const title = this.getAttribute('title') || 'Titolo Mancante';
+    const sub = this.getAttribute('sub');
+    const titleClass = this.getAttribute('title-class') || 'topic-hero-title';
+
+    let eyebrowHtml = '';
+    if (eyebrow && eyebrow !== "None") {
+      eyebrowHtml = `<span class="hero-eyebrow">\n      ${eyebrow}\n    </span>`;
+    }
+
+    let topicNumHtml = '';
+    if (topicNum && topicNum !== "None") {
+      topicNumHtml = `<div class="topic-num">${topicNum}</div>`;
+    }
+
+    let subHtml = '';
+    if (sub && sub !== "None") {
+      subHtml = `<p class="hero-sub" style="max-width:640px">\n      ${sub}\n    </p>`;
+    }
+
+    this.innerHTML = `
+      <div class="hero" style="min-height:55vh">
+        <div class="hero-glow"></div>
+        ${eyebrowHtml}
+        ${topicNumHtml}
+        <h1 class="${titleClass}">${title}</h1>
+        ${subHtml}
+      </div>
+    `;
+  }
+}
+customElements.define('site-hero', SiteHero);
+
 // ── BOOTSTRAP DEL FRAMEWORK ───────────────────────────────────────
 // Appena il DOM è caricato, KatchKitCore si avvia automaticamente
 document.addEventListener('DOMContentLoaded', function () {
   KatchKitCore.init();
 });
-
-
-

@@ -31,30 +31,18 @@
 
 
   <!-- ═══════ NAV ═══════ -->
-  <nav>
-    <div class="nav-left">
-      <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
-      <a href="../teoria.html" class="nav-logo">// EDIDS · Architettura</a>
-    </div>
+  <site-navbar 
+    logo-text="// EDIDS · Architettura" 
+    back-url="../teoria.html" 
+    back-text="Indice EDIDS">
+  </site-navbar>
 
-    <div class="nav-right">
-      <a href="../teoria.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice EDIDS</a>
-      <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
-    </div>
-  </nav>
-
-  <div class="hero" style="min-height:55vh">
-    <div class="hero-glow"></div>
-    <span class="hero-eyebrow"
-      style="background:rgba(251, 191, 36, 0.08);border-color:rgba(251, 191, 36, 0.3);color:var(--amber)">
-      Macroargomento 04
-    </span>
-    <div class="topic-num">04 / 08</div>
-    <h1 class="topic-hero-title">Architettura del Software</h1>
-    <p class="hero-sub" style="max-width:640px">
-      Strutturazione del sistema, modelli 4+1, C4 e stili architetturali.
-    </p>
-  </div>
+    <site-hero 
+    eyebrow="Macroargomento 04" 
+    topic-num="04 / 08" 
+    title="Architettura del Software" 
+    sub="Strutturazione del sistema, modelli 4+1, C4 e stili architetturali.">
+  </site-hero>
 
   <hr class="divider">
 

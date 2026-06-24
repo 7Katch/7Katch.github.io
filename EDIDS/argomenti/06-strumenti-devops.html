@@ -31,30 +31,18 @@
 
 
   <!-- ═══════ NAV ═══════ -->
-  <nav>
-    <div class="nav-left">
-      <button id="sidebar-toggle" aria-label="Menu"><i class="bi bi-list"></i></button>
-      <a href="../teoria.html" class="nav-logo">// EDIDS · Strumenti & DevOps</a>
-    </div>
+  <site-navbar 
+    logo-text="// EDIDS · Strumenti & DevOps" 
+    back-url="../teoria.html" 
+    back-text="Indice EDIDS">
+  </site-navbar>
 
-    <div class="nav-right">
-      <a href="../teoria.html" class="nav-back"><i class="bi bi-arrow-left"></i> Indice EDIDS</a>
-      <a href="https://7Katch.github.io" class="nav-back"><i class="bi bi-house"></i> Home</a>
-    </div>
-  </nav>
-
-  <div class="hero" style="min-height:55vh">
-    <div class="hero-glow"></div>
-    <span class="hero-eyebrow"
-      style="background:rgba(124, 92, 252, 0.08);border-color:rgba(124, 92, 252, 0.3);color:var(--accent-soft)">
-      Macroargomento 06
-    </span>
-    <div class="topic-num">06 / 08</div>
-    <h1 class="topic-hero-title">Strumenti di Sviluppo, DevOps e CI/CD</h1>
-    <p class="hero-sub" style="max-width:640px">
-      Automazione, Build Tools, Versioning e Continuous Integration.
-    </p>
-  </div>
+    <site-hero 
+    eyebrow="Macroargomento 06" 
+    topic-num="06 / 08" 
+    title="Strumenti di Sviluppo, DevOps e CI/CD" 
+    sub="Automazione, Build Tools, Versioning e Continuous Integration.">
+  </site-hero>
 
   <hr class="divider">
 
