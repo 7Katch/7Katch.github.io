@@ -27,11 +27,6 @@
   </ul>
   <div class="sb-label">In questa pagina</div>
   <ul class="sb-sections">
-    <li><button class="sb-link" data-target="uml"><span class="sb-idx">05.01</span><span>Grammatica UML</span></button></li>
-    <li><button class="sb-link" data-target="domain"><span class="sb-idx">05.02</span><span>Domain Model & SSD</span></button></li>
-    <li><button class="sb-link" data-target="m2c"><span class="sb-idx">05.03</span><span>Model to Code (BCE)</span></button></li>
-    <li><button class="sb-link" data-target="ie"><span class="sb-idx">05.04</span><span>Principi GRASP</span></button></li>
-    <li><button class="sb-link" data-target="gof"><span class="sb-idx">05.05</span><span>Pattern GoF</span></button></li>
   </ul>
 </aside>
 
@@ -61,13 +56,31 @@
       <span>05 · Modellazione & Design</span>
     </div>
 
-    <div class="index-grid" data-prefix="05" data-no-sidebar="true">
+    <div class="index-grid" data-prefix="05">
       <ul>
         <li data-target="uml">Grammatica UML Rigorosa</li>
         <li data-target="domain">Domain Model e SSD</li>
         <li data-target="m2c">Dal Modello al Codice (BCE)</li>
-        <li data-target="ie">I 9 Principi GRASP</li>
-        <li data-target="gof">Pattern GoF (Gang of Four)</li>
+        <li data-target="ie">I 9 Principi GRASP
+          <ul>
+            <li data-target="ie">Information Expert</li>
+            <li data-target="cr">Creator</li>
+            <li data-target="lc">Low Coupling</li>
+            <li data-target="hc">High Cohesion</li>
+            <li data-target="ct">Controller</li>
+            <li data-target="pl">Polymorphism</li>
+            <li data-target="pf">Pure Fabrication</li>
+            <li data-target="in">Indirection</li>
+            <li data-target="pv">Protected Variations</li>
+          </ul>
+        </li>
+        <li data-target="singleton">Pattern GoF (Gang of Four)
+          <ul>
+            <li data-target="singleton">Singleton</li>
+            <li data-target="observer">Observer</li>
+            <li data-target="gof">Altri (Factory, Adapter...)</li>
+          </ul>
+        </li>
       </ul>
     </div>
 
@@ -99,9 +112,9 @@ classDiagram
       </div>
 
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">2. Sequence Diagram (Diagramma di Sequenza)</div>
+        <div class="header">2. Design Sequence Diagram (ISD - Interaction Sequence Diagram)</div>
         <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Rappresenta le interazioni dinamiche temporali. I messaggi si dividono in Sincroni (freccia piena, blocca il chiamante), Asincroni (freccia aperta) e di Ritorno (linea tratteggiata). I flussi logici complessi si modellano coi <strong>Combined Fragments</strong>:</p>
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">A differenza dell'SSD, questo diagramma "esplode" la scatola nera e rappresenta le interazioni dinamiche interne tra gli oggetti del sistema. I messaggi si dividono in Sincroni (freccia piena, blocca il chiamante), Asincroni (freccia aperta) e di Ritorno (linea tratteggiata). I flussi logici complessi si modellano coi <strong>Combined Fragments</strong>:</p>
           <ul style="margin:0;">
             <li><strong>alt:</strong> Percorsi alternativi mutuamente esclusivi (il classico costrutto <em>if/else</em> o <em>switch</em>).</li>
             <li><strong>loop:</strong> Iterazioni ripetute finché la guardia (condizione tra parentesi quadre) è vera.</li>
@@ -129,6 +142,50 @@ sequenceDiagram
         Sistema-->>Cliente: Completato
     end
           </pre>
+          <details style="margin-top: 1rem; background: rgba(0,0,0,0.1); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
+            <summary style="cursor: pointer; font-weight: 600; color: var(--text-primary);">Visualizza Esempio Avanzato PlantUML (Design Controller)</summary>
+            <pre style="margin-top: 1rem; font-size: 0.8rem; overflow-x: auto; background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 4px;"><code>@startuml
+skinparam sequenceArrowThickness 1.5
+skinparam sequenceMessageAlign center
+
+actor Giocatore
+participant GameController
+participant Simulatore
+participant EntityFactory
+participant Citta
+participant Griglia
+participant Cella
+
+group 1.2 CREAZIONE ENTITA' NELLA MAPPA
+    Giocatore -> GameController : costruisci(x, y, z, strumento, rotazione)
+    activate GameController
+        
+        GameController -> Simulatore : costruisci(...)
+        activate Simulatore
+            
+            Simulatore -> EntityFactory : creaEntita(strumento)
+            activate EntityFactory
+                EntityFactory --> Simulatore : nuovaEntita
+            deactivate EntityFactory
+
+            Simulatore -> Griglia : posizionaEntita(...)
+            activate Griglia
+                
+                alt cella valida e budget sufficiente
+                    Griglia -> Citta : setBudget(budget - costo)
+                    Griglia -> Cella : setEntita(nuovaEntita)
+                    Griglia --> Simulatore : true
+                else
+                    Griglia --> Simulatore : false
+                end
+            deactivate Griglia
+
+        deactivate Simulatore
+        GameController --> Giocatore : aggiornaMappa()
+    deactivate GameController
+end
+@enduml</code></pre>
+          </details>
         </div>
       </div>
 
@@ -141,15 +198,15 @@ sequenceDiagram
             <li><strong>Activity & State Diagram:</strong> Modellano macchine a stati o workflow, usando nodi iniziali (pallino nero), nodi finali (pallino nero cerchiato) e "composite states" per stati annidati.</li>
           </ul>
           <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
-usecaseDiagram
-    actor "Cliente" as C
-    usecase "Pagare Ordine" as UC1
-    usecase "Autenticarsi" as UC2
-    usecase "Aggiungere Assicurazione" as UC3
+flowchart LR
+    C((Cliente))
+    UC1([Pagare Ordine])
+    UC2([Autenticarsi])
+    UC3([Aggiungere Assicurazione])
     
     C --> UC1
-    UC1 ..> UC2 : <<include>>
-    UC3 ..> UC1 : <<extend>>
+    UC1 -. "&lt;&lt;include&gt;&gt;" .-&gt; UC2
+    UC3 -. "&lt;&lt;extend&gt;&gt;" .-&gt; UC1
           </pre>
         </div>
       </div>
@@ -178,6 +235,20 @@ usecaseDiagram
           <p style="margin:0; color:var(--text-secondary);">
             L'SSD mappa le interazioni visualizzando il Sistema come una <strong>Scatola Nera</strong> (Black Box). Non mostra le chiamate interne, ma solo l'attore esterno che invia messaggi al sistema nel suo complesso. Questi messaggi (Eventi di Sistema) sono fondamentali: essi diventeranno l'elenco esatto dei metodi che il pattern architetturale <strong>Controller</strong> dovrà intercettare e gestire.
           </p>
+          <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
+sequenceDiagram
+    actor Giocatore
+    participant Sistema
+
+    Giocatore->>Sistema: 1. costruisci(x, y, z, strumento)
+    Sistema-->>Giocatore: 2. aggiornaMappa()
+    
+    Giocatore->>Sistema: 3. demolisci(x, y, z)
+    Sistema-->>Giocatore: 4. aggiornaMappa()
+          </pre>
+          <div class="highlight-box" style="margin-top: 1rem;">
+            <i class="bi bi-info-circle-fill" style="margin-right:0.25rem;"></i> Come vedi, nell'SSD non esistono oggetti di design interni come <code>EntityFactory</code> o <code>Griglia</code> presenti nell'ISD. Esiste solo l'entità <code>Sistema</code>. I metodi invocati dal Giocatore diventeranno la firma esatta dei metodi pubblici del nostro <strong>GameController</strong>.
+          </div>
         </div>
       </div>
     </div>

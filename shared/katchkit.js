@@ -16,11 +16,11 @@ const KatchKitCore = {
 
   // Modulo 1: Scroll e navigazione (Spy & Flash)
   initScrollSpy: function () {
-    // Trova automaticamente tutti gli ID delle sezioni presenti nella pagina
-    const sectionElements = document.querySelectorAll('.section-block[id]');
-    const IDS = Array.from(sectionElements).map(el => el.id);
+    // Trova tutti gli ID cablati nella sidebar (sia link principali che sub-link)
+    const listItems = document.querySelectorAll('.sb-sections li[data-sid]');
+    const IDS = Array.from(listItems).map(li => li.getAttribute('data-sid'));
 
-    if (IDS.length === 0) return; // Se non ci sono sezioni, interrompi
+    if (IDS.length === 0) return;
 
     /* smooth scroll + flash */
     function goTo(id) {
@@ -38,9 +38,20 @@ const KatchKitCore = {
 
     /* highlight sidebar item */
     function setActive(id) {
+      // Rimuove sb-active da tutti i li
       document.querySelectorAll('.sb-sections li').forEach(function (li) {
-        li.classList.toggle('sb-active', li.getAttribute('data-sid') === id);
+        li.classList.remove('sb-active');
       });
+      // Aggiunge sb-active al li corrente e, se è un sub-item, anche al suo genitore principale
+      const activeLi = document.querySelector(`.sb-sections li[data-sid="${id}"]`);
+      if (activeLi) {
+        activeLi.classList.add('sb-active');
+        const parentUl = activeLi.closest('.sb-sub-sections');
+        if (parentUl && parentUl.closest('li')) {
+          parentUl.closest('li').classList.add('sb-active');
+        }
+      }
+      
       /* auto-scroll sidebar so active item is visible */
       const sb = document.querySelector('.so-sidebar');
       const act = document.querySelector('.sb-sections li.sb-active');
@@ -65,9 +76,12 @@ const KatchKitCore = {
       });
     });
 
-    /* wire sidebar section links */
-    document.querySelectorAll('.sb-link[data-target]').forEach(function (el) {
-      el.addEventListener('click', function () { goTo(el.dataset.target); });
+    /* wire sidebar section links (main & sub) */
+    document.querySelectorAll('.sb-link[data-target], .sb-sub-link[data-target]').forEach(function (el) {
+      el.addEventListener('click', function (e) { 
+        e.stopPropagation(); 
+        goTo(el.dataset.target); 
+      });
     });
 
     /* IntersectionObserver — aggiorna active mentre scorri */
@@ -175,53 +189,51 @@ const KatchKitCore = {
 
   // Modulo 5: Auto-Generazione (Dalla Griglia -> Alla Sidebar)
   initAutoNavigation: function () {
-    // 1. Trova i due contenitori
     const indexGrid = document.querySelector('.index-grid');
     const sidebarList = document.querySelector('.sb-sections');
 
     if (!indexGrid) return;
 
-    // 2. Legge il prefisso dal div della griglia
     const prefix = indexGrid.getAttribute('data-prefix');
     if (!prefix) return;
 
-    // 2b. Controlla se disabilitare l'iniezione automatica nella sidebar
     const noSidebar = indexGrid.hasAttribute('data-no-sidebar');
-
-    // 3. Trova la lista <ul> semplice che hai scritto nell'HTML
     const sourceList = indexGrid.querySelector('ul');
     if (!sourceList) return;
 
-    const listItems = sourceList.querySelectorAll('li');
+    const listItems = Array.from(sourceList.children); // Solo i figli diretti (no sub-li)
 
-    // 4. Svuota fisicamente l'HTML della griglia e, se abilitata, della sidebar
     indexGrid.innerHTML = '';
     if (sidebarList && !noSidebar) sidebarList.innerHTML = '';
 
-    // 5. Ricostruisce tutto in modo dinamico
     listItems.forEach((li, index) => {
       const num = String(index + 1).padStart(2, '0');
-      // Legge un data-target custom dall'li, altrimenti usa section-X
       const targetId = li.getAttribute('data-target') || `section-${index + 1}`;
-      const titleTesto = li.textContent.trim();
+      
+      // Estrai testo ignorando eventuali ul annidati
+      let titleTesto = '';
+      for (const node of li.childNodes) {
+        if (node.nodeType === Node.TEXT_NODE) titleTesto += node.textContent;
+      }
+      titleTesto = titleTesto.trim();
+      if (!titleTesto && li.firstElementChild && li.firstElementChild.tagName !== 'UL') {
+        titleTesto = li.firstElementChild.textContent.trim();
+      }
 
       // --- A. COSTRUISCE LA CARD NELLA GRIGLIA CENTRALE ---
       const gridItem = document.createElement('div');
       gridItem.className = 'index-item';
       gridItem.setAttribute('data-target', targetId);
-
-      // Accessibilità
       gridItem.setAttribute('tabindex', '0');
       gridItem.setAttribute('role', 'button');
       gridItem.setAttribute('aria-label', `Vai a: ${titleTesto}`);
-
       gridItem.innerHTML = `
         <div class="idx-num">${prefix}.${num}</div>
         <div class="idx-name">${titleTesto}</div>
       `;
       indexGrid.appendChild(gridItem);
 
-      // --- B. COSTRUISCE IL BOTTONE NELLA SIDEBAR LATERALE (Se non disabilitata) ---
+      // --- B. COSTRUISCE IL BOTTONE NELLA SIDEBAR LATERALE ---
       if (sidebarList && !noSidebar) {
         const sidebarItem = document.createElement('li');
         sidebarItem.setAttribute('data-sid', targetId);
@@ -231,6 +243,31 @@ const KatchKitCore = {
             <span>${titleTesto}</span>
           </button>
         `;
+        
+        // --- C. GESTIONE SOTTOPARAGRAFI ---
+        const nestedUl = li.querySelector('ul');
+        if (nestedUl) {
+          const subList = document.createElement('ul');
+          subList.className = 'sb-sub-sections';
+          const subItems = Array.from(nestedUl.children);
+          
+          subItems.forEach((subLi, subIndex) => {
+            const subTarget = subLi.getAttribute('data-target');
+            const subText = subLi.textContent.trim();
+            if(subTarget) {
+              const subLiEl = document.createElement('li');
+              subLiEl.setAttribute('data-sid', subTarget);
+              subLiEl.innerHTML = `
+                <button class="sb-sub-link" data-target="${subTarget}">
+                  <span>${subText}</span>
+                </button>
+              `;
+              subList.appendChild(subLiEl);
+            }
+          });
+          sidebarItem.appendChild(subList);
+        }
+
         sidebarList.appendChild(sidebarItem);
       }
     });

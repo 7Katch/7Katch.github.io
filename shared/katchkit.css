@@ -778,6 +778,52 @@ code.inline {
   color: var(--kk-primary);
 }
 
+.sb-sub-sections {
+  list-style: none;
+  padding-left: 28px; /* Allinea col testo del parent */
+  margin-top: 0;
+  margin-bottom: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, margin-bottom 0.3s ease-in-out;
+}
+
+.sb-sections li.sb-active > .sb-sub-sections {
+  max-height: 800px;
+  margin-bottom: 4px;
+}
+
+.sb-sub-sections li .sb-sub-link {
+  display: flex;
+  align-items: flex-start;
+  padding: 4px 12px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-left: 1px solid rgba(var(--kk-rgb), 0.15);
+  transition: color .15s, border-color .15s, background .15s;
+  line-height: 1.4;
+  cursor: pointer;
+  width: 100%;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+}
+
+.sb-sub-sections li .sb-sub-link:hover {
+  color: var(--text-secondary);
+  border-left-color: rgba(var(--kk-rgb), .4);
+  background: rgba(var(--kk-rgb), .02);
+}
+
+.sb-sub-sections li.sb-active .sb-sub-link {
+  color: var(--kk-primary);
+  border-left-color: var(--kk-primary);
+}
+
 @keyframes sbFlash {
   0% {
     box-shadow: inset 0 0 0 2px rgba(var(--kk-rgb), .55);
