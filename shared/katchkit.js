@@ -80,6 +80,19 @@ const KatchKitCore = {
     document.querySelectorAll('.sb-link[data-target], .sb-sub-link[data-target]').forEach(function (el) {
       el.addEventListener('click', function (e) { 
         e.stopPropagation(); 
+        
+        // Logica per il toggle manuale dell'accordion
+        const parentLi = el.closest('li');
+        if (el.classList.contains('sb-link') && parentLi.querySelector('.sb-sub-sections')) {
+          if (parentLi.classList.contains('sb-active')) {
+            // Se è già attivo e lo clicco, lo chiudo forzatamente
+            parentLi.classList.toggle('user-collapsed');
+          } else {
+            // Se non è attivo, naviga e si aprirà automaticamente senza user-collapsed
+            parentLi.classList.remove('user-collapsed');
+          }
+        }
+        
         goTo(el.dataset.target); 
       });
     });
@@ -247,6 +260,10 @@ const KatchKitCore = {
         // --- C. GESTIONE SOTTOPARAGRAFI ---
         const nestedUl = li.querySelector('ul');
         if (nestedUl) {
+          // Aggiunge la freccina al link principale
+          const mainBtn = sidebarItem.querySelector('.sb-link');
+          mainBtn.innerHTML += `<i class="bi bi-chevron-down"></i>`;
+
           const subList = document.createElement('ul');
           subList.className = 'sb-sub-sections';
           const subItems = Array.from(nestedUl.children);
