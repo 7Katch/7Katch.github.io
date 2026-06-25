@@ -306,4 +306,51 @@ customElements.define('site-hero', SiteHero);
 // Appena il DOM è caricato, KatchKitCore si avvia automaticamente
 document.addEventListener('DOMContentLoaded', function () {
   KatchKitCore.init();
+  
+  // 1. Terminal Typing Effect (Generic Class: .type-animation)
+  document.querySelectorAll('.type-animation').forEach(typingEl => {
+    const text = typingEl.innerText;
+    typingEl.innerText = '';
+    typingEl.style.opacity = '1';
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        typingEl.innerHTML = text.substring(0, i+1);
+        i++;
+        setTimeout(type, Math.random() * 40 + 30);
+      } else {
+        typingEl.innerHTML = text;
+      }
+    }
+    setTimeout(type, 300); // Start delay
+  });
+});
+
+// 2. Neon Cursor Spotlight (Homepage)
+document.addEventListener('mousemove', e => {
+  document.querySelectorAll('.materia-card').forEach(card => {
+    const rect = card.getBoundingClientRect(),
+          x = e.clientX - rect.left,
+          y = e.clientY - rect.top;
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  });
+});
+
+// 3. Scroll Reveal per Card
+const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+const observer = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      obs.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.materia-card, .section-card, .overview-card').forEach((card, index) => {
+  card.classList.add('js-reveal');
+  // Staggered delay basato sull'indice della riga (circa)
+  card.style.transitionDelay = `${(index % 3) * 0.1}s`;
+  observer.observe(card);
 });

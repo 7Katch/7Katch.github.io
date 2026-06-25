@@ -1,429 +1,345 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portale Corsi — Ingegneria Informatica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css">
-<style>
-  /* ── Layout griglia materie ─────────────────────────────────── */
-  /* La griglia ha 3 colonne per le card piccole */
-  .materie-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  /* Le card attive (featured) si estendono su tutta la larghezza */
-  .materia-card.featured {
-    grid-column: 1 / -1;          /* occupa tutte e 3 le colonne */
-    flex-direction: row;
-    align-items: stretch;
-    gap: 0;
-  }
-
-  .materia-card.featured .featured-left {
-    flex: 1;
-    padding-right: 2rem;
-  }
-
-  .materia-card.featured .featured-right {
-    width: 220px;
-    flex-shrink: 0;
-    border-left: 1px solid var(--border);
-    padding-left: 2rem;
-    display: flex;
-    align-items: center;
-  }
-
-  /* Card spente: layout verticale standard */
-  .materia-card.disabled {
-    flex-direction: column;
-  }
-
-  /* Materie section: larghezza piena */
-  .materie-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 4rem 2rem 6rem;
-    border-bottom: none;
-  }
-
-  /* Section header */
-  .section-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-    gap: 1rem;
-  }
-
-  .materie-count {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text-muted);
-    padding: 6px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--r-pill);
-    white-space: nowrap;
-  }
-
-  /* Hero max-width più ampia per la homepage */
-  .hero {
-    max-width: 1100px;
-  }
-
-  /* Scroll hint centrato */
-  .scroll-hint {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  /* ── Responsive ─────────────────────────────────────────────── */
-  @media (max-width: 900px) {
-    .materie-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .materia-card.featured {
-      grid-column: 1 / -1;
-      flex-direction: column;
-    }
-    .materia-card.featured .featured-right {
-      width: 100%;
-      border-left: none;
-      border-top: 1px solid var(--border);
-      padding-left: 0;
-      padding-top: 1.5rem;
-    }
-    .materia-card.featured .featured-left {
-      padding-right: 0;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .materie-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portale Corsi — Ingegneria Informatica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="shared/katchkit.css">
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">// portale-corsi</a>
-  <div class="nav-right">
-    <ul class="nav-links">
-      <li><a href="#materie">Materie</a></li>
-    </ul>
-    <span class="nav-badge">A.A. 2024–25</span>
-  </div>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-glow"></div>
-
-  <span class="hero-eyebrow">Portale didattico</span>
-
-  <p class="hero-greeting">// benvenuto nel portale degli appunti</p>
-
-  <h1>
-    <span class="word-light">Studia</span><br>
-    <span class="word-accent">meglio.</span>
-  </h1>
-
-  <p class="hero-sub">
-    Appunti, concetti, pattern e risorse organizzate per ogni materia del tuo percorso universitario. Tutto in un posto, sempre disponibile.
-  </p>
-
-  <div class="hero-cta">
-    <a href="#materie" class="btn-primary btn">Vai alle materie</a>
-  </div>
-
-  <div class="scroll-hint">
-    <div class="scroll-hint-line"></div>
-    scroll
-  </div>
-</div>
-
-<hr class="divider">
-
-<!-- MATERIE -->
-<div class="materie-section" id="materie">
-  <div class="section-header">
-    <div>
-      <div class="section-eyebrow">Percorso di studio</div>
-      <h2 class="section-title">Materie disponibili</h2>
+  <!-- NAV -->
+  <nav class="home-nav">
+    <a href="#" class="nav-logo">// portale-corsi</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#materie">Materie</a></li>
+      </ul>
+      <span class="nav-badge">A.A. 2024–25</span>
     </div>
-    <span class="materie-count">2 attive · 3 in arrivo</span>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero-home">
+    <div class="hero-glow"></div>
+
+    <span class="hero-eyebrow">Portale didattico</span>
+
+    <p class="hero-greeting type-animation" style="opacity: 0;">// benvenuto nel portale degli appunti</p>
+
+    <h1>
+      <span class="word-light">Studia</span><br>
+      <span class="word-accent" data-text="meglio.">meglio.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Appunti, concetti, pattern e risorse organizzate per ogni materia del tuo percorso universitario. Tutto in un
+      posto, sempre disponibile.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#materie" class="btn-primary btn">Vai alle materie</a>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-hint-line"></div>
+      scroll
+    </div>
   </div>
 
-  <div class="materie-grid">
+  <hr class="divider">
 
-    <!-- ── ATTIVA 1: Ingegneria del Software ─────────────────── -->
-    <a href="/EDIDS/" class="materia-card featured">
-      <div class="featured-left">
-        <div class="card-top">
-          <div class="card-icon icon-purple">SW</div>
-          <span class="card-status status-active">Disponibile</span>
+  <!-- MATERIE -->
+  <div class="materie-section" id="materie">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Percorso di studio</div>
+        <h2 class="section-title">Materie disponibili</h2>
+      </div>
+      <span class="materie-count">2 attive · 3 in arrivo</span>
+    </div>
+
+    <div class="materie-grid">
+
+      <!-- ── ATTIVA 1: Ingegneria del Software ─────────────────── -->
+      <a href="/EDIDS/" class="materia-card featured">
+        <div class="featured-left">
+          <div class="card-top">
+            <div class="card-icon icon-purple">SW</div>
+            <span class="card-status status-active">Disponibile</span>
+          </div>
+          <div class="card-sigla">EDIDS · Ingegneria del Software</div>
+          <div class="card-title">Ingegneria del Software</div>
+          <div class="card-desc">
+            Progettazione e architettura del software orientato agli oggetti. Pattern GoF, principi GRASP, Singleton e
+            molto altro. Il punto di partenza per scrivere codice che scala.
+          </div>
+          <div class="card-tags">
+            <span class="tag">GRASP</span>
+            <span class="tag">GoF</span>
+            <span class="tag">Design Patterns</span>
+            <span class="tag">OOP</span>
+            <span class="tag">Singleton</span>
+            <span class="tag">UML</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-meta">9 principi · 23 pattern</span>
+            <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
+          </div>
         </div>
-        <div class="card-sigla">EDIDS · Ingegneria del Software</div>
-        <div class="card-title">Ingegneria del Software</div>
+        <div class="featured-right">
+          <div class="featured-stats">
+            <div class="featured-stat">
+              <span class="featured-stat-label">argomenti</span>
+              <span class="featured-stat-value">GRASP · GoF · Singleton</span>
+            </div>
+            <div class="featured-stat">
+              <span class="featured-stat-label">livello</span>
+              <span class="featured-stat-value">Triennale · Anno 2</span>
+            </div>
+            <div class="featured-stat">
+              <span class="featured-stat-label">stato</span>
+              <span class="featured-stat-value" style="color: var(--green);">● Aggiornato</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- ── ATTIVA 2: Sistemi Operativi ───────────────────────── -->
+      <a href="/SO/" class="materia-card featured">
+        <div class="featured-left">
+          <div class="card-top">
+            <div class="card-icon icon-amber">SO</div>
+            <span class="card-status status-active">Disponibile</span>
+          </div>
+          <div class="card-sigla">SO · Sistemi Operativi</div>
+          <div class="card-title">Sistemi Operativi</div>
+          <div class="card-desc">
+            Come funziona il software al livello più basso: processi, thread, scheduling CPU, gestione della memoria
+            fisica e virtuale, filesystem e sicurezza.
+          </div>
+          <div class="card-tags">
+            <span class="tag">Processi</span>
+            <span class="tag">Thread</span>
+            <span class="tag">CPU Scheduling</span>
+            <span class="tag">Memoria</span>
+            <span class="tag">Deadlock</span>
+            <span class="tag">File System</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-meta">13 argomenti · 60+ subtopic</span>
+            <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
+          </div>
+        </div>
+        <div class="featured-right">
+          <div class="featured-stats">
+            <div class="featured-stat">
+              <span class="featured-stat-label">argomenti</span>
+              <span class="featured-stat-value">CPU · RAM · Embedded</span>
+            </div>
+            <div class="featured-stat">
+              <span class="featured-stat-label">livello</span>
+              <span class="featured-stat-value">Triennale · Anno 2</span>
+            </div>
+            <div class="featured-stat">
+              <span class="featured-stat-label">stato</span>
+              <span class="featured-stat-value" style="color: var(--green);">● Aggiornato</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+
+      <!-- ── ATTIVA 2: Fondamenti di controlli automatici ───────────────────────── -->
+      <a href="/FCA/fca.html" class="materia-card featured">
+        <div class="featured-left">
+          <div class="card-top">
+            <div class="card-icon icon-coral">FCA</div>
+            <span class="card-status status-active">Disponibile</span>
+          </div>
+          <div class="card-sigla">FCA · Fondamenti di controlli automatici</div>
+          <div class="card-title">Fondamenti di controlli automatici</div>
+          <div class="card-desc">
+            Modelli, analisi e controlli
+          </div>
+          <div class="card-tags">
+            <span class="tag">Modello di trasferimento continuo</span>
+            <span class="tag">Modello di trasferimento discreto</span>
+            <span class="tag">Modello di relazione</span>
+            <span class="tag">Modello fisico</span>
+            <span class="tag">Modello lineare</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-meta">5 argomenti · 2 subtopic</span>
+            <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
+          </div>
+        </div>
+        <div class="featured-right">
+          <div class="featured-stats">
+            <div class="featured-stat">
+              <span class="featured-stat-label">argomenti</span>
+              <span class="featured-stat-value">Modelli · Analisi · Controlli</span>
+            </div>
+            <div class="featured-stat">
+              <span class="featured-stat-label">livello</span>
+              <span class="featured-stat-value">Triennale · Anno 2</span>
+            </div>
+            <div class="featured-stat">
+              <span class="featured-stat-label">stato</span>
+              <span class="featured-stat-value" style="color: var(--amber);">● in corso</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+
+      <!-- ── ATTIVA 4: Teoria dei Circuiti ───────────────────────── -->
+      <a href="/TDC/" class="materia-card featured">
+        <div class="featured-left">
+          <div class="card-top">
+            <div class="card-icon"
+              style="color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">TDC
+            </div>
+            <span class="card-status status-active">Disponibile</span>
+          </div>
+          <div class="card-sigla">TDC · Teoria dei Circuiti</div>
+          <div class="card-title">Teoria dei Circuiti</div>
+          <div class="card-desc">
+            Analisi delle reti elettriche lineari, a partire dalle grandezze fondamentali, topologia delle reti, teoremi
+            principali e comportamento in regime stazionario, transitorio e sinusoidale.
+          </div>
+          <div class="card-tags">
+            <span class="tag"
+              style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Bipoli</span>
+            <span class="tag"
+              style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Reti</span>
+            <span class="tag"
+              style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Teoremi</span>
+            <span class="tag"
+              style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Transitori</span>
+            <span class="tag"
+              style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Fasori</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-meta">10 argomenti · 80+ subtopic</span>
+            <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
+          </div>
+        </div>
+        <div class="featured-right">
+          <div class="featured-stats">
+            <div class="featured-stat">
+              <span class="featured-stat-label">argomenti</span>
+              <span class="featured-stat-value">Basi · Reti · Regimi</span>
+            </div>
+            <div class="featured-stat">
+              <span class="featured-stat-label">livello</span>
+              <span class="featured-stat-value">Triennale · Anno 2</span>
+            </div>
+            <div class="featured-stat">
+              <span class="featured-stat-label">stato</span>
+              <span class="featured-stat-value" style="color: var(--green);">● Aggiornato</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+
+      <!-- ── IN ARRIVO: 3 card piccole sulla stessa riga ────────── -->
+      <div class="materia-card disabled">
+        <div class="card-top">
+          <div class="card-icon icon-teal">BD</div>
+          <span class="card-status status-soon">In arrivo</span>
+        </div>
+        <div class="card-sigla">· Basi di Dati</div>
+        <div class="card-title">Basi di Dati</div>
         <div class="card-desc">
-          Progettazione e architettura del software orientato agli oggetti. Pattern GoF, principi GRASP, Singleton e molto altro. Il punto di partenza per scrivere codice che scala.
+          SQL, modello relazionale, normalizzazione, transazioni e sistemi DBMS. Dall'ER diagram alla query ottimizzata.
         </div>
         <div class="card-tags">
-          <span class="tag">GRASP</span>
-          <span class="tag">GoF</span>
-          <span class="tag">Design Patterns</span>
-          <span class="tag">OOP</span>
-          <span class="tag">Singleton</span>
-          <span class="tag">UML</span>
+          <span class="tag">SQL</span>
+          <span class="tag">ER</span>
+          <span class="tag">Normalizzazione</span>
+          <span class="tag">DBMS</span>
         </div>
         <div class="card-footer">
-          <span class="card-meta">9 principi · 23 pattern</span>
+          <span class="card-meta">presto disponibile</span>
           <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
         </div>
       </div>
-      <div class="featured-right">
-        <div class="featured-stats">
-          <div class="featured-stat">
-            <span class="featured-stat-label">argomenti</span>
-            <span class="featured-stat-value">GRASP · GoF · Singleton</span>
-          </div>
-          <div class="featured-stat">
-            <span class="featured-stat-label">livello</span>
-            <span class="featured-stat-value">Triennale · Anno 2</span>
-          </div>
-          <div class="featured-stat">
-            <span class="featured-stat-label">stato</span>
-            <span class="featured-stat-value" style="color: var(--green);">● Aggiornato</span>
-          </div>
-        </div>
-      </div>
-    </a>
 
-    <!-- ── ATTIVA 2: Sistemi Operativi ───────────────────────── -->
-    <a href="/SO/" class="materia-card featured">
-      <div class="featured-left">
+      <div class="materia-card disabled">
         <div class="card-top">
-          <div class="card-icon icon-amber">SO</div>
-          <span class="card-status status-active">Disponibile</span>
+          <div class="card-icon icon-coral">RE</div>
+          <span class="card-status status-soon">In arrivo</span>
         </div>
-        <div class="card-sigla">SO · Sistemi Operativi</div>
-        <div class="card-title">Sistemi Operativi</div>
+        <div class="card-sigla">· Reti di Calcolatori</div>
+        <div class="card-title">Reti di Calcolatori</div>
         <div class="card-desc">
-          Come funziona il software al livello più basso: processi, thread, scheduling CPU, gestione della memoria fisica e virtuale, filesystem e sicurezza.
+          Modello ISO/OSI, TCP/IP, routing, DNS, HTTP e protocolli di rete. Come i dati viaggiano da A a B.
         </div>
         <div class="card-tags">
-          <span class="tag">Processi</span>
-          <span class="tag">Thread</span>
-          <span class="tag">CPU Scheduling</span>
-          <span class="tag">Memoria</span>
-          <span class="tag">Deadlock</span>
-          <span class="tag">File System</span>
+          <span class="tag">TCP/IP</span>
+          <span class="tag">OSI</span>
+          <span class="tag">Routing</span>
+          <span class="tag">HTTP</span>
         </div>
         <div class="card-footer">
-          <span class="card-meta">13 argomenti · 60+ subtopic</span>
+          <span class="card-meta">presto disponibile</span>
           <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
         </div>
       </div>
-      <div class="featured-right">
-        <div class="featured-stats">
-          <div class="featured-stat">
-            <span class="featured-stat-label">argomenti</span>
-            <span class="featured-stat-value">CPU · RAM · Embedded</span>
-          </div>
-          <div class="featured-stat">
-            <span class="featured-stat-label">livello</span>
-            <span class="featured-stat-value">Triennale · Anno 2</span>
-          </div>
-          <div class="featured-stat">
-            <span class="featured-stat-label">stato</span>
-            <span class="featured-stat-value" style="color: var(--green);">● Aggiornato</span>
-          </div>
-        </div>
-      </div>
-    </a>
 
-
-    <!-- ── ATTIVA 2: Fondamenti di controlli automatici ───────────────────────── -->
-    <a href="/FCA/fca.html" class="materia-card featured">
-      <div class="featured-left">
+      <div class="materia-card disabled">
         <div class="card-top">
-          <div class="card-icon icon-coral">FCA</div>
-          <span class="card-status status-active">Disponibile</span>
+          <div class="card-icon icon-purple">AI</div>
+          <span class="card-status status-soon">In arrivo</span>
         </div>
-        <div class="card-sigla">FCA · Fondamenti di controlli automatici</div>
-        <div class="card-title">Fondamenti di controlli automatici</div>
-        <div class="card-desc">
-          Modelli, analisi e controlli
-        </div>
-        <div class="card-tags">
-          <span class="tag">Modello di trasferimento continuo</span>
-          <span class="tag">Modello di trasferimento discreto</span>
-          <span class="tag">Modello di relazione</span>
-          <span class="tag">Modello fisico</span>
-          <span class="tag">Modello lineare</span>
+        <div class="card-sigla">· In <span class="tag">Agenti</span>
         </div>
         <div class="card-footer">
-          <span class="card-meta">5 argomenti · 2 subtopic</span>
+          <span class="card-meta">presto disponibile</span>
           <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
         </div>
       </div>
-      <div class="featured-right">
-        <div class="featured-stats">
-          <div class="featured-stat">
-            <span class="featured-stat-label">argomenti</span>
-            <span class="featured-stat-value">Modelli · Analisi · Controlli</span>
-          </div>
-          <div class="featured-stat">
-            <span class="featured-stat-label">livello</span>
-            <span class="featured-stat-value">Triennale · Anno 2</span>
-          </div>
-          <div class="featured-stat">
-            <span class="featured-stat-label">stato</span>
-            <span class="featured-stat-value" style="color: var(--amber);">● in corso</span>
-          </div>
-        </div>
-      </div>
-    </a>
 
-
-    <!-- ── ATTIVA 4: Teoria dei Circuiti ───────────────────────── -->
-    <a href="/TDC/" class="materia-card featured">
-      <div class="featured-left">
-        <div class="card-top">
-          <div class="card-icon" style="color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">TDC</div>
-          <span class="card-status status-active">Disponibile</span>
-        </div>
-        <div class="card-sigla">TDC · Teoria dei Circuiti</div>
-        <div class="card-title">Teoria dei Circuiti</div>
-        <div class="card-desc">
-          Analisi delle reti elettriche lineari, a partire dalle grandezze fondamentali, topologia delle reti, teoremi principali e comportamento in regime stazionario, transitorio e sinusoidale.
-        </div>
-        <div class="card-tags">
-          <span class="tag" style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Bipoli</span>
-          <span class="tag" style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Reti</span>
-          <span class="tag" style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Teoremi</span>
-          <span class="tag" style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Transitori</span>
-          <span class="tag" style="color: #60a5fa; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1);">Fasori</span>
-        </div>
-        <div class="card-footer">
-          <span class="card-meta">10 argomenti · 80+ subtopic</span>
-          <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
-        </div>
-      </div>
-      <div class="featured-right">
-        <div class="featured-stats">
-          <div class="featured-stat">
-            <span class="featured-stat-label">argomenti</span>
-            <span class="featured-stat-value">Basi · Reti · Regimi</span>
-          </div>
-          <div class="featured-stat">
-            <span class="featured-stat-label">livello</span>
-            <span class="featured-stat-value">Triennale · Anno 2</span>
-          </div>
-          <div class="featured-stat">
-            <span class="featured-stat-label">stato</span>
-            <span class="featured-stat-value" style="color: var(--green);">● Aggiornato</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-
-    <!-- ── IN ARRIVO: 3 card piccole sulla stessa riga ────────── -->
-    <div class="materia-card disabled">
-      <div class="card-top">
-        <div class="card-icon icon-teal">BD</div>
-        <span class="card-status status-soon">In arrivo</span>
-      </div>
-      <div class="card-sigla">· Basi di Dati</div>
-      <div class="card-title">Basi di Dati</div>
-      <div class="card-desc">
-        SQL, modello relazionale, normalizzazione, transazioni e sistemi DBMS. Dall'ER diagram alla query ottimizzata.
-      </div>
-      <div class="card-tags">
-        <span class="tag">SQL</span>
-        <span class="tag">ER</span>
-        <span class="tag">Normalizzazione</span>
-        <span class="tag">DBMS</span>
-      </div>
-      <div class="card-footer">
-        <span class="card-meta">presto disponibile</span>
-        <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
-      </div>
     </div>
-
-    <div class="materia-card disabled">
-      <div class="card-top">
-        <div class="card-icon icon-coral">RE</div>
-        <span class="card-status status-soon">In arrivo</span>
-      </div>
-      <div class="card-sigla">· Reti di Calcolatori</div>
-      <div class="card-title">Reti di Calcolatori</div>
-      <div class="card-desc">
-        Modello ISO/OSI, TCP/IP, routing, DNS, HTTP e protocolli di rete. Come i dati viaggiano da A a B.
-      </div>
-      <div class="card-tags">
-        <span class="tag">TCP/IP</span>
-        <span class="tag">OSI</span>
-        <span class="tag">Routing</span>
-        <span class="tag">HTTP</span>
-      </div>
-      <div class="card-footer">
-        <span class="card-meta">presto disponibile</span>
-        <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
-      </div>
-    </div>
-
-    <div class="materia-card disabled">
-      <div class="card-top">
-        <div class="card-icon icon-purple">AI</div>
-        <span class="card-status status-soon">In arrivo</span>
-      </div>
-      <div class="card-sigla">· In        <span class="tag">Agenti</span>
-      </div>
-      <div class="card-footer">
-        <span class="card-meta">presto disponibile</span>
-        <div class="card-arrow"><i class="bi bi-arrow-right"></i></div>
-      </div>
-    </div>
-
   </div>
-</div>
 
-<hr class="divider">
+  <hr class="divider">
 
-<!-- FOOTER -->
-<footer>
-  <p>// portale-corsi · Ingegneria Informatica · A.A. 2024–25</p>
-  <p style="margin-top: 8px;">
-    <a href="/EDIDS/">Ingegneria del Software</a>
-    &nbsp;·&nbsp;
-    <a href="/SO/">Sistemi Operativi</a>
-    &nbsp;·&nbsp;
-    <span style="color: var(--text-muted);">Basi di Dati</span>
-    &nbsp;·&nbsp;
-    <span style="color: var(--text-muted);">Reti</span>
-    &nbsp;·&nbsp;
-    <span style="color: var(--text-muted);">Intelligenza Artificiale</span>
-  </p>
-</footer>
+  <!-- FOOTER -->
+  <footer class="home-footer">
+    <p>// portale-corsi · Ingegneria Informatica · A.A. 2024–25</p>
+    <p style="margin-top: 8px;">
+      <a href="/EDIDS/">Ingegneria del Software</a>
+      &nbsp;·&nbsp;
+      <a href="/SO/">Sistemi Operativi</a>
+      &nbsp;·&nbsp;
+      <span style="color: var(--text-muted);">Basi di Dati</span>
+      &nbsp;·&nbsp;
+      <span style="color: var(--text-muted);">Reti</span>
+      &nbsp;·&nbsp;
+      <span style="color: var(--text-muted);">Intelligenza Artificiale</span>
+    </p>
+  </footer>
 
-<script>
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     });
-  });
-</script>
+  </script>
 
+  <script src="shared/katchkit.js"></script>
 </body>
+
 </html>
