@@ -26,7 +26,13 @@
     <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
   </ul>
   <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
+  <ul class="sb-sections">
+    <li><button class="sb-link" data-target="section-1"><span class="sb-idx">04.01</span><span>Architettura vs Design</span></button></li>
+    <li><button class="sb-link" data-target="section-2"><span class="sb-idx">04.02</span><span>Rappresentazione (4+1)</span></button></li>
+    <li><button class="sb-link" data-target="section-3"><span class="sb-idx">04.03</span><span>Pattern e Stili</span></button></li>
+    <li><button class="sb-link" data-target="section-4"><span class="sb-idx">04.04</span><span>Scalabilità e Microservizi</span></button></li>
+    <li><button class="sb-link" data-target="section-5"><span class="sb-idx">04.05</span><span>Il Designer TuringBot</span></button></li>
+  </ul>
 </aside>
 
 
@@ -55,22 +61,49 @@
       <span>04 · Architettura</span>
     </div>
 
-    <div class="index-grid" data-prefix="04">
+    <div class="index-grid" data-prefix="04" data-no-sidebar="true">
       <ul>
-        <li>Architettura vs Design</li>
-        <li>Rappresentare l'Architettura</li>
-        <li>Pattern e Stili Architetturali</li>
-        <li>Dal Monolite ai Microservizi</li>
+        <li data-target="section-1">Architettura vs Design e 8 Issues</li>
+        <li data-target="section-2">Rappresentare l'Architettura e UML</li>
+        <li data-target="section-3">Stili e Pattern (Logici, Fisici, Processo)</li>
+        <li data-target="section-4">Cubo della Scalabilità e Microservizi</li>
+        <li data-target="section-5">Il Designer TuringBot (AI)</li>
       </ul>
     </div>
 
     <!-- 04.01 -->
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Architettura vs Design</h2>
-      <p>
-        L'<span class="keyword">Architettura del Software</span> rappresenta la strutturazione ad alto livello di un sistema software. È la disciplina che definisce i componenti principali, le loro responsabilità e i modi in cui interagiscono e comunicano. Le decisioni architetturali sono strutturalmente importanti, difficili da cambiare e hanno un forte impatto sugli attributi di qualità (come performance e sicurezza).
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        La distinzione formale fornita da <strong>Garlan & Shaw</strong> separa nettamente i due concetti: l'architettura riguarda l'organizzazione globale, mentre il design scende nel dettaglio dei moduli.
       </p>
-      <p>Il <span class="keyword">Design del Software</span>, invece, si colloca a un livello di astrazione più basso. Mentre l'architettura si occupa della struttura globale, il design si focalizza sui dettagli locali: la progettazione delle classi, degli algoritmi, le interfacce specifiche e la gestione dei dati a livello di modulo. In sintesi, ogni architettura è un design, ma non tutto il design è architettura.</p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Definizioni di Garlan & Shaw</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Architettura del Software:</strong> Riguarda l'organizzazione globale del sistema. Definisce la scelta degli elementi strutturali, le loro interazioni a livello macro, le responsabilità e i vincoli generali. Le decisioni architetturali sono estremamente costose da cambiare a posteriori.</li>
+            <li><strong>Design del Software:</strong> Scende nel dettaglio della modularizzazione (il "micro"). Definisce interfacce precise, algoritmi, procedure locali e strutture dati interne ai singoli componenti.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Gli "8 Problemi" (Eight Issues) dell'Architettura</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Progettare un'architettura significa risolvere simultaneamente 8 sfide critiche:</p>
+          <ol style="margin-top:0.5rem; margin-bottom:0; padding-left: 1.2rem;">
+            <li><strong>Struttura e Topologia:</strong> Come sono connessi i nodi.</li>
+            <li><strong>Modello di Dati:</strong> Gestione e strutturazione dei <em>dati persistenti</em>.</li>
+            <li><strong>Concorrenza e Parallelismo:</strong> Gestione di thread e lock.</li>
+            <li><strong>Gestione degli Errori e Resilienza:</strong> Come il sistema reagisce ai guasti.</li>
+            <li><strong>Sicurezza e Controllo Accessi:</strong> Autenticazione e autorizzazione.</li>
+            <li><strong>Interfacce di Comunicazione:</strong> Protocolli e formati dati.</li>
+            <li><strong>Mappatura Hardware/Software:</strong> Su quali macchine o reti fisiche gira il codice.</li>
+            <li><strong>Prestazioni e Scalabilità:</strong> Tempi di risposta e gestione dei picchi.</li>
+          </ol>
+        </div>
+      </div>
     </div>
 
     <!-- 04.02 -->
@@ -81,15 +114,15 @@
       </p>
       
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Modello 4+1 (Philippe Kruchten)</div>
+        <div class="header">Modello 4+1 (Kruchten) e Mappatura UML</div>
         <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:rgba(255,255,255,0.7);">Propone cinque viste per descrivere l'architettura ai diversi portatori di interesse:</p>
+          <p style="margin-top:0; font-size:0.9rem; color:rgba(255,255,255,0.7);">Ogni vista del modello 4+1 è supportata e documentata da specifici diagrammi UML in sede progettuale:</p>
           <ul style="margin:0;">
-            <li><span class="keyword">Vista Logica:</span> Mostra i componenti chiave e le loro relazioni (es. Class Diagrams). Utile per analisti e designer.</li>
-            <li><span class="keyword">Vista di Sviluppo (Implementazione):</span> Mostra come il codice è organizzato in file e package (es. Component Diagrams). Utile per i programmatori.</li>
-            <li><span class="keyword">Vista di Processo:</span> Mostra i flussi di esecuzione, il parallelismo e la concorrenza (es. Activity o Sequence Diagrams). Utile per gli integratori di sistema.</li>
-            <li><span class="keyword">Vista Fisica (Deployment):</span> Mostra come il software viene mappato sull'hardware e sui server (es. Deployment Diagrams). Utile per i sistemisti.</li>
-            <li><span class="keyword">+1 Vista dei Casi d'Uso:</span> Lo scenario guida che unisce, convalida e motiva le decisioni prese in tutte le altre viste.</li>
+            <li><strong>Vista Logica:</strong> Rappresenta i concetti del dominio. Si modella rigorosamente con <em>Class Diagrams</em> (concettuali) e <em>Package Diagrams</em>.</li>
+            <li><strong>Vista di Sviluppo (Implementation View):</strong> Rappresenta la realtà del codice organizzato in moduli fisici (librerie, eseguibili). Si modella tramite <em>Component Diagrams</em>.</li>
+            <li><strong>Vista di Processo (Process View):</strong> Gestisce concorrenza, performance e tolleranza ai guasti a runtime. Si documenta con diagrammi dinamici come <em>Activity Diagrams</em> e <em>Sequence Diagrams</em>.</li>
+            <li><strong>Vista Fisica (Deployment View):</strong> L'infrastruttura di rete e i server. Si mappa strettamente con i <em>Deployment Diagrams</em>.</li>
+            <li><strong>+1 Scenarios (Use Cases View):</strong> Lo scenario che guida e convalida le altre 4 viste. Si rappresenta usando gli <em>Use Case Diagrams</em>.</li>
           </ul>
         </div>
       </div>
@@ -110,31 +143,102 @@
 
     <!-- 04.03 -->
     <div class="section-block" id="section-3">
-      <h2><span class="dot"></span> Pattern e Stili Architetturali</h2>
-      <p>
-        Gli stili architetturali forniscono soluzioni riutilizzabili e testate per problemi strutturali ricorrenti.
+      <h2><span class="dot"></span> Stili e Pattern Architetturali</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Esiste una distinzione netta tra <strong>Stili Architetturali</strong> (paradigmi macro di progettazione come REST, Serverless o Event-Driven) e <strong>Pattern Architetturali</strong>, ovvero i blocchi costruttivi per implementare quegli stili, classificati in tre macro-categorie.
       </p>
 
-      <ul>
-        <li><span class="keyword">Architettura a Livelli (Layered):</span> Organizza il sistema in strati orizzontali in cui ogni livello comunica solo con quello sottostante. Favorisce la netta separazione delle responsabilità (es. Presentation, Business Logic, Data Access).</li>
-        <li><span class="keyword">Model-View-Controller (MVC):</span> Divide l'applicazione in tre parti interconnesse: il Modello (i dati e la logica), la Vista (l'interfaccia utente) e il Controller (che elabora l'input utente e aggiorna gli altri due). È lo standard di fatto per le architetture web (UI) moderne.</li>
-        <li><span class="keyword">Client-Server:</span> Stile basato sulla distribuzione (Deployment). Un server centralizzato offre servizi a molteplici client distribuiti, che fanno richieste. È opposto al modello <span class="keyword">Peer-to-Peer (P2P)</span> dove tutti i nodi paritetici agiscono sia come client che come server.</li>
-        <li><span class="keyword">Pipe and Filter:</span> I dati fluiscono attraverso una catena di componenti indipendenti (Filtri), passati da un elemento all'altro tramite tubi (Pipe). Tipico dei compilatori o dei comandi terminale Unix.</li>
-        <li><span class="keyword">Event-Bus (Event-Driven):</span> Componenti disaccoppiati comunicano ascoltando ed emettendo eventi in un canale comune (Bus), favorendo un'architettura altamente reattiva.</li>
-      </ul>
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">1. Pattern Logici / Strutturali</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Servono per ridurre l'accoppiamento tra moduli (es. Layered, Microkernel, MVC).</p>
+          <ul style="margin-top:0.5rem; margin-bottom:0;">
+            <li><strong>Layered:</strong> Organizza il sistema in strati orizzontali.</li>
+            <li><strong>MVC (Model-View-Controller):</strong> La distinzione vitale da fare qui è tra:
+              <ul style="margin-top:0.25rem;">
+                <li><em>Traditional Desktop MVC:</em> È reattivo e <strong>Stateful</strong>, basato largamente sull'Observer Pattern per aggiornare la UI in tempo reale al variare dei dati in memoria.</li>
+                <li><em>Web Framework MVC:</em> È sequenziale e <strong>Stateless</strong>, guidato unicamente dal ciclo di request/response HTTP. Non mantiene lo stato attivo (connessione) con il client.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">2. Pattern Fisici / Deployment</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Guidano la mappatura tra software e hardware.</p>
+          <ul style="margin-top:0.5rem; margin-bottom:0;">
+            <li><strong>Client-Server:</strong> L'esame richiede di separare i concetti di <em>Layers</em> (divisione logica del codice) dai <em>Tiers</em> (distribuzione fisica su macchine diverse, es. 2-Tier, 3-Tier).</li>
+            <li><strong>Peer-to-Peer (P2P):</strong> Tutti i nodi sono paritetici (sia client che server). Usato in protocolli di file sharing o Architetture Blockchain.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">3. Pattern di Processo / Comunicazione</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Definiscono come fluiscono i dati nel sistema a runtime.</p>
+          <ul style="margin-top:0.5rem; margin-bottom:0;">
+            <li><strong>Pipe-Filter:</strong> Elaborazione dati in sequenza (es. i compilatori). Filtri indipendenti processano i dati in arrivo dai "tubi" (pipe).</li>
+            <li><strong>Event-Bus / Broker:</strong> I componenti non si chiamano direttamente (disaccoppiamento) ma ascoltano ed emettono eventi su un canale condiviso.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- 04.04 -->
     <div class="section-block" id="section-4">
-      <h2><span class="dot"></span> Dal Monolite ai Microservizi</h2>
-      <p>
-        L'evoluzione del modo in cui si progetta il deployment e il ciclo di vita del software ha portato a profondi cambiamenti strutturali:
+      <h2><span class="dot"></span> Il Cubo della Scalabilità e i Microservizi</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        La transizione dai monoliti moderni non può prescindere dalla teoria della scalabilità. Il <strong>Cubo della Scalabilità (AKF Scale Cube)</strong> ci mostra che si può scalare in 3 direzioni:
       </p>
-      <ul>
-        <li><span class="keyword">Architettura Monolitica:</span> L'intera applicazione è un unico blocco coeso di codice, compilato e distribuito insieme. Semplice da sviluppare e deployare inizialmente, ma diventa ingestibile e lenta da scalare all'aumentare delle dimensioni.</li>
-        <li><span class="keyword">Service-Oriented Architecture (SOA):</span> L'applicazione viene divisa in "servizi" grossolani che condividono un Enterprise Service Bus (ESB) e spesso un database comune, nel tentativo di riutilizzare il codice a livello aziendale.</li>
-        <li><span class="keyword">Microservizi (Microservices):</span> Un'estremizzazione e un miglioramento della SOA. L'applicazione è composta da piccoli servizi indipendenti, specializzati e liberamente deployabili. Ogni microservizio possiede il <strong>proprio database</strong> e comunica con gli altri tramite API leggere (spesso REST o Codec binari come gRPC). Offrono altissima scalabilità e indipendenza tecnologica, ma introducono una complessità enorme lato DevOps e di rete.</li>
-      </ul>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Gli Assi del Cubo della Scalabilità</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Asse X (Cloning):</strong> Scalabilità tramite pura duplicazione. Si instanziano N copie esatte del Monolite dietro a un Load Balancer.</li>
+            <li><strong>Asse Z (Data Partitioning):</strong> Si scala separando i dati (es. Sharding del database per Customer ID) ma mantenendo l'app unica.</li>
+            <li><strong>Asse Y (Functional Decomposition):</strong> Scalare dividendo l'applicazione in base alle funzioni. Questa è l'essenza architetturale dei <strong>Microservizi</strong> veri e propri.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Monolite vs SOA vs Microservizi</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Monolite:</strong> Unico eseguibile con database condiviso. Semplice da deployare ma blocca la scalabilità selettiva.</li>
+            <li><strong>SOA (Service-Oriented Architecture):</strong> Servizi macro che comunicano via Enterprise Service Bus (ESB), spesso condividendo il DB aziendale per riuso del codice.</li>
+            <li><strong>Microservizi (Microservices):</strong> Servizi indipendenti specializzati con database esclusivi. 
+              <ul style="margin-top: 0.25rem;">
+                <li><em>I veri Pro:</em> Massima indipendenza dei team, velocità di rilascio continua, scalabilità puntuale.</li>
+                <li><em>I veri Contro:</em> Complessità estrema di testing di integrazione, minore performance complessiva a causa del continuo overhead di rete (chiamate HTTP/gRPC invece di chiamate locali in RAM), necessità di DevOps avanzato.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04.05 -->
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Il Designer TuringBot (L'impatto dell'AI)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        L'Intelligenza Artificiale non si limita al coding, ma sta diventando un co-pilota essenziale nella progettazione ad alto livello.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">L'AI come Visualizer & Pattern Recommender</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Text-to-UML:</strong> I TuringBots traducono automaticamente documenti di requisiti testuali nei diagrammi richiesti dal Modello 4+1 (es. generano PlantUML per Class Diagram e Sequence Diagram in pochi secondi).</li>
+            <li><strong>Trade-off Evaluation:</strong> Gli LLM analizzano i vincoli (budget, expertise del team, Time-to-Market) e forniscono raccomandazioni argomentate sul bivio tra Architettura Monolitica o Microservizi.</li>
+            <li><strong>Discovery Architetturale:</strong> Nei sistemi legacy, l'AI esamina il codice sorgente per estrarre la vista logica e ricostruire l'architettura effettiva, evidenziando il divario tra Design Inteso e Design Reale.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- Navigation -->
