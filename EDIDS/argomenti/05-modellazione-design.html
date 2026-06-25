@@ -88,6 +88,13 @@
             <li><strong>Aggregation (Aggregazione):</strong> Rombo vuoto. Relazione debole <em>"has-a"</em>. Le parti possono esistere indipendentemente (es. un Dipartimento e i suoi Professori).</li>
             <li><strong>Dependency (Dipendenza):</strong> Freccia tratteggiata. Relazione <em>"uses"</em> temporanea (es. un metodo riceve un oggetto come parametro).</li>
           </ul>
+          <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
+classDiagram
+    User <|-- Admin : Inheritance (is-a)
+    House *-- Room : Composition (part-of)
+    Department o-- Professor : Aggregation (has-a)
+    OrderController ..> OrderValidator : Dependency (uses)
+          </pre>
         </div>
       </div>
 
@@ -101,6 +108,27 @@
             <li><strong>opt:</strong> Frammento opzionale (un blocco <em>if</em> senza l'<em>else</em>). Si esegue solo se la guardia è vera.</li>
             <li><strong>par:</strong> Frammenti eseguiti in parallelo (gestione della concorrenza / multi-threading).</li>
           </ul>
+          <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
+sequenceDiagram
+    actor Cliente
+    participant Sistema
+    participant Database
+
+    Cliente->>Sistema: checkout(cart)
+    alt cart isEmpty
+        Sistema-->>Cliente: Errore
+    else
+        Sistema->>Database: saveOrder()
+        Database-->>Sistema: orderId
+        loop Per ogni item
+            Sistema->>Database: updateInventory()
+        end
+        opt wantsNewsletter
+            Sistema-)Sistema: sendEmail (asincrono)
+        end
+        Sistema-->>Cliente: Completato
+    end
+          </pre>
         </div>
       </div>
 
@@ -112,6 +140,17 @@
             <li><strong>Component & Deployment Diagram:</strong> Mappatura fisica HW/SW. Si distinguono i <em>Device Node</em> (macchine fisiche) dagli <em>Execution Environment Node</em> (es. JVM, Docker). Il software in esecuzione prende il nome di <em>Artifacts</em>. Le interfacce si delineano in Lollipop (servizio offerto) e Socket (servizio richiesto).</li>
             <li><strong>Activity & State Diagram:</strong> Modellano macchine a stati o workflow, usando nodi iniziali (pallino nero), nodi finali (pallino nero cerchiato) e "composite states" per stati annidati.</li>
           </ul>
+          <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
+usecaseDiagram
+    actor "Cliente" as C
+    usecase "Pagare Ordine" as UC1
+    usecase "Autenticarsi" as UC2
+    usecase "Aggiungere Assicurazione" as UC3
+    
+    C --> UC1
+    UC1 ..> UC2 : <<include>>
+    UC3 ..> UC1 : <<extend>>
+          </pre>
         </div>
       </div>
     </div>
@@ -1101,5 +1140,9 @@
   </footer>
 
   <script src="../../shared/katchkit.js"></script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+  </script>
 </body>
 </html>
