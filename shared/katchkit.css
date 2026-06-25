@@ -2719,3 +2719,115 @@ nav.home-nav .nav-badge {
 a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-card h3 {
   color: var(--text-primary) !important;
 }
+/* ==========================================================================
+   16. EXAMPLES BLOCK & VS ROW
+   ========================================================================== */
+.examples-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.example-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-soft);
+  border-radius: var(--r-md);
+  padding: 1.25rem 1.5rem;
+  transition: all 0.2s;
+}
+
+.example-item:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+}
+
+.example-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.example-item p {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.example-item p code {
+  color: var(--teal);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+/* VS Row */
+.vs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.vs-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: all 0.2s;
+}
+
+.vs-box:hover {
+  background: var(--bg-card-hover);
+}
+
+.vs-bad {
+  border-top: 3px solid var(--coral);
+}
+
+.vs-good {
+  border-top: 3px solid var(--green);
+}
+
+.vs-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vs-bad .vs-label {
+  color: var(--coral);
+}
+
+.vs-good .vs-label {
+  color: var(--green);
+}
+
+.vs-box p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.vs-box p code {
+  color: var(--accent-soft);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+@media (max-width: 768px) {
+  .vs-row {
+    grid-template-columns: 1fr;
+  }
+}
