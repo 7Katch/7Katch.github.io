@@ -26,7 +26,14 @@
     <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
   </ul>
   <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
+  <ul class="sb-sections">
+    <li><button class="sb-link" data-target="section-1"><span class="sb-idx">03.01</span><span>Il Processo</span></button></li>
+    <li><button class="sb-link" data-target="section-2"><span class="sb-idx">03.02</span><span>Tipi e Anti-Pattern</span></button></li>
+    <li><button class="sb-link" data-target="section-3"><span class="sb-idx">03.03</span><span>Agile, INVEST</span></button></li>
+    <li><button class="sb-link" data-target="section-4"><span class="sb-idx">03.04</span><span>BDD e DoD</span></button></li>
+    <li><button class="sb-link" data-target="section-5"><span class="sb-idx">03.05</span><span>Use Cases Formali</span></button></li>
+    <li><button class="sb-link" data-target="section-6"><span class="sb-idx">03.06</span><span>TuringBots (AI)</span></button></li>
+  </ul>
 </aside>
 
 
@@ -55,44 +62,59 @@
       <span>03 · Requisiti</span>
     </div>
 
-    <div class="index-grid" data-prefix="03">
+    <div class="index-grid" data-prefix="03" data-no-sidebar="true">
       <ul>
-        <li>Il Processo dei Requisiti</li>
-        <li>Tipi di Requisiti</li>
-        <li>User Stories e INVEST</li>
-        <li>Gherkin e Criteri di Accettazione</li>
-        <li>Casi d'Uso (Use Cases)</li>
+        <li data-target="section-1">Il Processo (4 Fasi e Stakeholder)</li>
+        <li data-target="section-2">Tipi di Requisiti, Approcci e Anti-Pattern</li>
+        <li data-target="section-3">User Stories e Criteri INVEST</li>
+        <li data-target="section-4">BDD, Gherkin e Definition of Done</li>
+        <li data-target="section-5">Casi d'Uso (Use Cases Formali)</li>
+        <li data-target="section-6">L'Aiuto dell'IA (TuringBots)</li>
       </ul>
     </div>
 
     <!-- 03.01 -->
     <div class="section-block" id="section-1">
-      <h2><span class="dot"></span> Il Processo di Ingegneria dei Requisiti</h2>
-      <p>
-        L'ingegneria dei requisiti non è un'attività isolata e monolitica, ma un <span class="keyword">processo iterativo</span> che si articola in diverse fasi fondamentali per assicurare che il software sviluppato risolva i veri problemi del cliente.
+      <h2><span class="dot"></span> Il Processo e gli Stakeholder</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        L'ingegneria dei requisiti è un processo iterativo articolato in quattro fasi fondamentali, il cui scopo è assicurare che il software sviluppato risolva i veri problemi del cliente.
       </p>
-      <ul>
-        <li><span class="keyword">Elicitazione (Scoperta):</span> Lavorare con gli stakeholder per scoprire e raccogliere i requisiti. Si utilizzano tecniche come interviste, questionari, brainstorming ed etnografia (osservazione diretta del lavoro).</li>
-        <li><span class="keyword">Analisi e Negoziazione:</span> Identificare i conflitti tra requisiti (es. uno stakeholder vuole massime prestazioni, un altro budget ridotto), risolvere le discrepanze, definire le priorità e trovare compromessi.</li>
-        <li><span class="keyword">Specifica:</span> Tradurre i requisiti raccolti in documenti strutturati, siano essi formali (come la Software Requirements Specification - SRS) o informali (User Stories e Backlog).</li>
-        <li><span class="keyword">Validazione:</span> Verificare che i requisiti specificati descrivano effettivamente il sistema che il cliente desidera. Tecniche: revisioni dei requisiti, prototipazione rapida, generazione di test case.</li>
-        <li><span class="keyword">Gestione dei Requisiti:</span> Tracciare e gestire i cambiamenti ai requisiti durante l'intero ciclo di vita del progetto, poiché i bisogni cambieranno inevitabilmente.</li>
-      </ul>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Il Processo a 4 Fasi</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>1. Elicitazione (Scoperta):</strong> Scoprire e raccogliere i requisiti parlando con gli stakeholder. La sfida principale è che gli esperti di dominio fanno fatica ad articolare conoscenze per loro "ovvie".</li>
+            <li><strong>2. Specifica:</strong> Trasformare le idee in documenti. A causa dell'ambiguità del linguaggio naturale, si usano specifiche strutturate (es. tabelle condizionali) o si fa riferimento a Standard industriali (es. IEEE 830, template VOLERE).</li>
+            <li><strong>3. Convalida (Validation):</strong> Assicurarsi che i requisiti siano coerenti, realistici e verificabili <em>prima</em> di scrivere codice. Si usano revisioni, prototipazione e <em>Generazione di test-case</em>.</li>
+            <li><strong>4. Gestione (Management):</strong> Tracciare e valutare i costi e gli impatti dei cambiamenti ai requisiti.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Stakeholder Complessi</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Non si ascoltano solo gli utenti finali. Uno Stakeholder è chiunque abbia un interesse legittimo nel sistema.</p>
+          <ul style="margin-top:0.5rem; margin-bottom:0;">
+            <li><strong>Visibili:</strong> Chi usa il sistema quotidianamente (es. in un sistema medico: pazienti, medici, infermieri).</li>
+            <li><strong>Strutturali:</strong> Chi è coinvolto indirettamente ma detta le regole (es. IT staff per le compatibilità, manager dell'etica medica, responsabili normativi/legali).</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- 03.02 -->
     <div class="section-block" id="section-2">
-      <h2><span class="dot"></span> Tipi di Requisiti</h2>
-      <p>
-        I requisiti si differenziano in base al loro livello di dettaglio e all'aspetto del sistema che descrivono.
-      </p>
-      
+      <h2><span class="dot"></span> Approcci, Tipi di Requisiti e Anti-Pattern</h2>
+
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Livello di Astrazione</div>
+        <div class="header">I due approcci: Agile vs Plan-based</div>
         <div class="content">
-          <ul style="margin:0;">
-            <li><span class="keyword">Requisiti Utente:</span> Dichiarazioni ad alto livello, scritte spesso in linguaggio naturale e con l'uso di diagrammi intuitivi. Descrivono i servizi forniti dal sistema e i vincoli operativi. Sono destinati a manager, clienti finali ed end-user.</li>
-            <li><span class="keyword">Requisiti di Sistema:</span> Specifiche tecniche dettagliate delle funzioni del sistema. Definiscono esattamente cosa dev'essere implementato. Sono destinati agli ingegneri del software e agli sviluppatori.</li>
+          <p style="margin:0; color:var(--text-secondary);">Sebbene Agile domini lo sviluppo moderno, i metodi guidati dai piani (Plan-based) restano <strong>obbligatori</strong> per sistemi critici o grandi appalti governativi, dove i requisiti sono contratti rigidi suddivisi in:</p>
+          <ul style="margin-top:0.5rem; margin-bottom:0;">
+            <li><strong>User Requirements:</strong> Scritti in linguaggio naturale o diagrammi, rivolti ai clienti.</li>
+            <li><strong>System Requirements:</strong> Specifiche tecniche dettagliatissime per gli sviluppatori (System Architect), che fissano funzioni e vincoli operativi.</li>
           </ul>
         </div>
       </div>
@@ -101,8 +123,29 @@
         <div class="header">Funzionali vs Non Funzionali</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><span class="keyword">Requisiti Funzionali:</span> Descrivono le funzionalità che il sistema <strong>deve compiere</strong>. Specificano gli input, i comportamenti e gli output previsti. <br><em>Esempio: "Il sistema deve permettere all'utente di resettare la propria password via email."</em></li>
-            <li><span class="keyword">Requisiti Non Funzionali (Qualitativi):</span> Descrivono i vincoli o le qualità su <strong>come</strong> il sistema svolge quelle funzioni. Spesso si usa l'acronimo <span class="keyword">FURPS+</span> (Functionality, Usability, Reliability, Performance, Supportability). <br><em>Esempio: "Il sistema deve rispondere a ogni richiesta di ricerca entro 2 secondi (Performance)."</em></li>
+            <li><strong>Requisiti Funzionali:</strong> Descrivono i servizi offerti dal sistema, le reazioni agli input e cosa il sistema <em>non</em> deve fare.</li>
+            <li><strong>Requisiti Non Funzionali:</strong> Vincoli sul sistema globale. Si classificano in:
+              <ul style="margin-top: 0.25rem;">
+                <li><em>Prodotto:</em> Velocità, Usabilità (FURPS+).</li>
+                <li><em>Organizzativi:</em> Policy aziendali (es. usare Git, Docker).</li>
+                <li><em>Esterni:</em> Rispetto delle leggi (es. GDPR, privacy medica HStan-03), Interoperabilità.</li>
+              </ul>
+            </li>
+          </ul>
+          <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.75rem; margin-top: 1rem; border-radius: 4px;">
+            <strong>Regola d'oro:</strong> I requisiti non funzionali devono <em>sempre</em> essere verificabili usando specifiche Metriche: transazioni/secondo (Speed), tempo di apprendimento (Usability), o Mbytes massimi (Size).
+          </div>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Anti-Pattern (Come NON scrivere i requisiti)</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Errori semantici che costano caro in fase di sviluppo e manutenzione:</p>
+          <ul style="margin-top:0.5rem; margin-bottom:0;">
+            <li><strong>La Trappola dell'Or:</strong> <em>"Il sistema deve generare un segnale visivo O uditivo"</em>. Ambiguo per chi programma, rende il requisito non testabile in modo deterministico.</li>
+            <li><strong>Il Mostro dell'And:</strong> Fondere funzioni slegate: <em>"Accendere la luce di allarme E salvare il database"</em>. Viola il principio di requisito atomico.</li>
+            <li><strong>Dettagli di Implementazione:</strong> Prescrivere hardware o UI (es. "antenna in rame", "font 14pt Swiss su LCD") anziché definire l'obiettivo (es. "ricezione FM con ogni meteo", "leggibile da 1 metro").</li>
           </ul>
         </div>
       </div>
@@ -149,21 +192,57 @@
           </ul>
         </div>
       </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Definition of Done (DoD)</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Superare i criteri di accettazione Gherkin non è sufficiente per dichiarare una User Story finita. Deve anche rispettare la <strong>Definition of Done</strong> del team di sviluppo.</p>
+          <ul style="margin-top:0.5rem; margin-bottom:0;">
+            <li>In ambienti maturi e critici si applica una <strong>Stringent DoD</strong>, che obbliga il codice a rispettare vincoli ingegneristici ferrei, come: Code Coverage dei test unitari superiore all'85%, Zero errori nei controlli degli standard di codifica (Linting), nessuna introduzione di Debito Tecnico non giustificato e superamento di test di penetrazione automatici.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- 03.05 -->
     <div class="section-block" id="section-5">
-      <h2><span class="dot"></span> Casi d'Uso (Use Cases)</h2>
-      <p>
-        I <span class="keyword">Casi d'Uso</span> sono una tecnica di modellazione dei requisiti ampiamente usata in UML. Rispetto alle User Stories, sono generalmente più dettagliati e strutturati, concentrandosi sull'interazione passo-passo tra il sistema e gli utenti (chiamati <strong>Attori</strong>).
+      <h2><span class="dot"></span> Casi d'Uso (Use Cases Formali)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        A differenza delle brevi User Stories, per i sistemi complessi o plan-based bisogna conoscere l'anatomia di uno <strong>Use Case Formale</strong> strutturato.
       </p>
-      <ul>
-        <li><span class="keyword">Attori (Actors):</span> Entità esterne (persone o altri sistemi) che interagiscono col sistema per raggiungere un obiettivo.</li>
-        <li><span class="keyword">Precondizioni:</span> Lo stato in cui deve trovarsi il sistema prima che il caso d'uso possa iniziare.</li>
-        <li><span class="keyword">Main Success Scenario (Happy Path):</span> La sequenza ottimale di interazioni in cui tutto procede senza intoppi e l'obiettivo viene raggiunto.</li>
-        <li><span class="keyword">Flussi Alternativi e di Eccezione:</span> Percorsi alternativi (es. l'utente sceglie una variante) e condizioni di errore (es. carta di credito rifiutata).</li>
-        <li><span class="keyword">Postcondizioni:</span> Le garanzie sullo stato del sistema una volta terminato il caso d'uso (sia in caso di successo che di fallimento).</li>
-      </ul>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Anatomia dello Use Case</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Attori:</strong> Entità esterne (persone, timer, o altri sistemi IT) che interagiscono col sistema.</li>
+            <li><strong>Trigger:</strong> L'evento scatenante che avvia l'interazione.</li>
+            <li><strong>Pre-condizioni:</strong> Lo stato certificato in cui deve trovarsi il sistema prima che il caso possa iniziare.</li>
+            <li><strong>Normal Flow (Flusso Base / Happy Path):</strong> La sequenza ottimale di interazioni in cui tutto procede senza intoppi e l'obiettivo viene raggiunto.</li>
+            <li><strong>Flussi Alternativi ed Eccezioni:</strong> Percorsi varianti e gestione degli errori (es. "Cosa succede se la carta di credito viene rifiutata?").</li>
+            <li><strong>Post-condizioni:</strong> Garanzie sullo stato del database e del sistema alla conclusione del caso.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03.06 -->
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> L'Aiuto dell'IA (TuringBots)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Nell'ingegneria dei requisiti moderna, l'Intelligenza Artificiale Generativa e i <strong>TuringBots</strong> stanno colmando il divario di comunicazione tra business e tecnici.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Applicazioni AI nell'Analisi</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Simulatore di Stakeholder:</strong> I modelli LLM possono assumere il ruolo ("persona") di specifici utenti finali per evidenziare bisogni o edge cases che gli umani non avevano considerato.</li>
+            <li><strong>Analisi Semantica:</strong> I TuringBots analizzano decine di requisiti testuali per individuare "Bad smells" (come la <em>Trappola dell'Or</em>), ambiguità o conflitti di logica.</li>
+            <li><strong>Generazione Automatica Gherkin:</strong> A partire dalla trascrizione di un meeting, l'AI è in grado di estrarre autonomamente le <em>User Stories</em> e abbozzarne i <em>Criteri di Accettazione</em> in sintassi <code>Given-When-Then</code> pronta per l'automazione dei test.</li>
+          </ul>
+        </div>
+      </div>
     </div>
     
     <!-- Navigation -->
