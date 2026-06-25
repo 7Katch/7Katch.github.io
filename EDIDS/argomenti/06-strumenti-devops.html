@@ -77,10 +77,24 @@
             <li data-target="branch-trunk">Trunk-Based</li>
           </ul>
         </li>
+        <li data-target="cicd">Continuous Integration & Code Analysis
+          <ul>
+            <li data-target="ci-teoria">Motivazioni e Tool</li>
+            <li data-target="ci-sonar">Analisi Statica e SonarQube</li>
+          </ul>
+        </li>
         <li data-target="maven">Maven Deep Dive
           <ul>
+            <li data-target="mvn-alt">Alternative (Make, Ant, Gradle)</li>
             <li data-target="mvn-lifecycle">Lifecycle</li>
             <li data-target="mvn-deps">Dipendenze Transitive</li>
+            <li data-target="mvn-adv">Indipendenza IDE & Spotless</li>
+          </ul>
+        </li>
+        <li data-target="docker">Virtualizzazione e Docker
+          <ul>
+            <li data-target="doc-vm">Containers vs VMs</li>
+            <li data-target="doc-term">Terminologia Docker</li>
           </ul>
         </li>
         <li data-target="sec">Sicurezza della Supply Chain
@@ -201,13 +215,59 @@
       </div>
     </div>
 
-    <!-- 3. MAVEN -->
+
+    <!-- 3. CI/CD -->
+    <div class="section-block" id="cicd">
+      <h2><span class="dot"></span> 3. Continuous Integration & Code Analysis</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        La Continuous Integration serve a mitigare il rischio di integrazione tardiva e la complessità di integrare codice sviluppato in isolamento per troppo tempo.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="ci-teoria">
+        <div class="header">Motivazioni e Tool</div>
+        <div class="content">
+          <p style="margin-top:0; color:var(--text-secondary);">
+            Integrare frequentemente il codice (almeno una volta al giorno) permette di rilevare tempestivamente i bug, riducendo l'"Integration Hell".
+          </p>
+          <ul style="margin:0;">
+            <li><strong>Strumenti Storici e Attuali:</strong> Hudson e il suo fork <strong>Jenkins</strong> sono stati i pionieri open-source, basati su server standalone. <strong>Bamboo</strong> è la soluzione enterprise di Atlassian. Oggi il mercato si sta spostando su soluzioni cloud-native integrate direttamente nella piattaforma di repository, come <strong>GitLab CI/CD</strong> e <strong>GitHub Actions</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="ci-sonar">
+        <div class="header">Analisi Statica e SonarQube</div>
+        <div class="content">
+          <p style="margin-top:0; color:var(--text-secondary);">
+            Le pipeline di CI moderne non si limitano a compilare il codice, ma includono fasi automatizzate di <strong>Analisi Statica</strong> (Static Application Security Testing).
+          </p>
+          <ul style="margin:0;">
+            <li><strong>SonarQube:</strong> È lo standard di mercato per la code quality. Analizza il codice sorgente per individuare vulnerabilità (Bugs), pattern di programmazione errati (Code Smells) e misurare la copertura dei test (Test Coverage).</li>
+            <li><strong>Quality Gates:</strong> Regole booleane configurate in SonarQube (es. "Copertura Test > 80%"). Se il codice non supera il Quality Gate, la pipeline di CI/CD si blocca (fail) e il branch non può essere unito (merge) al ramo principale.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 4. MAVEN -->
     <div class="section-block" id="maven">
-      <h2><span class="dot"></span> 3. Maven Deep Dive</h2>
+      <h2><span class="dot"></span> 4. Maven Deep Dive</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         Maven non è solo un semplice scaricatore di librerie, ma un orchestratore potente dell'intero ciclo di vita
         (build lifecycle) del software Java.
       </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="mvn-alt">
+        <div class="header">Alternative Storiche e Moderne</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Make:</strong> Il primissimo build tool, basato su Makefile (script shell-like). Estremamente flessibile ma considerato difficile da mantenere e da debuggare per progetti complessi.</li>
+            <li><strong>Apache Ant:</strong> Nato in ambito Java, sostituiva i Makefile con file XML (<code>build.xml</code>). È estensibile tramite task ma, storicamente, mancava di un supporto nativo per la gestione automatica delle dipendenze (aggiunta solo dopo con Apache Ivy), costringendo a check-in manuali dei file <code>.jar</code>.</li>
+            <li><strong>Gradle:</strong> L'alternativa moderna a Maven. Più veloce perché non forza un lifecycle rigido e definisce le dipendenze basandosi su grafi diretti aciclici (DAG) di task. È scritto in Groovy o Kotlin ed è diventato il tool di build predefinito per Android.</li>
+          </ul>
+        </div>
+      </div>
 
       <div class="card-def" style="margin-top: 1.5rem;" id="mvn-lifecycle">
         <div class="header">Build Lifecycle (Fasi di Build)</div>
@@ -254,11 +314,52 @@
           </p>
         </div>
       </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="mvn-adv">
+        <div class="header">Indipendenza dall'IDE e Spotless</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Indipendenza dall'IDE:</strong> Una regola ingegneristica fondamentale è che <em>Maven deve essere l'astrazione finale della build</em>. Un progetto deve potersi compilare, testare ed impacchettare correttamente da riga di comando (es. <code>mvn clean install</code>) senza alcuna dipendenza dalle configurazioni o dai plugin locali dell'IDE (IntelliJ, Eclipse, VS Code) di chi sta programmando. Questo garantisce che la build funzioni in modo deterministico anche sui server di Continuous Integration.</li>
+            <li><strong>Formattazione automatica (Spotless):</strong> È vitale usare plugin Maven come <strong>Spotless</strong> per applicare e forzare uno standard di formattazione del codice unico per tutto il team. Questo evita che su Git si creino "rumori" e finti conflitti dovuti a semplici differenze di tabulazioni, spazi o fine riga introdotti dai vari IDE degli sviluppatori.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <!-- 4. SUPPLY CHAIN -->
+    <!-- 5. DOCKER -->
+    <div class="section-block" id="docker">
+      <h2><span class="dot"></span> 5. Virtualizzazione e Docker</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        I Container rappresentano la rivoluzione del deployment moderno, impacchettando il codice assieme a tutte le sue dipendenze di sistema in un formato standardizzato e portabile.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="doc-vm">
+        <div class="header">Containers vs Macchine Virtuali (VM)</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Macchine Virtuali (VM):</strong> Virtualizzano l'hardware. Includono sempre un intero sistema operativo "Guest" completo, che gira sopra un Hypervisor. Sono pesanti (Gigabyte), lente ad avviarsi e sprecano risorse per far girare processi OS ridondanti.</li>
+            <li><strong>Containers:</strong> Virtualizzano il sistema operativo. Più container <strong>condividono lo stesso kernel</strong> del sistema operativo host, isolando solo lo spazio utente (filesystem, processi, rete). Sono leggerissimi (Megabyte), si avviano in millisecondi e massimizzano l'efficienza delle risorse.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="doc-term">
+        <div class="header">Terminologia Docker</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Image:</strong> È il pacchetto statico, immutabile, che contiene il codice, le librerie e gli strumenti necessari. Rappresenta i dati "a riposo" (template).</li>
+            <li><strong>Container:</strong> È un'istanza viva e in esecuzione di un'Image. Può essere creata, avviata, fermata o distrutta.</li>
+            <li><strong>Engine:</strong> Il software runtime di base (il demone Docker) installato sul server che ha il compito pratico di creare, eseguire e gestire i Container.</li>
+            <li><strong>Registry:</strong> Un magazzino centralizzato (es. Docker Hub) dove vengono archiviate, versionate e distribuite le Image per essere scaricate e usate nei deployment.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. SUPPLY CHAIN -->
     <div class="section-block" id="sec">
-      <h2><span class="dot"></span> 4. Sicurezza della Supply Chain</h2>
+      <h2><span class="dot"></span> 6. Sicurezza della Supply Chain</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         Oggi nessuna azienda costruisce un software interamente da zero. I progetti moderni sono assemblaggi di decine
         di librerie scritte da terzi open-source. Questo apre a rischi catastrofici se uno di questi anelli della catena
@@ -296,9 +397,9 @@
       </div>
     </div>
 
-    <!-- 5. AI -->
+    <!-- 7. AI -->
     <div class="section-block" id="ai">
-      <h2><span class="dot"></span> 5. AI in DevOps</h2>
+      <h2><span class="dot"></span> 7. AI in DevOps</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         L'Intelligenza Artificiale Generativa non è più riservata solo ad assistere lo sviluppatore nell'IDE per
         generare righe di codice, ma sta impattando prepotentemente tutto il ciclo di vita DevOps e IT Operations.
