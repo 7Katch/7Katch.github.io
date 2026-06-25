@@ -185,20 +185,24 @@ const KatchKitCore = {
     const prefix = indexGrid.getAttribute('data-prefix');
     if (!prefix) return;
 
+    // 2b. Controlla se disabilitare l'iniezione automatica nella sidebar
+    const noSidebar = indexGrid.hasAttribute('data-no-sidebar');
+
     // 3. Trova la lista <ul> semplice che hai scritto nell'HTML
     const sourceList = indexGrid.querySelector('ul');
     if (!sourceList) return;
 
     const listItems = sourceList.querySelectorAll('li');
 
-    // 4. Svuota fisicamente l'HTML della griglia e della sidebar
+    // 4. Svuota fisicamente l'HTML della griglia e, se abilitata, della sidebar
     indexGrid.innerHTML = '';
-    if (sidebarList) sidebarList.innerHTML = '';
+    if (sidebarList && !noSidebar) sidebarList.innerHTML = '';
 
     // 5. Ricostruisce tutto in modo dinamico
     listItems.forEach((li, index) => {
       const num = String(index + 1).padStart(2, '0');
-      const targetId = `section-${index + 1}`;
+      // Legge un data-target custom dall'li, altrimenti usa section-X
+      const targetId = li.getAttribute('data-target') || `section-${index + 1}`;
       const titleTesto = li.textContent.trim();
 
       // --- A. COSTRUISCE LA CARD NELLA GRIGLIA CENTRALE ---
@@ -217,8 +221,8 @@ const KatchKitCore = {
       `;
       indexGrid.appendChild(gridItem);
 
-      // --- B. COSTRUISCE IL BOTTONE NELLA SIDEBAR LATERALE ---
-      if (sidebarList) {
+      // --- B. COSTRUISCE IL BOTTONE NELLA SIDEBAR LATERALE (Se non disabilitata) ---
+      if (sidebarList && !noSidebar) {
         const sidebarItem = document.createElement('li');
         sidebarItem.setAttribute('data-sid', targetId);
         sidebarItem.innerHTML = `

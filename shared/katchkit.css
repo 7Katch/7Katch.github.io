@@ -2831,3 +2831,51 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
     grid-template-columns: 1fr;
   }
 }
+/* -- 9. RETRO-COMPATIBILITA' (05-modellazione-design.html) -- */
+.section-intro {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+.eyebrow {
+  color: var(--kk-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+.principle-link {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  background: rgba(var(--kk-rgb), 0.05);
+  border-left: 3px solid var(--kk-primary);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+}
+.grasp-card h3 {
+  color: var(--text-primary);
+}
+.grasp-card h3::before {
+  content: ''; /* Remove any default if there was */
+}
+/* Colora l'h3 della card con un colore primario per evitare il bianco puro che stona */
+.grasp-card .card-head h3 {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.grasp-card .card-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.grasp-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+}

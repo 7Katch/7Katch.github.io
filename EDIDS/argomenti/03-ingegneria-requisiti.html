@@ -55,16 +55,122 @@
       <span>03 · Requisiti</span>
     </div>
 
-<div class="content-section">
-  <h2 class="section-title">Concetti chiave</h2>
-  <div class="checklist-box">
-    <div class="checklist-title">Appunti</div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Tipi di Requisiti:</strong> Requisiti utente (per i clienti) vs Requisiti di sistema (per gli sviluppatori); Requisiti funzionali vs Non funzionali (es. prestazioni, sicurezza).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>User Stories:</strong> Metodologia Agile per esprimere i requisiti, che devono rispettare i criteri **INVEST** (Independent, Negotiable, Valuable, Estimable, Small, Testable).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Criteri di Accettazione e Gherkin:</strong> Strutturazione formale dei test nel formato *Given-When-Then*.</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Elicitazione e Specifica:</strong> Tecniche di raccolta dei requisiti (brainstorming, interviste, etnografia) e modellazione tramite Casi d'Uso (Use Cases).</div></div>
-  </div>
-</div>
+    <div class="index-grid" data-prefix="03">
+      <ul>
+        <li>Il Processo dei Requisiti</li>
+        <li>Tipi di Requisiti</li>
+        <li>User Stories e INVEST</li>
+        <li>Gherkin e Criteri di Accettazione</li>
+        <li>Casi d'Uso (Use Cases)</li>
+      </ul>
+    </div>
+
+    <!-- 03.01 -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Il Processo di Ingegneria dei Requisiti</h2>
+      <p>
+        L'ingegneria dei requisiti non è un'attività isolata e monolitica, ma un <span class="keyword">processo iterativo</span> che si articola in diverse fasi fondamentali per assicurare che il software sviluppato risolva i veri problemi del cliente.
+      </p>
+      <ul>
+        <li><span class="keyword">Elicitazione (Scoperta):</span> Lavorare con gli stakeholder per scoprire e raccogliere i requisiti. Si utilizzano tecniche come interviste, questionari, brainstorming ed etnografia (osservazione diretta del lavoro).</li>
+        <li><span class="keyword">Analisi e Negoziazione:</span> Identificare i conflitti tra requisiti (es. uno stakeholder vuole massime prestazioni, un altro budget ridotto), risolvere le discrepanze, definire le priorità e trovare compromessi.</li>
+        <li><span class="keyword">Specifica:</span> Tradurre i requisiti raccolti in documenti strutturati, siano essi formali (come la Software Requirements Specification - SRS) o informali (User Stories e Backlog).</li>
+        <li><span class="keyword">Validazione:</span> Verificare che i requisiti specificati descrivano effettivamente il sistema che il cliente desidera. Tecniche: revisioni dei requisiti, prototipazione rapida, generazione di test case.</li>
+        <li><span class="keyword">Gestione dei Requisiti:</span> Tracciare e gestire i cambiamenti ai requisiti durante l'intero ciclo di vita del progetto, poiché i bisogni cambieranno inevitabilmente.</li>
+      </ul>
+    </div>
+
+    <!-- 03.02 -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Tipi di Requisiti</h2>
+      <p>
+        I requisiti si differenziano in base al loro livello di dettaglio e all'aspetto del sistema che descrivono.
+      </p>
+      
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Livello di Astrazione</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">Requisiti Utente:</span> Dichiarazioni ad alto livello, scritte spesso in linguaggio naturale e con l'uso di diagrammi intuitivi. Descrivono i servizi forniti dal sistema e i vincoli operativi. Sono destinati a manager, clienti finali ed end-user.</li>
+            <li><span class="keyword">Requisiti di Sistema:</span> Specifiche tecniche dettagliate delle funzioni del sistema. Definiscono esattamente cosa dev'essere implementato. Sono destinati agli ingegneri del software e agli sviluppatori.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Funzionali vs Non Funzionali</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">Requisiti Funzionali:</span> Descrivono le funzionalità che il sistema <strong>deve compiere</strong>. Specificano gli input, i comportamenti e gli output previsti. <br><em>Esempio: "Il sistema deve permettere all'utente di resettare la propria password via email."</em></li>
+            <li><span class="keyword">Requisiti Non Funzionali (Qualitativi):</span> Descrivono i vincoli o le qualità su <strong>come</strong> il sistema svolge quelle funzioni. Spesso si usa l'acronimo <span class="keyword">FURPS+</span> (Functionality, Usability, Reliability, Performance, Supportability). <br><em>Esempio: "Il sistema deve rispondere a ogni richiesta di ricerca entro 2 secondi (Performance)."</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03.03 -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> User Stories e Criteri INVEST</h2>
+      <p>
+        Le <span class="keyword">User Stories</span> sono il formato preferito dalle metodologie Agile per catturare i requisiti. Sono descrizioni brevi, scritte dal punto di vista dell'utente finale.
+      </p>
+      <p>Il template classico per una User Story è:</p>
+      <div style="background: rgba(20,20,25,0.4); padding: 1.5rem; border-left: 4px solid #10b981; border-radius: 4px; margin-bottom: 1.5rem;">
+        <em>"Come <strong>[ruolo o persona]</strong>,<br>
+        voglio <strong>[obiettivo o azione]</strong>,<br>
+        affinché <strong>[ragione, beneficio o valore]</strong>."</em>
+      </div>
+
+      <p>Per essere considerata di alta qualità e pronta per lo sviluppo, una User Story dovrebbe rispettare l'acronimo <span class="keyword">INVEST</span> introdotto da Bill Wake:</p>
+      <ul>
+        <li><span class="keyword">I - Independent:</span> La storia dovrebbe essere completabile in modo indipendente dalle altre, per facilitare la ripianificazione.</li>
+        <li><span class="keyword">N - Negotiable:</span> Una User Story non è un contratto rigido, ma un promemoria per avviare una conversazione tra il team e il Product Owner. I dettagli vengono negoziati durante la conversazione.</li>
+        <li><span class="keyword">V - Valuable:</span> Deve consegnare un reale valore di business all'utente o al cliente finale. Non ci sono storie puramente "tecniche" senza un beneficio tangibile.</li>
+        <li><span class="keyword">E - Estimable:</span> Il team deve avere abbastanza informazioni (e la storia non deve essere troppo grande) per poter stimarne la complessità (ad esempio in Story Points).</li>
+        <li><span class="keyword">S - Small:</span> Deve essere sufficientemente piccola da poter essere completata entro una singola iterazione (Sprint). Se è troppo grande (una <em>Epic</em>), va suddivisa.</li>
+        <li><span class="keyword">T - Testable:</span> Devono esistere criteri chiari per stabilire quando la storia è completata in modo soddisfacente (Criteri di Accettazione).</li>
+      </ul>
+    </div>
+
+    <!-- 03.04 -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> BDD, Gherkin e Criteri di Accettazione</h2>
+      <p>
+        I <span class="keyword">Criteri di Accettazione</span> stabiliscono i confini di una User Story e i requisiti minimi di qualità. Il <span class="keyword">Behavior-Driven Development (BDD)</span> incoraggia a scrivere questi criteri nel formato <strong>Gherkin</strong>, un linguaggio strutturato (Given-When-Then) che funge da ponte tra le logiche di business e l'automazione dei test.
+      </p>
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Sintassi Gherkin</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">Given (Dato):</span> Definisce le precondizioni o lo stato iniziale del sistema prima dell'azione dell'utente.<br><em>Es: "Dato che l'utente ha degli articoli nel carrello..."</em></li>
+            <li><span class="keyword">When (Quando):</span> Descrive l'azione principale che l'utente compie o l'evento che si verifica.<br><em>Es: "Quando l'utente clicca sul pulsante 'Procedi al pagamento'..."</em></li>
+            <li><span class="keyword">Then (Allora):</span> Descrive il risultato atteso o le postcondizioni verificabili.<br><em>Es: "Allora viene mostrata la pagina di checkout sicura."</em></li>
+            <li><span class="keyword">And / But (E / Ma):</span> Permettono di concatenare più clausole per mantenere la leggibilità.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03.05 -->
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Casi d'Uso (Use Cases)</h2>
+      <p>
+        I <span class="keyword">Casi d'Uso</span> sono una tecnica di modellazione dei requisiti ampiamente usata in UML. Rispetto alle User Stories, sono generalmente più dettagliati e strutturati, concentrandosi sull'interazione passo-passo tra il sistema e gli utenti (chiamati <strong>Attori</strong>).
+      </p>
+      <ul>
+        <li><span class="keyword">Attori (Actors):</span> Entità esterne (persone o altri sistemi) che interagiscono col sistema per raggiungere un obiettivo.</li>
+        <li><span class="keyword">Precondizioni:</span> Lo stato in cui deve trovarsi il sistema prima che il caso d'uso possa iniziare.</li>
+        <li><span class="keyword">Main Success Scenario (Happy Path):</span> La sequenza ottimale di interazioni in cui tutto procede senza intoppi e l'obiettivo viene raggiunto.</li>
+        <li><span class="keyword">Flussi Alternativi e di Eccezione:</span> Percorsi alternativi (es. l'utente sceglie una variante) e condizioni di errore (es. carta di credito rifiutata).</li>
+        <li><span class="keyword">Postcondizioni:</span> Le garanzie sullo stato del sistema una volta terminato il caso d'uso (sia in caso di successo che di fallimento).</li>
+      </ul>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="back-btn-wrap">
+      <a href="02-ciclo-di-vita.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 02 · Ciclo di Vita</a>
+      <a href="04-architettura.html" class="btn btn-ghost">04 · Architettura <i class="bi bi-arrow-right"></i></a>
+    </div>
 
 
   </div>
@@ -73,15 +179,6 @@
     <p>// 7Katch.github.io · EDIDS</p>
   </footer>
 
-  <script>
-    // Semplice toggle per la sidebar mobile
-    const toggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.so-sidebar');
-    if(toggle && sidebar) {
-      toggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-      });
-    }
-  </script>
+  <script src="../../shared/katchkit.js"></script>
 </body>
 </html>

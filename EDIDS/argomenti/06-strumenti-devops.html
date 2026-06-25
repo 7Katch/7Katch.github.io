@@ -26,9 +26,13 @@
     <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
   </ul>
   <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
+  <ul class="sb-sections">
+    <li><button class="sb-link" data-target="build"><span class="sb-idx">06.01</span><span>Build Tools</span></button></li>
+    <li><button class="sb-link" data-target="scm"><span class="sb-idx">06.02</span><span>Source Code Management</span></button></li>
+    <li><button class="sb-link" data-target="cicd"><span class="sb-idx">06.03</span><span>Automazione & Qualità</span></button></li>
+    <li><button class="sb-link" data-target="docker"><span class="sb-idx">06.04</span><span>Container (Docker)</span></button></li>
+  </ul>
 </aside>
-
 
   <!-- ═══════ NAV ═══════ -->
   <site-navbar 
@@ -40,8 +44,8 @@
     <site-hero 
     eyebrow="Macroargomento 06" 
     topic-num="06 / 08" 
-    title="Strumenti di Sviluppo, DevOps e CI/CD" 
-    sub="Automazione, Build Tools, Versioning e Continuous Integration.">
+    title="Strumenti di Sviluppo e DevOps" 
+    sub="Automazione, Build Tools, Versioning e Continuous Integration: panoramica concettuale.">
   </site-hero>
 
   <hr class="divider">
@@ -55,17 +59,125 @@
       <span>06 · Strumenti & DevOps</span>
     </div>
 
-<div class="content-section">
-  <h2 class="section-title">Concetti chiave</h2>
-  <div class="checklist-box">
-    <div class="checklist-title">Appunti</div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Build Tools:</strong> Strumenti per la compilazione e gestione dipendenze come Make, Ant, **Maven** (uso del `pom.xml`, ciclo di vita e repository) e Gradle.</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Source Code Management (SCM):</strong> Evoluzione del controllo di versione dai modelli centralizzati (SVN) a quelli distribuiti (Git: commit, push, pull, branch, merge).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Automazione e Qualità:</strong> Pratiche di **Continuous Integration (CI)** e Continuous Deployment (CD), analisi statica del codice (es. SonarQube) e test automatici.</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Virtualizzazione e Container:</strong> Soluzione dei problemi di ambiente di test/produzione tramite i container (es. Docker).</div></div>
-  </div>
-</div>
+    <div class="index-grid" data-prefix="06" data-no-sidebar="true">
+      <ul>
+        <li data-target="build">Build Tools (Maven, Gradle)</li>
+        <li data-target="scm">Source Code Management (Git)</li>
+        <li data-target="cicd">Automazione e Qualità (CI/CD)</li>
+        <li data-target="docker">Virtualizzazione e Container (Docker)</li>
+      </ul>
+    </div>
 
+    <!-- 1. BUILD TOOLS -->
+    <div class="section-block" id="build">
+      <h2><span class="dot"></span> Build Tools (Strumenti di Costruzione)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Quando un progetto software cresce, compilare manualmente centinaia di file sorgenti, scaricare le librerie esterne e creare i pacchetti eseguibili diventa impossibile. I <strong>Build Tools</strong> automatizzano tutto questo processo.
+      </p>
+      
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Maven</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Storico tool per l'ecosistema Java basato sul paradigma "Convention over Configuration".</p>
+          <ul style="margin:0;">
+            <li><strong>pom.xml:</strong> File centrale (Project Object Model) che descrive le dipendenze da scaricare in automatico e i plugin da eseguire.</li>
+            <li><strong>Repository:</strong> Maven scarica le librerie richieste da server centralizzati (Maven Central) in una cache locale sul computer dello sviluppatore.</li>
+            <li><strong>Lifecycle:</strong> Offre fasi standard (es. <code>compile</code>, <code>test</code>, <code>package</code>, <code>install</code>) eseguibili in sequenza logica.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Gradle</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Strumento più moderno e flessibile rispetto a Maven. Anziché usare lunghi file XML, utilizza script dichiarativi basati su Groovy o Kotlin. È il build tool ufficiale per lo sviluppo Android ed è noto per la sua velocità grazie ai meccanismi avanzati di caching incrementale.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SCM (Git) -->
+    <div class="section-block" id="scm">
+      <h2><span class="dot"></span> Source Code Management (SCM)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Il controllo di versione (o versioning) è essenziale per permettere a team di programmatori di collaborare sullo stesso codice senza sovrascrivere il lavoro altrui e potendo recuperare versioni precedenti in caso di errori.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Centralizzato vs Distribuito</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Centralizzato (es. SVN):</strong> C'è un solo server che possiede tutto lo storico del progetto. Per visualizzare le vecchie versioni o committare è necessaria una connessione di rete continua col server.</li>
+            <li><strong>Distribuito (es. Git):</strong> Ogni sviluppatore ha una <strong>copia completa</strong> (clone) dell'intero repository sul proprio PC. Le operazioni avvengono in locale in modo ultraveloce, e la sincronizzazione con gli altri (push/pull) avviene solo quando necessario.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Concetti base di Git</div>
+        <div class="content">
+          <p style="margin-top:0; margin-bottom:0.5rem; color:var(--text-secondary);">Flusso standard di lavoro per chi usa Git:</p>
+          <ul style="margin:0;">
+            <li><span class="keyword">Commit:</span> Registra un'istantanea (snapshot) delle modifiche effettuate nella history locale.</li>
+            <li><span class="keyword">Branch:</span> Una ramificazione parallela. Permette di sviluppare una nuova funzionalità (feature branch) senza rompere il codice del ramo principale (main/master).</li>
+            <li><span class="keyword">Merge:</span> L'operazione che unisce le modifiche di un branch secondario all'interno del branch principale, risolvendo eventuali "conflitti".</li>
+            <li><span class="keyword">Push & Pull:</span> Rispettivamente, inviare i propri commit locali al server remoto (es. GitHub) o scaricare quelli altrui.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CI/CD -->
+    <div class="section-block" id="cicd">
+      <h2><span class="dot"></span> Automazione e Qualità (CI/CD)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        La pratica DevOps mira a ridurre la barriera tra chi scrive il codice (Dev) e chi gestisce i server e le operazioni (Ops), automatizzando l'intero ciclo di rilascio.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Continuous Integration (CI)</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Ogni volta che uno sviluppatore esegue un <code>push</code> del codice, un server automatico (es. Jenkins o GitHub Actions) compila il codice e lancia tutti i test per assicurarsi che non si sia rotto nulla. Questo rileva gli errori immediatamente.</p>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Analisi Statica e SonarQube</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Durante la pipeline automatica, strumenti come SonarQube analizzano il testo sorgente <em>prima</em> che venga eseguito per individuare <strong>Code Smells</strong> (cattivo design, alto accoppiamento), vulnerabilità di sicurezza e calcolare la percentuale di codice coperta dai test automatici (Code Coverage).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. DOCKER -->
+    <div class="section-block" id="docker">
+      <h2><span class="dot"></span> Virtualizzazione e Container (Docker)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Spesso un'app funziona sul PC di chi l'ha creata ma fallisce sui server di produzione perché mancano librerie o versioni specifiche di un database. I container risolvono questo problema ("Works on my machine!").
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Cosa sono i Container</div>
+        <div class="content">
+          <p style="margin-top:0; margin-bottom:0.5rem; color:var(--text-secondary);">A differenza delle tradizionali Macchine Virtuali (VM) che emulano un intero hardware e installano un sistema operativo pesante per ogni applicazione, i Container (come Docker) condividono lo stesso nucleo del sistema ospitante, impacchettando solo il software e le librerie strettamente necessarie. Sono istantanei all'avvio e leggerissimi.</p>
+          <ul style="margin:0;">
+            <li><span class="keyword">Immagine (Image):</span> Il pacchetto immutabile che contiene il codice sorgente, il runtime e le dipendenze. È come uno stampo.</li>
+            <li><span class="keyword">Container:</span> Un'istanza in esecuzione di un'immagine.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigazione Bottom -->
+    <div class="back-btn-wrap" style="margin-top: 2rem;">
+      <a href="05-modellazione-design.html" class="btn btn-ghost">
+        <i class="bi bi-arrow-left"></i>
+        <span>05 · Modellazione & Design</span>
+      </a>
+      <a href="07-cloud-aws.html" class="btn btn-ghost">
+        <span>07 · Cloud AWS</span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
 
   </div>
 
@@ -73,15 +185,11 @@
     <p>// 7Katch.github.io · EDIDS</p>
   </footer>
 
+  <script src="../../shared/katchkit.js"></script>
   <script>
-    // Semplice toggle per la sidebar mobile
-    const toggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.so-sidebar');
-    if(toggle && sidebar) {
-      toggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-      });
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+      KatchKitCore.init();
+    });
   </script>
 </body>
 </html>

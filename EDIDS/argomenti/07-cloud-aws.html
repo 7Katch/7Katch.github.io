@@ -26,9 +26,13 @@
     <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
   </ul>
   <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
+  <ul class="sb-sections">
+    <li><button class="sb-link" data-target="cloud"><span class="sb-idx">07.01</span><span>Paradigma Cloud</span></button></li>
+    <li><button class="sb-link" data-target="aws"><span class="sb-idx">07.02</span><span>Servizi Core AWS</span></button></li>
+    <li><button class="sb-link" data-target="vpc"><span class="sb-idx">07.03</span><span>Sicurezza e Rete (VPC)</span></button></li>
+    <li><button class="sb-link" data-target="iac"><span class="sb-idx">07.04</span><span>Infrastructure as Code</span></button></li>
+  </ul>
 </aside>
-
 
   <!-- ═══════ NAV ═══════ -->
   <site-navbar 
@@ -41,7 +45,7 @@
     eyebrow="Macroargomento 07" 
     topic-num="07 / 08" 
     title="Sistemi Cloud (AWS)" 
-    sub="Paradigma Cloud, servizi Core AWS e Infrastructure come Codice.">
+    sub="Paradigma Cloud, servizi Core AWS, Sicurezza di Rete e Infrastructure as Code.">
   </site-hero>
 
   <hr class="divider">
@@ -55,17 +59,124 @@
       <span>07 · Cloud AWS</span>
     </div>
 
-<div class="content-section">
-  <h2 class="section-title">Concetti chiave</h2>
-  <div class="checklist-box">
-    <div class="checklist-title">Appunti</div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Paradigma Cloud:</strong> Passaggio dai server on-premise ("Pets", curati singolarmente) al cloud ("Cattle", risorse usa e getta gestite in IaaS, PaaS, SaaS).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Servizi Core AWS:</strong> *   *Storage e Database:* Object Storage (S3), Block Storage (EBS), File Storage (EFS), Database relazionali (RDS/Aurora) e NoSQL (DynamoDB, DocumentDB). *   *Compute:* Macchine virtuali (EC2), Container orchestrati (EKS) e architetture Serverless (Lambda).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Sicurezza e Rete (VPC):</strong> Recinti virtuali, Subnet pubbliche/private, Security Group (Stateful), Network ACL (Stateless) e gestione degli accessi con IAM e KMS (Crittografia).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Infrastructure as Code (IaC):</strong> Gestione dichiarativa dell'infrastruttura tramite strumenti come **Terraform** e AWS CDK.</div></div>
-  </div>
-</div>
+    <div class="index-grid" data-prefix="07" data-no-sidebar="true">
+      <ul>
+        <li data-target="cloud">Paradigma Cloud (IaaS, PaaS, SaaS)</li>
+        <li data-target="aws">Servizi Core AWS</li>
+        <li data-target="vpc">Sicurezza e Rete (VPC)</li>
+        <li data-target="iac">Infrastructure as Code (IaC)</li>
+      </ul>
+    </div>
 
+    <!-- 1. PARADIGMA CLOUD -->
+    <div class="section-block" id="cloud">
+      <h2><span class="dot"></span> Il Paradigma Cloud</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Il Cloud Computing è l'erogazione di risorse informatiche (server, storage, database, rete) tramite Internet ("il cloud") con tariffazione a consumo.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">La metafora "Pets vs Cattle"</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">Nel modello on-premise tradizionale, i server erano come "animali domestici" (Pets): macchine costose, curate manualmente, con nomi propri, e se si ammalavano venivano riparate. Nel cloud moderno, i server sono considerati "bestiame" (Cattle): risorse numerate, usa-e-getta, che vengono distrutte e ricreate automaticamente quando sono difettose o quando il carico aumenta (scalabilità orizzontale).</p>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Modelli di Servizio</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">IaaS (Infrastructure as a Service):</span> Noleggi l'hardware base (server virtuali, reti, storage). Massima flessibilità ma massima responsabilità di gestione (es. aggiornare il sistema operativo). Esempio: AWS EC2.</li>
+            <li><span class="keyword">PaaS (Platform as a Service):</span> Fornisce un ambiente di sviluppo e deploy già pronto. Ti preoccupi solo di scrivere il codice e i dati; il provider gestisce l'hardware e il sistema operativo. Esempio: Heroku, AWS Elastic Beanstalk.</li>
+            <li><span class="keyword">SaaS (Software as a Service):</span> Applicazioni web finite pronte all'uso, gestite interamente dal fornitore. Esempio: Google Workspace, Office 365, Dropbox.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SERVIZI CORE AWS -->
+    <div class="section-block" id="aws">
+      <h2><span class="dot"></span> Servizi Core AWS</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Amazon Web Services (AWS) offre centinaia di servizi, ma le fondamenta su cui poggiano tutte le architetture moderne si dividono in tre categorie principali: Compute, Storage e Database.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Compute (Calcolo)</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Amazon EC2:</strong> Macchine virtuali (IaaS) configurabili per CPU e RAM. Ti danno pieno controllo sul sistema operativo.</li>
+            <li><strong>Amazon EKS / ECS:</strong> Servizi specializzati per orchestrare flotte di container Docker.</li>
+            <li><strong>AWS Lambda:</strong> Paradigma <em>Serverless</em>. Non noleggi nessun server: scrivi solo una funzione di codice e AWS la esegue solo quando viene scatenato un evento. Paghi al millisecondo di esecuzione.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Storage e Database</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">S3 (Simple Storage Service):</span> Object Storage infinito ed economico. Perfetto per file, immagini e backup. I file sono accessibili tramite URL.</li>
+            <li><span class="keyword">EBS (Elastic Block Store):</span> Dischi virtuali da "attaccare" alle macchine EC2. Fungono da dischi rigidi di sistema.</li>
+            <li><span class="keyword">RDS (Relational Database Service):</span> Database relazionali gestiti (MySQL, PostgreSQL). AWS si occupa di backup, patch e alta affidabilità.</li>
+            <li><span class="keyword">DynamoDB:</span> Database NoSQL proprietario di AWS, progettato per scalare orizzontalmente all'infinito mantenendo latenze di un singolo millisecondo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. VPC -->
+    <div class="section-block" id="vpc">
+      <h2><span class="dot"></span> Sicurezza e Rete (VPC)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Nessuna infrastruttura Cloud è sicura senza un isolamento di rete adeguato.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Amazon VPC (Virtual Private Cloud)</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Una porzione logicamente isolata del cloud AWS dedicata unicamente a te. È il tuo data center virtuale.</p>
+          <ul style="margin:0;">
+            <li><strong>Subnet Pubbliche:</strong> Porzioni di rete che hanno una via di fuga verso Internet (tramite un Internet Gateway). Vi si mettono, ad esempio, i server Web (Frontend).</li>
+            <li><strong>Subnet Private:</strong> Porzioni di rete isolate dal mondo esterno. I server qui dentro non hanno IP pubblico. Vi si mettono Database e server Backend sensibili, accessibili solo dalle subnet pubbliche interne.</li>
+            <li><strong>Security Groups:</strong> Firewall virtuali applicati direttamente al server (es. "Permetti traffico solo sulla porta 80 e 443"). Sono <em>Stateful</em>.</li>
+            <li><strong>Network ACL:</strong> Regole di firewall applicate all'intera subnet. Sono <em>Stateless</em>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. IaC -->
+    <div class="section-block" id="iac">
+      <h2><span class="dot"></span> Infrastructure as Code (IaC)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Nel cloud, configurare server cliccando sui bottoni del pannello web (AWS Console) porta inevitabilmente a errori umani e impedisce di replicare l'infrastruttura rapidamente.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Terraform & AWS CDK</div>
+        <div class="content">
+          <p style="margin-top:0; margin-bottom:0.5rem; color:var(--text-secondary);">L'IaC è la pratica di gestire le risorse informatiche attraverso file di testo <strong>dichiarativi</strong> leggibili dall'uomo.</p>
+          <ul style="margin:0;">
+            <li>Invece di creare un database a mano, si scrive nel codice: <em>"Voglio un database PostgreSQL versione 13 con 20GB di spazio"</em>.</li>
+            <li>Strumenti come <strong>Terraform</strong> leggono questo codice e chiamano automaticamente le API di AWS per costruire esattamente l'architettura richiesta in pochi secondi.</li>
+            <li>Essendo puro testo, l'infrastruttura entra nel controllo di versione (Git), permettendo di tracciare ogni modifica strutturale (chi ha aperto quella porta firewall e quando?) e di distruggere/ricreare interi ambienti di test (Staging/Production) con un solo comando.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigazione Bottom -->
+    <div class="back-btn-wrap" style="margin-top: 2rem;">
+      <a href="06-strumenti-devops.html" class="btn btn-ghost">
+        <i class="bi bi-arrow-left"></i>
+        <span>06 · Strumenti & DevOps</span>
+      </a>
+      <a href="08-evoluzione-riuso.html" class="btn btn-ghost">
+        <span>08 · Evoluzione & Riuso</span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
 
   </div>
 
@@ -73,15 +184,11 @@
     <p>// 7Katch.github.io · EDIDS</p>
   </footer>
 
+  <script src="../../shared/katchkit.js"></script>
   <script>
-    // Semplice toggle per la sidebar mobile
-    const toggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.so-sidebar');
-    if(toggle && sidebar) {
-      toggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-      });
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+      KatchKitCore.init();
+    });
   </script>
 </body>
 </html>

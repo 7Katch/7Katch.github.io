@@ -26,9 +26,12 @@
     </li>
   </ul>
   <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
+  <ul class="sb-sections">
+    <li><button class="sb-link" data-target="change"><span class="sb-idx">08.01</span><span>Gestione e Refactoring</span></button></li>
+    <li><button class="sb-link" data-target="reuse"><span class="sb-idx">08.02</span><span>Software Reuse</span></button></li>
+    <li><button class="sb-link" data-target="sbom"><span class="sb-idx">08.03</span><span>Supply Chain Security</span></button></li>
+  </ul>
 </aside>
-
 
   <!-- ═══════ NAV ═══════ -->
   <site-navbar 
@@ -41,7 +44,7 @@
     eyebrow="Macroargomento 08" 
     topic-num="08 / 08" 
     title="Evoluzione, Manutenzione e Riuso" 
-    sub="Gestione del cambiamento, Refactoring, e Sicurezza della Supply Chain.">
+    sub="Sistemi Legacy, Refactoring, componenti Open Source e Sicurezza della Supply Chain.">
   </site-hero>
 
   <hr class="divider">
@@ -55,16 +58,87 @@
       <span>08 · Evoluzione & Riuso</span>
     </div>
 
-<div class="content-section">
-  <h2 class="section-title">Concetti chiave</h2>
-  <div class="checklist-box">
-    <div class="checklist-title">Appunti</div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Gestione del Cambiamento:</strong> Affrontare l'evoluzione del software, i sistemi "Legacy" (obsoleti) e i "Bad smells" nel codice (es. codice duplicato) tramite reingegnerizzazione e refactoring.</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Software Reuse (Riuso):</strong> Sviluppo basato sul riuso di componenti, librerie Open Source e pattern, supportato dall'intelligenza artificiale per l'adattamento (Glue Code).</div></div>
-    <div class="check-item"><div class="check-box done">✓</div> <div><strong>Sicurezza della Supply Chain:</strong> Importanza della **SBOM** (Software Bill of Materials) per tracciare e gestire le vulnerabilità dei componenti di terze parti inclusi nel software.</div></div>
-  </div>
-</div>
+    <div class="index-grid" data-prefix="08" data-no-sidebar="true">
+      <ul>
+        <li data-target="change">Gestione del Cambiamento (Refactoring)</li>
+        <li data-target="reuse">Software Reuse (Riuso)</li>
+        <li data-target="sbom">Sicurezza della Supply Chain (SBOM)</li>
+      </ul>
+    </div>
 
+    <!-- 1. GESTIONE DEL CAMBIAMENTO -->
+    <div class="section-block" id="change">
+      <h2><span class="dot"></span> Gestione del Cambiamento e Refactoring</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        La manutenzione costituisce la fase più lunga e costosa dell'intero ciclo di vita del software. Più un software viene modificato nel tempo, più la sua architettura interna tende a degradarsi.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Sistemi Legacy e Code Smells</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Sistemi Legacy:</strong> Sistemi "ereditati", obsoleti ma ancora in uso perché critici per l'azienda (spesso scritti in linguaggi vecchi come il COBOL o senza documentazione). Riscriverli da zero comporta rischi altissimi di blocco del business.</li>
+            <li><strong>Code Smells (Puzze del Codice):</strong> Segnali d'allarme nel codice sorgente che indicano un problema di progettazione strutturale profondo. Esempi classici: <em>Codice duplicato</em> (se c'è un bug, devi correggerlo in 10 posti diversi), <em>Classi e Metodi troppo grandi</em> (fanno troppe cose, violando l'Information Expert e la Coesione).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Refactoring vs Reingegnerizzazione</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">Refactoring:</span> È il processo di pulizia e miglioramento della struttura interna del codice <strong>senza alterarne il comportamento esterno</strong> (il software continua a fare esattamente ciò che faceva prima, ma il codice è più leggibile e manutenibile). È un'attività continua, supportata dai test automatici.</li>
+            <li><span class="keyword">Reingegnerizzazione:</span> A differenza del refactoring, è una riscrittura e ri-progettazione profonda del sistema, spesso necessaria per migrare un Sistema Legacy verso architetture moderne (es. dal Monolite ai Microservizi in Cloud).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SOFTWARE REUSE -->
+    <div class="section-block" id="reuse">
+      <h2><span class="dot"></span> Software Reuse (Riuso del Software)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Reinventare la ruota scrivendo ogni componente da zero è economicamente insostenibile e introduce nuovi bug. L'ingegneria del software moderna si basa sull'assemblaggio intelligente di pezzi già pronti.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Open Source e Glue Code</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Componenti COTS (Commercial Off-The-Shelf) e Open Source:</strong> Pezzi di software pronti all'uso (librerie grafiche, motori fisici, database). Oggi oltre l'80% del codice di una nuova app è in realtà codice scritto da altri e scaricato gratuitamente (tramite i Build Tools come Maven).</li>
+            <li><strong>Glue Code (Codice Colla):</strong> Quando si prendono componenti scritti da aziende o team diversi, questi non sono stati progettati per "parlarsi" nativamente. Il programmatore moderno passa molto tempo a scrivere "codice colla" (spesso implementando il Design Pattern <strong>Adapter</strong>) per adattare l'interfaccia di un componente a ciò che il proprio sistema si aspetta.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. SUPPLY CHAIN SECURITY -->
+    <div class="section-block" id="sbom">
+      <h2><span class="dot"></span> Sicurezza della Supply Chain</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Se il tuo software è composto per l'80% da librerie open source, sei responsabile della sicurezza di codice che non hai mai letto.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Il problema delle Dipendenze e la SBOM</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Un attacco famoso (come quello a Log4j) ha dimostrato che se una minuscola libreria gratuita usata per stampare i log viene hackerata, cadono i server di mezzo mondo.</p>
+          <ul style="margin:0;">
+            <li><strong>Software Bill of Materials (SBOM):</strong> È letteralmente la "Distinta Base" o la "Lista degli Ingredienti" del software. È un documento formale e leggibile dalle macchine che elenca esattamente ogni singola libreria (e versione) inclusa nel programma.</li>
+            <li><strong>Perché è fondamentale:</strong> Quando viene scoperta una nuova vulnerabilità globale (Zero-day) in una libreria, un'azienda deve sapere immediatamente se la sta usando nei suoi 500 progetti. Leggendo la SBOM, può capirlo in 1 secondo e aggiornarla, senza dover rileggere milioni di righe di codice.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigazione Bottom -->
+    <div class="back-btn-wrap" style="margin-top: 2rem;">
+      <a href="07-cloud-aws.html" class="btn btn-ghost">
+        <i class="bi bi-arrow-left"></i>
+        <span>07 · Cloud AWS</span>
+      </a>
+      <!-- Essendo l'ultima lezione, non c'è il bottone avanti -->
+    </div>
 
   </div>
 
@@ -72,15 +146,11 @@
     <p>// 7Katch.github.io · EDIDS</p>
   </footer>
 
+  <script src="../../shared/katchkit.js"></script>
   <script>
-    // Semplice toggle per la sidebar mobile
-    const toggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.so-sidebar');
-    if(toggle && sidebar) {
-      toggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-      });
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+      KatchKitCore.init();
+    });
   </script>
 </body>
 </html>
