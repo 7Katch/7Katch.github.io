@@ -59,109 +59,191 @@
       <span>06 · Strumenti & DevOps</span>
     </div>
 
-    <div class="index-grid" data-prefix="06" data-no-sidebar="true">
+    <div class="index-grid" data-prefix="06">
       <ul>
-        <li data-target="build">Build Tools (Maven, Gradle)</li>
-        <li data-target="scm">Source Code Management (Git)</li>
-        <li data-target="cicd">Automazione e Qualità (CI/CD)</li>
-        <li data-target="docker">Virtualizzazione e Container (Docker)</li>
+        <li data-target="scm">Teoria SCM (Git vs SVN)
+          <ul>
+            <li data-target="scm-arch">Centralizzato vs Distribuito</li>
+            <li data-target="scm-snap">Snapshot vs Delta</li>
+            <li data-target="scm-conflict">Gestione Conflitti</li>
+          </ul>
+        </li>
+        <li data-target="branching">Strategie di Branching
+          <ul>
+            <li data-target="branch-gitflow">Gitflow</li>
+            <li data-target="branch-trunk">Trunk-Based</li>
+          </ul>
+        </li>
+        <li data-target="maven">Maven Deep Dive
+          <ul>
+            <li data-target="mvn-lifecycle">Lifecycle</li>
+            <li data-target="mvn-deps">Dipendenze Transitive</li>
+          </ul>
+        </li>
+        <li data-target="sec">Sicurezza della Supply Chain
+          <ul>
+            <li data-target="sec-sbom">SBOM</li>
+            <li data-target="sec-log4shell">Caso Log4Shell</li>
+          </ul>
+        </li>
+        <li data-target="ai">AI in DevOps
+          <ul>
+            <li data-target="ai-turingbots">DevOps TuringBots</li>
+          </ul>
+        </li>
       </ul>
     </div>
 
-    <!-- 1. BUILD TOOLS -->
-    <div class="section-block" id="build">
-      <h2><span class="dot"></span> Build Tools (Strumenti di Costruzione)</h2>
+    <!-- 1. SCM -->
+    <div class="section-block" id="scm">
+      <h2><span class="dot"></span> 1. Teoria SCM (Source Control Management)</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Quando un progetto software cresce, compilare manualmente centinaia di file sorgenti, scaricare le librerie esterne e creare i pacchetti eseguibili diventa impossibile. I <strong>Build Tools</strong> automatizzano tutto questo processo.
+        Il controllo di versione è la spina dorsale dello sviluppo collaborativo. Gestire il codice in team richiede sistemi robusti per prevenire perdite di dati e risolvere sovrapposizioni.
       </p>
       
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Maven</div>
-        <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Storico tool per l'ecosistema Java basato sul paradigma "Convention over Configuration".</p>
-          <ul style="margin:0;">
-            <li><strong>pom.xml:</strong> File centrale (Project Object Model) che descrive le dipendenze da scaricare in automatico e i plugin da eseguire.</li>
-            <li><strong>Repository:</strong> Maven scarica le librerie richieste da server centralizzati (Maven Central) in una cache locale sul computer dello sviluppatore.</li>
-            <li><strong>Lifecycle:</strong> Offre fasi standard (es. <code>compile</code>, <code>test</code>, <code>package</code>, <code>install</code>) eseguibili in sequenza logica.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Gradle</div>
-        <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">Strumento più moderno e flessibile rispetto a Maven. Anziché usare lunghi file XML, utilizza script dichiarativi basati su Groovy o Kotlin. È il build tool ufficiale per lo sviluppo Android ed è noto per la sua velocità grazie ai meccanismi avanzati di caching incrementale.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. SCM (Git) -->
-    <div class="section-block" id="scm">
-      <h2><span class="dot"></span> Source Code Management (SCM)</h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Il controllo di versione (o versioning) è essenziale per permettere a team di programmatori di collaborare sullo stesso codice senza sovrascrivere il lavoro altrui e potendo recuperare versioni precedenti in caso di errori.
-      </p>
-
-      <div class="card-def" style="margin-top: 1.5rem;">
+      <div class="card-def" style="margin-top: 1.5rem;" id="scm-arch">
         <div class="header">Centralizzato vs Distribuito</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><strong>Centralizzato (es. SVN):</strong> C'è un solo server che possiede tutto lo storico del progetto. Per visualizzare le vecchie versioni o committare è necessaria una connessione di rete continua col server.</li>
-            <li><strong>Distribuito (es. Git):</strong> Ogni sviluppatore ha una <strong>copia completa</strong> (clone) dell'intero repository sul proprio PC. Le operazioni avvengono in locale in modo ultraveloce, e la sincronizzazione con gli altri (push/pull) avviene solo quando necessario.</li>
+            <li><strong>Centralizzato (SVN):</strong> Un unico server centrale contiene la history del repository. Ogni sviluppatore scarica solo l'ultima versione dei file. Operazioni come <code>commit</code> o l'analisi della history richiedono una connessione costante al server. Se il server cade, nessuno può lavorare.</li>
+            <li><strong>Distribuito (Git):</strong> Ogni client possiede una <strong>copia locale completa</strong> (clone) dell'intero repository, con tutta la history. Le operazioni sono istantanee e offline. La sincronizzazione (push/pull) avviene solo quando necessario verso un server condiviso (es. GitHub o GitLab).</li>
           </ul>
         </div>
       </div>
 
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Concetti base di Git</div>
+      <div class="card-def" style="margin-top: 1.5rem;" id="scm-snap">
+        <div class="header">Snapshot vs Delta</div>
         <div class="content">
-          <p style="margin-top:0; margin-bottom:0.5rem; color:var(--text-secondary);">Flusso standard di lavoro per chi usa Git:</p>
           <ul style="margin:0;">
-            <li><span class="keyword">Commit:</span> Registra un'istantanea (snapshot) delle modifiche effettuate nella history locale.</li>
-            <li><span class="keyword">Branch:</span> Una ramificazione parallela. Permette di sviluppare una nuova funzionalità (feature branch) senza rompere il codice del ramo principale (main/master).</li>
-            <li><span class="keyword">Merge:</span> L'operazione che unisce le modifiche di un branch secondario all'interno del branch principale, risolvendo eventuali "conflitti".</li>
-            <li><span class="keyword">Push & Pull:</span> Rispettivamente, inviare i propri commit locali al server remoto (es. GitHub) o scaricare quelli altrui.</li>
+            <li><strong>Sistemi Delta-based (SVN):</strong> Memorizzano solo le differenze (delta) tra la versione base di un file e le sue modifiche successive. Per ricostruire la versione attuale, il sistema deve sommare tutti i delta.</li>
+            <li><strong>Sistemi Snapshot (Git):</strong> A ogni commit, Git scatta una "fotografia" (snapshot) di come appare l'intero file system in quel momento. Se un file non è cambiato, Git memorizza un semplice collegamento alla versione precedente. Questo rende Git incredibilmente veloce nel checkout e nel branching.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="scm-conflict">
+        <div class="header">Gestione Conflitti: Copy-Modify-Merge</div>
+        <div class="content">
+          <p style="margin-top:0; color:var(--text-secondary);">
+            I vecchi sistemi usavano il modello <em>Lock-Modify-Unlock</em> (un file poteva essere modificato da una sola persona alla volta bloccandolo globalmente). Git usa il <strong>Copy-Modify-Merge</strong>: tutti possono modificare copie locali in parallelo senza bloccare nessuno. Quando avviene un push, se due sviluppatori hanno toccato la stessa riga, Git segnala un <strong>conflitto</strong> e delega allo sviluppatore il compito di risolvere manualmente la sovrapposizione prima di completare la merge definitiva.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. BRANCHING -->
+    <div class="section-block" id="branching">
+      <h2><span class="dot"></span> 2. Strategie di Branching (Workflow)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Come organizzare il lavoro in team quando decine di sviluppatori contribuiscono in contemporanea allo stesso repository.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="branch-gitflow">
+        <div class="header">Gitflow</div>
+        <div class="content">
+          <p style="margin-top:0; color:var(--text-secondary);">Un workflow molto strutturato, ideale per prodotti enterprise con cicli di rilascio lenti e pianificati.</p>
+          <ul style="margin:0;">
+            <li>Usa <strong>rami a lunga vita</strong>: <code>main</code> (solo codice in produzione stabile) e <code>develop</code> (integrazione continua delle nuove feature).</li>
+            <li>Le nuove funzionalità nascono isolatamente nei <code>feature branches</code> e poi confluiscono in <code>develop</code>.</li>
+            <li>Prima di un rilascio, si crea un <code>release branch</code> per il collaudo e il bugfixing dell'ultimo minuto.</li>
+            <li>Per problemi critici scoperti in produzione, si aprono rami <code>hotfix</code> direttamente dal <code>main</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="branch-trunk">
+        <div class="header">Trunk-Based Development</div>
+        <div class="content">
+          <p style="margin-top:0; color:var(--text-secondary);">Il workflow moderno preferito dalle metodologie agili DevOps e dal Cloud Native.</p>
+          <ul style="margin:0;">
+            <li>Tutti gli sviluppatori committano e fondono codice frequentemente (anche più volte al giorno) direttamente su un unico ramo principale (chiamato <code>main</code> o <code>trunk</code>), o su <em>feature branch</em> di brevissima vita (poche ore).</li>
+            <li>Elimina i blocchi organizzativi e il "Merge Hell" (la difficoltà immane di unire rami vecchi di settimane).</li>
+            <li><strong>Prerequisito vitale:</strong> Lavorare tutti su <code>main</code> richiede una suite di <strong>test automatizzati rigorosi</strong> (CI/CD) per garantire che il codice sia sempre "deployable". Spesso si usano i <em>Feature Toggles</em> per nascondere agli utenti reali funzionalità ancora non finite.</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- 3. CI/CD -->
-    <div class="section-block" id="cicd">
-      <h2><span class="dot"></span> Automazione e Qualità (CI/CD)</h2>
+    <!-- 3. MAVEN -->
+    <div class="section-block" id="maven">
+      <h2><span class="dot"></span> 3. Maven Deep Dive</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        La pratica DevOps mira a ridurre la barriera tra chi scrive il codice (Dev) e chi gestisce i server e le operazioni (Ops), automatizzando l'intero ciclo di rilascio.
+        Maven non è solo un semplice scaricatore di librerie, ma un orchestratore potente dell'intero ciclo di vita (build lifecycle) del software Java.
       </p>
 
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Continuous Integration (CI)</div>
+      <div class="card-def" style="margin-top: 1.5rem;" id="mvn-lifecycle">
+        <div class="header">Build Lifecycle (Fasi di Build)</div>
         <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">Ogni volta che uno sviluppatore esegue un <code>push</code> del codice, un server automatico (es. Jenkins o GitHub Actions) compila il codice e lancia tutti i test per assicurarsi che non si sia rotto nulla. Questo rileva gli errori immediatamente.</p>
+          <p style="margin-top:0; color:var(--text-secondary);">Maven definisce una sequenza ordinata e logica di fasi. Chiamando l'esecuzione di una singola fase, Maven eseguirà automaticamente in sequenza tutte le fasi precedenti ad essa nell'albero.</p>
+          <ul style="margin:0;">
+            <li><code>validate</code>: Controlla che il progetto sia corretto (sintassi <code>pom.xml</code>) e tutte le info siano disponibili.</li>
+            <li><code>compile</code>: Prende il codice sorgente (<code>.java</code>) e lo compila in bytecode (<code>.class</code>).</li>
+            <li><code>test</code>: Esegue i test unitari usando framework standard (come JUnit) bloccando la build se un test fallisce.</li>
+            <li><code>package</code>: Impacchetta il codice appena compilato e collaudato (es. in un archivio distributivo <code>.jar</code> o <code>.war</code>).</li>
+            <li><code>verify</code>: Lancia test di integrazione pesanti sul pacchetto per verificarne ulteriormente la validità nel contesto reale.</li>
+            <li><code>install</code>: Copia il pacchetto nel repository locale della macchina (nella cartella <code>.m2</code>) per renderlo utilizzabile come dipendenza da altri progetti Maven locali dello stesso sviluppatore.</li>
+            <li><code>deploy</code>: Carica in modo sicuro l'artefatto compilato in un repository remoto o aziendale (es. Nexus, Artifactory) per la condivisione finale con l'intero team.</li>
+          </ul>
         </div>
       </div>
 
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Analisi Statica e SonarQube</div>
+      <div class="card-def" style="margin-top: 1.5rem;" id="mvn-deps">
+        <div class="header">Gestione delle Dipendenze Transitive</div>
         <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">Durante la pipeline automatica, strumenti come SonarQube analizzano il testo sorgente <em>prima</em> che venga eseguito per individuare <strong>Code Smells</strong> (cattivo design, alto accoppiamento), vulnerabilità di sicurezza e calcolare la percentuale di codice coperta dai test automatici (Code Coverage).</p>
+          <p style="margin-top:0; margin-bottom: 0.5rem; color:var(--text-secondary);">
+            Il meccanismo "transitivo" è il cuore del gestore di dipendenze. Se il tuo <code>pom.xml</code> richiede la libreria <strong>A</strong>, e chi ha sviluppato la libreria <strong>A</strong> ha indicato nel suo <code>pom</code> che ha bisogno della libreria <strong>B</strong>, Maven scaricherà automaticamente anche <strong>B</strong> nel tuo progetto.
+          </p>
+          <p style="margin:0; color:var(--text-secondary);">
+            <strong>Gestione Conflitti di versione:</strong> 
+            Spesso il modulo X scarica la libreria C in versione 1.0, mentre il modulo Y scarica la stessa libreria C in versione 2.0. Quale viene tenuta nel pacchetto finale? Maven applica algoritmi di mediazione, generalmente vince la "nearest definition": sceglie la dipendenza che appare più "vicina" alla radice nell'albero gerarchico delle dipendenze.
+          </p>
         </div>
       </div>
     </div>
 
-    <!-- 4. DOCKER -->
-    <div class="section-block" id="docker">
-      <h2><span class="dot"></span> Virtualizzazione e Container (Docker)</h2>
+    <!-- 4. SUPPLY CHAIN -->
+    <div class="section-block" id="sec">
+      <h2><span class="dot"></span> 4. Sicurezza della Supply Chain</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Spesso un'app funziona sul PC di chi l'ha creata ma fallisce sui server di produzione perché mancano librerie o versioni specifiche di un database. I container risolvono questo problema ("Works on my machine!").
+        Oggi nessuna azienda costruisce un software interamente da zero. I progetti moderni sono assemblaggi di decine di librerie scritte da terzi open-source. Questo apre a rischi catastrofici se uno di questi anelli della catena di fornitura (Supply Chain) viene compromesso.
       </p>
 
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Cosa sono i Container</div>
+      <div class="card-warning" style="margin-top: 1.5rem;" id="sec-log4shell">
+        <div class="header">Il caso Log4Shell (Vulnerabilità Sistemica)</div>
         <div class="content">
-          <p style="margin-top:0; margin-bottom:0.5rem; color:var(--text-secondary);">A differenza delle tradizionali Macchine Virtuali (VM) che emulano un intero hardware e installano un sistema operativo pesante per ogni applicazione, i Container (come Docker) condividono lo stesso nucleo del sistema ospitante, impacchettando solo il software e le librerie strettamente necessarie. Sono istantanei all'avvio e leggerissimi.</p>
+          <p style="margin:0; color:var(--text-secondary);">
+            A fine 2021, è stata scoperta una falla critica estrema (grado massimo, CVSS 10.0) in <code>Log4j</code>, la minuscola libreria di logging per Java usata dal 99% dei server mondiali. Un attaccante remoto poteva prendere il controllo totale del server inviandogli semplicemente una stringa di testo specifica. Siccome <code>Log4j</code> era inclusa come <em>dipendenza transitiva</em> ovunque, l'attacco ha colpito infrastrutture di Amazon, Apple, server di Minecraft, sistemi sanitari e banche centrali, dimostrando come la compromissione di un singolo nodo quasi invisibile dell'albero open-source possa mettere in ginocchio la rete globale.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="sec-sbom">
+        <div class="header">SBOM (Software Bill of Materials)</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            Come ci si difende da rischi come Log4Shell? La soluzione metodologica promossa dallo standard di settore è l'adozione dell'<strong>SBOM</strong>. Come nei prodotti alimentari, è letteralmente la "lista degli ingredienti" del tuo software compilato. Consiste in un file o un database generato in automatico che elenca ricorsivamente tutti i componenti di terze parti inclusi, le loro versioni esatte e le rispettive licenze d'uso. Nel momento in cui nel mondo esplode una nuova falla "zero-day", un team di sicurezza può scansionare in 3 secondi la propria SBOM per capire inequivocabilmente se e in quale file del proprio vasto ecosistema risiede la libreria vulnerabile, senza dover scaricare, spacchettare o ricompilare il codice sorgente.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. AI -->
+    <div class="section-block" id="ai">
+      <h2><span class="dot"></span> 5. AI in DevOps</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        L'Intelligenza Artificiale Generativa non è più riservata solo ad assistere lo sviluppatore nell'IDE per generare righe di codice, ma sta impattando prepotentemente tutto il ciclo di vita DevOps e IT Operations.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;" id="ai-turingbots">
+        <div class="header">DevOps TuringBots</div>
+        <div class="content">
+          <p style="margin-top:0; margin-bottom: 0.5rem; color:var(--text-secondary);">
+            Con il termine <em>TuringBots</em> si identificano gli assistenti autonomi (o semi-autonomi) basati su LLM che lavorano al fianco degli ingegneri dell'infrastruttura, riducendo esponenzialmente il <em>Toil</em> manuale per i seguenti scopi:
+          </p>
           <ul style="margin:0;">
-            <li><span class="keyword">Immagine (Image):</span> Il pacchetto immutabile che contiene il codice sorgente, il runtime e le dipendenze. È come uno stampo.</li>
-            <li><span class="keyword">Container:</span> Un'istanza in esecuzione di un'immagine.</li>
+            <li><strong>Generazione Infrastruttura As Code:</strong> Creare da zero complessi file <code>Dockerfile</code> o moduli di <em>Terraform</em> descrivendo la topologia di rete desiderata in puro linguaggio naturale conversazionale.</li>
+            <li><strong>Fix delle Pipeline CI/CD:</strong> Di fronte al fallimento di una pipeline di build causato da centinaia di log criptici, i TuringBots diagnosticano all'istante l'errore analizzando l'output della build, individuando quale step o dipendenza ha bloccato il rilascio, proponendo o applicando il fix per il GitHub Actions yaml.</li>
+            <li><strong>Semantic Commits:</strong> Rilevare in automatico le righe di codice effettivamente variate in uno snapshot locale (il "diff") e autogenerare istantaneamente il testo del <code>git commit -m</code> aderendo allo standard <em>Conventional Commits</em> aziendale.</li>
           </ul>
         </div>
       </div>
