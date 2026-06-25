@@ -20,13 +20,18 @@ const KatchKitCore = {
     const listItems = document.querySelectorAll('.sb-sections li[data-sid]');
     const IDS = Array.from(listItems).map(li => li.getAttribute('data-sid'));
 
-    if (IDS.length === 0) return;
-
     /* smooth scroll + flash */
     function goTo(id) {
       const el = document.getElementById(id);
       if (!el) return;
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      try {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (e) {
+        // Fallback per browser vecchi che non supportano l'oggetto options
+        el.scrollIntoView();
+      }
+      
       el.classList.remove('sb-flash');
       void el.offsetWidth; // force reflow
       el.classList.add('sb-flash');
@@ -219,15 +224,16 @@ const KatchKitCore = {
     indexGrid.innerHTML = '';
     if (sidebarList && !noSidebar) sidebarList.innerHTML = '';
 
-    listItems.forEach((li, index) => {
+    try {
+      listItems.forEach((li, index) => {
       const num = String(index + 1).padStart(2, '0');
       const targetId = li.getAttribute('data-target') || `section-${index + 1}`;
       
       // Estrai testo ignorando eventuali ul annidati
       let titleTesto = '';
-      for (const node of li.childNodes) {
-        if (node.nodeType === Node.TEXT_NODE) titleTesto += node.textContent;
-      }
+      Array.from(li.childNodes).forEach(node => {
+        if (node.nodeType === 3) titleTesto += node.textContent;
+      });
       titleTesto = titleTesto.trim();
       if (!titleTesto && li.firstElementChild && li.firstElementChild.tagName !== 'UL') {
         titleTesto = li.firstElementChild.textContent.trim();
@@ -262,7 +268,9 @@ const KatchKitCore = {
         if (nestedUl) {
           // Aggiunge la freccina al link principale
           const mainBtn = sidebarItem.querySelector('.sb-link');
-          mainBtn.innerHTML += `<i class="bi bi-chevron-down"></i>`;
+          const chevron = document.createElement('i');
+          chevron.className = 'bi bi-chevron-down';
+          mainBtn.appendChild(chevron);
 
           const subList = document.createElement('ul');
           subList.className = 'sb-sub-sections';
@@ -287,7 +295,11 @@ const KatchKitCore = {
 
         sidebarList.appendChild(sidebarItem);
       }
-    });
+      });
+    } catch (e) {
+      console.error("AutoNav Error:", e);
+      // Fallback per non rompere il resto dello script
+    }
   }
 };
 
