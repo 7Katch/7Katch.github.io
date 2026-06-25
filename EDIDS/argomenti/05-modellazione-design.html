@@ -27,18 +27,11 @@
   </ul>
   <div class="sb-label">In questa pagina</div>
   <ul class="sb-sections">
-    <li><button class="sb-link" data-target="ie"><span class="sb-idx">05.01</span><span>Information Expert</span></button></li>
-    <li><button class="sb-link" data-target="cr"><span class="sb-idx">05.02</span><span>Creator</span></button></li>
-    <li><button class="sb-link" data-target="lc"><span class="sb-idx">05.03</span><span>Low Coupling</span></button></li>
-    <li><button class="sb-link" data-target="hc"><span class="sb-idx">05.04</span><span>High Cohesion</span></button></li>
-    <li><button class="sb-link" data-target="ct"><span class="sb-idx">05.05</span><span>Controller</span></button></li>
-    <li><button class="sb-link" data-target="pl"><span class="sb-idx">05.06</span><span>Polymorphism</span></button></li>
-    <li><button class="sb-link" data-target="pf"><span class="sb-idx">05.07</span><span>Pure Fabrication</span></button></li>
-    <li><button class="sb-link" data-target="in"><span class="sb-idx">05.08</span><span>Indirection</span></button></li>
-    <li><button class="sb-link" data-target="pv"><span class="sb-idx">05.09</span><span>Protected Variations</span></button></li>
-    <li><button class="sb-link" data-target="summary"><span class="sb-idx">05.10</span><span>Tabella riassuntiva</span></button></li>
-    <li><button class="sb-link" data-target="singleton"><span class="sb-idx">05.11</span><span>Singleton</span></button></li>
-    <li><button class="sb-link" data-target="observer"><span class="sb-idx">05.12</span><span>Observer Pattern</span></button></li>
+    <li><button class="sb-link" data-target="uml"><span class="sb-idx">05.01</span><span>Grammatica UML</span></button></li>
+    <li><button class="sb-link" data-target="domain"><span class="sb-idx">05.02</span><span>Domain Model & SSD</span></button></li>
+    <li><button class="sb-link" data-target="m2c"><span class="sb-idx">05.03</span><span>Model to Code (BCE)</span></button></li>
+    <li><button class="sb-link" data-target="ie"><span class="sb-idx">05.04</span><span>Principi GRASP</span></button></li>
+    <li><button class="sb-link" data-target="gof"><span class="sb-idx">05.05</span><span>Pattern GoF</span></button></li>
   </ul>
 </aside>
 
@@ -70,36 +63,111 @@
 
     <div class="index-grid" data-prefix="05" data-no-sidebar="true">
       <ul>
-        <li data-target="intro">Introduzione alla Modellazione</li>
-        <li data-target="ie">Principi GRASP</li>
-        <li data-target="summary">Tabella Riassuntiva GRASP</li>
-        <li data-target="singleton">Pattern GoF (Creazionali e Comportamentali)</li>
+        <li data-target="uml">Grammatica UML Rigorosa</li>
+        <li data-target="domain">Domain Model e SSD</li>
+        <li data-target="m2c">Dal Modello al Codice (BCE)</li>
+        <li data-target="ie">I 9 Principi GRASP</li>
+        <li data-target="gof">Pattern GoF (Gang of Four)</li>
       </ul>
     </div>
 
-    <div class="section-block" id="intro">
-      <h2><span class="dot"></span> Introduzione alla Modellazione</h2>
-      <p>
-        La modellazione software traduce i requisiti del mondo reale in una struttura implementabile.
+    <!-- 05.01 -->
+    <div class="section-block" id="uml">
+      <h2><span class="dot"></span> Grammatica UML Rigorosa</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        L'UML è il linguaggio formale dell'architettura del software. La conoscenza esatta della sua sintassi (i 7 diagrammi principali) è un requisito ineludibile in sede di progettazione.
       </p>
       
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Unified Modeling Language (UML)</div>
+        <div class="header">1. Class Diagram (Diagramma delle Classi)</div>
         <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Linguaggio visivo standard per descrivere l'architettura. Si divide in:</p>
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Descrive la struttura statica. È vitale conoscere la semantica visiva delle relazioni:</p>
           <ul style="margin:0;">
-            <li><span class="keyword">Diagrammi Strutturali:</span> Rappresentano l'architettura statica (es. Class, Component, Deployment diagram).</li>
-            <li><span class="keyword">Diagrammi Comportamentali:</span> Rappresentano il flusso dinamico (es. Use Case, Sequence, Activity diagram).</li>
+            <li><strong>Inheritance (Ereditarietà):</strong> Freccia con punta vuota. Indica una relazione <em>"is-a"</em>.</li>
+            <li><strong>Composition (Composizione):</strong> Rombo pieno. Relazione forte <em>"part-of"</em>. Il ciclo di vita è vincolato: se il contenitore viene distrutto, anche le parti muoiono (es. una Casa e le sue Stanze).</li>
+            <li><strong>Aggregation (Aggregazione):</strong> Rombo vuoto. Relazione debole <em>"has-a"</em>. Le parti possono esistere indipendentemente (es. un Dipartimento e i suoi Professori).</li>
+            <li><strong>Dependency (Dipendenza):</strong> Freccia tratteggiata. Relazione <em>"uses"</em> temporanea (es. un metodo riceve un oggetto come parametro).</li>
           </ul>
         </div>
       </div>
 
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Dal Dominio al Codice (Model-Driven)</div>
+        <div class="header">2. Sequence Diagram (Diagramma di Sequenza)</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Rappresenta le interazioni dinamiche temporali. I messaggi si dividono in Sincroni (freccia piena, blocca il chiamante), Asincroni (freccia aperta) e di Ritorno (linea tratteggiata). I flussi logici complessi si modellano coi <strong>Combined Fragments</strong>:</p>
+          <ul style="margin:0;">
+            <li><strong>alt:</strong> Percorsi alternativi mutuamente esclusivi (il classico costrutto <em>if/else</em> o <em>switch</em>).</li>
+            <li><strong>loop:</strong> Iterazioni ripetute finché la guardia (condizione tra parentesi quadre) è vera.</li>
+            <li><strong>opt:</strong> Frammento opzionale (un blocco <em>if</em> senza l'<em>else</em>). Si esegue solo se la guardia è vera.</li>
+            <li><strong>par:</strong> Frammenti eseguiti in parallelo (gestione della concorrenza / multi-threading).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Altri Diagrammi Essenziali</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><span class="keyword">Domain Model:</span> Mappa i concetti del mondo reale (es. "Utente", "Carrello") senza dettagli tecnici.</li>
-            <li><span class="keyword">Design Class Model:</span> Aggiunge attributi tipizzati, metodi e dipendenze strutturali (Forward engineering).</li>
+            <li><strong>Use Case Diagram:</strong> Definisce le funzionalità utente. Le relazioni avanzate sono <em>&lt;&lt;include&gt;&gt;</em> (comportamento condiviso obbligatorio) ed <em>&lt;&lt;extend&gt;&gt;</em> (comportamento opzionale/aggiuntivo).</li>
+            <li><strong>Component & Deployment Diagram:</strong> Mappatura fisica HW/SW. Si distinguono i <em>Device Node</em> (macchine fisiche) dagli <em>Execution Environment Node</em> (es. JVM, Docker). Il software in esecuzione prende il nome di <em>Artifacts</em>. Le interfacce si delineano in Lollipop (servizio offerto) e Socket (servizio richiesto).</li>
+            <li><strong>Activity & State Diagram:</strong> Modellano macchine a stati o workflow, usando nodi iniziali (pallino nero), nodi finali (pallino nero cerchiato) e "composite states" per stati annidati.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05.02 -->
+    <div class="section-block" id="domain">
+      <h2><span class="dot"></span> Costruzione del Domain Model e SSD</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Prima di progettare il codice, bisogna modellare i concetti puramente logici del business.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Domain Model e Description Classes</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Domain vs Data Model:</strong> Il Domain Model non è lo schema del database. Rappresenta astrazioni del mondo reale (oggetti fisici, concetti, transazioni) estraendo i "sostantivi" (Noun phrases) dai casi d'uso. Esclude rigorosamente costrutti tecnici software (es. DatabaseConnection).</li>
+            <li><strong>Description Classes:</strong> Per evitare la perdita di informazioni di catalogo, si separa la classe fisica (es. <code>Item</code> con un numero seriale univoco) dalla sua descrizione (es. <code>ProductDescription</code>). In questo modo, se il negozio vende tutti gli "Item" fisici di un certo modello, le informazioni su quel prodotto (prezzo, specifiche) non vanno perse.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">System Sequence Diagram (SSD) e il Controller</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            L'SSD mappa le interazioni visualizzando il Sistema come una <strong>Scatola Nera</strong> (Black Box). Non mostra le chiamate interne, ma solo l'attore esterno che invia messaggi al sistema nel suo complesso. Questi messaggi (Eventi di Sistema) sono fondamentali: essi diventeranno l'elenco esatto dei metodi che il pattern architetturale <strong>Controller</strong> dovrà intercettare e gestire.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05.03 -->
+    <div class="section-block" id="m2c">
+      <h2><span class="dot"></span> Dal Modello al Codice (Transformations & BCE)</h2>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Design to Code (Model Transformations)</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Il passaggio UML -> Codice avviene tramite trasformazioni logiche formali per ridurre la ridondanza (Refactoring):</p>
+          <ul style="margin:0;">
+            <li><strong>Mappatura base:</strong> Le Associazioni UML diventano attributi di riferimento. I Messaggi del sequence diagram diventano chiamate a metodo.</li>
+            <li><strong>Pull Up Field & Constructor:</strong> Se più sottoclassi condividono un attributo o una logica di inizializzazione, vengono "tirati su" (spostati) nella superclasse comune (es. usando <code>super()</code> in Java) per massimizzare il polimorfismo.</li>
+            <li><strong>Collapsing Objects:</strong> Se un oggetto concettuale del dominio non ha comportamento ma porta solo dati (es. l'oggetto logico "CodiceFiscale"), lo si "collassa" nel design trasformandolo in un semplice attributo (es. <code>String cf</code>) della classe madre (es. <code>Persona</code>).</li>
+            <li><strong>Delaying Expensive Computations:</strong> Per caricamenti lenti (es. grosse immagini o query), la trasformazione implementa il pattern <strong>Proxy</strong> per caricare il dato solo alla prima richiesta effettiva (Lazy Loading).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Categorizzazione Logica BCE</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Per garantire un Low Coupling a livello architetturale, le classi vanno rigorosamente divise in 3 strati:</p>
+          <ul style="margin:0;">
+            <li><strong>Boundary Objects:</strong> Gestiscono le interfacce verso il mondo esterno (la UI, le API, altri sistemi).</li>
+            <li><strong>Control Objects:</strong> Ricevono gli eventi dai Boundary e coordinano le entità. Non fanno vera logica, ma agiscono da "vigili urbani".</li>
+            <li><strong>Entity Objects:</strong> Contengono la vera e propria logica di business e i dati fondamentali del dominio.</li>
           </ul>
         </div>
       </div>
@@ -988,6 +1056,35 @@
   </p>
   <div class="highlight-box">
     <i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Nel progetto del gioco: gli Observer vengono notificati quando il punteggio o lo stato del Player cambia. Questo garantisce il <strong>Low Coupling</strong> tra il core e la UI.
+  </div>
+</div>
+
+<!-- ===== ALTRI GOF ===== -->
+<div class="section-block" id="gof">
+  <h2><span class="dot"></span> Altri Pattern GoF (Gang of Four)</h2>
+  <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+    Oltre ai principi GRASP, il design model si appoggia pesantemente ai classici pattern GoF per risolvere problemi ricorrenti:
+  </p>
+
+  <div class="card-def" style="margin-top: 1.5rem;">
+    <div class="header">Pattern Creazionali</div>
+    <div class="content">
+      <ul style="margin:0;">
+        <li><strong>Factory / Abstract Factory:</strong> Delega la logica complessa di creazione degli oggetti a una classe specifica (la Factory). Utile quando la classe esatta da istanziare è decisa a runtime (es. creare un nemico diverso in base al livello di difficoltà).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card-def" style="margin-top: 1.5rem;">
+    <div class="header">Pattern Strutturali e Comportamentali</div>
+    <div class="content">
+      <ul style="margin:0;">
+        <li><strong>Delegation:</strong> Non è un pattern rigoroso GoF ma un principio fondamentale: un oggetto esprime un certo comportamento delegando la reale esecuzione a un oggetto helper interno, favorendo la Composizione sull'Ereditarietà.</li>
+        <li><strong>Adapter (Wrapper):</strong> Traduce l'interfaccia di una classe in un'altra interfaccia attesa dal client. È il tipico <em>"Glue Code"</em> usato per integrare librerie COTS esterne senza modificare il nostro codice core.</li>
+        <li><strong>Façade (Facciata):</strong> Fornisce un'interfaccia unificata e semplificata per un intero sottosistema complesso (es. una singola classe <code>VideoConverter</code> che nasconde decine di classi complesse per la gestione dei codec audio/video).</li>
+        <li><strong>Proxy:</strong> Fornisce un surrogato o un placeholder per controllare l'accesso a un altro oggetto. È il pattern chiave usato nella trasformazione di <em>"Delaying expensive computations"</em> (Lazy Loading) o per controllare i diritti di accesso prima di eseguire metodi sensibili.</li>
+      </ul>
+    </div>
   </div>
 </div>
 
