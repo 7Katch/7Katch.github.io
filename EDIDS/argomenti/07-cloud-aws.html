@@ -28,9 +28,10 @@
   <div class="sb-label">In questa pagina</div>
   <ul class="sb-sections">
     <li><button class="sb-link" data-target="cloud"><span class="sb-idx">07.01</span><span>Paradigma Cloud</span></button></li>
-    <li><button class="sb-link" data-target="aws"><span class="sb-idx">07.02</span><span>Servizi Core AWS</span></button></li>
-    <li><button class="sb-link" data-target="vpc"><span class="sb-idx">07.03</span><span>Sicurezza e Rete (VPC)</span></button></li>
-    <li><button class="sb-link" data-target="iac"><span class="sb-idx">07.04</span><span>Infrastructure as Code</span></button></li>
+    <li><button class="sb-link" data-target="aws"><span class="sb-idx">07.02</span><span>Servizi Core & Storage</span></button></li>
+    <li><button class="sb-link" data-target="db"><span class="sb-idx">07.03</span><span>Database Cloud</span></button></li>
+    <li><button class="sb-link" data-target="vpc"><span class="sb-idx">07.04</span><span>Networking & Sicurezza</span></button></li>
+    <li><button class="sb-link" data-target="iac"><span class="sb-idx">07.05</span><span>IaC & Automazione AI</span></button></li>
   </ul>
 </aside>
 
@@ -61,10 +62,11 @@
 
     <div class="index-grid" data-prefix="07" data-no-sidebar="true">
       <ul>
-        <li data-target="cloud">Paradigma Cloud (IaaS, PaaS, SaaS)</li>
-        <li data-target="aws">Servizi Core AWS</li>
-        <li data-target="vpc">Sicurezza e Rete (VPC)</li>
-        <li data-target="iac">Infrastructure as Code (IaC)</li>
+        <li data-target="cloud">Paradigma Cloud (Pets vs Cattle, Modelli)</li>
+        <li data-target="aws">Servizi Core & Storage Deep Dive</li>
+        <li data-target="db">Database Cloud (SQL vs NoSQL)</li>
+        <li data-target="vpc">Networking, Sicurezza e Crittografia</li>
+        <li data-target="iac">Infrastructure as Code & TuringBots</li>
       </ul>
     </div>
 
@@ -78,7 +80,8 @@
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">La metafora "Pets vs Cattle"</div>
         <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">Nel modello on-premise tradizionale, i server erano come "animali domestici" (Pets): macchine costose, curate manualmente, con nomi propri, e se si ammalavano venivano riparate. Nel cloud moderno, i server sono considerati "bestiame" (Cattle): risorse numerate, usa-e-getta, che vengono distrutte e ricreate automaticamente quando sono difettose o quando il carico aumenta (scalabilità orizzontale).</p>
+          <p style="margin:0; color:var(--text-secondary);">Nel modello on-premise tradizionale, i server erano come "animali domestici" (<strong>Pets</strong>): macchine costose, curate manualmente e configurate individualmente. Se un server si "ammalava", veniva pazientemente "curato" e ripristinato. Questo approccio limita la scalabilità ed è prono a disservizi.</p>
+          <p style="margin-top:0.5rem; color:var(--text-secondary);">Nel cloud moderno, le risorse informatiche sono considerate come un allevamento di "bestiame" (<strong>Cattle</strong>): risorse automatizzate, fungibili, numerate e standardizzate. Se un server mostra un problema, non viene curato, ma "abbattuto" e immediatamente rimpiazzato da un clone identico in modo automatico. Questo garantisce <em>Alta Disponibilità</em>, facilita la <em>Scalabilità Orizzontale</em> e riduce drasticamente i costi operativi.</p>
         </div>
       </div>
 
@@ -96,9 +99,9 @@
 
     <!-- 2. SERVIZI CORE AWS -->
     <div class="section-block" id="aws">
-      <h2><span class="dot"></span> Servizi Core AWS</h2>
+      <h2><span class="dot"></span> Servizi Core & Storage Deep Dive</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Amazon Web Services (AWS) offre centinaia di servizi, ma le fondamenta su cui poggiano tutte le architetture moderne si dividono in tre categorie principali: Compute, Storage e Database.
+        Amazon Web Services (AWS) offre centinaia di servizi. Le fondamenta architetturali partono sempre dai servizi di calcolo (Compute) e dall'archiviazione del dato (Storage).
       </p>
 
       <div class="card-def" style="margin-top: 1.5rem;">
@@ -113,54 +116,112 @@
       </div>
 
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Storage e Database</div>
+        <div class="header">Storage Deep Dive</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><span class="keyword">S3 (Simple Storage Service):</span> Object Storage infinito ed economico. Perfetto per file, immagini e backup. I file sono accessibili tramite URL.</li>
-            <li><span class="keyword">EBS (Elastic Block Store):</span> Dischi virtuali da "attaccare" alle macchine EC2. Fungono da dischi rigidi di sistema.</li>
-            <li><span class="keyword">RDS (Relational Database Service):</span> Database relazionali gestiti (MySQL, PostgreSQL). AWS si occupa di backup, patch e alta affidabilità.</li>
-            <li><span class="keyword">DynamoDB:</span> Database NoSQL proprietario di AWS, progettato per scalare orizzontalmente all'infinito mantenendo latenze di un singolo millisecondo.</li>
+            <li><span class="keyword">Object Storage (Amazon S3):</span> Archiviazione basata su oggetti senza gerarchia di directory (flat namespace). Ideale per file statici, backup, big data e asset web. I file sono accessibili via API HTTP/HTTPS. Offre durabilità del dato eccezionale (99.999999999%) e scalabilità virtualmente infinita.</li>
+            <li><span class="keyword">Block Storage (Amazon EBS):</span> Dischi fisici virtualizzati "attaccati" a una singola istanza EC2 tramite rete. Perfetto per database e file di sistema perché offre latenza a singola cifra di millisecondi e alte performance I/O. È strettamente legato all'istanza, anche se la persistenza può sopravvivere alla terminazione della macchina.</li>
+            <li><span class="keyword">File Storage (Amazon EFS):</span> Un file system di rete condiviso (NFS) ed elastico. Può essere montato contemporaneamente da centinaia di istanze EC2. Utile in architetture distribuite che necessitano di accesso concorrente in lettura/scrittura agli stessi file (es. CMS clusterizzati).</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- 3. VPC -->
-    <div class="section-block" id="vpc">
-      <h2><span class="dot"></span> Sicurezza e Rete (VPC)</h2>
+    <!-- 3. DATABASE CLOUD -->
+    <div class="section-block" id="db">
+      <h2><span class="dot"></span> Database Cloud</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Nessuna infrastruttura Cloud è sicura senza un isolamento di rete adeguato.
+        La scelta tra database relazionali (SQL) e non relazionali (NoSQL) nel cloud implica specifici trade-off tra coerenza, latenza e capacità di scalare.
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Amazon RDS e Aurora (SQL)</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Relazionali:</strong> Garantiscono proprietà ACID e coerenza forte. Adatti per transazioni complesse e dati fortemente strutturati (es. ERP, e-commerce, banking).</li>
+            <li><strong>Gestione:</strong> RDS automatizza backup, patch e repliche. <strong>Aurora</strong> è il DB relazionale proprietario AWS, compatibile con MySQL/PostgreSQL, ma riprogettato nativamente per il cloud, offrendo throughput notevolmente superiore.</li>
+            <li><strong>Scalabilità:</strong> Prevalentemente <em>verticale</em> (aumentando RAM/CPU dell'istanza). Si scala in lettura tramite l'uso di <em>Read Replicas</em>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Amazon DynamoDB (NoSQL)</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Non Relazionali:</strong> Modello chiave-valore o a documenti, con schema dati flessibile (schemaless). Ideale per carichi enormi con pattern di accesso semplici e massivi (gaming, IoT, carrelli spesa).</li>
+            <li><strong>Prestazioni e Scalabilità:</strong> Scalabilità <em>orizzontale</em> nativa, invisibile all'utente. Assicura latenze costanti a singola cifra di millisecondo per qualsiasi volume di dati. Modello Serverless: si paga on-demand o per capacità provisionata in base all'uso.</li>
+            <li><strong>Trade-off:</strong> Progettato per scalabilità estrema a scapito del supporto a query analitiche complesse e JOIN nativi (che in DynamoDB non esistono o sono complessi da emulare).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. VPC E SICUREZZA -->
+    <div class="section-block" id="vpc">
+      <h2><span class="dot"></span> Networking, Sicurezza e Crittografia</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        L'isolamento di rete e la crittografia dei dati sono i pilastri della sicurezza nel cloud (Security in the Cloud).
       </p>
 
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Amazon VPC (Virtual Private Cloud)</div>
         <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Una porzione logicamente isolata del cloud AWS dedicata unicamente a te. È il tuo data center virtuale.</p>
+          <p style="margin-top:0; margin-bottom:0.5rem; color:var(--text-secondary);">Una porzione logicamente isolata del cloud AWS dedicata unicamente a te. È il tuo data center virtuale definito via software.</p>
           <ul style="margin:0;">
-            <li><strong>Subnet Pubbliche:</strong> Porzioni di rete che hanno una via di fuga verso Internet (tramite un Internet Gateway). Vi si mettono, ad esempio, i server Web (Frontend).</li>
-            <li><strong>Subnet Private:</strong> Porzioni di rete isolate dal mondo esterno. I server qui dentro non hanno IP pubblico. Vi si mettono Database e server Backend sensibili, accessibili solo dalle subnet pubbliche interne.</li>
-            <li><strong>Security Groups:</strong> Firewall virtuali applicati direttamente al server (es. "Permetti traffico solo sulla porta 80 e 443"). Sono <em>Stateful</em>.</li>
-            <li><strong>Network ACL:</strong> Regole di firewall applicate all'intera subnet. Sono <em>Stateless</em>.</li>
+            <li><strong>Subnet Pubbliche:</strong> Porzioni di rete con accesso a Internet (tramite Internet Gateway). Ospitano risorse pubbliche come i Load Balancer o i server Web.</li>
+            <li><strong>Subnet Private:</strong> Porzioni di rete isolate dal mondo esterno. I server qui dentro non hanno IP pubblico. Ospitano Database e Backend, proteggendoli da attacchi diretti da Internet.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Networking Firewall: Security Groups vs Network ACL</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">Security Groups (SG):</span> Firewall a livello di <strong>istanza</strong>. Sono <em>Stateful</em>: se una richiesta in ingresso è permessa, il traffico di ritorno è automaticamente autorizzato (non serve una regola d'uscita esplicita). Supportano solo regole di tipo <em>Allow</em>.</li>
+            <li><span class="keyword">Network ACL (NACL):</span> Firewall a livello di <strong>subnet</strong>. Sono <em>Stateless</em>: ogni connessione è valutata in ingresso e in uscita indipendentemente. Il traffico di ritorno deve essere permesso esplicitamente da una regola. Supportano regole di <em>Allow</em> e di <em>Deny</em> (utili per bloccare specifici IP o range CIDR malevoli).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Crittografia Avanzata: KMS vs CloudHSM</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><span class="keyword">AWS KMS (Key Management Service):</span> Servizio gestito per creare e controllare le chiavi crittografiche (Customer Master Keys). È integrato nativamente con i servizi AWS (S3, EBS, RDS) ed è la soluzione standard per crittografare i dati <em>at rest</em>. L'infrastruttura sottostante è multi-tenant.</li>
+            <li><span class="keyword">AWS CloudHSM:</span> Hardware Security Module dedicato e fisicamente residente nel cloud (single-tenant). Il cliente ha accesso e controllo esclusivo sull'hardware e sulle chiavi. Viene richiesto per aderire a standard di sicurezza e compliance governativi o finanziari molto rigidi (come <em>FIPS 140-2 Level 3</em> o le normative europee <em>eIDAS</em>).</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- 4. IaC -->
+    <!-- 5. IaC & AUTOMAZIONE -->
     <div class="section-block" id="iac">
-      <h2><span class="dot"></span> Infrastructure as Code (IaC)</h2>
+      <h2><span class="dot"></span> Infrastructure as Code & Automazione AI</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Nel cloud, configurare server cliccando sui bottoni del pannello web (AWS Console) porta inevitabilmente a errori umani e impedisce di replicare l'infrastruttura rapidamente.
+        Configurare server manualmente porta inevitabilmente a errori umani. L'automazione è essenziale per la scalabilità e l'affidabilità.
       </p>
 
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Terraform & AWS CDK</div>
+        <div class="header">Infrastructure as Code: Terraform vs AWS CDK</div>
         <div class="content">
-          <p style="margin-top:0; margin-bottom:0.5rem; color:var(--text-secondary);">L'IaC è la pratica di gestire le risorse informatiche attraverso file di testo <strong>dichiarativi</strong> leggibili dall'uomo.</p>
+          <p style="margin-top:0; margin-bottom:0.5rem; color:var(--text-secondary);">L'IaC permette di gestire le risorse del cloud tramite file di testo sottoposti a versioning (Git). Permette di tracciare le modifiche (es. "chi ha aperto il firewall?") e di replicare interi ambienti di produzione in pochi minuti.</p>
           <ul style="margin:0;">
-            <li>Invece di creare un database a mano, si scrive nel codice: <em>"Voglio un database PostgreSQL versione 13 con 20GB di spazio"</em>.</li>
-            <li>Strumenti come <strong>Terraform</strong> leggono questo codice e chiamano automaticamente le API di AWS per costruire esattamente l'architettura richiesta in pochi secondi.</li>
-            <li>Essendo puro testo, l'infrastruttura entra nel controllo di versione (Git), permettendo di tracciare ogni modifica strutturale (chi ha aperto quella porta firewall e quando?) e di distruggere/ricreare interi ambienti di test (Staging/Production) con un solo comando.</li>
+            <li><span class="keyword">Terraform (HashiCorp):</span> Tool open-source agnostico. Utilizza un linguaggio <em>dichiarativo</em> (HCL). Definisci "cosa" vuoi (es. un DB con 20GB) e Terraform capisce "come" crearlo interfacciandosi con le API di AWS o di altri provider.</li>
+            <li><span class="keyword">AWS CDK (Cloud Development Kit):</span> Framework proprietario AWS che permette di definire l'infrastruttura cloud utilizzando <em>linguaggi di programmazione generici</em> (TypeScript, Python, Java). Il codice viene poi "sintetizzato" internamente in un template CloudFormation. Fornisce costrutti ad alto livello orientati agli sviluppatori.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Cloud TuringBots</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">L'evoluzione dell'automazione è guidata dall'Intelligenza Artificiale Generativa, attraverso agenti spesso definiti <strong>TuringBots</strong>.</p>
+          <ul style="margin:0; margin-top:0.5rem;">
+            <li><strong>Generazione e Scaffolding:</strong> LLM specializzati (es. Amazon Q Developer, GitHub Copilot) possono scrivere rapidamente interi moduli Terraform o template CloudFormation partendo da richieste espresse in linguaggio naturale (es. "Crea un'architettura Serverless per processare immagini").</li>
+            <li><strong>Ottimizzazione:</strong> Analizzano l'infrastruttura suggerendo ottimizzazioni dei costi e l'adozione di best practice (es. identificando Security Group troppo aperti verso Internet).</li>
+            <li><strong>Troubleshooting:</strong> Riducono drasticamente i tempi di indagine sugli errori, correggendo problemi complessi o conflitti di permission IAM in pochi secondi analizzando i log degli errori.</li>
           </ul>
         </div>
       </div>
@@ -185,10 +246,5 @@
   </footer>
 
   <script src="../../shared/katchkit.js?v=2"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      KatchKitCore.init();
-    });
-  </script>
 </body>
 </html>
