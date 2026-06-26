@@ -70,25 +70,68 @@
     <div class="section-block" id="change">
       <h2><span class="dot"></span> Gestione del Cambiamento e Refactoring</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        La manutenzione costituisce la fase più lunga e costosa dell'intero ciclo di vita del software. Più un software viene modificato nel tempo, più la sua architettura interna tende a degradarsi.
+        La manutenzione costituisce la fase più lunga e costosa dell'intero ciclo di vita del software. Un sistema deve evolvere inevitabilmente o rischia di diventare inutile.
       </p>
 
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Sistemi Legacy e Code Smells</div>
+        <div class="header">Le Cause Formali del Cambiamento</div>
         <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Le ragioni inevitabili per cui un sistema deve essere modificato:</p>
           <ul style="margin:0;">
-            <li><strong>Sistemi Legacy:</strong> Sistemi "ereditati", obsoleti ma ancora in uso perché critici per l'azienda (spesso scritti in linguaggi vecchi come il COBOL o senza documentazione). Riscriverli da zero comporta rischi altissimi di blocco del business.</li>
-            <li><strong>Code Smells (Puzze del Codice):</strong> Segnali d'allarme nel codice sorgente che indicano un problema di progettazione strutturale profondo. Esempi classici: <em>Codice duplicato</em> (se c'è un bug, devi correggerlo in 10 posti diversi), <em>Classi e Metodi troppo grandi</em> (fanno troppe cose, violando l'Information Expert e la Coesione).</li>
+            <li>L'emergere di <strong>nuovi requisiti</strong> durante l'utilizzo prolungato del sistema.</li>
+            <li><strong>Cambiamenti nell'ambiente di business</strong> (nuove normative, fusioni aziendali, nuovi mercati).</li>
+            <li>La disponibilità di <strong>nuovi servizi</strong> (spesso più economici) da sfruttare (es. API di terze parti).</li>
+            <li>La necessità di <strong>riparare errori</strong> scoperti o migliorare affidabilità e performance.</li>
+            <li>L'<strong>obsolescenza dell'hardware</strong> o dei sistemi operativi e l'adozione di nuovi modelli di rilascio (es. passaggio al Cloud).</li>
           </ul>
         </div>
       </div>
 
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Refactoring vs Reingegnerizzazione</div>
+        <div class="header">Struttura ed Elementi dei Sistemi Legacy</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">I Sistemi Legacy sono sistemi "ereditati", obsoleti ma critici per l'azienda. Riscriverli da zero comporta rischi altissimi di blocco del business. Sono composti da 4 elementi interdipendenti:</p>
+          <ul style="margin:0;">
+            <li><span class="keyword">System hardware:</span> L'hardware originale per cui il sistema è stato scritto, che potrebbe non essere più in produzione o supportato.</li>
+            <li><span class="keyword">Support software:</span> Il software di supporto obsoleto o non più aggiornato (vecchi compilatori, vecchi sistemi operativi o librerie deprecate).</li>
+            <li><span class="keyword">Application software:</span> I programmi applicativi veri e propri (scritti magari in COBOL o vecchie versioni Java) che forniscono i servizi aziendali essenziali.</li>
+            <li><span class="keyword">Application data:</span> I dati elaborati, spesso massivi, che possono essere inconsistenti o duplicati in file o database arcaici differenti.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Fattori di Valutazione per i Sistemi Legacy</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Prima di decidere se mantenere, migrare o spegnere un sistema legacy, vanno valutati questi fattori ingegneristici:</p>
+          <ul style="margin:0;">
+            <li>Il <strong>linguaggio di programmazione</strong> usato e la disponibilità attuale di compilatori/interpreti aggiornati.</li>
+            <li>La presenza di un sistema di <strong>Configuration management</strong> per tracciare storicamente le versioni dei componenti.</li>
+            <li>L'esistenza di <strong>Test data</strong> e registri di test di regressione per validare le nuove funzionalità in sicurezza.</li>
+            <li>Le <strong>Personnel skills</strong>: la disponibilità nel mercato di personale con le competenze tecniche necessarie per mantenere quel sistema specifico.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Code Smells e Refactoring vs Reingegnerizzazione</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><span class="keyword">Refactoring:</span> È il processo di pulizia e miglioramento della struttura interna del codice <strong>senza alterarne il comportamento esterno</strong> (il software continua a fare esattamente ciò che faceva prima, ma il codice è più leggibile e manutenibile). È un'attività continua, supportata dai test automatici.</li>
-            <li><span class="keyword">Reingegnerizzazione:</span> A differenza del refactoring, è una riscrittura e ri-progettazione profonda del sistema, spesso necessaria per migrare un Sistema Legacy verso architetture moderne (es. dal Monolite ai Microservizi in Cloud).</li>
+            <li><strong>Code Smells (Puzze del Codice):</strong> Segnali d'allarme nel codice sorgente che indicano un problema di progettazione profondo. Esempi: <em>Codice duplicato</em> o <em>Classi e Metodi troppo grandi</em> (violando la Coesione).</li>
+            <li><span class="keyword">Refactoring:</span> Il processo di pulizia e miglioramento della struttura interna del codice <strong>senza alterarne il comportamento esterno</strong> (il software fa la stessa cosa, ma il codice è più manutenibile). Serve per ridurre il debito tecnico ed è supportato dai test automatici.</li>
+            <li><span class="keyword">Reingegnerizzazione:</span> Una riscrittura e ri-progettazione profonda del sistema, spesso necessaria per migrare un Sistema Legacy verso architetture moderne (es. dal Monolite ai Microservizi in Cloud).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">L'Impatto dell'AI nella Manutenzione (TuringBots)</div>
+        <div class="content">
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">L'Intelligenza Artificiale funge da <em>Refactoring Agent</em> e <em>Legacy Translator</em> per combattere il debito tecnico:</p>
+          <ul style="margin:0;">
+            <li><strong>Spiegazione automatica:</strong> Decifrazione del codice legacy obsoleto e difficile da capire ("Explain this code").</li>
+            <li><strong>Legacy Translation:</strong> Traduzione automatica del vecchio codice in architetture e linguaggi moderni (ad esempio, la conversione diretta di una codebase da Java 8 a Java 21).</li>
+            <li><strong>Refactoring intelligente:</strong> Suggerimento mirato di pattern di refactoring applicabili per ripulire la struttura del codice accumulato.</li>
           </ul>
         </div>
       </div>
@@ -102,11 +145,12 @@
       </p>
 
       <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Open Source e Glue Code</div>
+        <div class="header">Open Source, Glue Code e Dipendenze Transitive</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><strong>Componenti COTS (Commercial Off-The-Shelf) e Open Source:</strong> Pezzi di software pronti all'uso (librerie grafiche, motori fisici, database). Oggi oltre l'80% del codice di una nuova app è in realtà codice scritto da altri e scaricato gratuitamente (tramite i Build Tools come Maven).</li>
-            <li><strong>Glue Code (Codice Colla):</strong> Quando si prendono componenti scritti da aziende o team diversi, questi non sono stati progettati per "parlarsi" nativamente. Il programmatore moderno passa molto tempo a scrivere "codice colla" (spesso implementando il Design Pattern <strong>Adapter</strong>) per adattare l'interfaccia di un componente a ciò che il proprio sistema si aspetta.</li>
+            <li><strong>Componenti COTS e Open Source:</strong> Pezzi di software pronti all'uso (librerie grafiche, database). Oggi oltre l'80% del codice di una nuova app è scritto da altri (scaricato via Build Tools come Maven).</li>
+            <li><strong>Glue Code (Codice Colla):</strong> Quando si prendono componenti diversi, questi non "parlano" nativamente tra loro. Si scrive molto "codice colla" (implementando il pattern <em>Adapter</em>) per adattarne le interfacce.</li>
+            <li><span class="keyword">Dipendenze Transitive ("software you don't even know"):</span> Ogni dipendenza che includi volontariamente porta con sé una serie di altre dipendenze richieste dalla libreria stessa. Questo fa sì che il codice scritto da te sia una frazione minuscola del totale. L'albero delle dipendenze diventa complesso ed è vitale tracciarlo (es. usando la demo pratica del comando <code>mvn dependency:tree</code>).</li>
           </ul>
         </div>
       </div>
@@ -122,10 +166,12 @@
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Il problema delle Dipendenze e la SBOM</div>
         <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Un attacco famoso (come quello a Log4j) ha dimostrato che se una minuscola libreria gratuita usata per stampare i log viene hackerata, cadono i server di mezzo mondo.</p>
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Il caso Log4j ha dimostrato che una libreria vulnerabile nascosta nelle dipendenze transitive può compromettere server globalmente.</p>
           <ul style="margin:0;">
-            <li><strong>Software Bill of Materials (SBOM):</strong> È letteralmente la "Distinta Base" o la "Lista degli Ingredienti" del software. È un documento formale e leggibile dalle macchine che elenca esattamente ogni singola libreria (e versione) inclusa nel programma.</li>
-            <li><strong>Perché è fondamentale:</strong> Quando viene scoperta una nuova vulnerabilità globale (Zero-day) in una libreria, un'azienda deve sapere immediatamente se la sta usando nei suoi 500 progetti. Leggendo la SBOM, può capirlo in 1 secondo e aggiornarla, senza dover rileggere milioni di righe di codice.</li>
+            <li><strong>Software Bill of Materials (SBOM):</strong> È la "Distinta Base" del software. Un documento formale leggibile dalle macchine che elenca ogni componente e dipendenza. Permette di reagire istantaneamente alle vulnerabilità (Zero-day) senza rileggere milioni di righe di codice.</li>
+            <li><strong>Struttura e Dettagli SBOM:</strong> Un documento SBOM contiene campi tecnici rigorosi: Component Name, Identificatori Unici (es. SPDXID), Version String, Component Hash (PackageChecksum per l'integrità crittografica), Author Name, e le Relazioni tra componenti (es. la gerarchia <em>CONTAINS</em>).</li>
+            <li><strong>Operazioni sui Documenti SBOM:</strong> Un sistema maturo deve permettere operazioni di <em>Consume View</em> (lettura umana), <em>Diff</em> (comparazione tra versioni del software per notare aggiunte/rimozioni), <em>Analyze</em> (importazione in sistemi di sicurezza) e <em>Transform</em> (cambio di formato senza perdita di informazioni).</li>
+            <li><span class="keyword">Licencing:</span> La gestione delle licenze del software open source riutilizzato è un topic fondamentale. Oltre alla sicurezza, bisogna garantire la conformità legale per evitare sanzioni o l'obbligo di rendere pubblico il proprio codice proprietario (effetto virale di alcune licenze).</li>
           </ul>
         </div>
       </div>
@@ -147,10 +193,5 @@
   </footer>
 
   <script src="../../shared/katchkit.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      KatchKitCore.init();
-    });
-  </script>
 </body>
 </html>
