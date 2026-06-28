@@ -1,160 +1,106 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teoria — EDIDS</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../shared/katchkit.css">
-</head>
-<body class="dot-grid" >
 
-<!-- NAV -->
-<site-navbar 
-    logo-text="// EDIDS · Teoria" 
-    back-url="index.html" 
-    back-text="EDIDS">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teoria — EDIDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../shared/katchkit.css">
+</head>
+
+<body class="dot-grid">
+
+  <!-- NAV -->
+  <site-navbar logo-text="// EDIDS · Teoria" back-url="index.html" back-text="EDIDS">
   </site-navbar>
 
-<!-- HERO -->
-<site-hero 
-  eyebrow="Ingegneria del Software" 
-  title-class="hero-title-edids"
-  title="Ingegneria <br>del Software" 
-  sub="Dalla raccolta dei requisiti al design orientato agli oggetti, fino al deployment in Cloud e alla manutenzione.">
-</site-hero>
+  <!-- HERO -->
+  <site-hero eyebrow="Ingegneria del Software" title-class="hero-title-edids" title="Ingegneria <br>del Software"
+    sub="Dalla raccolta dei requisiti al design orientato agli oggetti, fino al deployment in Cloud e alla manutenzione.">
+  </site-hero>
 
-<div class="divider-label">
-  <span>Gli Argomenti del Corso</span>
-</div>
-
-<div class="intro-section">
-  <div class="overview-grid">
-    <a href="argomenti/01-fondamenti.html" class="overview-card ov-purple">
-      <div class="ov-num">ARGOMENTO 01</div>
-      <div class="ov-title">Fondamenti di Ingegneria</div>
-      <div class="ov-sub">Differenza tra Software Engineering e Informatica, caratteristiche ed etica.</div>
-    </a>
-    
-    <a href="argomenti/02-ciclo-di-vita.html" class="overview-card ov-teal">
-      <div class="ov-num">ARGOMENTO 02</div>
-      <div class="ov-title">Modelli e Ciclo di Vita</div>
-      <div class="ov-sub">Waterfall vs Agile, Scrum ed Extreme Programming.</div>
-    </a>
-    
-    <a href="argomenti/03-ingegneria-requisiti.html" class="overview-card ov-green">
-      <div class="ov-num">ARGOMENTO 03</div>
-      <div class="ov-title">Ingegneria dei Requisiti</div>
-      <div class="ov-sub">User Stories, criteri INVEST, Gherkin e tecniche di elicitazione.</div>
-    </a>
-    
-    <a href="argomenti/04-architettura.html" class="overview-card ov-amber">
-      <div class="ov-num">ARGOMENTO 04</div>
-      <div class="ov-title">Architettura del Software</div>
-      <div class="ov-sub">Modello 4+1, C4, stili architetturali ed evoluzione a Microservizi.</div>
-    </a>
-    
-    <a href="argomenti/05-modellazione-design.html" class="overview-card ov-coral">
-      <div class="ov-num">ARGOMENTO 05</div>
-      <div class="ov-title">Modellazione e Design</div>
-      <div class="ov-sub">Dal dominio al codice, principi GRASP e Pattern della Gang of Four.</div>
-    </a>
-    
-    <a href="argomenti/06-strumenti-devops.html" class="overview-card ov-purple">
-      <div class="ov-num">ARGOMENTO 06</div>
-      <div class="ov-title">Strumenti DevOps e CI/CD</div>
-      <div class="ov-sub">Build Tools (Maven, Gradle), Git, CI e Containerizzazione.</div>
-    </a>
-    
-    <a href="argomenti/07-cloud-aws.html" class="overview-card ov-teal">
-      <div class="ov-num">ARGOMENTO 07</div>
-      <div class="ov-title">Sistemi Cloud (AWS)</div>
-      <div class="ov-sub">Paradigma Cloud, servizi Core AWS (EC2, S3) e Infrastructure as Code.</div>
-    </a>
-    
-    <a href="argomenti/08-evoluzione-riuso.html" class="overview-card ov-green">
-      <div class="ov-num">ARGOMENTO 08</div>
-      <div class="ov-title">Evoluzione e Riuso</div>
-      <div class="ov-sub">Refactoring di sistemi legacy, riuso del software e sicurezza (SBOM).</div>
-    </a>
+  <div class="divider-label">
+    <span>Gli Argomenti del Corso</span>
   </div>
-</div>
 
-<div class="divider-label" style="margin-top: 4rem;">
-  <span>Mappa Interattiva del Corso</span>
-</div>
+  <div class="intro-section">
+    <div class="overview-grid">
+      <a href="argomenti/01-fondamenti.html" class="overview-card ov-purple">
+        <div class="ov-num">ARGOMENTO 01</div>
+        <div class="ov-title">Fondamenti di Ingegneria</div>
+        <div class="ov-sub">Differenza tra Software Engineering e Informatica, caratteristiche ed etica.</div>
+      </a>
 
-<style>
-  /* Forza l'SVG generato da Markmap a prendere il 100% dello spazio del suo div padre, altrimenti i browser mettono 300x150 di default */
-  .markmap > svg {
-    width: 100% !important;
-    height: 100% !important;
-  }
-  
-  /* Adatta il colore del testo di Markmap alla Dark Mode */
-  .markmap {
-    color: var(--text-secondary) !important;
-    font-family: 'JetBrains Mono';
-  }
-  .markmap svg text {
-    fill: var(--text-primary) !important;
-  }
+      <a href="argomenti/02-ciclo-di-vita.html" class="overview-card ov-teal">
+        <div class="ov-num">ARGOMENTO 02</div>
+        <div class="ov-title">Modelli e Ciclo di Vita</div>
+        <div class="ov-sub">Waterfall vs Agile, Scrum ed Extreme Programming.</div>
+      </a>
 
-  /* Permette al riquadro di uscire dai limiti standard di Markmap per posizionarsi al centro del filo */
-  .markmap foreignObject {
-    overflow: visible !important;
-  }
+      <a href="argomenti/03-ingegneria-requisiti.html" class="overview-card ov-green">
+        <div class="ov-num">ARGOMENTO 03</div>
+        <div class="ov-title">Ingegneria dei Requisiti</div>
+        <div class="ov-sub">User Stories, criteri INVEST, Gherkin e tecniche di elicitazione.</div>
+      </a>
 
-  /* Stile bulletproof per i nodi: applichiamo il box a uno span interno per far calcolare bene le dimensioni a Markmap! */
-  .kk-node {
-    background: #0f0f1a !important; /* Usa un colore solido esplicito per COPRIRE il filo SVG sottostante! */
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 6px;
-    padding: 6px 14px;
-    display: inline-block;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-    transition: all 0.2s ease;
-    
-    /* MAGIA: Spostando il blocco in giù esattamente del 50%, la riga che Markmap disegna sotto andrà a finire ESATTAMENTE al centro! */
-    transform: translateY(50%);
-    position: relative;
-    z-index: 999 !important; /* Assicura che il box copra fisicamente il filo sottostante */
-  }
-  .kk-node:hover {
-    background: var(--bg-card-hover);
-    border-color: rgba(255, 255, 255, 0.3);
-    /* Mantieni il 50% ma alza un pelino per l'effetto hover */
-    transform: translateY(calc(50% - 2px));
-  }
-  /* Fix per far sì che i link non sballino i colori */
-  .kk-node a {
-    color: inherit !important;
-    text-decoration: none;
-  }
-</style>
+      <a href="argomenti/04-architettura.html" class="overview-card ov-amber">
+        <div class="ov-num">ARGOMENTO 04</div>
+        <div class="ov-title">Architettura del Software</div>
+        <div class="ov-sub">Modello 4+1, C4, stili architetturali ed evoluzione a Microservizi.</div>
+      </a>
 
-<!-- MARKMAP CONTAINER -->
-<div style="width: 100%; height: 75vh; min-height: 600px; margin: 2rem auto; background: rgba(0,0,0,0.15); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-  <div class="markmap" style="width: 100%; height: 100%;">
-    <script type="text/template">
+      <a href="argomenti/05-modellazione-design.html" class="overview-card ov-coral">
+        <div class="ov-num">ARGOMENTO 05</div>
+        <div class="ov-title">Modellazione e Design</div>
+        <div class="ov-sub">Dal dominio al codice, principi GRASP e Pattern della Gang of Four.</div>
+      </a>
+
+      <a href="argomenti/06-strumenti-devops.html" class="overview-card ov-purple">
+        <div class="ov-num">ARGOMENTO 06</div>
+        <div class="ov-title">Strumenti DevOps e CI/CD</div>
+        <div class="ov-sub">Build Tools (Maven, Gradle), Git, CI e Containerizzazione.</div>
+      </a>
+
+      <a href="argomenti/07-cloud-aws.html" class="overview-card ov-teal">
+        <div class="ov-num">ARGOMENTO 07</div>
+        <div class="ov-title">Sistemi Cloud (AWS)</div>
+        <div class="ov-sub">Paradigma Cloud, servizi Core AWS (EC2, S3) e Infrastructure as Code.</div>
+      </a>
+
+      <a href="argomenti/08-evoluzione-riuso.html" class="overview-card ov-green">
+        <div class="ov-num">ARGOMENTO 08</div>
+        <div class="ov-title">Evoluzione e Riuso</div>
+        <div class="ov-sub">Refactoring di sistemi legacy, riuso del software e sicurezza (SBOM).</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="divider-label" style="margin-top: 4rem;">
+    <span>Mappa Interattiva del Corso</span>
+  </div>
+
+
+
+  <!-- MARKMAP CONTAINER -->
+  <div
+    style="width: 100%; height: 75vh; min-height: 600px; margin: 2rem auto; background: rgba(0,0,0,0.15); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+    <div class="markmap" style="width: 100%; height: 100%;">
+      <script type="text/template">
       ---
       markmap:
         colorFreezeLevel: 2
         initialExpandLevel: 2
         spacingVertical: 12
         spacingHorizontal: 60
-        color:
-          - "#22d3ee"
-          - "#a78bfa"
-          - "#f472b6"
-          - "#fbbf24"
-          - "#34d399"
-          - "#f87171"
-          - "#60a5fa"
       ---
       # <span class="kk-node">Corso EDIDS</span>
       
@@ -203,17 +149,18 @@
       - <span class="kk-node">Riuso del Software</span>
       - <span class="kk-node">Sicurezza e SBOM</span>
     </script>
+    </div>
   </div>
-</div>
 
-<hr class="divider" style="max-width:900px;margin:3rem auto 0;">
+  <hr class="divider" style="max-width:900px;margin:3rem auto 0;">
 
-<footer>
-  <p>// 7Katch.github.io · EDIDS</p>
-</footer>
+  <footer>
+    <p>// 7Katch.github.io · EDIDS</p>
+  </footer>
 
-<script src="../shared/katchkit.js"></script>
-<!-- Inizializzazione automatica di Markmap -->
-<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+  <script src="../shared/katchkit.js"></script>
+  <!-- KatchKit Markmap (Include Stili e Autoloader) -->
+  <script src="../shared/kmind.js"></script>
 </body>
+
 </html>

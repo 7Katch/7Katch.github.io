@@ -1,0 +1,71 @@
+/* ==========================================================
+   KMIND - KATCH MINDMAP STYLES
+   ========================================================== */
+
+/* Palette Cyberpunk Neon dedicata */
+:root {
+  --kmind-neon: var(--teal); /* Azzurro olografico */
+  --kmind-neon-dim: rgba(34, 211, 238, 0.25); /* Azzurro trasparente per i fili */
+}
+
+/* Forza l'SVG generato da Markmap a prendere il 100% dello spazio del suo div padre */
+.markmap > svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── STILE DELLE LINEE E DEI PALLINI (CYBERPUNK HUD) ── */
+.markmap-link {
+  stroke: var(--kmind-neon-dim) !important; /* Linee semi-trasparenti per non distrarre */
+  stroke-width: 1.5px !important;
+}
+
+.markmap circle {
+  fill: var(--bg) !important; /* Centro del pallino vuoto/scuro */
+  stroke: var(--kmind-neon) !important; /* Bordo del pallino luminoso */
+  stroke-width: 2px !important;
+}
+
+/* Adatta il colore del testo di Markmap alla Dark Mode */
+.markmap {
+  color: var(--text-secondary) !important;
+}
+.markmap svg text {
+  fill: var(--text-primary) !important;
+}
+
+/* Permette al riquadro di uscire dai limiti standard di Markmap per posizionarsi al centro del filo */
+.markmap foreignObject {
+  overflow: visible !important;
+}
+
+/* Stile bulletproof per i nodi */
+.kk-node {
+  font-family: 'JetBrains Mono', monospace !important;
+  background: #0f0f1a !important; 
+  /* Usa il colore del ramo se disponibile, altrimenti un fallback azzurrino */
+  border: 1px solid var(--node-color, rgba(34, 211, 238, 0.15)) !important; 
+  border-radius: 6px;
+  padding: 6px 14px;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: all 0.2s ease;
+  
+  /* RISOLUZIONE BUG BROWSER: Calibrazione al millimetro per chiudere il gap di 2-3 pixel */
+  position: relative;
+  top: 19px; 
+  z-index: 999 !important;
+}
+
+.kk-node:hover {
+  background: #141428 !important;
+  /* Glow intenso al passaggio del mouse con il colore del ramo */
+  box-shadow: 0 6px 20px var(--node-color, rgba(34, 211, 238, 0.4)); 
+  top: 17px; /* Effetto rialzo al passaggio del mouse */
+}
+
+/* Fix per far sì che i link non sballino i colori */
+.kk-node a {
+  color: inherit !important;
+  text-decoration: none;
+}
