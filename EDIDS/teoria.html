@@ -84,6 +84,128 @@
   </div>
 </div>
 
+<div class="divider-label" style="margin-top: 4rem;">
+  <span>Mappa Interattiva del Corso</span>
+</div>
+
+<style>
+  /* Forza l'SVG generato da Markmap a prendere il 100% dello spazio del suo div padre, altrimenti i browser mettono 300x150 di default */
+  .markmap > svg {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* Adatta il colore del testo di Markmap alla Dark Mode */
+  .markmap {
+    color: var(--text-secondary) !important;
+    font-family: 'JetBrains Mono';
+  }
+  .markmap svg text {
+    fill: var(--text-primary) !important;
+  }
+
+  /* Permette al riquadro di uscire dai limiti standard di Markmap per posizionarsi al centro del filo */
+  .markmap foreignObject {
+    overflow: visible !important;
+  }
+
+  /* Stile bulletproof per i nodi: applichiamo il box a uno span interno per far calcolare bene le dimensioni a Markmap! */
+  .kk-node {
+    background: #0f0f1a !important; /* Usa un colore solido esplicito per COPRIRE il filo SVG sottostante! */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 6px;
+    padding: 6px 14px;
+    display: inline-block;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    transition: all 0.2s ease;
+    
+    /* MAGIA: Spostando il blocco in giù esattamente del 50%, la riga che Markmap disegna sotto andrà a finire ESATTAMENTE al centro! */
+    transform: translateY(50%);
+    position: relative;
+    z-index: 999 !important; /* Assicura che il box copra fisicamente il filo sottostante */
+  }
+  .kk-node:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(255, 255, 255, 0.3);
+    /* Mantieni il 50% ma alza un pelino per l'effetto hover */
+    transform: translateY(calc(50% - 2px));
+  }
+  /* Fix per far sì che i link non sballino i colori */
+  .kk-node a {
+    color: inherit !important;
+    text-decoration: none;
+  }
+</style>
+
+<!-- MARKMAP CONTAINER -->
+<div style="width: 100%; height: 75vh; min-height: 600px; margin: 2rem auto; background: rgba(0,0,0,0.15); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+  <div class="markmap" style="width: 100%; height: 100%;">
+    <script type="text/template">
+      ---
+      markmap:
+        colorFreezeLevel: 2
+        initialExpandLevel: 2
+        spacingVertical: 12
+        spacingHorizontal: 60
+        color:
+          - "#22d3ee"
+          - "#a78bfa"
+          - "#f472b6"
+          - "#fbbf24"
+          - "#34d399"
+          - "#f87171"
+          - "#60a5fa"
+      ---
+      # <span class="kk-node">Corso EDIDS</span>
+      
+      ## <span class="kk-node">[01 · Fondamenti](argomenti/01-fondamenti.html)</span>
+      - <span class="kk-node">Ingegneria vs Informatica</span>
+      - <span class="kk-node">Caratteristiche del "Buon Software"</span>
+      - <span class="kk-node">Etica e Responsabilità</span>
+      - <span class="kk-node">Impatto dell'AI</span>
+      
+      ## <span class="kk-node">[02 · Ciclo di Vita](argomenti/02-ciclo-di-vita.html)</span>
+      - <span class="kk-node">Modello Waterfall</span>
+      - <span class="kk-node">Modello Agile</span>
+      - <span class="kk-node">Scrum e i suoi cerimoniali</span>
+      - <span class="kk-node">Extreme Programming (XP)</span>
+      
+      ## <span class="kk-node">[03 · Requisiti](argomenti/03-ingegneria-requisiti.html)</span>
+      - <span class="kk-node">Criteri INVEST</span>
+      - <span class="kk-node">User Stories</span>
+      - <span class="kk-node">Elicitazione</span>
+      - <span class="kk-node">Gherkin (Behavior Driven)</span>
+      
+      ## <span class="kk-node">[04 · Architettura](argomenti/04-architettura.html)</span>
+      - <span class="kk-node">Modello 4+1 e C4</span>
+      - <span class="kk-node">Stili Architetturali</span>
+      - <span class="kk-node">Da Monoliti a Microservizi</span>
+      
+      ## <span class="kk-node">[05 · Modellazione](argomenti/05-modellazione-design.html)</span>
+      - <span class="kk-node">Principi GRASP</span>
+      - <span class="kk-node">Design Pattern (GoF)</span>
+      - <span class="kk-node">Information Expert e Low Coupling</span>
+      
+      ## <span class="kk-node">[06 · DevOps](argomenti/06-strumenti-devops.html)</span>
+      - <span class="kk-node">Build Tools (Maven/Gradle)</span>
+      - <span class="kk-node">Versioning (Git)</span>
+      - <span class="kk-node">CI/CD</span>
+      - <span class="kk-node">Containerizzazione (Docker)</span>
+      
+      ## <span class="kk-node">[07 · Cloud AWS](argomenti/07-cloud-aws.html)</span>
+      - <span class="kk-node">Paradigma Cloud</span>
+      - <span class="kk-node">AWS Core (EC2, S3)</span>
+      - <span class="kk-node">Infrastructure as Code (IaC)</span>
+      
+      ## <span class="kk-node">[08 · Evoluzione e Riuso](argomenti/08-evoluzione-riuso.html)</span>
+      - <span class="kk-node">Refactoring</span>
+      - <span class="kk-node">Gestione Sistemi Legacy</span>
+      - <span class="kk-node">Riuso del Software</span>
+      - <span class="kk-node">Sicurezza e SBOM</span>
+    </script>
+  </div>
+</div>
+
 <hr class="divider" style="max-width:900px;margin:3rem auto 0;">
 
 <footer>
@@ -91,5 +213,7 @@
 </footer>
 
 <script src="../shared/katchkit.js"></script>
+<!-- Inizializzazione automatica di Markmap -->
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
 </body>
 </html>

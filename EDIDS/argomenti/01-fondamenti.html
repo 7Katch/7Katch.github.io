@@ -133,6 +133,31 @@
       </p>
     </div>
 
+    <!-- Mappa Concettuale (Anteprima Mermaid.js) -->
+    <div class="section-block" id="mappa-concettuale">
+      <h2><span class="dot"></span> Mappa Concettuale (Anteprima)</h2>
+      <p>Questa mappa è generata automaticamente da testo tramite Mermaid.js!</p>
+      <div class="mermaid">
+        mindmap
+          root((Fondamenti<br>EDIDS))
+            Ingegneria Software
+              Disciplina Pratica
+              Sistemi Funzionanti
+              Vincoli (Tempo/Budget)
+            Buon Software
+              Manutenibilità
+              Affidabilità
+              Efficienza
+              Usabilità
+            Etica & Impatto
+              Responsabilità
+              Casi Reali (Ariane 5)
+            Impatto AI
+              Codice & Testing
+              Orchestrazione
+      </div>
+    </div>
+
     <!-- Navigation -->
     <div class="back-btn-wrap">
       <a href="../teoria.html" class="btn btn-amber"><i class="bi bi-arrow-left"></i> Torna all'indice EDIDS</a>
@@ -147,6 +172,11 @@
   </footer>
 
   <script src="../../shared/katchkit.js"></script>
+  <!-- Inizializzazione Mermaid.js -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  </script>
 </body>
 
 </html>
