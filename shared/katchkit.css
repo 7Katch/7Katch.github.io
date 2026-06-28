@@ -2959,3 +2959,186 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
   border-radius: var(--r-lg);
   padding: 1.5rem;
 }
+
+/* -- 10. DIAGRAMMI DI PROCESSO E FLUSSI -- */
+.kk-process-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  margin: 2rem 0;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 768px) {
+  .kk-process-panel {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+}
+
+.kk-process-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kk-process-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.kk-process-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+
+@media (min-width: 768px) {
+  .kk-process-divider {
+    width: 1px;
+    height: auto;
+    margin: 0 2rem;
+  }
+}
+
+/* Linear Flow (es. Waterfall) */
+.kk-linear-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.kk-step {
+  background: #2b3553;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 0;
+  width: 140px;
+  text-align: center;
+  border-radius: var(--r-sm);
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s;
+  
+  /* Uso di variabili CSS per l'indentazione progressiva, senza hardcodare l'N-esimo elemento! */
+  margin-left: calc(var(--step, 0) * 20px);
+}
+
+.kk-step:hover {
+  transform: translateY(-2px);
+  background: #344063;
+}
+
+.kk-step:not(:last-child)::after {
+  content: '\F133'; /* arrow-down-right in bootstrap-icons */
+  font-family: 'bootstrap-icons';
+  position: absolute;
+  top: 100%;
+  right: -10px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 1.2rem;
+  transform: translateY(-4px);
+}
+
+/* Cyclic Flow (es. Agile Sprints) */
+.kk-cyclic-flow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  margin-top: 1rem;
+}
+
+.kk-cycle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.kk-cycle-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.kk-cycle-ring {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid rgba(124, 92, 252, 0.3);
+  position: relative;
+}
+
+.kk-cycle-ring::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-left-color: rgba(124, 92, 252, 0.4);
+}
+
+.kk-cycle-arrow {
+  position: absolute;
+  right: -24px;
+  top: 22px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 1.2rem;
+}
+
+/* Active State for Cycles */
+.kk-cycle.active .kk-cycle-ring {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(124, 92, 252, 0.4), inset 0 0 15px rgba(124, 92, 252, 0.2);
+}
+
+.kk-cycle.active .kk-cycle-ring::after {
+  border-left-color: var(--accent);
+}
+
+.kk-cycle-badge {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--green);
+  color: #111;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .kk-cyclic-flow {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .kk-cycle-arrow {
+    right: auto;
+    bottom: -28px;
+    top: auto;
+    transform: rotate(90deg);
+  }
+}

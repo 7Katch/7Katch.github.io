@@ -136,131 +136,45 @@
         Al contrario, l'<span class="keyword">approccio Agile</span> è basato su cicli iterativi e incrementali. Il prodotto viene costruito e rilasciato in piccoli incrementi, permettendo al team di adattarsi rapidamente ai cambiamenti e di ottenere feedback continuo.
       </p>
       
-      <!-- Canvas Element -->
-      <div style="margin: 2rem 0; background: rgba(20,20,25,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; text-align: center; overflow-x: auto;">
-        <canvas id="lifecycleCanvas" width="800" height="350" style="max-width: 100%; height: auto; display: block; margin: 0 auto;"></canvas>
+      <!-- Componente KatchKit: Diagramma di Processo (Linear vs Cyclic) -->
+      <div class="kk-process-panel">
+        
+        <!-- Lato Sinistro: Flusso Lineare -->
+        <div class="kk-process-col">
+          <div class="kk-process-title">Modello Waterfall</div>
+          <div class="kk-linear-flow">
+            <div class="kk-step" style="--step: 0;">Requisiti</div>
+            <div class="kk-step" style="--step: 1;">Design</div>
+            <div class="kk-step" style="--step: 2;">Sviluppo</div>
+            <div class="kk-step" style="--step: 3;">Testing</div>
+            <div class="kk-step" style="--step: 4;">Deploy</div>
+          </div>
+        </div>
+
+        <div class="kk-process-divider"></div>
+
+        <!-- Lato Destro: Flusso Ciclico -->
+        <div class="kk-process-col">
+          <div class="kk-process-title">Modello Agile (Iterativo)</div>
+          <div class="kk-cyclic-flow">
+            <div class="kk-cycle">
+              <div class="kk-cycle-ring"></div>
+              <span class="kk-cycle-label">Sprint 1</span>
+              <i class="bi bi-arrow-right kk-cycle-arrow"></i>
+            </div>
+            <div class="kk-cycle">
+              <div class="kk-cycle-ring"></div>
+              <span class="kk-cycle-label">Sprint 2</span>
+              <i class="bi bi-arrow-right kk-cycle-arrow"></i>
+            </div>
+            <div class="kk-cycle active">
+              <div class="kk-cycle-ring"></div>
+              <span class="kk-cycle-label">Sprint 3</span>
+              <div class="kk-cycle-badge">Release</div>
+            </div>
+          </div>
+        </div>
       </div>
-      
-      <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const canvas = document.getElementById('lifecycleCanvas');
-          if(!canvas) return;
-          const ctx = canvas.getContext('2d');
-          
-          // Helper: Draw Rounded Rect
-          function roundRect(x, y, w, h, r, bg, text) {
-            ctx.beginPath();
-            ctx.moveTo(x + r, y);
-            ctx.lineTo(x + w - r, y);
-            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-            ctx.lineTo(x + w, y + h - r);
-            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-            ctx.lineTo(x + r, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-            ctx.lineTo(x, y + r);
-            ctx.quadraticCurveTo(x, y, x + r, y);
-            ctx.closePath();
-            
-            ctx.fillStyle = bg;
-            ctx.fill();
-            
-            if(text) {
-              ctx.fillStyle = "#fff";
-              ctx.font = "500 13px Inter, sans-serif";
-              ctx.textAlign = "center";
-              ctx.textBaseline = "middle";
-              ctx.fillText(text, x + w/2, y + h/2);
-            }
-          }
-
-          function drawArrow(x1, y1, x2, y2, color) {
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            
-            const angle = Math.atan2(y2 - y1, x2 - x1);
-            ctx.beginPath();
-            ctx.moveTo(x2, y2);
-            ctx.lineTo(x2 - 10 * Math.cos(angle - Math.PI / 6), y2 - 10 * Math.sin(angle - Math.PI / 6));
-            ctx.lineTo(x2 - 10 * Math.cos(angle + Math.PI / 6), y2 - 10 * Math.sin(angle + Math.PI / 6));
-            ctx.closePath();
-            ctx.fillStyle = color;
-            ctx.fill();
-          }
-
-          // Clear
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          // 1. Waterfall (Left Side)
-          ctx.fillStyle = "rgba(255,255,255,0.7)";
-          ctx.font = "600 16px Inter, sans-serif";
-          ctx.textAlign = "center";
-          ctx.fillText("Modello Waterfall", 200, 30);
-
-          const wfSteps = ["Requisiti", "Design", "Sviluppo", "Testing", "Deploy"];
-          const wfColors = ["#334155", "#334155", "#334155", "#334155", "#334155"];
-          const startX = 30;
-          const startY = 70;
-          
-          for(let i=0; i<wfSteps.length; i++) {
-            roundRect(startX + (i*35), startY + (i*45), 140, 36, 6, wfColors[i], wfSteps[i]);
-            if(i < wfSteps.length - 1) {
-              drawArrow(startX + (i*35) + 70, startY + (i*45) + 36, startX + ((i+1)*35) + 70, startY + ((i+1)*45), "rgba(255,255,255,0.3)");
-            }
-          }
-
-          // Line Separator
-          ctx.beginPath();
-          ctx.moveTo(400, 20);
-          ctx.lineTo(400, 330);
-          ctx.strokeStyle = "rgba(255,255,255,0.1)";
-          ctx.stroke();
-
-          // 2. Agile (Right Side)
-          ctx.fillStyle = "rgba(255,255,255,0.7)";
-          ctx.fillText("Modello Agile (Iterativo)", 600, 30);
-
-          const cx = 600;
-          const cy = 180;
-
-          // Draw multiple iterations
-          for(let iter=0; iter<3; iter++) {
-            const offsetX = (iter - 1) * 120;
-            const cycleCx = cx + offsetX;
-            
-            // Loop base
-            ctx.beginPath();
-            ctx.arc(cycleCx, cy, 35, 0, Math.PI * 2);
-            ctx.strokeStyle = iter === 2 ? "#7c5cfc" : "rgba(124, 92, 252, 0.4)";
-            ctx.lineWidth = 4;
-            ctx.stroke();
-
-            // Arrow on loop
-            ctx.beginPath();
-            ctx.moveTo(cycleCx + 35, cy);
-            ctx.lineTo(cycleCx + 45, cy - 10);
-            ctx.lineTo(cycleCx + 25, cy - 10);
-            ctx.fillStyle = iter === 2 ? "#7c5cfc" : "rgba(124, 92, 252, 0.4)";
-            ctx.fill();
-
-            // Text
-            ctx.fillStyle = "rgba(255,255,255,0.9)";
-            ctx.font = "500 12px Inter, sans-serif";
-            ctx.fillText("Sprint " + (iter + 1), cycleCx, cy + 55);
-          }
-          
-          // Connect iterations
-          drawArrow(cx - 120 + 40, cy, cx - 40, cy, "rgba(255,255,255,0.3)");
-          drawArrow(cx + 40, cy, cx + 120 - 40, cy, "rgba(255,255,255,0.3)");
-          
-          // Output box
-          roundRect(cx + 120 - 40, cy - 18, 80, 36, 6, "#10b981", "Release");
-        });
-      </script>
-    </div>
 
     <div class="card-def" style="margin-top: 2rem;">
       <div class="header">Modello Basato sull'Integrazione e Configurazione (Riuso)</div>
