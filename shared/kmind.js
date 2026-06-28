@@ -16,13 +16,35 @@
   const linkTag = document.createElement('link');
   linkTag.rel = 'stylesheet';
   linkTag.href = cssUrl;
-  document.head.appendChild(linkTag);
+  
+  // FIX CRITICO: Markmap deve essere caricato SOLO DOPO che il CSS è stato applicato!
+  // Se Markmap parte prima del CSS, calcola male le dimensioni dei box e i cerchi finiscono fuori posto.
+  linkTag.onload = () => {
+    // 1. Inietta gli span kk-node nel Markdown invisibilmente.
+    // Questo garantisce che Markmap misuri gli ingombri esatti col padding e posizioni i cerchietti perfettamente!
+    document.querySelectorAll('.markmap > script[type="text/template"]').forEach(script => {
+      let inYaml = false;
+      let newLines = script.textContent.split('\n').map(line => {
+        if (line.trim() === '---') inYaml = !inYaml;
+        if (inYaml || line.trim() === '---') return line;
+        
+        // Cerca righe che iniziano con #, -, *
+        let match = line.match(/^(\s*(?:#+|-|\*)\s+)(.+)$/);
+        if (match && !match[2].includes('kk-node')) {
+          return match[1] + '<span class="kk-node">' + match[2] + '</span>';
+        }
+        return line;
+      });
+      script.textContent = newLines.join('\n');
+    });
 
-  // 2. Carica dinamicamente il JS di markmap-autoloader
-  const scriptTag = document.createElement('script');
-  scriptTag.src = 'https://cdn.jsdelivr.net/npm/markmap-autoloader';
-  scriptTag.defer = true;
-  document.body.appendChild(scriptTag);
+    // 2. Avvia Markmap
+    const scriptTag = document.createElement('script');
+    scriptTag.src = 'https://cdn.jsdelivr.net/npm/markmap-autoloader';
+    document.body.appendChild(scriptTag);
+  };
+  linkTag.onerror = linkTag.onload; // Fallback di sicurezza
+  document.head.appendChild(linkTag);
 
   // 3. Sincronizzazione Colori (Cyberpunk Energy Sync)
   // Osserva la mappa per "rubare" il colore dei fili vettoriali e passarlo ai box HTML

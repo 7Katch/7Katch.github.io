@@ -39,7 +39,13 @@
   overflow: visible !important;
 }
 
-/* Stile bulletproof per i nodi */
+/* Rimuoviamo la linea HTML nativa di Markmap che sporge sotto i box */
+.markmap foreignObject > div {
+  border-bottom: none !important;
+  width: max-content !important;
+}
+
+/* Stile bulletproof per i nodi (La classe .kk-node viene iniettata via JS) */
 .kk-node {
   font-family: 'JetBrains Mono', monospace !important;
   background: #0f0f1a !important; 
@@ -51,17 +57,16 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   transition: all 0.2s ease;
   
-  /* RISOLUZIONE BUG BROWSER: Calibrazione al millimetro per chiudere il gap di 2-3 pixel */
+  /* Allineamento perfetto al centro del filo di ingresso */
   position: relative;
-  top: 19px; 
+  top: 2px; 
   z-index: 999 !important;
 }
 
 .kk-node:hover {
   background: #141428 !important;
-  /* Glow intenso al passaggio del mouse con il colore del ramo */
   box-shadow: 0 6px 20px var(--node-color, rgba(34, 211, 238, 0.4)); 
-  top: 17px; /* Effetto rialzo al passaggio del mouse */
+  top: 0px; 
 }
 
 /* Fix per far sì che i link non sballino i colori */
