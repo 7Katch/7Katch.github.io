@@ -43,6 +43,8 @@
             dell'IA</span></button></li>
       <li><button class="sb-link" data-target="section-6"><span class="sb-idx">02.06</span><span>CMM</span></button>
       </li>
+      <li><button class="sb-link" data-target="section-7"><span class="sb-idx">02.07</span><span>Mappa Mentale</span></button>
+      </li>
     </ul>
   </aside>
 
@@ -74,6 +76,7 @@
         <li data-target="section-4">Agile, Scrum e XP</li>
         <li data-target="section-5">L'Impatto dell'Intelligenza Artificiale</li>
         <li data-target="section-6">Process Improvement (CMM)</li>
+        <li data-target="section-7">Mappa Mentale</li>
       </ul>
     </div>
 
@@ -303,9 +306,10 @@
           </ul>
         </div>
       </div>
+    </div>
 
-      <!-- 02.03 -->
-      <div class="section-block" id="section-3">
+    <!-- 02.03 -->
+    <div class="section-block" id="section-3">
         <h2><span class="dot"></span> Elementi e Gestione del Processo</h2>
         <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
           Un processo software non si limita a elencare le attività da svolgere. Per descriverlo compiutamente bisogna
@@ -337,7 +341,8 @@
             <div class="kk-feature-title">Pre e Post-condizioni</div>
             <div class="kk-feature-desc">
               <p style="margin:0;">Le dichiarazioni che devono essere vere <em>prima</em> di iniziare un'attività e
-                <em>dopo</em> averla conclusa con successo.</p>
+                <em>dopo</em> averla conclusa con successo.
+              </p>
             </div>
           </div>
         </div>
@@ -350,15 +355,18 @@
             <p>Un esempio pratico perfetto di questi tre concetti si trova nella stesura e
               gestione di una <strong>User Story</strong> (metodologia Agile):</p>
             <ul>
-              <li><strong>Il Prodotto:</strong> È la User Story scritta (es. <em>"Come giocatore, voglio poter salvare
+              <li><code class="text-teal">Il Prodotto</code> È la User Story scritta (es. <em>"Come giocatore, voglio
+                  poter salvare
                   la partita..."</em>).</li>
-              <li><strong>I Ruoli:</strong> Il <em>Product Owner</em> scrive la storia, lo <em>Sviluppatore</em> la
+              <li><code class="text-teal">I Ruoli</code> Il <em>Product Owner</em> scrive la storia, lo
+                <em>Sviluppatore</em> la
                 implementa, il <em>Tester</em> la verifica.</li>
-              <li><strong>Pre-condizione:</strong> Cosa deve essere vero prima di iniziare? (es. <em>"Il sistema di
+              <li><code class="text-teal">Pre-condizione</code> Cosa deve essere vero prima di iniziare? (es. <em>"Il
+                  sistema di
                   login cloud deve essere già funzionante"</em>).</li>
-              <li><strong>Post-condizione:</strong> Sono i famosi <strong>Acceptance Criteria (Criteri di
-                  Accettazione)</strong>. Affinché la task sia considerata finita, il sistema deve trovarsi in un nuovo
-                stato: <em>"Il file di salvataggio è generato sul cloud e il menu mostra il tasto 'Continua'"</em>.</li>
+              <li><code class="text-teal">Post-condizione</code> Sono i famosi <code class="text-teal">Acceptance Criteria (Criteri di
+                  Accettazione)</code>. Affinché la task sia considerata finita, il sistema deve trovarsi in un nuovo
+                stato <em>"Il file di salvataggio è generato sul cloud e il menu mostra il tasto 'Continua'"</em>.</li>
             </ul>
           </div>
         </div>
@@ -383,8 +391,8 @@
         </div>
       </div>
 
-      <!-- 02.04 -->
-      <div class="section-block" id="section-4">
+    <!-- 02.04 -->
+    <div class="section-block" id="section-4">
         <h2><span class="dot"></span> Metodologia Agile, Scrum e XP</h2>
         <p>
           Il <span class="keyword">Manifesto Agile</span> pone l'accento sugli individui e le interazioni, sul software
@@ -573,23 +581,37 @@
           </div>
         </div>
 
-        <div class="card-def" style="margin-top: 1.5rem;">
-          <div class="header">I 3 Artefatti</div>
-          <div class="content">
-            <ul style="margin:0;">
-              <li><span class="keyword">Product Backlog:</span> Una lista ordinata e in continua evoluzione di tutto ciò
-                che è necessario per il prodotto. L'impegno associato è l'<em>Obiettivo di Prodotto (Product Goal)</em>.
-              </li>
-              <li><span class="keyword">Sprint Backlog:</span> Un sottoinsieme del Product Backlog, selezionato per lo
-                Sprint, insieme al piano per consegnarlo. L'impegno associato è l'<em>Obiettivo di Sprint (Sprint
-                  Goal)</em>.</li>
-              <li><span class="keyword">Incremento:</span> Un passo concreto verso il Product Goal. Deve soddisfare la
-                <em>Definition of Done (DoD)</em> per essere considerato completo e di valore.
-              </li>
-            </ul>
+        <h2><span class="dot"></span>I 3 Artefatti</h2>
+        <div class="kk-feature-grid">
+          <!-- Product Backlog -->
+          <div class="kk-feature-card">
+            <i class="bi bi-list-task kk-feature-icon"></i>
+            <div class="kk-feature-title">Product Backlog</div>
+            <div class="kk-feature-desc">
+              <p style="margin:0;">La lista infinita e ordinata per priorità di tutto ciò che serve al sistema. Il suo
+                scopo finale è raggiungere il <strong>Product Goal</strong> (l'obiettivo a lungo termine).</p>
+            </div>
+          </div>
+          <!-- Sprint Backlog -->
+          <div class="kk-feature-card">
+            <i class="bi bi-calendar2-check kk-feature-icon"></i>
+            <div class="kk-feature-title">Sprint Backlog</div>
+            <div class="kk-feature-desc">
+              <p style="margin:0;">Un "pacchetto" estratto dal Product Backlog, su cui il team si impegna a lavorare
+                nello Sprint corrente. Ha un suo <strong>Sprint Goal</strong> chiaro e fisso.</p>
+            </div>
+          </div>
+          <!-- Incremento -->
+          <div class="kk-feature-card">
+            <i class="bi bi-box-arrow-up kk-feature-icon"></i>
+            <div class="kk-feature-title">Incremento</div>
+            <div class="kk-feature-desc">
+              <p style="margin:0;">Il risultato tangibile e funzionante rilasciato a fine Sprint. Per essere rilasciato,
+                deve rispettare severamente la <strong>Definition of Done (DoD)</strong>.</p>
+            </div>
           </div>
         </div>
-        <h3 style="margin-top: 3rem; color: #fff; font-size: 1.5rem;">Extreme Programming (XP)</h3>
+        <h2><span class="dot"></span>Extreme Programming (XP)</h2>
         <p>
           L'<span class="keyword">Extreme Programming</span> è un'altra metodologia Agile fortemente orientata alla
           qualità del codice sorgente e al team working.
@@ -665,6 +687,63 @@
         </div>
       </div>
 
+      <!-- 02.07 -->
+      <div class="section-block" id="section-7">
+        <!-- Mindmap Riassuntiva -->
+        <h2 style="font-size: 1.75rem; text-align: center; color: #fff;">
+          <i class="bi bi-diagram-3" style="color: var(--teal); margin-right: 10px;"></i>Mappa Mentale del Capitolo
+        </h2>
+        <div class="kmind-board" style="width: 100%;">
+          <div class="markmap">
+          <script type="text/template">
+            ---
+            markmap:
+              colorFreezeLevel: 2
+              initialExpandLevel: 2
+              spacingVertical: 12
+              spacingHorizontal: 60
+            ---
+            # 02 · Ciclo di Vita
+
+            ## Attività Centrali
+            - **Specifica** (Elicitazione, Convalida)
+            - **Sviluppo** (Design e Codice)
+            - **Convalida** (V&V e Testing)
+            - **Evoluzione**
+
+            ## Modelli di Processo
+            - **Waterfall** (Lineare, sequenziale)
+            - **Agile** (Iterativo, incrementale)
+            - **Integrazione (COTS)** (Riuso componenti)
+
+            ## Gestione Processo
+            - **Elementi** (Prodotti, Ruoli, Condizioni)
+            - **Sviluppo Incrementale**
+
+            ## Scrum & XP
+            - **Ruoli** (PO, Scrum Master, Dev Team)
+            - **Eventi** (Sprint, Planning, Daily, Review, Retro)
+            - **Artefatti** (Product Backlog, Sprint Backlog, Incremento)
+            - **XP** (TDD, Pair Programming, Refactoring)
+
+            ## L'Impatto dell'IA
+            - Automazione Requirements
+            - Text-to-UML
+            - AI Pair Programmer
+            - Test predittivi
+            - Refactoring
+
+            ## Modello CMM
+            - 1. Initial
+            - 2. Repeatable
+            - 3. Defined
+            - 4. Managed
+            - 5. Optimising
+        </script>
+        </div>
+      </div>
+      </div>
+
       <!-- Navigation -->
       <div class="back-btn-wrap" style="margin-top: 2rem;">
         <a href="01-fondamenti.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 01 · Fondamenti</a>
@@ -680,6 +759,7 @@
     </footer>
 
     <script src="../../shared/katchkit.js"></script>
+    <script src="../../shared/kmind.js"></script>
 </body>
 
 </html>
