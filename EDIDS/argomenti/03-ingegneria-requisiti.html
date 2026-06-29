@@ -1,53 +1,57 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>03 · Requisiti — EDIDS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../shared/katchkit.css">
-  
+
 </head>
+
 <body class="dot-grid theme-green">
   <aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-fondamenti.html"><span class="sb-pdot"></span>01 · Fondamenti</a></li>
-    <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
-    <li>
-      <div class="sb-cur"><span class="sb-pdot"></span>03 · Requisiti</div>
-    </li>
-    <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
-    <li><a href="05-modellazione-design.html"><span class="sb-pdot"></span>05 · Modellazione & Design</a></li>
-    <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
-    <li><a href="07-cloud-aws.html"><span class="sb-pdot"></span>07 · Cloud AWS</a></li>
-    <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections">
-    <li><button class="sb-link" data-target="section-1"><span class="sb-idx">03.01</span><span>Il Processo</span></button></li>
-    <li><button class="sb-link" data-target="section-2"><span class="sb-idx">03.02</span><span>Tipi e Anti-Pattern</span></button></li>
-    <li><button class="sb-link" data-target="section-3"><span class="sb-idx">03.03</span><span>Agile, INVEST</span></button></li>
-    <li><button class="sb-link" data-target="section-4"><span class="sb-idx">03.04</span><span>BDD e DoD</span></button></li>
-    <li><button class="sb-link" data-target="section-5"><span class="sb-idx">03.05</span><span>Use Cases Formali</span></button></li>
-    <li><button class="sb-link" data-target="section-6"><span class="sb-idx">03.06</span><span>TuringBots (AI)</span></button></li>
-  </ul>
-</aside>
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-fondamenti.html"><span class="sb-pdot"></span>01 · Fondamenti</a></li>
+      <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>03 · Requisiti</div>
+      </li>
+      <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
+      <li><a href="05-modellazione-design.html"><span class="sb-pdot"></span>05 · Modellazione & Design</a></li>
+      <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
+      <li><a href="07-cloud-aws.html"><span class="sb-pdot"></span>07 · Cloud AWS</a></li>
+      <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections">
+      <li><button class="sb-link" data-target="section-1"><span class="sb-idx">03.01</span><span>Il
+            Processo</span></button></li>
+      <li><button class="sb-link" data-target="section-2"><span class="sb-idx">03.02</span><span>Tipi e
+            Anti-Pattern</span></button></li>
+      <li><button class="sb-link" data-target="section-3"><span class="sb-idx">03.03</span><span>Agile,
+            INVEST</span></button></li>
+      <li><button class="sb-link" data-target="section-4"><span class="sb-idx">03.04</span><span>BDD e
+            DoD</span></button></li>
+      <li><button class="sb-link" data-target="section-5"><span class="sb-idx">03.05</span><span>Use Cases
+            Formali</span></button></li>
+      <li><button class="sb-link" data-target="section-6"><span class="sb-idx">03.06</span><span>TuringBots
+            (AI)</span></button></li>
+    </ul>
+  </aside>
 
 
   <!-- ═══════ NAV ═══════ -->
-  <site-navbar 
-    logo-text="// EDIDS · Requisiti" 
-    back-url="../teoria.html" 
-    back-text="Indice EDIDS">
+  <site-navbar logo-text="// EDIDS · Requisiti" back-url="../teoria.html" back-text="Indice EDIDS">
   </site-navbar>
 
-    <site-hero 
-    eyebrow="Macroargomento 03" 
-    topic-num="03 / 08" 
-    title="Ingegneria dei Requisiti" 
+  <site-hero eyebrow="Macroargomento 03" topic-num="03 / 08" title="Ingegneria dei Requisiti"
     sub="Dall'elicitazione alle User Stories, criteri INVEST e Gherkin.">
   </site-hero>
 
@@ -77,17 +81,25 @@
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Il Processo e gli Stakeholder</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        L'ingegneria dei requisiti è un processo iterativo articolato in quattro fasi fondamentali, il cui scopo è assicurare che il software sviluppato risolva i veri problemi del cliente.
+        L'ingegneria dei requisiti è un processo iterativo articolato in quattro fasi fondamentali, il cui scopo è
+        assicurare che il software sviluppato risolva i veri problemi del cliente.
       </p>
 
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Il Processo a 4 Fasi</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><strong>1. Elicitazione (Scoperta):</strong> Scoprire e raccogliere i requisiti parlando con gli stakeholder. La sfida principale è che gli esperti di dominio fanno fatica ad articolare conoscenze per loro "ovvie".</li>
-            <li><strong>2. Specifica:</strong> Trasformare le idee in documenti. A causa dell'ambiguità del linguaggio naturale, si usano specifiche strutturate (es. tabelle condizionali) o si fa riferimento a Standard industriali (es. IEEE 830, template VOLERE).</li>
-            <li><strong>3. Convalida (Validation):</strong> Assicurarsi che i requisiti siano coerenti, realistici e verificabili <em>prima</em> di scrivere codice. Si usano revisioni, prototipazione e <em>Generazione di test-case</em>.</li>
-            <li><strong>4. Gestione (Management):</strong> Tracciare e valutare i costi e gli impatti dei cambiamenti ai requisiti.</li>
+            <li><strong>1. Elicitazione (Scoperta):</strong> Scoprire e raccogliere i requisiti parlando con gli
+              stakeholder. La sfida principale è che gli esperti di dominio fanno fatica ad articolare conoscenze per
+              loro "ovvie".</li>
+            <li><strong>2. Specifica:</strong> Trasformare le idee in documenti. A causa dell'ambiguità del linguaggio
+              naturale, si usano specifiche strutturate (es. tabelle condizionali) o si fa riferimento a Standard
+              industriali (es. IEEE 830, template VOLERE).</li>
+            <li><strong>3. Convalida (Validation):</strong> Assicurarsi che i requisiti siano coerenti, realistici e
+              verificabili <em>prima</em> di scrivere codice. Si usano revisioni, prototipazione e <em>Generazione di
+                test-case</em>.</li>
+            <li><strong>4. Gestione (Management):</strong> Tracciare e valutare i costi e gli impatti dei cambiamenti ai
+              requisiti.</li>
           </ul>
         </div>
       </div>
@@ -95,10 +107,13 @@
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Stakeholder Complessi</div>
         <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">Non si ascoltano solo gli utenti finali. Uno Stakeholder è chiunque abbia un interesse legittimo nel sistema.</p>
+          <p style="margin:0; color:var(--text-secondary);">Non si ascoltano solo gli utenti finali. Uno Stakeholder è
+            chiunque abbia un interesse legittimo nel sistema.</p>
           <ul style="margin-top:0.5rem; margin-bottom:0;">
-            <li><strong>Visibili:</strong> Chi usa il sistema quotidianamente (es. in un sistema medico: pazienti, medici, infermieri).</li>
-            <li><strong>Strutturali:</strong> Chi è coinvolto indirettamente ma detta le regole (es. IT staff per le compatibilità, manager dell'etica medica, responsabili normativi/legali).</li>
+            <li><strong>Visibili:</strong> Chi usa il sistema quotidianamente (es. in un sistema medico: pazienti,
+              medici, infermieri).</li>
+            <li><strong>Strutturali:</strong> Chi è coinvolto indirettamente ma detta le regole (es. IT staff per le
+              compatibilità, manager dell'etica medica, responsabili normativi/legali).</li>
           </ul>
         </div>
       </div>
@@ -108,9 +123,12 @@
     <div class="section-block" id="section-2">
       <h2><span class="dot"></span> Approcci, Tipi di Requisiti e Anti-Pattern</h2>
 
-      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: #fff; font-size: 1.25rem;">I due approcci: Agile vs Plan-based</h3>
-      <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Sebbene Agile domini lo sviluppo moderno, i metodi guidati dai piani (Plan-based) restano <strong>obbligatori</strong> per sistemi critici o grandi appalti governativi, dove i requisiti sono contratti rigidi suddivisi in:</p>
-      
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: #fff; font-size: 1.25rem;">I due approcci: Agile vs
+        Plan-based</h3>
+      <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Sebbene Agile domini lo sviluppo moderno, i metodi
+        guidati dai piani (Plan-based) restano <strong>obbligatori</strong> per sistemi critici o grandi appalti
+        governativi, dove i requisiti sono contratti rigidi suddivisi in:</p>
+
       <div class="kk-feature-grid">
         <!-- User Requirements -->
         <div class="kk-feature-card">
@@ -125,7 +143,8 @@
           <i class="bi bi-cpu kk-feature-icon"></i>
           <div class="kk-feature-title">System Requirements</div>
           <div class="kk-feature-desc">
-            <p style="margin:0;">Specifiche tecniche dettagliatissime per gli sviluppatori (System Architect), che fissano funzioni e vincoli operativi.</p>
+            <p style="margin:0;">Specifiche tecniche dettagliatissime per gli sviluppatori (System Architect), che
+              fissano funzioni e vincoli operativi.</p>
           </div>
         </div>
       </div>
@@ -134,7 +153,8 @@
         <div class="header">Funzionali vs Non Funzionali</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><strong>Requisiti Funzionali:</strong> Descrivono i servizi offerti dal sistema, le reazioni agli input e cosa il sistema <em>non</em> deve fare.</li>
+            <li><strong>Requisiti Funzionali:</strong> Descrivono i servizi offerti dal sistema, le reazioni agli input
+              e cosa il sistema <em>non</em> deve fare.</li>
             <li><strong>Requisiti Non Funzionali:</strong> Vincoli sul sistema globale. Si classificano in:
               <ul style="margin-top: 0.25rem;">
                 <li><em>Prodotto:</em> Velocità, Usabilità (FURPS+).</li>
@@ -143,22 +163,111 @@
               </ul>
             </li>
           </ul>
-          <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.75rem; margin-top: 1rem; border-radius: 4px;">
-            <strong>Regola d'oro:</strong> I requisiti non funzionali devono <em>sempre</em> essere verificabili usando specifiche Metriche: transazioni/secondo (Speed), tempo di apprendimento (Usability), o Mbytes massimi (Size).
+          <div
+            style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.75rem; margin-top: 1rem; border-radius: 4px;">
+            <strong>Regola d'oro:</strong> I requisiti non funzionali devono <em>sempre</em> essere verificabili usando
+            specifiche Metriche: transazioni/secondo (Speed), tempo di apprendimento (Usability), o Mbytes massimi
+            (Size).
           </div>
         </div>
       </div>
 
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Anti-Pattern (Come NON scrivere i requisiti)</div>
-        <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">Errori semantici che costano caro in fase di sviluppo e manutenzione:</p>
-          <ul style="margin-top:0.5rem; margin-bottom:0;">
-            <li><strong>La Trappola dell'Or:</strong> <em>"Il sistema deve generare un segnale visivo O uditivo"</em>. Ambiguo per chi programma, rende il requisito non testabile in modo deterministico.</li>
-            <li><strong>Il Mostro dell'And:</strong> Fondere funzioni slegate: <em>"Accendere la luce di allarme E salvare il database"</em>. Viola il principio di requisito atomico.</li>
-            <li><strong>Dettagli di Implementazione:</strong> Prescrivere hardware o UI (es. "antenna in rame", "font 14pt Swiss su LCD") anziché definire l'obiettivo (es. "ricezione FM con ogni meteo", "leggibile da 1 metro").</li>
-          </ul>
+      <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #fff; font-size: 1.25rem;">Anti-Pattern (Come NON
+        scrivere i requisiti)</h3>
+      <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Errori semantici che costano caro in fase di
+        sviluppo e manutenzione:</p>
+
+      <div class="kk-feature-grid">
+
+        <!-- La Trappola dell'Or -->
+        <div class="kk-feature-card">
+          <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="kk-feature-icon">
+            <path d="M6 4c4 0 8 3 14 8-6 5-10 8-14 8 2.5-4 2.5-8 0-16z"></path>
+            <path d="M2 8h5"></path>
+            <path d="M2 16h5"></path>
+            <path d="M20 12h2"></path>
+          </svg>
+          <div class="kk-feature-title">La Trappola dell'Or</div>
+          <div class="kk-feature-desc">
+            <p style="margin:0 0 1rem 0;">L'uso di "oppure" rende il requisito ambiguo e impossibile da testare
+              deterministicamente.</p>
+
+            <div
+              style="background: rgba(239, 68, 68, 0.08); border-radius: 6px; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid rgba(239, 68, 68, 0.2);">
+              <div
+                style="color: var(--coral); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
+                <i class="bi bi-x-circle-fill"></i> Sbagliato</div>
+              <em style="color: #eee;">"Il sistema deve generare un segnale visivo <strong>O</strong> uditivo"</em>
+            </div>
+
+            <div
+              style="background: rgba(16, 185, 129, 0.08); border-radius: 6px; padding: 0.75rem; border: 1px solid rgba(16, 185, 129, 0.2);">
+              <div
+                style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
+                <i class="bi bi-check-circle-fill"></i> Corretto (Atomico)</div>
+              <em style="color: #eee;">"1. Deve generare un segnale visivo"</em><br>
+              <em style="color: #eee;">"2. Deve generare un segnale uditivo"</em>
+            </div>
+          </div>
         </div>
+
+        <!-- Il Mostro dell'And -->
+        <div class="kk-feature-card">
+          <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="kk-feature-icon">
+            <path d="M6 4h6a8 8 0 0 1 0 16H6z"></path>
+            <path d="M2 8h4"></path>
+            <path d="M2 16h4"></path>
+            <path d="M20 12h2"></path>
+          </svg>
+          <div class="kk-feature-title">Il Mostro dell'And</div>
+          <div class="kk-feature-desc">
+            <p style="margin:0 0 1rem 0;">Fondere funzioni slegate viola il principio del requisito atomico (una sola
+              funzione alla volta).</p>
+
+            <div
+              style="background: rgba(239, 68, 68, 0.08); border-radius: 6px; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid rgba(239, 68, 68, 0.2);">
+              <div
+                style="color: var(--coral); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
+                <i class="bi bi-x-circle-fill"></i> Sbagliato</div>
+              <em style="color: #eee;">"Accendere la luce <strong>E</strong> salvare il database"</em>
+            </div>
+
+            <div
+              style="background: rgba(16, 185, 129, 0.08); border-radius: 6px; padding: 0.75rem; border: 1px solid rgba(16, 185, 129, 0.2);">
+              <div
+                style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
+                <i class="bi bi-check-circle-fill"></i> Corretto</div>
+              <em style="color: #eee;">Scrivere due requisiti separati, da tracciare individualmente.</em>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dettagli di Implementazione -->
+        <div class="kk-feature-card">
+          <i class="bi bi-tools kk-feature-icon"></i>
+          <div class="kk-feature-title">Dettagli Implementativi</div>
+          <div class="kk-feature-desc">
+            <p style="margin:0 0 1rem 0;">Prescrivere l'hardware o la UI (il <em>come</em>) anziché definire l'obiettivo
+              (il <em>cosa</em>).</p>
+
+            <div
+              style="background: rgba(239, 68, 68, 0.08); border-radius: 6px; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid rgba(239, 68, 68, 0.2);">
+              <div
+                style="color: var(--coral); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
+                <i class="bi bi-x-circle-fill"></i> Sbagliato</div>
+              <em style="color: #eee;">"Usare font 14pt Swiss su schermo LCD"</em>
+            </div>
+
+            <div
+              style="background: rgba(16, 185, 129, 0.08); border-radius: 6px; padding: 0.75rem; border: 1px solid rgba(16, 185, 129, 0.2);">
+              <div
+                style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
+                <i class="bi bi-check-circle-fill"></i> Corretto (Obiettivo)</div>
+              <em style="color: #eee;">"Il testo deve essere leggibile da 1 metro di distanza"</em>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -166,40 +275,147 @@
     <div class="section-block" id="section-3">
       <h2><span class="dot"></span> User Stories e Criteri INVEST</h2>
       <p>
-        Le <span class="keyword">User Stories</span> sono il formato preferito dalle metodologie Agile per catturare i requisiti. Sono descrizioni brevi, scritte dal punto di vista dell'utente finale.
+        Le <span class="keyword">User Stories</span> sono il formato preferito dalle metodologie Agile per catturare i
+        requisiti. Sono descrizioni brevi, scritte dal punto di vista dell'utente finale.
       </p>
       <p>Il template classico per una User Story è:</p>
-      <div style="background: rgba(20,20,25,0.4); padding: 1.5rem; border-left: 4px solid #10b981; border-radius: 4px; margin-bottom: 1.5rem;">
-        <em>"Come <strong>[ruolo o persona]</strong>,<br>
-        voglio <strong>[obiettivo o azione]</strong>,<br>
-        affinché <strong>[ragione, beneficio o valore]</strong>."</em>
+
+      <div class="card-def  card-variant-yellow" style="width: 50%;">
+        <div class="header"><i class="bi bi-person-vcard"></i> Il Template della User Story</div>
+        <div class="content text-amber" >
+          <em>"Come</em> <code class="text-amber">ruolo o persona</code class="text-amber">,<br>
+          <em>voglio</em> <code class="text-amber">obiettivo o azione</code class="text-amber">,<br>
+          <em>affinché</em> <code class="text-amber">ragione, beneficio o valore</code class="text-amber">"
+        </div>
       </div>
 
-      <p>Per essere considerata di alta qualità e pronta per lo sviluppo, una User Story dovrebbe rispettare l'acronimo <span class="keyword">INVEST</span> introdotto da Bill Wake:</p>
+      <p>Per essere considerata di alta qualità e pronta per lo sviluppo, una User Story dovrebbe rispettare l'acronimo
+        <span class="keyword">INVEST</span> introdotto da Bill Wake:</p>
       <ul>
-        <li><span class="keyword">I - Independent:</span> La storia dovrebbe essere completabile in modo indipendente dalle altre, per facilitare la ripianificazione.</li>
-        <li><span class="keyword">N - Negotiable:</span> Una User Story non è un contratto rigido, ma un promemoria per avviare una conversazione tra il team e il Product Owner. I dettagli vengono negoziati durante la conversazione.</li>
-        <li><span class="keyword">V - Valuable:</span> Deve consegnare un reale valore di business all'utente o al cliente finale. Non ci sono storie puramente "tecniche" senza un beneficio tangibile.</li>
-        <li><span class="keyword">E - Estimable:</span> Il team deve avere abbastanza informazioni (e la storia non deve essere troppo grande) per poter stimarne la complessità (ad esempio in Story Points).</li>
-        <li><span class="keyword">S - Small:</span> Deve essere sufficientemente piccola da poter essere completata entro una singola iterazione (Sprint). Se è troppo grande (una <em>Epic</em>), va suddivisa.</li>
-        <li><span class="keyword">T - Testable:</span> Devono esistere criteri chiari per stabilire quando la storia è completata in modo soddisfacente (Criteri di Accettazione).</li>
+        <li><span class="keyword">I - Independent:</span> La storia dovrebbe essere completabile in modo indipendente
+          dalle altre, per facilitare la ripianificazione.</li>
+        <li><span class="keyword">N - Negotiable:</span> Una User Story non è un contratto rigido, ma un promemoria per
+          avviare una conversazione tra il team e il Product Owner. I dettagli vengono negoziati durante la
+          conversazione.</li>
+        <li><span class="keyword">V - Valuable:</span> Deve consegnare un reale valore di business all'utente o al
+          cliente finale. Non ci sono storie puramente "tecniche" senza un beneficio tangibile.</li>
+        <li><span class="keyword">E - Estimable:</span> Il team deve avere abbastanza informazioni (e la storia non deve
+          essere troppo grande) per poter stimarne la complessità (ad esempio in Story Points).</li>
+        <li><span class="keyword">S - Small:</span> Deve essere sufficientemente piccola da poter essere completata
+          entro una singola iterazione (Sprint). Se è troppo grande (una <em>Epic</em>), va suddivisa.</li>
+        <li><span class="keyword">T - Testable:</span> Devono esistere criteri chiari per stabilire quando la storia è
+          completata in modo soddisfacente (Criteri di Accettazione).</li>
       </ul>
+
+      <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; color: #fff; font-size: 1.25rem;">Esempi Pratici (Da un simulatore City Builder)</h3>
+
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        
+        <!-- Esempio 1: Creazione Mappa -->
+        <div class="card-def active-border card-variant-yellow">
+          <div class="header"><i class="bi bi-map"></i> US 1: Creazione mappa</div>
+          <div class="content">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+              <div>
+                <strong style="color: var(--card-color);">User Story</strong>
+                <p style="margin-top: 0.5rem; font-style: italic; color: #fff; font-size: 1.05rem;">
+                  "<strong>Come</strong> giocatore, <strong>voglio</strong> inizializzare una mappa logica a griglia, <strong>affinché</strong> io possa avere uno spazio dedicato per gestire la crescita della mia città."
+                </p>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 6px;">
+                <strong style="color: var(--card-color);">Criteri di Accettazione</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0; padding-left: 1.5rem; color: var(--text-secondary);">
+                  <li>Viene visualizzata una griglia vuota di dimensioni 50x40 al momento dell'avvio della simulazione.</li>
+                  <li>Ogni cella della griglia deve poter ospitare un'entità o essere vuota.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Esempio 2: Costruzione Entità -->
+        <div class="card-def active-border card-variant-yellow">
+          <div class="header"><i class="bi bi-building"></i> US 2: Costruzione entità</div>
+          <div class="content">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+              <div>
+                <strong style="color: var(--card-color);">User Story</strong>
+                <p style="margin-top: 0.5rem; font-style: italic; color: #fff; font-size: 1.05rem;">
+                  "<strong>Come</strong> giocatore, <strong>voglio</strong> poter costruire diversi tipi di entità come edifici o strade, <strong>affinché</strong> io possa sviluppare la mia città."
+                </p>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 6px;">
+                <strong style="color: var(--card-color);">Criteri di Accettazione</strong>
+                <ul style="margin-top: 0.5rem; margin-bottom: 0; padding-left: 1.5rem; color: var(--text-secondary);">
+                  <li>L'utente può posizionare un oggetto (edificio o strada) solo cliccando su una cella attualmente vuota.</li>
+                  <li>L'interfaccia permette di selezionare e distinguere visivamente tutte le categorie richieste (Residenziale, Industriale, Commerciale, Centrale elettrica, parco, strada).</li>
+                  <li>Il sistema impedisce il posizionamento e non modifica lo stato se la cella selezionata è già occupata.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Esempio 3: Filtri Mappa -->
+        <div class="card-def active-border card-variant-yellow">
+          <div class="header"><i class="bi bi-funnel"></i> US 3: Sistema filtro visivo della mappa</div>
+          <div class="content">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+              <div>
+                <strong style="color: var(--card-color);">User Story</strong>
+                <p style="margin-top: 0.5rem; font-style: italic; color: #fff; font-size: 1.05rem;">
+                  "<strong>Come</strong> giocatore, <strong>voglio</strong> poter applicare diversi filtri visivi alla mappa, <strong>affinché</strong> possa analizzare rapidamente lo stato dei servizi e i problemi delle varie zone senza dover cliccare sui singoli edifici."
+                </p>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 6px; display: flex; flex-direction: column; gap: 1rem;">
+                <strong style="color: var(--card-color);">Criteri di Accettazione (Stile BDD)</strong>
+                
+                <div>
+                  <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">AC 1: Mappa inquinamento</div>
+                  <ul style="margin-top: 0.25rem; margin-bottom: 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.9rem;">
+                    <li><strong>Dato che</strong> sulla mappa sono presenti zone con differenti livelli di inquinamento,</li>
+                    <li><strong>Quando</strong> il giocatore attiva il "Filtro Inquinamento",</li>
+                    <li><strong>Allora</strong> il sistema deve evidenziare le zone della mappa con una scala cromatica proporzionale al valore di inquinamento.</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">AC 2: Mappa collegamenti idrici e elettrici</div>
+                  <ul style="margin-top: 0.25rem; margin-bottom: 0; padding-left: 1.5rem; color: var(--text-secondary); font-size: 0.9rem;">
+                    <li><strong>Dato che</strong> la città contiene edifici collegati e non collegati alle centrali di base,</li>
+                    <li><strong>Quando</strong> il giocatore attiva il "Filtro Collegamenti",</li>
+                    <li><strong>Allora</strong> il sistema deve evidenziare chiaramente gli edifici serviti dalle centrali.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <!-- 03.04 -->
     <div class="section-block" id="section-4">
       <h2><span class="dot"></span> BDD, Gherkin e Criteri di Accettazione</h2>
       <p>
-        I <span class="keyword">Criteri di Accettazione</span> stabiliscono i confini di una User Story e i requisiti minimi di qualità. Il <span class="keyword">Behavior-Driven Development (BDD)</span> incoraggia a scrivere questi criteri nel formato <strong>Gherkin</strong>, un linguaggio strutturato (Given-When-Then) che funge da ponte tra le logiche di business e l'automazione dei test.
+        I <span class="keyword">Criteri di Accettazione</span> stabiliscono i confini di una User Story e i requisiti
+        minimi di qualità. Il <span class="keyword">Behavior-Driven Development (BDD)</span> incoraggia a scrivere
+        questi criteri nel formato <strong>Gherkin</strong>, un linguaggio strutturato (Given-When-Then) che funge da
+        ponte tra le logiche di business e l'automazione dei test.
       </p>
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Sintassi Gherkin</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><span class="keyword">Given (Dato):</span> Definisce le precondizioni o lo stato iniziale del sistema prima dell'azione dell'utente.<br><em>Es: "Dato che l'utente ha degli articoli nel carrello..."</em></li>
-            <li><span class="keyword">When (Quando):</span> Descrive l'azione principale che l'utente compie o l'evento che si verifica.<br><em>Es: "Quando l'utente clicca sul pulsante 'Procedi al pagamento'..."</em></li>
-            <li><span class="keyword">Then (Allora):</span> Descrive il risultato atteso o le postcondizioni verificabili.<br><em>Es: "Allora viene mostrata la pagina di checkout sicura."</em></li>
-            <li><span class="keyword">And / But (E / Ma):</span> Permettono di concatenare più clausole per mantenere la leggibilità.</li>
+            <li><span class="keyword">Given (Dato):</span> Definisce le precondizioni o lo stato iniziale del sistema
+              prima dell'azione dell'utente.<br><em>Es: "Dato che l'utente ha degli articoli nel carrello..."</em></li>
+            <li><span class="keyword">When (Quando):</span> Descrive l'azione principale che l'utente compie o l'evento
+              che si verifica.<br><em>Es: "Quando l'utente clicca sul pulsante 'Procedi al pagamento'..."</em></li>
+            <li><span class="keyword">Then (Allora):</span> Descrive il risultato atteso o le postcondizioni
+              verificabili.<br><em>Es: "Allora viene mostrata la pagina di checkout sicura."</em></li>
+            <li><span class="keyword">And / But (E / Ma):</span> Permettono di concatenare più clausole per mantenere la
+              leggibilità.</li>
           </ul>
         </div>
       </div>
@@ -207,9 +423,14 @@
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Definition of Done (DoD)</div>
         <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">Superare i criteri di accettazione Gherkin non è sufficiente per dichiarare una User Story finita. Deve anche rispettare la <strong>Definition of Done</strong> del team di sviluppo.</p>
+          <p style="margin:0; color:var(--text-secondary);">Superare i criteri di accettazione Gherkin non è sufficiente
+            per dichiarare una User Story finita. Deve anche rispettare la <strong>Definition of Done</strong> del team
+            di sviluppo.</p>
           <ul style="margin-top:0.5rem; margin-bottom:0;">
-            <li>In ambienti maturi e critici si applica una <strong>Stringent DoD</strong>, che obbliga il codice a rispettare vincoli ingegneristici ferrei, come: Code Coverage dei test unitari superiore all'85%, Zero errori nei controlli degli standard di codifica (Linting), nessuna introduzione di Debito Tecnico non giustificato e superamento di test di penetrazione automatici.</li>
+            <li>In ambienti maturi e critici si applica una <strong>Stringent DoD</strong>, che obbliga il codice a
+              rispettare vincoli ingegneristici ferrei, come: Code Coverage dei test unitari superiore all'85%, Zero
+              errori nei controlli degli standard di codifica (Linting), nessuna introduzione di Debito Tecnico non
+              giustificato e superamento di test di penetrazione automatici.</li>
           </ul>
         </div>
       </div>
@@ -219,19 +440,25 @@
     <div class="section-block" id="section-5">
       <h2><span class="dot"></span> Casi d'Uso (Use Cases Formali)</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        A differenza delle brevi User Stories, per i sistemi complessi o plan-based bisogna conoscere l'anatomia di uno <strong>Use Case Formale</strong> strutturato.
+        A differenza delle brevi User Stories, per i sistemi complessi o plan-based bisogna conoscere l'anatomia di uno
+        <strong>Use Case Formale</strong> strutturato.
       </p>
 
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Anatomia dello Use Case</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><strong>Attori:</strong> Entità esterne (persone, timer, o altri sistemi IT) che interagiscono col sistema.</li>
+            <li><strong>Attori:</strong> Entità esterne (persone, timer, o altri sistemi IT) che interagiscono col
+              sistema.</li>
             <li><strong>Trigger:</strong> L'evento scatenante che avvia l'interazione.</li>
-            <li><strong>Pre-condizioni:</strong> Lo stato certificato in cui deve trovarsi il sistema prima che il caso possa iniziare.</li>
-            <li><strong>Normal Flow (Flusso Base / Happy Path):</strong> La sequenza ottimale di interazioni in cui tutto procede senza intoppi e l'obiettivo viene raggiunto.</li>
-            <li><strong>Flussi Alternativi ed Eccezioni:</strong> Percorsi varianti e gestione degli errori (es. "Cosa succede se la carta di credito viene rifiutata?").</li>
-            <li><strong>Post-condizioni:</strong> Garanzie sullo stato del database e del sistema alla conclusione del caso.</li>
+            <li><strong>Pre-condizioni:</strong> Lo stato certificato in cui deve trovarsi il sistema prima che il caso
+              possa iniziare.</li>
+            <li><strong>Normal Flow (Flusso Base / Happy Path):</strong> La sequenza ottimale di interazioni in cui
+              tutto procede senza intoppi e l'obiettivo viene raggiunto.</li>
+            <li><strong>Flussi Alternativi ed Eccezioni:</strong> Percorsi varianti e gestione degli errori (es. "Cosa
+              succede se la carta di credito viene rifiutata?").</li>
+            <li><strong>Post-condizioni:</strong> Garanzie sullo stato del database e del sistema alla conclusione del
+              caso.</li>
           </ul>
         </div>
       </div>
@@ -241,21 +468,26 @@
     <div class="section-block" id="section-6">
       <h2><span class="dot"></span> L'Aiuto dell'IA (TuringBots)</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Nell'ingegneria dei requisiti moderna, l'Intelligenza Artificiale Generativa e i <strong>TuringBots</strong> stanno colmando il divario di comunicazione tra business e tecnici.
+        Nell'ingegneria dei requisiti moderna, l'Intelligenza Artificiale Generativa e i <strong>TuringBots</strong>
+        stanno colmando il divario di comunicazione tra business e tecnici.
       </p>
 
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Applicazioni AI nell'Analisi</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><strong>Simulatore di Stakeholder:</strong> I modelli LLM possono assumere il ruolo ("persona") di specifici utenti finali per evidenziare bisogni o edge cases che gli umani non avevano considerato.</li>
-            <li><strong>Analisi Semantica:</strong> I TuringBots analizzano decine di requisiti testuali per individuare "Bad smells" (come la <em>Trappola dell'Or</em>), ambiguità o conflitti di logica.</li>
-            <li><strong>Generazione Automatica Gherkin:</strong> A partire dalla trascrizione di un meeting, l'AI è in grado di estrarre autonomamente le <em>User Stories</em> e abbozzarne i <em>Criteri di Accettazione</em> in sintassi <code>Given-When-Then</code> pronta per l'automazione dei test.</li>
+            <li><strong>Simulatore di Stakeholder:</strong> I modelli LLM possono assumere il ruolo ("persona") di
+              specifici utenti finali per evidenziare bisogni o edge cases che gli umani non avevano considerato.</li>
+            <li><strong>Analisi Semantica:</strong> I TuringBots analizzano decine di requisiti testuali per individuare
+              "Bad smells" (come la <em>Trappola dell'Or</em>), ambiguità o conflitti di logica.</li>
+            <li><strong>Generazione Automatica Gherkin:</strong> A partire dalla trascrizione di un meeting, l'AI è in
+              grado di estrarre autonomamente le <em>User Stories</em> e abbozzarne i <em>Criteri di Accettazione</em>
+              in sintassi <code>Given-When-Then</code> pronta per l'automazione dei test.</li>
           </ul>
         </div>
       </div>
     </div>
-    
+
     <!-- Navigation -->
     <div class="back-btn-wrap">
       <a href="02-ciclo-di-vita.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 02 · Ciclo di Vita</a>
@@ -271,4 +503,5 @@
 
   <script src="../../shared/katchkit.js"></script>
 </body>
+
 </html>

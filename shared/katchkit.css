@@ -601,6 +601,11 @@ code.inline {
   --card-rgb: 34, 211, 238;
 }
 
+.card-variant-yellow {
+  --card-color: #f59e0b; /* Amber / Ocra */
+  --card-rgb: 245, 158, 11;
+}
+
 .card-def .header,
 .card-tip .header,
 .card-formula .header,
