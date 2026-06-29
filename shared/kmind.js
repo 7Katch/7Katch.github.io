@@ -2,11 +2,11 @@
  * KatchKit Markmap Loader (kmind.js)
  * Carica dinamicamente il file kmind.css e la libreria markmap-autoloader.
  */
-(function() {
+(function () {
   // Trova il percorso corretto da cui è stato caricato questo script (così funziona a qualsiasi profondità di cartelle!)
   const scriptElement = document.currentScript;
   let cssUrl = '../shared/kmind.css'; // Fallback
-  
+
   if (scriptElement && scriptElement.src) {
     // Sostituisce '.js' con '.css' mantenendo lo stesso identico percorso relativo/assoluto
     cssUrl = scriptElement.src.replace('.js', '.css');
@@ -16,7 +16,7 @@
   const linkTag = document.createElement('link');
   linkTag.rel = 'stylesheet';
   linkTag.href = cssUrl;
-  
+
   // FIX CRITICO: Markmap deve essere caricato SOLO DOPO che il CSS è stato applicato!
   // Se Markmap parte prima del CSS, calcola male le dimensioni dei box e i cerchi finiscono fuori posto.
   linkTag.onload = () => {
@@ -27,7 +27,7 @@
       let newLines = script.textContent.split('\n').map(line => {
         if (line.trim() === '---') inYaml = !inYaml;
         if (inYaml || line.trim() === '---') return line;
-        
+
         // Cerca righe che iniziano con #, -, *
         let match = line.match(/^(\s*(?:#+|-|\*)\s+)(.+)$/);
         if (match && !match[2].includes('kk-node')) {
@@ -62,7 +62,7 @@
       // Trova la linea o il cerchio che possiede il colore del ramo
       const shape = g.querySelector('line') || g.querySelector('circle') || g.querySelector('path');
       const box = g.querySelector('.kk-node');
-      
+
       if (shape && box) {
         const color = shape.getAttribute('stroke');
         // Se troviamo il colore, lo impostiamo come variabile CSS locale del box

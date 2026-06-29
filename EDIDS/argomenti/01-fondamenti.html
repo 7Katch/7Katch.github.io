@@ -88,18 +88,31 @@
         Un software non è definito buono solo se esegue le funzioni richieste, ma deve rispettare determinati attributi
         qualitativi essenziali:
       </p>
-      <ul>
-        <li><span class="keyword">Manutenibilità:</span> Il software deve poter evolvere per soddisfare i cambiamenti
-          nei requisiti dei clienti.</li>
-        <li><span class="keyword">Affidabilità e Sicurezza (Dependability):</span> Include caratteristiche come
-          affidabilità, sicurezza e protezione. Il software non deve causare danni fisici o economici in caso di
-          fallimento del sistema.</li>
-        <li><span class="keyword">Efficienza:</span> Il software non deve sprecare risorse di sistema, prestando
-          attenzione ai <span class="keyword">tempi di risposta</span>, ai tempi di elaborazione e all'utilizzo della
-          memoria.</li>
-        <li><span class="keyword">Usabilità:</span> Il software deve essere utilizzabile dagli utenti a cui è destinato,
-          con un'interfaccia intuitiva e una documentazione adeguata.</li>
-      </ul>
+      <div class="kk-feature-grid">
+        <div class="kk-feature-card">
+          <i class="bi bi-tools kk-feature-icon"></i>
+          <div class="kk-feature-title">Manutenibilità</div>
+          <div class="kk-feature-desc">Il software deve poter evolvere per soddisfare i continui cambiamenti nei requisiti dei clienti.</div>
+        </div>
+        
+        <div class="kk-feature-card">
+          <i class="bi bi-shield-check kk-feature-icon"></i>
+          <div class="kk-feature-title">Affidabilità e Sicurezza</div>
+          <div class="kk-feature-desc">Non deve causare danni fisici o economici in caso di fallimento. Assicura protezione e dependability.</div>
+        </div>
+        
+        <div class="kk-feature-card">
+          <i class="bi bi-lightning-charge kk-feature-icon"></i>
+          <div class="kk-feature-title">Efficienza</div>
+          <div class="kk-feature-desc">Massimizza l'uso delle risorse di sistema, ottimizzando i tempi di risposta e l'utilizzo della memoria.</div>
+        </div>
+        
+        <div class="kk-feature-card">
+          <i class="bi bi-person-heart kk-feature-icon"></i>
+          <div class="kk-feature-title">Usabilità</div>
+          <div class="kk-feature-desc">L'interfaccia deve risultare estremamente intuitiva per gli utenti target, affiancata da documentazione adeguata.</div>
+        </div>
+      </div>
     </div>
 
     <!-- 01.03 -->
@@ -133,30 +146,6 @@
       </p>
     </div>
 
-    <!-- Mappa Concettuale (Anteprima Mermaid.js) -->
-    <div class="section-block" id="mappa-concettuale">
-      <h2><span class="dot"></span> Mappa Concettuale (Anteprima)</h2>
-      <p>Questa mappa è generata automaticamente da testo tramite Mermaid.js!</p>
-      <div class="mermaid">
-        mindmap
-          root((Fondamenti<br>EDIDS))
-            Ingegneria Software
-              Disciplina Pratica
-              Sistemi Funzionanti
-              Vincoli (Tempo/Budget)
-            Buon Software
-              Manutenibilità
-              Affidabilità
-              Efficienza
-              Usabilità
-            Etica & Impatto
-              Responsabilità
-              Casi Reali (Ariane 5)
-            Impatto AI
-              Codice & Testing
-              Orchestrazione
-      </div>
-    </div>
 
     <!-- Navigation -->
     <div class="back-btn-wrap">
@@ -172,11 +161,7 @@
   </footer>
 
   <script src="../../shared/katchkit.js"></script>
-  <!-- Inizializzazione Mermaid.js -->
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'default' });
-  </script>
+  <script src="/shared/kmind.js"></script>
 </body>
 
 </html>

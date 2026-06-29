@@ -148,12 +148,49 @@ a:hover {
 code:not(pre code) {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.85em;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
-  padding: 0.2em 0.4em;
+  background: var(--code-bg);
+  padding: 0.15em 0.4em;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
 }
+
+/* ── 2.5 TEXT UTILITY CLASSES (Per non usare style="color:...") ── */
+.text-theme {
+  color: var(--kk-primary) !important;
+}
+
+/* Colore dinamico del tema (verde, corallo, ecc) */
+.text-accent {
+  color: var(--accent) !important;
+}
+
+/* Viola fisso */
+.text-coral {
+  color: var(--coral) !important;
+}
+
+/* Rosso/Corallo */
+.text-teal {
+  color: var(--teal) !important;
+}
+
+/* Azzurro */
+.text-green {
+  color: var(--green) !important;
+}
+
+/* Verde Smeraldo */
+.text-amber {
+  color: var(--amber) !important;
+}
+
+/* Giallo/Ambra */
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Grigio scuro/spento */
 
 
 /* ── 3. NAVBAR E BREADCRUMBS ─────────────────────────────── */
@@ -548,6 +585,22 @@ code.inline {
   --card-rgb: 245, 158, 11;
 }
 
+/* ── MODIFICATORI E COLORI CARDS ── */
+.active-border {
+  border-color: var(--card-color) !important;
+  background: rgba(var(--card-rgb), 0.05) !important;
+}
+
+.card-variant-accent {
+  --card-color: var(--accent);
+  --card-rgb: 124, 92, 252;
+}
+
+.card-variant-teal {
+  --card-color: var(--teal);
+  --card-rgb: 34, 211, 238;
+}
+
 .card-def .header,
 .card-tip .header,
 .card-formula .header,
@@ -576,7 +629,7 @@ code.inline {
 .card-tip .content,
 .card-formula .content,
 .card-warning .content {
-  padding: 16px;
+  padding: 24px 28px;
   color: var(--text-primary);
   line-height: 1.7;
 }
@@ -791,7 +844,8 @@ code.inline {
 
 .sb-sub-sections {
   list-style: none;
-  padding-left: 28px; /* Allinea col testo del parent */
+  padding-left: 28px;
+  /* Allinea col testo del parent */
   margin-top: 0;
   margin-bottom: 0;
   max-height: 0;
@@ -799,7 +853,7 @@ code.inline {
   transition: max-height 0.3s ease-in-out, margin-bottom 0.3s ease-in-out;
 }
 
-.sb-sections li.sb-active > .sb-sub-sections {
+.sb-sections li.sb-active>.sb-sub-sections {
   max-height: 800px;
   margin-bottom: 4px;
 }
@@ -812,17 +866,17 @@ code.inline {
   opacity: 0.5;
 }
 
-.sb-sections li.sb-active > .sb-link .bi-chevron-down {
+.sb-sections li.sb-active>.sb-link .bi-chevron-down {
   transform: rotate(180deg);
   opacity: 1;
 }
 
-.sb-sections li.user-collapsed > .sb-sub-sections {
+.sb-sections li.user-collapsed>.sb-sub-sections {
   max-height: 0 !important;
   margin-bottom: 0 !important;
 }
 
-.sb-sections li.user-collapsed > .sb-link .bi-chevron-down {
+.sb-sections li.user-collapsed>.sb-link .bi-chevron-down {
   transform: rotate(0deg) !important;
   opacity: 0.5 !important;
 }
@@ -2710,6 +2764,7 @@ nav.home-nav .nav-badge {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
 }
+
 .tag:hover {
   transform: translateY(-2px);
   background: var(--tag-bg);
@@ -2723,28 +2778,52 @@ nav.home-nav .nav-badge {
    ========================================================================== */
 
 /* 1. Terminal Cursor */
-.cursor-blink { animation: blink 1s step-end infinite; color: var(--accent-soft); }
-@keyframes blink { 50% { opacity: 0; } }
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+  color: var(--accent-soft);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
 
 /* 2. Soft Neon Pulse on Hover */
-.word-accent { display: inline-block; position: relative; transition: all 0.4s ease; }
-.word-accent:hover { 
+.word-accent {
+  display: inline-block;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.word-accent:hover {
   transform: scale(1.02);
   filter: drop-shadow(0 0 15px rgba(124, 92, 252, 0.4));
 }
 
 /* 3. Neon Spotlight on Cards */
 .materia-card::after {
-  content: ''; position: absolute; inset: 0;
+  content: '';
+  position: absolute;
+  inset: 0;
   background: radial-gradient(400px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(124, 92, 252, 0.15), transparent 40%);
-  opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 2;
   border-radius: inherit;
 }
-.materia-card:hover::after { opacity: 1; }
+
+.materia-card:hover::after {
+  opacity: 1;
+}
 
 /* 4. Animated Gradient Border on Featured Card */
 .materia-card.featured::before {
-  content: ''; position: absolute; inset: 0; height: auto;
+  content: '';
+  position: absolute;
+  inset: 0;
+  height: auto;
   background: linear-gradient(90deg, var(--border), var(--accent), var(--border), var(--teal), var(--border));
   background-size: 300% 100%;
   animation: rgbBorder 6s linear infinite;
@@ -2754,11 +2833,17 @@ nav.home-nav .nav-badge {
   padding: 1px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
-          mask-composite: exclude;
+  mask-composite: exclude;
 }
+
 @keyframes rgbBorder {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 300% 50%;
+  }
 }
 
 /* 5. Scroll Reveal Effect */
@@ -2766,11 +2851,13 @@ nav.home-nav .nav-badge {
   opacity: 0;
   transform: translateY(30px);
 }
+
 .js-reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.6s cubic-bezier(0.2, 1, 0.3, 1), transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
 }
+
 /* Evita di rompere l'hover originale delle card quando sono visibili */
 .materia-card.js-reveal.is-visible:hover,
 .section-card.js-reveal.is-visible:hover,
@@ -2779,26 +2866,68 @@ nav.home-nav .nav-badge {
 }
 
 /* 6. Hero Staggered Entrance Animation (Cinematic Unblur) */
-.hero .breadcrumb { opacity: 0; animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.05s; }
-.hero-home .hero-eyebrow, .hero .hero-eyebrow { opacity: 0; animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.1s; }
-.hero .topic-num { opacity: 0; animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.2s; }
-.hero-home h1, .hero h1 { opacity: 0; animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.3s; }
-.hero-home .hero-sub, .hero .hero-sub { opacity: 0; animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.4s; }
-.hero-home .hero-cta, .hero .hero-cta { opacity: 0; animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.5s; }
+.hero .breadcrumb {
+  opacity: 0;
+  animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.05s;
+}
+
+.hero-home .hero-eyebrow,
+.hero .hero-eyebrow {
+  opacity: 0;
+  animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.1s;
+}
+
+.hero .topic-num {
+  opacity: 0;
+  animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.2s;
+}
+
+.hero-home h1,
+.hero h1 {
+  opacity: 0;
+  animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.3s;
+}
+
+.hero-home .hero-sub,
+.hero .hero-sub {
+  opacity: 0;
+  animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.4s;
+}
+
+.hero-home .hero-cta,
+.hero .hero-cta {
+  opacity: 0;
+  animation: fadeUpBlur 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.5s;
+}
 
 @keyframes fadeUpBlur {
-  0% { opacity: 0; transform: translateY(30px); filter: blur(12px); }
-  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(12px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 
 /* 7. Neon Glow & Text Color Overrides */
-.hero-home h1, .hero h1, .page-hero h1 {
+.hero-home h1,
+.hero h1,
+.page-hero h1 {
   filter: drop-shadow(0 0 35px rgba(124, 92, 252, 0.45));
 }
 
-a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-card h3 {
+a.section-card h2,
+a.materia-card h2,
+a.materia-card .card-title,
+a.overview-card h3 {
   color: var(--text-primary) !important;
 }
+
 /* ==========================================================================
    16. EXAMPLES BLOCK & VS ROW
    ========================================================================== */
@@ -2911,6 +3040,7 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
     grid-template-columns: 1fr;
   }
 }
+
 /* -- 9. RETRO-COMPATIBILITA' (05-modellazione-design.html) -- */
 .section-intro {
   color: var(--text-secondary);
@@ -2918,6 +3048,7 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
   line-height: 1.7;
   margin-bottom: 2rem;
 }
+
 .eyebrow {
   color: var(--kk-primary);
   font-size: 0.85rem;
@@ -2926,6 +3057,7 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
   letter-spacing: 1px;
   margin-bottom: 0.5rem;
 }
+
 .principle-link {
   margin-top: 2rem;
   padding: 1.25rem;
@@ -2936,23 +3068,29 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
   line-height: 1.6;
   border-radius: 0 var(--r-md) var(--r-md) 0;
 }
+
 .grasp-card h3 {
   color: var(--text-primary);
 }
+
 .grasp-card h3::before {
-  content: ''; /* Remove any default if there was */
+  content: '';
+  /* Remove any default if there was */
 }
+
 /* Colora l'h3 della card con un colore primario per evitare il bianco puro che stona */
 .grasp-card .card-head h3 {
   color: var(--text-primary);
   font-weight: 600;
 }
+
 .grasp-card .card-head {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
 }
+
 .grasp-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -2969,7 +3107,7 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
   border-radius: var(--r-lg);
   margin: 2rem 0;
   padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 @media (min-width: 768px) {
@@ -3030,10 +3168,10 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
   text-align: center;
   border-radius: var(--r-sm);
   position: relative;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.05);
   transition: transform 0.2s;
-  
+
   /* Uso di variabili CSS per l'indentazione progressiva, senza hardcodare l'N-esimo elemento! */
   margin-left: calc(var(--step, 0) * 20px);
 }
@@ -3044,7 +3182,8 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
 }
 
 .kk-step:not(:last-child)::after {
-  content: '\F133'; /* arrow-down-right in bootstrap-icons */
+  content: '\F133';
+  /* arrow-down-right in bootstrap-icons */
   font-family: 'bootstrap-icons';
   position: absolute;
   top: 100%;
@@ -3135,10 +3274,207 @@ a.section-card h2, a.materia-card h2, a.materia-card .card-title, a.overview-car
     flex-direction: column;
     gap: 30px;
   }
+
   .kk-cycle-arrow {
     right: auto;
     bottom: -28px;
     top: auto;
     transform: rotate(90deg);
   }
+}
+
+/* -- 11. FEATURE CARDS (Griglia a schede) -- */
+.kk-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.kk-feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.kk-feature-icon {
+  font-size: 1.8rem;
+  color: var(--kk-primary);
+  /* Usa il colore del tema attivo */
+  margin-bottom: 0.5rem;
+}
+
+.kk-feature-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.kk-feature-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* -- 12. RAM ANIMATION (Waterfall vs Agile) -- */
+.kk-ram-board {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  margin: 2rem 0;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  gap: 2rem;
+}
+
+@media (min-width: 900px) {
+  .kk-ram-board {
+    flex-direction: row;
+    gap: 3rem;
+  }
+}
+
+.kk-ram-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.kk-ram-col-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 1rem;
+}
+
+.kk-ram-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.kk-ram-slot {
+  position: relative;
+  background: #0b1121;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Gold pins (Stile Cyberpunk/Hardware) */
+.kk-ram-slot::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 10%;
+  right: 10%;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    #fbbf24,
+    #fbbf24 3px,
+    transparent 3px,
+    transparent 6px
+  );
+  border-radius: 0 0 2px 2px;
+  opacity: 0.6;
+}
+
+.kk-ram-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: #64748b;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.kk-ram-chips {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.kk-ram-chip {
+  flex: 1;
+  height: 28px;
+  background: #1e293b;
+  border-radius: 3px;
+  border: 1px solid #334155;
+  opacity: 0.2;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animazione "Onda di Energia" */
+.kk-ram-chip[data-anim] {
+  animation: ramWave 10s infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes ramWave {
+  0%, 5% {
+    background: #1e293b;
+    border-color: #334155;
+    opacity: 0.2;
+    box-shadow: none;
+  }
+  15%, 35% {
+    background: var(--chip-color);
+    border-color: var(--chip-color);
+    opacity: 1;
+    box-shadow: 0 0 15px var(--chip-color), inset 0 0 8px rgba(255, 255, 255, 0.5);
+  }
+  45%, 100% {
+    background: #1e293b;
+    border-color: #334155;
+    opacity: 0.2;
+    box-shadow: none;
+  }
+}
+
+/* Colori semantici dei chip */
+.chip-req { --chip-color: var(--teal); }
+.chip-des { --chip-color: var(--amber); }
+.chip-dev { --chip-color: var(--accent); }
+.chip-tst { --chip-color: var(--green); }
+
+/* Legenda dei colori */
+.kk-ram-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.kk-ram-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kk-ram-legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
 }
