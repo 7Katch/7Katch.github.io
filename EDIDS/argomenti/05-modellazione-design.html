@@ -70,15 +70,10 @@
             <li data-target="pf">Pure Fabrication</li>
             <li data-target="in">Indirection</li>
             <li data-target="pv">Protected Variations</li>
+            <li data-target="summary">Tabella riassuntiva</li>
           </ul>
         </li>
-        <li data-target="singleton">Pattern GoF (Gang of Four)
-          <ul>
-            <li data-target="singleton">Singleton</li>
-            <li data-target="observer">Observer</li>
-            <li data-target="gof">Altri (Factory, Adapter...)</li>
-          </ul>
-        </li>
+        <li data-target="gof-patterns">I 7 Pattern GoF in CityLogic</li>
       </ul>
     </div>
 
@@ -320,15 +315,15 @@ flowchart LR
                     Giocatore --> Mappa : "1" mappaAttuale
             </pre>
           </div>
-          <div
-            style="background: #0a0a16; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <div
-              style="background: rgba(255,255,255,0.05); padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border);">
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+          <div class="kk-code-window">
+            <div class="kk-window-header">
+              <div class="kk-window-dots">
+                <div class="kk-window-dot red"></div>
+                <div class="kk-window-dot yellow"></div>
+                <div class="kk-window-dot green"></div>
+              </div>
             </div>
-            <div style="padding: 1rem; overflow-x: auto;">
+            <div class="kk-window-body">
               <pre style="margin:0; font-size: 13px; background: transparent; padding: 0;"><code class="language-java">public class Giocatore {
     // L'associazione UML diventa attributo
     private Mappa mappaAttuale;
@@ -364,15 +359,15 @@ classDiagram
     Entita <|-- Unita
             </pre>
           </div>
-          <div
-            style="background: #0a0a16; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <div
-              style="background: rgba(255,255,255,0.05); padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border);">
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+          <div class="kk-code-window">
+            <div class="kk-window-header">
+              <div class="kk-window-dots">
+                <div class="kk-window-dot red"></div>
+                <div class="kk-window-dot yellow"></div>
+                <div class="kk-window-dot green"></div>
+              </div>
             </div>
-            <div style="padding: 1rem; overflow-x: auto;">
+            <div class="kk-window-body">
               <pre style="margin:0; font-size: 13px; background: transparent; padding: 0;"><code class="language-java">public abstract class Entita {
     protected int hp;
     
@@ -408,15 +403,15 @@ classDiagram
     Persona "1" --> "1" CodiceFiscale : possiede >
             </pre>
           </div>
-          <div
-            style="background: #0a0a16; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <div
-              style="background: rgba(255,255,255,0.05); padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border);">
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+          <div class="kk-code-window">
+            <div class="kk-window-header">
+              <div class="kk-window-dots">
+                <div class="kk-window-dot red"></div>
+                <div class="kk-window-dot yellow"></div>
+                <div class="kk-window-dot green"></div>
+              </div>
             </div>
-            <div style="padding: 1rem; overflow-x: auto;">
+            <div class="kk-window-body">
               <pre style="margin:0; font-size: 13px; background: transparent; padding: 0;"><code class="language-java">public class Persona {
     private String nome;
     
@@ -447,15 +442,15 @@ classDiagram
     ProxyTexture ..> Texture : istanzia
             </pre>
           </div>
-          <div
-            style="background: #0a0a16; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <div
-              style="background: rgba(255,255,255,0.05); padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border);">
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+          <div class="kk-code-window">
+            <div class="kk-window-header">
+              <div class="kk-window-dots">
+                <div class="kk-window-dot red"></div>
+                <div class="kk-window-dot yellow"></div>
+                <div class="kk-window-dot green"></div>
+              </div>
             </div>
-            <div style="padding: 1rem; overflow-x: auto;">
+            <div class="kk-window-body">
               <pre style="margin:0; font-size: 13px; background: transparent; padding: 0;"><code class="language-java">public class ProxyTexture {
     private Texture veraTexture;
     
@@ -644,18 +639,18 @@ classDiagram
   private double multiplier;
   private int bonusPoints;
 
-  // ✔️ Player è l'esperto: conosce tutti i dati necessari
+  // <i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> Player è l'esperto: conosce tutti i dati necessari
   public int getTotalScore() {
     return (int)(baseScore * multiplier) + bonusPoints;
   }
 
-  // ✔️ Solo Player sa se ha ancora vite
+  // <i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> Solo Player sa se ha ancora vite
   public boolean isAlive() {
     return lives > 0;
   }
 }
 
-// ❌ Violazione — il controller non dovrebbe sapere come si calcola il punteggio
+// <i class="bi bi-x-circle-fill" style="margin-right: 0.25rem;"></i> Violazione — il controller non dovrebbe sapere come si calcola il punteggio
 // int total = (int)(player.baseScore * player.multiplier) + player.bonusPoints;</code></pre>
         </div>
       </div>
@@ -752,7 +747,7 @@ classDiagram
           <span class="code-filename">EntityFactory.java — Factory Pattern</span>
         </div>
         <div class="code-body">
-          <pre><code class="language-java">// ✔️ La Factory accentra tutta la logica complessa di creazione e inizializzazione
+          <pre><code class="language-java">// <i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> La Factory accentra tutta la logica complessa di creazione e inizializzazione
 public class EntityFactory {
   public static Entity createEntity(String type, int x, int y) {
     switch (type.toLowerCase()) {
@@ -842,7 +837,8 @@ flowchart TD
           </p>
           <div class="vs-diagram-row">
             <div class="vs-diagram-box vs-diagram-bad">
-              <h5 class="vs-diagram-title">❌ Accoppiamento Forte (Problema)</h5>
+              <h5 class="vs-diagram-title"><i class="bi bi-x-circle-fill" style="margin-right: 0.25rem;"></i>
+                Accoppiamento Forte (Problema)</h5>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     GC[GameController]:::grey --> SUI[ScoreUI]:::bad
@@ -850,7 +846,8 @@ flowchart LR
               </pre>
             </div>
             <div class="vs-diagram-box vs-diagram-good">
-              <h5 class="vs-diagram-title">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <h5 class="vs-diagram-title"><i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> Basso
+                Accoppiamento (Soluzione)</h5>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     GC[GameController]:::grey -.-> I[ IGameObserver ]
@@ -871,14 +868,16 @@ flowchart LR
           </p>
           <div class="vs-diagram-row">
             <div class="vs-diagram-box vs-diagram-bad">
-              <h5 class="vs-diagram-title">❌ Accoppiamento Forte (Problema)</h5>
+              <h5 class="vs-diagram-title"><i class="bi bi-x-circle-fill" style="margin-right: 0.25rem;"></i>
+                Accoppiamento Forte (Problema)</h5>
               <pre class="mermaid vs-diagram-mermaid">
-flowchart LR
-    S[UserService]:::grey --> M[MySQLRepo]:::bad
+                flowchart LR
+                    S[UserService]:::grey --> M[MySQLRepo]:::bad
               </pre>
             </div>
             <div class="vs-diagram-box vs-diagram-good">
-              <h5 class="vs-diagram-title">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <h5 class="vs-diagram-title"><i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> Basso
+                Accoppiamento (Soluzione)</h5>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     S[UserService]:::grey -.-> I[ IUserRepository ]
@@ -898,7 +897,8 @@ flowchart LR
           </p>
           <div class="vs-diagram-row">
             <div class="vs-diagram-box vs-diagram-bad">
-              <h5 class="vs-diagram-title">❌ Accoppiamento Forte (Problema)</h5>
+              <h5 class="vs-diagram-title"><i class="bi bi-x-circle-fill" style="margin-right: 0.25rem;"></i>
+                Accoppiamento Forte (Problema)</h5>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     OS[OrderService]:::grey --> ES[EmailSender]:::bad
@@ -906,7 +906,8 @@ flowchart LR
               </pre>
             </div>
             <div class="vs-diagram-box vs-diagram-good">
-              <h5 class="vs-diagram-title">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <h5 class="vs-diagram-title"><i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> Basso
+                Accoppiamento (Soluzione)</h5>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     OS[OrderService]:::grey -.-> I[ INotifier ]
@@ -926,7 +927,8 @@ flowchart LR
           </p>
           <div class="vs-diagram-row">
             <div class="vs-diagram-box vs-diagram-bad">
-              <h5 class="vs-diagram-title">❌ Accoppiamento Forte (Problema)</h5>
+              <h5 class="vs-diagram-title"><i class="bi bi-x-circle-fill" style="margin-right: 0.25rem;"></i>
+                Accoppiamento Forte (Problema)</h5>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     B[BusinessLogic]:::grey --> L4J[Log4j]:::bad
@@ -934,7 +936,8 @@ flowchart LR
               </pre>
             </div>
             <div class="vs-diagram-box vs-diagram-good">
-              <h5 class="vs-diagram-title">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <h5 class="vs-diagram-title"><i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> Basso
+                Accoppiamento (Soluzione)</h5>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     B[BusinessLogic]:::grey -.-> I[ ILogger ]
@@ -981,14 +984,17 @@ flowchart LR
         </div>
         <div class="example-item">
           <div class="example-label">Esempio 2 — Citylogic-Engine-BYZZ (MainView Tutto-fare vs MVC)</div>
-          <p style="margin-bottom: 1rem;">Una classe dovrebbe avere un unico scopo e responsabilità focalizzate. Mescolare l'aggiornamento della UI con i calcoli della logica di business distrugge la coesione.</p>
+          <p style="margin-bottom: 1rem;">Una classe dovrebbe avere un unico scopo e responsabilità focalizzate.
+            Mescolare l'aggiornamento della UI con i calcoli della logica di business distrugge la coesione.</p>
           <div class="vs-diagram-row">
             <div class="vs-diagram-box vs-diagram-bad">
-              <h5 class="vs-diagram-title">❌ Bassa Coesione (Problema)</h5>
-              <p class="vs-diagram-desc">La classe <code>MainView</code> disegna la grafica, cattura l'input e calcola direttamente le tasse. Fa troppe cose slegate tra loro.</p>
+              <h5 class="vs-diagram-title"><i class="bi bi-x-circle-fill" style="margin-right: 0.25rem;"></i> Bassa
+                Coesione (Problema)</h5>
+              <p class="vs-diagram-desc">La classe <code>MainView</code> disegna la grafica, cattura l'input e calcola
+                direttamente le tasse. Fa troppe cose slegate tra loro.</p>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    M[MainView<br/>Tutto-fare]:::bad
+    M[MainView]:::bad
     M --> GUI[Disegna Grafica]
     M --> INPUT[Cattura Input]
     M --> CALC[Calcola Tasse]
@@ -998,8 +1004,11 @@ flowchart LR
               </pre>
             </div>
             <div class="vs-diagram-box vs-diagram-good">
-              <h5 class="vs-diagram-title">✔️ Alta Coesione (Soluzione MVC)</h5>
-              <p class="vs-diagram-desc">I compiti vengono divisi: <code>MainView</code> disegna l'interfaccia, <code>GameController</code> gestisce l'input e <code>Citta</code> calcola le tasse.</p>
+              <h5 class="vs-diagram-title"><i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> Alta
+                Coesione (Soluzione MVC)</h5>
+              <p class="vs-diagram-desc">I compiti vengono divisi: <code>MainView</code> disegna l'interfaccia,
+                <code>GameController</code> gestisce l'input e <code>Citta</code> calcola le tasse.
+              </p>
               <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     V[MainView]:::good -->|Disegna| GUI[Grafica]
@@ -1095,10 +1104,14 @@ flowchart LR
           </div>
         </div>
 
-        <div style="margin-top: 2rem; background: rgba(124, 92, 252, 0.05); border: 1px solid rgba(124, 92, 252, 0.2); padding: 1.5rem; border-radius: 8px;">
-          <h4 style="color: #7c5cfc; margin-top: 0; text-align: center;">Citylogic-Engine-BYZZ: Flusso del GameController</h4>
+        <div
+          style="margin-top: 2rem; background: rgba(124, 92, 252, 0.05); border: 1px solid rgba(124, 92, 252, 0.2); padding: 1.5rem; border-radius: 8px;">
+          <h4 style="color: #7c5cfc; margin-top: 0; text-align: center;">Citylogic-Engine-BYZZ: Flusso del
+            GameController</h4>
           <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
-            Il <code>GameController</code> agisce da vero "direttore d'orchestra" (Pattern Controller GRASP). La Logica Core a sinistra è indipendente, e la View a destra gestisce solo l'input/output. Il Controller fa da smistatore bidirezionale.
+            Il <code>GameController</code> agisce da vero "direttore d'orchestra" (Pattern Controller GRASP). La Logica
+            Core a sinistra è indipendente, e la View a destra gestisce solo l'input/output. Il Controller fa da
+            smistatore bidirezionale.
           </p>
           <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
@@ -1128,68 +1141,76 @@ flowchart LR
           </pre>
         </div>
       </div>
-      
 
-    <!-- ═══════════════════════════════════════════
+
+      <!-- ═══════════════════════════════════════════
      6. POLYMORPHISM
      ═══════════════════════════════════════════ -->
-    <div class="section-block" id="pl">
-      <h2><span class="dot"></span> GRASP 06: Polymorphism <span class="sub-tag">fondamentale</span></h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Quando il comportamento varia in base al tipo, usa il polimorfismo invece di if/switch. Ogni tipo gestisce
-        la propria variazione implementando un'interfaccia comune.
-      </p>
+      <div class="section-block" id="pl">
+        <h2><span class="dot"></span> GRASP 06: Polymorphism <span class="sub-tag">fondamentale</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Quando il comportamento varia in base al tipo, usa il polimorfismo invece di if/switch. Ogni tipo gestisce
+          la propria variazione implementando un'interfaccia comune.
+        </p>
 
-      <div class="card-def">
-        <div class="header">PL · Polimorfismo vs. if/switch</div>
-        <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">
-            Un <code>if (type == "HEALTH") ... else if (type == "WEAPON") ...</code> deve essere aggiornato ogni
-            volta che si aggiunge un tipo. Con il polimorfismo si aggiunge una nuova classe — il codice esistente
-            non si tocca (Open/Closed Principle).
-          </p>
-          <div style="margin-top:1rem;"><span class="badge-sm"
-              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">OOP</span>
+        <div class="card-def">
+          <div class="header">PL · Polimorfismo vs. if/switch</div>
+          <div class="content">
+            <p style="margin:0; color:var(--text-secondary);">
+              Un <code class="text-accent">if (type == "HEALTH") ... else if (type == "WEAPON") ...</code> deve essere
+              aggiornato ogni
+              volta che si aggiunge un tipo. Con il polimorfismo si aggiunge una nuova classe — il codice esistente
+              non si tocca (Open/Closed Principle).
+            </p>
+            <div style="margin-top:1rem;"><span class="badge-sm"
+                style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">OOP</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="examples-block" style="margin-top:1.5rem">
-        <div class="example-item">
-          <div class="example-label">Esempio — Calcolo Tasse in Citylogic-Engine-BYZZ</div>
-          <p>La città deve calcolare il gettito fiscale di tutti gli edifici. Ogni tipo di edificio (Residenziale, Commerciale, Industriale) ha regole di tassazione completamente diverse. Invece di far calcolare alla Città le tasse chiedendo il "tipo" dell'edificio, deleghiamo il calcolo all'edificio stesso tramite il polimorfismo (interfaccia <code>Tassabile</code>).</p>
-        </div>
+        <div class="examples-block" style="margin-top:1.5rem">
+          <div class="example-item">
+            <div class="example-label">Esempio — Calcolo Tasse in Citylogic-Engine-BYZZ</div>
+            <p>La città deve calcolare il gettito fiscale di tutti gli edifici. Ogni tipo di edificio (Residenziale,
+              Commerciale, Industriale) ha regole di tassazione completamente diverse. Invece di far calcolare alla
+              Città le tasse chiedendo il "tipo" dell'edificio, deleghiamo il calcolo all'edificio stesso tramite il
+              polimorfismo (interfaccia <code>Tassabile</code>).</p>
+          </div>
 
-        <div class="vs-row">
-          <div class="vs-box vs-bad">
-            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Senza polimorfismo
-            </div>
-            <div class="code-body">
-              <pre style="margin:0; background:transparent; padding:0;"><code class="language-java">if (edificio.getTipo().equals("Residenziale")) {
+          <div class="vs-row">
+            <div class="vs-box vs-bad">
+              <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Senza polimorfismo
+              </div>
+              <div class="code-body">
+                <pre style="margin:0; background:transparent; padding:0;"><code class="language-java">if (edificio.getTipo().equals("Residenziale")) {
     return calcolaTassaResidenziale();
 } else if (edificio.getTipo().equals("Commerciale")) {
     return calcolaTassaCommerciale();
 }</code></pre>
+              </div>
+              <p>Alto rischio di refusi (es. "residenziale" con la minuscola) e forte violazione dell'Open/Closed
+                Principle: ogni nuovo edificio richiede di modificare questo if-else.</p>
             </div>
-          <p>Alto rischio di refusi (es. "residenziale" con la minuscola) e forte violazione dell'Open/Closed Principle: ogni nuovo edificio richiede di modificare questo if-else.</p>  
-          </div>
-          <div class="vs-box vs-good">
-            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con polimorfismo
+            <div class="vs-box vs-good">
+              <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con
+                polimorfismo
+              </div>
+              <p><code>edificio.calcolaTassa();</code><br>Ogni implementazione di <code>Tassabile</code> (o sottoclasse
+                di <code>Edificio</code>) sa calcolare la propria tassa in autonomia. Aggiungere l'edificio
+                <code>Industriale</code> non toccherà mai il codice esistente.
+              </p>
             </div>
-            <p><code>edificio.calcolaTassa();</code><br>Ogni implementazione di <code>Tassabile</code> (o sottoclasse di <code>Edificio</code>) sa calcolare la propria tassa in autonomia. Aggiungere l'edificio <code>Industriale</code> non toccherà mai il codice esistente.
-            </p>
           </div>
         </div>
-      </div>
 
-      <div class="code-block" style="margin-top:1.25rem">
-        <div class="code-header">
-          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        <div class="code-block" style="margin-top:1.25rem">
+          <div class="code-header">
+            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+            </div>
+            <span class="code-filename">Tassabile.java — Polymorphism in Citylogic</span>
           </div>
-          <span class="code-filename">Tassabile.java — Polymorphism in Citylogic</span>
-        </div>
-        <div class="code-body">
-          <pre><code class="language-java">public interface Tassabile {
+          <div class="code-body">
+            <pre><code class="language-java">public interface Tassabile {
   double calcolaTassa();
 }
 
@@ -1211,471 +1232,398 @@ public class EdificioCommerciale implements Tassabile {
   }
 }
 
-// ✔️ La Citta calcola il totale invocando l'interfaccia (Polimorfismo puro)
+// <i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> La Citta calcola il totale invocando l'interfaccia (Polimorfismo puro)
 double totaleTasse = 0;
 for (Tassabile t : edificiTassabili) {
   totaleTasse += t.calcolaTassa(); 
 }</code></pre>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-     7. PURE FABRICATION
-     ═══════════════════════════════════════════ -->
-    <div class="section-block" id="pf">
-      <h2><span class="dot"></span> GRASP 07: Pure Fabrication <span class="sub-tag">fondamentale</span></h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Classe "artificiale" che non esiste nel dominio del problema, ma viene creata per rispettare Low Coupling e
-        High Cohesion. Risolve problemi tecnici (salvataggi, logging, comunicazione) senza sporcare le classi di
-        dominio.
-      </p>
-
-      <div class="card-def">
-        <div class="header">PF · Quando inventare una classe</div>
-        <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">
-            Quando nessuna classe del dominio è il posto giusto per una responsabilità tecnica (salvare su DB,
-            inviare email, fare cache), si inventa una classe di servizio. Non deve avere senso nel dominio reale —
-            deve avere senso nel design.
-          </p>
-          <div style="margin-top:1rem;"><span class="badge-sm"
-              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">astrazione</span>
           </div>
         </div>
       </div>
 
-      <div class="examples-block" style="margin-top:1.5rem">
-        <div class="example-item">
-          <div class="example-label">Esempio — Salvataggio in Citylogic-Engine-BYZZ</div>
-          <p>La classe <code>Simulatore</code> gestisce il tempo e le regole del gioco. Se le assegnassimo anche il compito di salvare e caricare i file su disco, diventerebbe una "God Class" inquinata da logiche tecniche (File I/O, Json, Eccezioni di scrittura). Invece, inventiamo una classe "artificiale", il <code>SaveManager</code>, che si fa carico unicamente di questo compito.</p>
+      <!-- ═══════════════════════════════════════════
+     7. PURE FABRICATION
+     ═══════════════════════════════════════════ -->
+      <div class="section-block" id="pf">
+        <h2><span class="dot"></span> GRASP 07: Pure Fabrication <span class="sub-tag">fondamentale</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Classe "artificiale" che non esiste nel dominio del problema, ma viene creata per rispettare Low Coupling e
+          High Cohesion. Risolve problemi tecnici (salvataggi, logging, comunicazione) senza sporcare le classi di
+          dominio.
+        </p>
+
+        <div class="card-def">
+          <div class="header">PF · Quando inventare una classe</div>
+          <div class="content">
+            <p style="margin:0; color:var(--text-secondary);">
+              Quando nessuna classe del dominio è il posto giusto per una responsabilità tecnica (salvare su DB,
+              inviare email, fare cache), si inventa una classe di servizio. Non deve avere senso nel dominio reale —
+              deve avere senso nel design.
+            </p>
+            <div style="margin-top:1rem;"><span class="badge-sm"
+                style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">astrazione</span>
+            </div>
+          </div>
         </div>
 
-        <div class="vs-diagram-row">
-          <div class="vs-diagram-box vs-diagram-bad">
-            <h5 class="vs-diagram-title">❌ Senza Pure Fabrication</h5>
-            <p class="vs-diagram-desc">Il <code>Simulatore</code> fa tutto da solo, inquinando il dominio del gioco con responsabilità tecniche.</p>
-            <pre class="mermaid vs-diagram-mermaid">
+        <div class="examples-block" style="margin-top:1.5rem">
+          <div class="example-item">
+            <div class="example-label">Esempio — Salvataggio in Citylogic-Engine-BYZZ</div>
+            <p>La classe <code>Simulatore</code> gestisce il tempo e le regole del gioco. Se le assegnassimo anche il
+              compito di salvare e caricare i file su disco, diventerebbe una "God Class" inquinata da logiche tecniche
+              (File I/O, Json, Eccezioni di scrittura). Invece, inventiamo una classe "artificiale", il
+              <code>SaveManager</code>, che si fa carico unicamente di questo compito.
+            </p>
+          </div>
+
+          <div class="vs-diagram-row">
+            <div class="vs-diagram-box vs-diagram-bad">
+              <h5 class="vs-diagram-title"><i class="bi bi-x-circle-fill" style="margin-right: 0.25rem;"></i> Senza Pure
+                Fabrication</h5>
+              <p class="vs-diagram-desc">Il <code>Simulatore</code> fa tutto da solo, inquinando il dominio del gioco
+                con responsabilità tecniche.</p>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart TD
     S["<b>Simulatore (God Class)</b><hr/>+ avanzaTempo()<br/>+ aggiornaMeteo()<br/>+ salvaPartita()<br/>+ caricaPartita()"]:::bad
             </pre>
-          </div>
-          <div class="vs-diagram-box vs-diagram-good">
-            <h5 class="vs-diagram-title">✔️ Con Pure Fabrication</h5>
-            <p class="vs-diagram-desc">Fabbrichiamo un <code>SaveManager</code>. Alta coesione per entrambi, e il Simulatore rimane "puro".</p>
-            <pre class="mermaid vs-diagram-mermaid">
+            </div>
+            <div class="vs-diagram-box vs-diagram-good">
+              <h5 class="vs-diagram-title"><i class="bi bi-check-circle-fill" style="margin-right: 0.25rem;"></i> Con
+                Pure Fabrication</h5>
+              <p class="vs-diagram-desc">Fabbrichiamo un <code>SaveManager</code>. Alta coesione per entrambi, e il
+                Simulatore rimane "puro".</p>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     S[Simulatore]:::good -->|Delega| SM[SaveManager<br/>Pure Fabricator]:::good
             </pre>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- ═══════════════════════════════════════════
+      <!-- ═══════════════════════════════════════════
      8. INDIRECTION
      ═══════════════════════════════════════════ -->
-    <div class="section-block" id="in">
-      <h2><span class="dot"></span> GRASP 08: Indirection</h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Introduce un intermediario per ridurre l'accoppiamento diretto tra due classi. L'intermediario assorbe le
-        dipendenze e consente a ciascun lato di evolversi indipendentemente.
-      </p>
+      <div class="section-block" id="in">
+        <h2><span class="dot"></span> GRASP 08: Indirection</h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Introduce un intermediario per ridurre l'accoppiamento diretto tra due classi. L'intermediario assorbe le
+          dipendenze e consente a ciascun lato di evolversi indipendentemente.
+        </p>
 
-      <div class="card-def">
-        <div class="header">IN · Il valore dell'intermediario</div>
-        <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">
-            "All problems in computer science can be solved by another level of indirection." — David Wheeler.
-            L'indirezione è la base di pattern come Observer, Adapter, Proxy, Facade, e dell'intera architettura a
-            layer.
-          </p>
-          <div style="margin-top:1rem;"><span class="badge-sm"
-              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">disaccoppiamento</span>
+        <div class="card-def">
+          <div class="header">IN · Il valore dell'intermediario</div>
+          <div class="content">
+            <p style="margin:0; color:var(--text-secondary);">
+              "All problems in computer science can be solved by another level of indirection." — David Wheeler.
+              L'indirezione è la base di pattern come Observer, Adapter, Proxy, Facade, e dell'intera architettura a
+              layer.
+            </p>
+            <div style="margin-top:1rem;"><span class="badge-sm"
+                style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">disaccoppiamento</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="examples-block" style="margin-top:1.5rem">
-        <div class="example-item">
-          <div class="example-label">Esempio 1 — Gioco</div>
-          <p><code>IGameObserver</code> è il livello di indirezione tra <code>GameSystem</code> e
-            <code>ScoreUI</code> / <code>SoundManager</code>. I due lati non si conoscono, comunicano solo
-            attraverso l'interfaccia.
-          </p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 2 — Adapter</div>
-          <p>La tua app usa <code>IEmailService</code>. Oggi l'implementazione chiama SendGrid, domani Mailgun.
-            L'adapter è l'intermediario che traduce l'interfaccia comune nell'API specifica del provider. L'app
-            non cambia mai.</p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 3 — Message Broker</div>
-          <p>Un microservizio A pubblica un evento su Kafka. Il microservizio B lo consuma. Non si conoscono
-            direttamente. Kafka è il livello di indirezione che li disaccoppia: A e B possono scalare,
-            aggiornarsi e fallire indipendentemente.</p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 4 — DNS</div>
-          <p>Il DNS è indirezione pura: il client chiede "dove trovo google.com?" e riceve un IP. Se Google cambia
-            server, aggiorna il DNS — tutti i client continuano a funzionare senza sapere nulla del cambio.</p>
-        </div>
-
-        <div class="vs-row">
-          <div class="vs-box vs-bad">
-            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Dipendenza diretta
-            </div>
-            <p><code>GameSystem</code> chiama <code>scoreUI.update()</code>, <code>soundManager.play()</code>,
-              <code>achievementTracker.check()</code> direttamente. Aggiungere un effetto richiede modificare
-              <code>GameSystem</code>.
+        <div class="examples-block" style="margin-top:1.5rem">
+          <div class="example-item">
+            <div class="example-label">Esempio 1 — Gioco</div>
+            <p><code>IGameObserver</code> è il livello di indirezione tra <code>GameSystem</code> e
+              <code>ScoreUI</code> / <code>SoundManager</code>. I due lati non si conoscono, comunicano solo
+              attraverso l'interfaccia.
             </p>
           </div>
-          <div class="vs-box vs-good">
-            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con indirezione
-            </div>
-            <p><code>GameSystem</code> chiama <code>notifyObservers(event)</code>. Chi vuole reagire implementa
-              <code>IGameObserver</code> e si registra. <code>GameSystem</code> non conosce chi ascolta.
-            </p>
+          <div class="example-item">
+            <div class="example-label">Esempio 2 — Adapter</div>
+            <p>La tua app usa <code>IEmailService</code>. Oggi l'implementazione chiama SendGrid, domani Mailgun.
+              L'adapter è l'intermediario che traduce l'interfaccia comune nell'API specifica del provider. L'app
+              non cambia mai.</p>
           </div>
+          <div class="example-item">
+            <div class="example-label">Esempio 3 — Message Broker</div>
+            <p>Un microservizio A pubblica un evento su Kafka. Il microservizio B lo consuma. Non si conoscono
+              direttamente. Kafka è il livello di indirezione che li disaccoppia: A e B possono scalare,
+              aggiornarsi e fallire indipendentemente.</p>
+          </div>
+          <div class="example-item">
+            <div class="example-label">Esempio 4 — DNS</div>
+            <p>Il DNS è indirezione pura: il client chiede "dove trovo google.com?" e riceve un IP. Se Google cambia
+              server, aggiorna il DNS — tutti i client continuano a funzionare senza sapere nulla del cambio.</p>
+          </div>
+
+          <div class="vs-row">
+            <div class="vs-box vs-bad">
+              <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Dipendenza diretta
+              </div>
+              <p><code>Simulatore</code> chiama <code>MainView.aggiorna()</code>, <code>AudioSystem.play()</code>, e
+                <code>Stats.calcola()</code> direttamente. Aggiungere un nuovo componente richiede di modificare il
+                <code>Simulatore</code>.
+              </p>
+            </div>
+            <div class="vs-box vs-good">
+              <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con
+                indirezione
+              </div>
+              <p><code>Simulatore</code> chiama <code>notifyObservers()</code>. Chi vuole reagire agli eventi
+                implementa <code>CityObserver</code> e si registra. Il <code>Simulatore</code> non sa chi lo ascolta.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="kk-callout theme-emerald">
+          <strong>Collegamento →</strong>&nbsp; <code class="text-coral">Indirection</code> e <code
+            class="text-coral">Pure Fabrication</code> spesso coincidono: l'intermediario che
+          si introduce è spesso una Pure Fabrication (una classe che non esiste nel dominio, ma serve per
+          disaccoppiare).
         </div>
       </div>
 
-      <div class="principle-link"
-        style="margin-top:2rem; padding:1.25rem; background:rgba(255,255,255,0.02); border-left:3px solid var(--kk-primary); color:var(--text-secondary); font-size:0.95rem; line-height:1.6; border-radius:0 10px 10px 0;">
-        <strong>Collegamento →</strong>&nbsp; Indirection e Pure Fabrication spesso coincidono: l'intermediario che
-        si introduce è spesso una Pure Fabrication (una classe che non esiste nel dominio, ma serve per
-        disaccoppiare).
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
+      <!-- ═══════════════════════════════════════════
      9. PROTECTED VARIATIONS
      ═══════════════════════════════════════════ -->
-    <div class="section-block" id="pv">
-      <h2><span class="dot"></span> GRASP 09: Protected Variations</h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Identifica i punti del sistema dove le variazioni sono prevedibili (algoritmi, formati, provider esterni,
-        regole di business) e proteggi le parti stabili con interfacce. Le variazioni sono libere; il nucleo stabile
-        non si tocca mai.
-      </p>
+      <div class="section-block" id="pv">
+        <h2><span class="dot"></span> GRASP 09: Protected Variations <span class="sub-tag">fondamentale</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Identifica i punti del sistema dove le variazioni sono prevedibili (algoritmi, formati, provider esterni,
+          regole di business) e proteggi le parti stabili con interfacce. Le variazioni sono libere; il nucleo stabile
+          non si tocca mai.
+        </p>
 
-      <div class="card-def">
-        <div class="header">PV · Cosa è stabile, cosa cambia?</div>
-        <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">
-            Il design migliore isola ciò che cambia da ciò che rimane stabile. Ciò che è stabile (interfaccia
-            pubblica, contratto) va protetto. Ciò che cambia (implementazione, algoritmo, fornitore) va isolato
-            dietro un'astrazione.
-          </p>
-          <div style="margin-top:1rem;"><span class="badge-sm"
-              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">stabilità</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="examples-block" style="margin-top:1.5rem">
-        <div class="example-item">
-          <div class="example-label">Esempio 1 — Gioco</div>
-          <p>Il rendering può cambiare (console, GUI Swing, web): <code>IGameObserver</code> protegge il core. La
-            logica di gioco non cambia mai per colpa del rendering. Il contratto è stabile; l'implementazione è
-            libera di variare.</p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 2 — Sorting</div>
-          <p><code>ISortStrategy</code> protegge il codice che ordina dati dalle variazioni di algoritmo
-            (quicksort, mergesort, timsort). Si può cambiare l'algoritmo a runtime senza toccare chi usa il
-            sort.</p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 3 — Provider di pagamento</div>
-          <p>Il contratto <code>IPaymentGateway</code> è stabile. Le implementazioni (<code>StripeGateway</code>,
-            <code>PayPalGateway</code>) possono cambiare o aggiungersi. Il sistema di checkout non sa quale
-            gateway usa e non cambia.
-          </p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 4 — Serializzazione</div>
-          <p><code>ISerializer</code> con <code>serialize(obj)</code> e <code>deserialize(bytes)</code> protegge
-            il codice dal formato: JSON, XML, Protobuf, MessagePack. Si cambia implementazione senza toccare la
-            logica applicativa.</p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 5 — Cambio di database</div>
-          <p>L'interfaccia <code>IProductRepository</code> è stabile. Sotto c'è
-            <code>PostgreSQLProductRepository</code>. Migrare a MongoDB significa scrivere
-            <code>MongoProductRepository</code> senza toccare nessun servizio. Il contratto protegge tutto il
-            resto.
-          </p>
-        </div>
-
-        <div class="vs-row">
-          <div class="vs-box vs-bad">
-            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Non protetto</div>
-            <p>Il codice di business chiama direttamente metodi specifici di Stripe. Cambiare provider significa
-              riscrivere metà applicazione. Ogni variazione di API esterna si propaga nel codice interno.</p>
-          </div>
-          <div class="vs-box vs-good">
-            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Protetto</div>
-            <p>Il codice di business chiama <code>IPaymentGateway.charge(amount)</code>. La variazione (quale
-              provider) è isolata dietro l'interfaccia. Il business logic non cambia mai per motivi tecnici.
+        <div class="card-def">
+          <div class="header">PV · Cosa è stabile, cosa cambia?</div>
+          <div class="content">
+            <p style="margin:0; color:var(--text-secondary);">
+              Il design migliore isola ciò che cambia da ciò che rimane stabile. Ciò che è stabile (interfaccia
+              pubblica, contratto) va protetto. Ciò che cambia (implementazione, algoritmo, fornitore) va isolato
+              dietro un'astrazione.
             </p>
+            <div style="margin-top:1rem;"><span class="badge-sm"
+                style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">stabilità</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+          <div class="kk-code-window">
+            <div class="kk-window-header">
+              <div class="kk-window-dots">
+                <div class="kk-window-dot red"></div>
+                <div class="kk-window-dot yellow"></div>
+                <div class="kk-window-dot green"></div>
+              </div>
+              <div class="kk-window-title">Protected Variations in CityLogic (UML)</div>
+            </div>
+            <div class="kk-window-body" style="display:flex; justify-content:center;">
+              <pre class="mermaid" style="background:transparent; padding:0; margin:0;">
+classDiagram
+    class Simulatore
+    class ITassabile {
+        &lt;&lt;interface&gt;&gt;
+        +calcolaTasse()
+    }
+    class Stadio
+    class Ospedale
+    class Casa
+    
+    Simulatore ..> ITassabile : Usa
+    ITassabile &lt;|.. Stadio : Implementa
+    ITassabile &lt;|.. Ospedale : Implementa
+    ITassabile &lt;|.. Casa : Implementa
+    
+    style Simulatore :::blue
+    style ITassabile :::purple
+    style Stadio :::grey
+    style Ospedale :::grey
+    style Casa :::grey
+              </pre>
+            </div>
+          </div>
+
+          <div class="vs-row">
+            <div class="vs-box vs-bad">
+              <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Non protetto</div>
+              <p>Il <code>Simulatore</code> calcola le tasse usando lunghi <code>if/switch</code> sui tipi di edificio.
+                Aggiungere un nuovo edificio (es. <code>Stadio</code>) costringe a modificare il cuore del simulatore,
+                rischiando di romperlo.</p>
+            </div>
+            <div class="vs-box vs-good">
+              <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Protetto</div>
+              <p>Il <code>Simulatore</code> delega tutto chiamando <code>edificio.calcolaTasse()</code> sull'interfaccia
+                <code>ITassabile</code>. Le variazioni fiscali sono isolate: il simulatore è protetto al 100%.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- ═══════════════════════════════════════════
+      <!-- ═══════════════════════════════════════════
      TABELLA RIASSUNTIVA
      ═══════════════════════════════════════════ -->
-    <div class="section-block" id="summary">
-      <div class="eyebrow">Tutti e 9 · Riepilogo</div>
-      <h2 class="section-title">Tabella riassuntiva</h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">Un colpo d'occhio su tutti i
-        principi GRASP con la domanda chiave da porsi durante il
-        design.</p>
+      <div class="section-block" id="summary">
+        <div class="eyebrow">Tutti e 9 · Riepilogo</div>
+        <h2 class="section-title">Tabella riassuntiva</h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">Un colpo d'occhio su tutti i
+          principi GRASP con la domanda chiave da porsi durante il
+          design.</p>
 
-      <div
-        style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
-        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:14px;">
-          <thead style="background:rgba(255,255,255,0.03); border-bottom:1px solid var(--border);">
-            <tr>
-              <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Principio</th>
-              <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Categoria</th>
-              <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Domanda chiave</th>
-              <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Anti-pattern che risolve</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Information Expert</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-resp">responsabilità</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Chi ha i dati per fare questa cosa?</td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Logica sparsa fuori dai dati</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Creator</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-resp">responsabilità</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Chi aggrega / usa / conosce A?</td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Creazione sparsa ovunque</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Low Coupling</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Dipendo da un'astrazione o da un concreto?</td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Modifiche a cascata</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">High Cohesion</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Posso descrivere questa classe senza "e"?</td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">God class, classi bloated</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Controller</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Chi riceve questo evento di sistema senza essere
-                UI?</td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Logica nell'interfaccia grafica</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Polymorphism</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-oop">OOP</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Sto usando if/switch sul tipo? Posso sostituirlo?
-              </td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Switch sulle varianti di tipo</td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Pure Fabrication</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-abs">astrazione</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Nessuna classe di dominio è il posto giusto?</td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Responsabilità tecniche nel dominio
-              </td>
-            </tr>
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Indirection</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Posso aggiungere un intermediario tra questi due?
-              </td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Dipendenze dirette tra moduli</td>
-            </tr>
-            <tr>
-              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Protected Variations</strong></td>
-              <td style="padding:1rem;"><span class="badge-sm b-abs">astrazione</span></td>
-              <td style="padding:1rem; color:var(--text-secondary);">Cosa cambierà? Come proteggo il resto?</td>
-              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Variazioni che si propagano</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="kk-table-container">
+          <table class="kk-table-cyber">
+            <thead>
+              <tr>
+                <th>Principio</th>
+                <th>Categoria</th>
+                <th>Domanda chiave</th>
+                <th>Anti-pattern che risolve</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Information Expert</strong></td>
+                <td><span class="badge-sm b-resp"><code class="text-teal">responsabilità</code></span></td>
+                <td>Chi ha i dati per fare questa cosa?</td>
+                <td><small>Logica sparsa fuori dai dati</small></td>
+              </tr>
+              <tr>
+                <td><strong>Creator</strong></td>
+                <td><span class="badge-sm b-resp"><code class="text-teal">responsabilità</code></span></td>
+                <td>Chi aggrega / usa / conosce A?</td>
+                <td><small>Creazione sparsa ovunque</small></td>
+              </tr>
+              <tr>
+                <td><strong>Low Coupling</strong></td>
+                <td><span class="badge-sm b-arch"><code class="text-amber">architettura</code></span></td>
+                <td>Dipendo da un'astrazione o da un concreto?</td>
+                <td><small>Modifiche a cascata</small></td>
+              </tr>
+              <tr>
+                <td><strong>High Cohesion</strong></td>
+                <td><span class="badge-sm b-arch"><code class="text-amber">architettura</code></span></td>
+                <td>Posso descrivere questa classe senza "e"?</td>
+                <td><small>God class, classi bloated</small></td>
+              </tr>
+              <tr>
+                <td><strong>Controller</strong></td>
+                <td><span class="badge-sm b-arch"><code class="text-amber">architettura</code></span></td>
+                <td>Chi riceve questo evento di sistema senza essere UI?</td>
+                <td><small>Logica nell'interfaccia grafica</small></td>
+              </tr>
+              <tr>
+                <td><strong>Polymorphism</strong></td>
+                <td><span class="badge-sm b-oop">OOP</span></td>
+                <td>Sto usando if/switch sul tipo? Posso sostituirlo?</td>
+                <td><small>Switch sulle varianti di tipo</small></td>
+              </tr>
+              <tr>
+                <td><strong>Pure Fabrication</strong></td>
+                <td><span class="badge-sm b-abs">astrazione</span></td>
+                <td>Nessuna classe di dominio è il posto giusto?</td>
+                <td><small>Responsabilità tecniche nel dominio</small></td>
+              </tr>
+              <tr>
+                <td><strong>Indirection</strong></td>
+                <td><span class="badge-sm b-arch"><code class="text-amber">architettura</code></span></td>
+                <td>Posso aggiungere un intermediario tra questi due?</td>
+                <td><small>Dipendenze dirette tra moduli</small></td>
+              </tr>
+              <tr>
+                <td><strong>Protected Variations</strong></td>
+                <td><span class="badge-sm b-abs">astrazione</span></td>
+                <td>Cosa cambierà? Come proteggo il resto?</td>
+                <td><small>Variazioni che si propagano</small></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="highlight-box" style="margin-top:1.75rem">
+          <strong>Regola pratica:</strong> Low Coupling e High Cohesion sono i due principi "madre" — tutti gli altri
+          sono modi specifici per raggiungerli. Se il design li rispetta, quasi certamente rispetta anche gli altri
+          sette.
+        </div>
       </div>
 
-      <div class="highlight-box" style="margin-top:1.75rem">
-        <strong>Regola pratica:</strong> Low Coupling e High Cohesion sono i due principi "madre" — tutti gli altri
-        sono modi specifici per raggiungerli. Se il design li rispetta, quasi certamente rispetta anche gli altri
-        sette.
-      </div>
-    </div>
+      <!-- ===== I 7 PATTERN GOF IN CITYLOGIC ===== -->
+      <div class="section-block" id="gof-patterns">
+        <h2><span class="dot"></span> I Pattern GoF (Gang of Four) in CityLogic</h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Oltre ai principi GRASP, l'architettura di CityLogic poggia fortemente sui classici pattern GoF per risolvere
+          problemi ricorrenti in modo elegante. Ecco i 7 pattern più utilizzati nel nostro motore:
+        </p>
 
-    <!-- ===== SINGLETON ===== -->
-    <div class="section-block" id="singleton">
-      <h2><span class="dot"></span> GoF (Creazionale): Singleton</h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Garantisce una sola istanza di una classe con un punto di accesso globale controllato. Nel gioco, <code
-          style="color:var(--accent-soft)">GameSystem</code> è un Singleton: esiste un solo sistema di gioco attivo che
-        gestisce livelli, regole e stato globale.
-      </p>
-
-      <div class="two-col">
-        <div>
-          <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.8;margin-bottom:1rem">
-            Il costruttore è <strong style="color:var(--text-primary)">privato</strong>: nessuno può creare istanze
-            dall'esterno. L'unico accesso avviene tramite il metodo statico <code
-              style="color:var(--accent-soft);font-size:12px">getInstance()</code>, che crea l'istanza al primo invio e
-            la restituisce sempre nelle chiamate successive.
-          </p>
-          <div class="pros-cons">
-            <div class="pros-cons-box pro">
-              <h5>Vantaggi</h5>
-              <ul>
-                <li>Istanza controllata</li>
-                <li>Accesso globale</li>
-                <li>Lazy initialization</li>
-                <li>Stato condiviso sicuro</li>
-              </ul>
-            </div>
-            <div class="pros-cons-box con">
-              <h5>Attenzione</h5>
-              <ul>
-                <li>Difficile da testare</li>
-                <li>Stato globale nascosto</li>
-                <li>Thread safety richiesta</li>
-                <li>Viola SRP (spesso)</li>
-              </ul>
-            </div>
-          </div>
-          <div class="warn-box" style="margin-top:1.25rem">
-            ⚠️ Nei sistemi moderni preferisci la <strong>Dependency Injection</strong>. Il Singleton va usato solo
-            quando l'unicità è un requisito reale del dominio, non solo convenienza.
+        <div class="card-def" style="margin-top: 1.5rem;">
+          <div class="header">Pattern Creazionali</div>
+          <div class="content">
+            <ul style="margin:0; padding-left:1.25rem;">
+              <li style="margin-bottom:0.75rem;"><strong>1. Singleton:</strong> Garantisce che esista una sola istanza
+                globale di una classe. In CityLogic, il <code class="text-accent">Simulatore</code> è un Singleton
+                (raggiungibile via <code>Simulatore.getInstance()</code>), perché non ha senso avere due motori di
+                simulazione che girano in parallelo sulla stessa partita.</li>
+              <li><strong>2. Factory / Abstract Factory:</strong> Nasconde la logica complessa di creazione degli
+                oggetti. In CityLogic non facciamo mai <code>new Ospedale()</code> direttamente, ma usiamo una <code
+                  class="text-teal">EdificioFactory</code> che decide quale edificio istanziare in base alla zona
+                (Residenziale, Commerciale) o ai fondi del giocatore.</li>
+            </ul>
           </div>
         </div>
 
-        <div>
-          <div class="code-block">
-            <div class="code-header">
-              <div class="code-dots">
-                <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
-              </div>
-              <span class="code-filename">GameSystem.java</span>
-            </div>
-            <div class="code-body">
-              <pre><code class="language-java">// «Singleton» — Thread-safe (Holder idiom)
-public class GameSystem {
+        <div class="card-def" style="margin-top: 1.5rem;">
+          <div class="header">Pattern Strutturali</div>
+          <div class="content">
+            <ul style="margin:0; padding-left:1.25rem;">
+              <li style="margin-bottom:0.75rem;"><strong>3. Adapter (Wrapper):</strong> Serve a far comunicare due
+                interfacce incompatibili. Se CityLogic integra una libreria meteo esterna che usa
+                <code>WeatherAPI.fetchCelsius()</code>, creiamo un <code class="text-amber">MeteoAdapter</code> che
+                avvolge l'API esterna e la converte nella nostra interfaccia standard
+                <code>IMeteoProvider.getTemperatura()</code>.</li>
+              <li style="margin-bottom:0.75rem;"><strong>4. Façade (Facciata):</strong> Offre un unico punto di
+                accesso semplificato a un sottosistema complesso. Per salvare la partita, la UI non chiama
+                <code>Serializer</code>, <code>DBConnection</code> e <code>FileCompressor</code> separatamente; chiama
+                solo <code>CitySaveFacade.salvaPartita()</code>, che orchestra il tutto dietro le quinte.</li>
+              <li><strong>5. Proxy:</strong> Fornisce un "sostituto" leggero di un oggetto pesante, caricandolo solo
+                quando serve (Lazy Loading). In CityLogic, un <code class="text-teal">EdificioProxy</code> mostra solo i
+                dati base (ID, coordinate) e carica il costoso modello 3D in RAM solo quando la telecamera fa zoom sulla
+                struttura.</li>
+            </ul>
+          </div>
+        </div>
 
-  // Holder: creato solo quando richiesto
-  private static class Holder {
-    private static final GameSystem
-      INSTANCE = new GameSystem();
-  }
-
-  private GameSystem() {
-    // inizializzazione livelli, regole…
-  }
-
-  public static GameSystem getInstance() {
-    return Holder.INSTANCE;
-  }
-
-  public boolean checkWin(Player p) {
-    return p.getScore() >= winThreshold;
-  }
-
-  public void nextLevel() { ... }
-}
-
-// Utilizzo da GameController
-GameSystem sys = GameSystem.getInstance();
-boolean won = sys.checkWin(player);</code></pre>
-            </div>
+        <div class="card-def" style="margin-top: 1.5rem;">
+          <div class="header">Pattern Comportamentali e di Design Base</div>
+          <div class="content">
+            <ul style="margin:0; padding-left:1.25rem;">
+              <li style="margin-bottom:0.75rem;"><strong>6. Observer:</strong> Modello "iscrizione-notifica" (Pub/Sub).
+                Il <code>Simulatore</code> (Subject) non sa nulla della UI. Quando l'inquinamento cambia, notifica
+                semplicemente gli Observer iscritti (es. <code class="text-coral">InquinamentoUI</code> o <code
+                  class="text-coral">AllarmeAudio</code>) affinché si aggiornino da soli.</li>
+              <li><strong>7. Delegation:</strong> È il principio di base della composizione: invece di ereditare o
+                fare tutto da soli, si delega il lavoro a un helper interno. In CityLogic, il <code>Simulatore</code>
+                non fa i calcoli fiscali direttamente, ma li "delega" a una classe specializzata <code
+                  class="text-accent">TaxManager</code>.</li>
+            </ul>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- ===== OBSERVER ===== -->
-    <div class="section-block" id="observer">
-      <h2><span class="dot"></span> GoF (Comportamentale): Observer Pattern</h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Definisce una dipendenza uno-a-molti: quando il <strong>Subject</strong> cambia stato, tutti gli
-        <strong>Observer</strong> registrati vengono notificati automaticamente. Nel gioco: <code
-          style="color:var(--accent-soft)">GameSystem</code> è il Subject, <code
-          style="color:var(--teal)">ScoreUI</code> e <code style="color:var(--teal)">SoundManager</code> sono Observer.
-      </p>
-      <div class="highlight-box">
-        <i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Nel progetto del gioco: gli Observer
-        vengono notificati quando il punteggio o lo stato del Player cambia. Questo garantisce il <strong>Low
-          Coupling</strong> tra il core e la UI.
-      </div>
-    </div>
-
-    <!-- ===== ALTRI GOF ===== -->
-    <div class="section-block" id="gof">
-      <h2><span class="dot"></span> Altri Pattern GoF (Gang of Four)</h2>
-      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        Oltre ai principi GRASP, il design model si appoggia pesantemente ai classici pattern GoF per risolvere problemi
-        ricorrenti:
-      </p>
-
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Pattern Creazionali</div>
-        <div class="content">
-          <ul style="margin:0;">
-            <li><strong>Factory / Abstract Factory:</strong> Delega la logica complessa di creazione degli oggetti a una
-              classe specifica (la Factory). Utile quando la classe esatta da istanziare è decisa a runtime (es. creare
-              un nemico diverso in base al livello di difficoltà).</li>
-          </ul>
-        </div>
+      <!-- Navigation -->
+      <div class="back-btn-wrap" style="margin-top: 2rem;">
+        <a href="04-architettura.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 04 · Architettura</a>
+        <a href="06-strumenti-devops.html" class="btn btn-ghost">06 · Strumenti & DevOps <i
+            class="bi bi-arrow-right"></i></a>
       </div>
 
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Pattern Strutturali e Comportamentali</div>
-        <div class="content">
-          <ul style="margin:0;">
-            <li><strong>Delegation:</strong> Non è un pattern rigoroso GoF ma un principio fondamentale: un oggetto
-              esprime un certo comportamento delegando la reale esecuzione a un oggetto helper interno, favorendo la
-              Composizione sull'Ereditarietà.</li>
-            <li><strong>Adapter (Wrapper):</strong> Traduce l'interfaccia di una classe in un'altra interfaccia attesa
-              dal client. È il tipico <em>"Glue Code"</em> usato per integrare librerie COTS esterne senza modificare il
-              nostro codice core.</li>
-            <li><strong>Façade (Facciata):</strong> Fornisce un'interfaccia unificata e semplificata per un intero
-              sottosistema complesso (es. una singola classe <code>VideoConverter</code> che nasconde decine di classi
-              complesse per la gestione dei codec audio/video).</li>
-            <li><strong>Proxy:</strong> Fornisce un surrogato o un placeholder per controllare l'accesso a un altro
-              oggetto. È il pattern chiave usato nella trasformazione di <em>"Delaying expensive computations"</em>
-              (Lazy Loading) o per controllare i diritti di accesso prima di eseguire metodi sensibili.</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
-    <!-- Navigation -->
-    <div class="back-btn-wrap" style="margin-top: 2rem;">
-      <a href="04-architettura.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 04 · Architettura</a>
-      <a href="06-strumenti-devops.html" class="btn btn-ghost">06 · Strumenti & DevOps <i
-          class="bi bi-arrow-right"></i></a>
-    </div>
+    <footer>
+      <p>// 7Katch.github.io · EDIDS</p>
+    </footer>
 
-  </div>
+    <script src="../../shared/katchkit.js"></script>
+    <!-- Caricamento dinamico Prism.js -->
+    <script src="../../shared/prism-loader.js"></script>
 
-  <footer>
-    <p>// 7Katch.github.io · EDIDS</p>
-  </footer>
-
-  <script src="../../shared/katchkit.js"></script>
-  <!-- Caricamento dinamico Prism.js -->
-  <script src="../../shared/prism-loader.js"></script>
-
-  <!-- Caricamento dinamico Mermaid.js -->
-  <script type="module" src="../../shared/custom-diagrams.js"></script>
+    <!-- Caricamento dinamico Mermaid.js -->
+    <script type="module" src="../../shared/custom-diagrams.js"></script>
 </body>
 
 </html>

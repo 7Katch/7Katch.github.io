@@ -15,8 +15,34 @@ const customCSS = `
     .node.grey text { fill: #aaa !important; }
 `;
 
-mermaid.initialize({ 
-    startOnLoad: true, 
-    theme: 'dark',
-    themeCSS: customCSS
+const styleMap = {
+    'bad': 'fill:#442222,stroke:#ff5f57,stroke-width:2px,color:#fff',
+    'good': 'fill:#1a3320,stroke:#28c840,stroke-width:2px,color:#fff',
+    'blue': 'fill:#102a45,stroke:#0a84ff,stroke-width:2px,color:#fff',
+    'purple': 'fill:#2b2052,stroke:#7c5cfc,stroke-width:2px,color:#fff',
+    'yellow': 'fill:#443110,stroke:#ffbd2e,stroke-width:2px,color:#fff',
+    'grey': 'fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa'
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    const mermaidBlocks = document.querySelectorAll('.mermaid');
+    
+    mermaidBlocks.forEach(block => {
+        let text = block.textContent;
+        // Trova tutte le righe del tipo: style NOME :::colore
+        // E sostituiscile con gli attributi CSS completi
+        Object.keys(styleMap).forEach(color => {
+            const regex = new RegExp(`(style\\s+[^\\n:]+?):::${color}`, 'g');
+            text = text.replace(regex, `$1${styleMap[color]}`);
+        });
+        block.textContent = text;
+    });
+
+    mermaid.initialize({
+        startOnLoad: false,
+        theme: 'dark',
+        themeCSS: customCSS
+    });
+    
+    mermaid.run({ querySelector: '.mermaid' });
 });

@@ -156,41 +156,42 @@ code:not(pre code) {
 }
 
 /* ── 2.5 TEXT UTILITY CLASSES (Per non usare style="color:...") ── */
+
+/* Colore dinamico del tema (verde, corallo, ecc) */
 .text-theme {
   color: var(--kk-primary) !important;
 }
 
-/* Colore dinamico del tema (verde, corallo, ecc) */
+/* Viola fisso */
 .text-accent {
   color: var(--accent) !important;
 }
 
-/* Viola fisso */
+
+/* Rosso/Corallo */
 .text-coral {
   color: var(--coral) !important;
 }
 
-/* Rosso/Corallo */
+/* Azzurro */
 .text-teal {
   color: var(--teal) !important;
 }
 
-/* Azzurro */
+/* Verde Smeraldo */
 .text-green {
   color: var(--green) !important;
 }
 
-/* Verde Smeraldo */
+/* Giallo/Ambra */
 .text-amber {
   color: var(--amber) !important;
 }
 
-/* Giallo/Ambra */
+/* Grigio scuro/spento */
 .text-muted {
   color: var(--text-muted) !important;
 }
-
-/* Grigio scuro/spento */
 
 
 /* ── 3. NAVBAR E BREADCRUMBS ─────────────────────────────── */
@@ -685,6 +686,127 @@ code.inline {
   font-size: 11px;
 }
 
+
+/* ── 7.4.5 CODE WINDOW (Stile Terminale/macOS) ── */
+.kk-code-window {
+  background: #0a0a16;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  margin-bottom: 1.5rem;
+}
+
+.kk-window-header {
+  background: rgba(255,255,255,0.05);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+}
+
+.kk-window-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.kk-window-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.kk-window-dot.red { background: #ff5f56; }
+.kk-window-dot.yellow { background: #ffbd2e; }
+.kk-window-dot.green { background: #27c93f; }
+
+.kk-window-title {
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.kk-window-body {
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+
+/* ── 7.5 CALLOUTS (Box informativi con barra laterale) ── */
+.kk-callout {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  background: rgba(var(--kk-rgb), 0.05); /* Sfondo colorato dinamicamente! */
+  border-left: 3px solid var(--kk-primary); /* Bordo colorato dinamicamente! */
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-radius: 0 10px 10px 0;
+}
+
+
+/* ── 7.6 TABELLE CYBERPUNK ── */
+.kk-table-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  margin-bottom: 2rem;
+}
+
+.kk-table-cyber {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.kk-table-cyber thead {
+  background: rgba(var(--kk-rgb), 0.08);
+  border-bottom: 1px solid rgba(var(--kk-rgb), 0.3);
+  box-shadow: 0 2px 10px rgba(var(--kk-rgb), 0.15);
+}
+
+.kk-table-cyber th {
+  padding: 1.25rem 1rem;
+  font-weight: 700;
+  color: var(--kk-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kk-table-cyber tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  transition: background 0.2s;
+}
+
+.kk-table-cyber tbody tr:hover {
+  background: rgba(var(--kk-rgb), 0.03);
+}
+
+.kk-table-cyber tbody tr:last-child {
+  border-bottom: none;
+}
+
+.kk-table-cyber td {
+  padding: 1rem;
+  color: var(--text-secondary);
+}
+
+.kk-table-cyber td strong {
+  color: var(--kk-primary);
+  font-weight: 600;
+}
+
+.kk-table-cyber td small {
+  color: var(--text-muted);
+  font-size: 12px;
+}
 
 /* ── 8. SIDEBAR A SCOMPARSA (GEMINI STYLE) ───────────────── */
 
