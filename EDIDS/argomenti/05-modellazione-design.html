@@ -39,7 +39,7 @@
   <site-navbar logo-text="// EDIDS · Modellazione & Design" back-url="../teoria.html" back-text="Indice EDIDS">
   </site-navbar>
 
-  <site-hero eyebrow="Macroargomento 05" topic-num="05 / 08" title="Modellazione e Design (UML e Pattern)"
+  <site-hero eyebrow="Macroargomento 05" topic-num="05 / 08" title="Modellazione e Design <br>(UML e Pattern)"
     sub="Dal dominio al codice, Pattern GRASP e Design Pattern GoF.">
   </site-hero>
 
@@ -495,19 +495,27 @@ classDiagram
     <div class="section-block" id="grasp-intro">
       <h2><span class="dot"></span> I Pattern GRASP</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        <strong>GRASP</strong> (<em>General Responsibility Assignment Software Patterns</em>) rappresenta un insieme di nove principi guida per l'assegnazione delle responsabilità alle classi e agli oggetti nell'Object-Oriented Design. Non sono "pezzi di codice" pronti all'uso, ma un vocabolario e una mentalità fondamentale per creare software ben strutturato.
+        <strong>GRASP</strong> (<em>General Responsibility Assignment Software Patterns</em>) rappresenta un insieme di
+        nove principi guida per l'assegnazione delle responsabilità alle classi e agli oggetti nell'Object-Oriented
+        Design. Non sono "pezzi di codice" pronti all'uso, ma un vocabolario e una mentalità fondamentale per creare
+        software ben strutturato.
       </p>
 
       <div class="card-def">
         <div class="header">Cosa significa "Responsabilità"?</div>
         <div class="content">
-          <p style="margin-top:0;">Nella progettazione a oggetti, una responsabilità rientra generalmente in due categorie:</p>
+          <p style="margin-top:0;">Nella progettazione a oggetti, una responsabilità rientra generalmente in due
+            categorie:</p>
           <ul style="margin-bottom:0;">
-            <li><strong>Knowing (Conoscere):</strong> La responsabilità di un oggetto di conoscere i propri dati privati, di conoscere gli oggetti a lui correlati, o le informazioni che è in grado di calcolare.</li>
-            <li><strong>Doing (Fare):</strong> La responsabilità di fare qualcosa direttamente, coordinare attività con altri oggetti, o creare/distruggere istanze.</li>
+            <li><strong>Knowing (Conoscere):</strong> La responsabilità di un oggetto di conoscere i propri dati
+              privati, di conoscere gli oggetti a lui correlati, o le informazioni che è in grado di calcolare.</li>
+            <li><strong>Doing (Fare):</strong> La responsabilità di fare qualcosa direttamente, coordinare attività con
+              altri oggetti, o creare/distruggere istanze.</li>
           </ul>
           <p style="margin-top:1rem; margin-bottom:0; color:var(--text-secondary); font-size:0.95rem;">
-            Quando ci si siede a progettare un sistema e ci si chiede <em>"A quale classe assegno questa funzione?"</em> oppure <em>"Chi deve creare questo oggetto?"</em>, si ricorre ai pattern GRASP per trovare la risposta più razionale (che mantenga il codice pulito, altamente coeso e a basso accoppiamento).
+            Quando ci si siede a progettare un sistema e ci si chiede <em>"A quale classe assegno questa funzione?"</em>
+            oppure <em>"Chi deve creare questo oggetto?"</em>, si ricorre ai pattern GRASP per trovare la risposta più
+            razionale (che mantenga il codice pulito, altamente coeso e a basso accoppiamento).
           </p>
         </div>
       </div>
@@ -708,7 +716,12 @@ classDiagram
 
         <div class="example-item">
           <div class="example-label">Esempio 5 — Entity Factory (dal progetto)</div>
-          <p>Nel caso in cui la logica di creazione di un'entità diventi complessa (es. decidere se istanziare una <code>Casa</code>, un <code>Ospedale</code> o un <code>Parco</code>), non usiamo più <code>new</code> direttamente, ma introduciamo una classe <code>EntityFactory</code>. La Factory si assume la piena e unica responsabilità della creazione (diventando il Creator ufficiale) e solleva la <code>Griglia</code> da questo fardello.</p>
+          <p>Nel caso in cui la logica di creazione di un'entità diventi complessa (es. decidere se istanziare una
+            <code>Casa</code>, un <code>Ospedale</code> o un <code>Parco</code>), non usiamo più <code>new</code>
+            direttamente, ma introduciamo una classe <code>EntityFactory</code>. La Factory si assume la piena e unica
+            responsabilità della creazione (diventando il Creator ufficiale) e solleva la <code>Griglia</code> da questo
+            fardello.
+          </p>
         </div>
 
         <div class="vs-row">
@@ -728,7 +741,8 @@ classDiagram
       <div class="principle-link"
         style="margin-top:2rem; padding:1.25rem; background:rgba(255,255,255,0.02); border-left:3px solid var(--kk-primary); color:var(--text-secondary); font-size:0.95rem; line-height:1.6; border-radius:0 10px 10px 0;">
         <strong>Collegamento →</strong>&nbsp; Creator e Factory Method sono complementari: quando la creazione
-        diventa complessa o richiede varianti (come visto con le Entità della città), si passa a una Factory senza violare Creator — la Factory diventa semplicemente il nuovo creatore naturale dedicato.
+        diventa complessa o richiede varianti (come visto con le Entità della città), si passa a una Factory senza
+        violare Creator — la Factory diventa semplicemente il nuovo creatore naturale dedicato.
       </div>
 
       <div class="code-block" style="margin-top:1.25rem">
@@ -786,37 +800,35 @@ public class EntityFactory {
       </div>
 
       <div class="two-col" style="margin-top: 1.5rem; align-items: stretch;">
-        <div style="background: rgba(255,95,87,0.05); border: 1px solid rgba(255,95,87,0.2); padding: 1.5rem; border-radius: 8px; text-align: center;">
+        <div
+          style="background: rgba(255,95,87,0.05); border: 1px solid rgba(255,95,87,0.2); padding: 1.5rem; border-radius: 8px; text-align: center;">
           <h4 style="color: #ff5f57; margin-top: 0;">High Coupling (Il problema)</h4>
-          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Un "piatto di spaghetti": se modifichi <strong>A</strong>, l'errore si propaga a cascata a <strong>B</strong>, <strong>C</strong> e <strong>D</strong> perché sono strettamente intrecciate.</p>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Un "piatto di spaghetti":
+            se modifichi <strong>A</strong>, l'errore si propaga a cascata a <strong>B</strong>, <strong>C</strong> e
+            <strong>D</strong> perché sono strettamente intrecciate.
+          </p>
           <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
-    A[Classe A<br/>Modificata] --> B[Classe B]
-    A --> C[Classe C]
-    B --> D[Classe D]
+    A[Classe A<br/>Modificata]:::bad --> B[Classe B]:::grey
+    A --> C[Classe C]:::grey
+    B --> D[Classe D]:::grey
     C --> B
     A --> D
-    
-    style A fill:#ff5f57,stroke:#333,stroke-width:2px,color:#fff
-    style B fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
-    style C fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
-    style D fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
           </pre>
         </div>
-        <div style="background: rgba(40,200,64,0.05); border: 1px solid rgba(40,200,64,0.2); padding: 1.5rem; border-radius: 8px; text-align: center;">
+        <div
+          style="background: rgba(40,200,64,0.05); border: 1px solid rgba(40,200,64,0.2); padding: 1.5rem; border-radius: 8px; text-align: center;">
           <h4 style="color: #28c840; margin-top: 0;">Low Coupling (La soluzione)</h4>
-          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Design a "stella": le classi comunicano tramite un'<strong>Astrazione</strong> (es. Interfaccia). Modificare <strong>A</strong> non rompe le altre classi.</p>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Design a "stella": le
+            classi comunicano tramite un'<strong>Astrazione</strong> (es. Interfaccia). Modificare <strong>A</strong>
+            non rompe le altre classi.</p>
           <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart TD
-    A[Classe A<br/>Modificata] -.-> I[ Astrazione ]
-    B[Classe B] -.-> I
-    C[Classe C] -.-> I
-    D[Classe D] -.-> I
+    A[Classe A<br/>Modificata]:::good -.-> I[ Astrazione ]
+    B[Classe B]:::grey -.-> I
+    C[Classe C]:::grey -.-> I
+    D[Classe D]:::grey -.-> I
     
-    style A fill:#28c840,stroke:#333,stroke-width:2px,color:#fff
-    style B fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
-    style C fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
-    style D fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
     style I fill:#1a1a24,stroke:#666,stroke-width:2px,color:#fff,stroke-dasharray: 5 5
           </pre>
         </div>
@@ -825,10 +837,14 @@ flowchart TD
       <div class="examples-block" style="margin-top:1.5rem">
         <div class="example-item">
           <div class="example-label">Esempio 1 — Gioco</div>
-          <p style="margin-bottom: 1rem;"><code>GameController</code> dipende da <code>IGameObserver</code>, non da <code>ScoreUI</code> o <code>SoundManager</code>. Cambiare tutta la UI non richiede toccare il controller.</p>
+          <p style="margin-bottom: 1rem;"><code>GameController</code> dipende da <code>IGameObserver</code>, non da
+            <code>ScoreUI</code> o <code>SoundManager</code>. Cambiare tutta la UI non richiede toccare il controller.
+          </p>
           <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte (Problema)</h5>
+            <div
+              style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte
+                (Problema)</h5>
               <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
     GC[GameController] --> SUI[ScoreUI]
@@ -838,8 +854,10 @@ flowchart LR
     style SM fill:#442222,stroke:#ff5f57,color:#fff
               </pre>
             </div>
-            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento (Soluzione)</h5>
+            <div
+              style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento
+                (Soluzione)</h5>
               <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
     GC[GameController] -.-> I[ IGameObserver ]
@@ -856,10 +874,15 @@ flowchart LR
 
         <div class="example-item">
           <div class="example-label">Esempio 2 — Repository pattern</div>
-          <p style="margin-bottom: 1rem;">Un servizio dipende da <code>IUserRepository</code>, non da <code>MySQLUserRepository</code>. In test si inietta un finto repo in memoria; in produzione si usa quello reale. Il servizio non cambia mai.</p>
+          <p style="margin-bottom: 1rem;">Un servizio dipende da <code>IUserRepository</code>, non da
+            <code>MySQLUserRepository</code>. In test si inietta un finto repo in memoria; in produzione si usa quello
+            reale. Il servizio non cambia mai.
+          </p>
           <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte (Problema)</h5>
+            <div
+              style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte
+                (Problema)</h5>
               <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
     S[UserService] --> M[MySQLRepo]
@@ -867,8 +890,10 @@ flowchart LR
     style M fill:#442222,stroke:#ff5f57,color:#fff
               </pre>
             </div>
-            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento (Soluzione)</h5>
+            <div
+              style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento
+                (Soluzione)</h5>
               <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
     S[UserService] -.-> I[ IUserRepository ]
@@ -883,10 +908,15 @@ flowchart LR
 
         <div class="example-item">
           <div class="example-label">Esempio 3 — Notifiche</div>
-          <p style="margin-bottom: 1rem;">Un <code>OrderService</code> non chiama direttamente <code>EmailSender.send()</code> o <code>SmsSender.send()</code>. Dipende da un'astrazione. Aggiungere notifiche WhatsApp non tocca il servizio.</p>
+          <p style="margin-bottom: 1rem;">Un <code>OrderService</code> non chiama direttamente
+            <code>EmailSender.send()</code> o <code>SmsSender.send()</code>. Dipende da un'astrazione. Aggiungere
+            notifiche WhatsApp non tocca il servizio.
+          </p>
           <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte (Problema)</h5>
+            <div
+              style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte
+                (Problema)</h5>
               <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
     OS[OrderService] --> ES[EmailSender]
@@ -896,8 +926,10 @@ flowchart LR
     style SMS fill:#442222,stroke:#ff5f57,color:#fff
               </pre>
             </div>
-            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento (Soluzione)</h5>
+            <div
+              style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento
+                (Soluzione)</h5>
               <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
     OS[OrderService] -.-> I[ INotifier ]
@@ -914,10 +946,14 @@ flowchart LR
 
         <div class="example-item">
           <div class="example-label">Esempio 4 — Logging</div>
-          <p style="margin-bottom: 1rem;">Le classi di business non dipendono da <code>System.out.println()</code> né da <code>Log4j</code>. Dipendono dall'interfaccia <code>ILogger</code> sostituibile a runtime.</p>
+          <p style="margin-bottom: 1rem;">Le classi di business non dipendono da <code>System.out.println()</code> né da
+            <code>Log4j</code>. Dipendono dall'interfaccia <code>ILogger</code> sostituibile a runtime.
+          </p>
           <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte (Problema)</h5>
+            <div
+              style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte
+                (Problema)</h5>
               <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
     B[BusinessLogic] --> L4J[Log4j]
@@ -927,8 +963,10 @@ flowchart LR
     style SOUT fill:#442222,stroke:#ff5f57,color:#fff
               </pre>
             </div>
-            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento (Soluzione)</h5>
+            <div
+              style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento
+                (Soluzione)</h5>
               <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
 flowchart LR
     B[BusinessLogic] -.-> I[ ILogger ]
@@ -959,7 +997,9 @@ flowchart LR
         <div class="header">HC · Test della coesione</div>
         <div class="content">
           <p style="margin:0; color:var(--text-secondary);">
-            L'Alta Coesione si ottiene quando una classe gestisce un numero limitato di task (compiti), oppure esiste esclusivamente per assolvere a funzionalità molto specifiche e mirate. Invece di fare decine di operazioni slegate tra loro, una classe coesa si concentra solo su task strettamente connessi al suo scopo principale.
+            L'Alta Coesione si ottiene quando una classe gestisce un numero limitato di task (compiti), oppure esiste
+            esclusivamente per assolvere a funzionalità molto specifiche e mirate. Invece di fare decine di operazioni
+            slegate tra loro, una classe coesa si concentra solo su task strettamente connessi al suo scopo principale.
           </p>
           <div style="margin-top:1rem;"><span class="badge-sm"
               style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">coesione</span>
@@ -974,35 +1014,37 @@ flowchart LR
             gestisce sessioni, non salva nulla, non notifica nessuno. Una responsabilità.</p>
         </div>
         <div class="example-item">
-          <div class="example-label">Esempio 2 — Classe coesa</div>
-          <p><code>EmailValidator</code> fa una cosa: validare indirizzi email. Non invia email, non le salva nel
-            DB, non le formatta. Ogni metodo è correlato alla validazione.</p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 3 — Da spezzare</div>
-          <p>Una classe <code>UserManager</code> che: autentica utenti, manda email, aggiorna il profilo, calcola
-            statistiche e scrive log — viola completamente High Cohesion. Va divisa in <code>AuthService</code>,
-            <code>ProfileService</code>, <code>NotificationService</code>, <code>UserStatsService</code>.
-          </p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 4 — Valore immutabile</div>
-          <p><code>Money</code> (con importo e valuta) è altamente coesa: tutti i suoi metodi — somma, sottrai,
-            converti, confronta — riguardano le operazioni su un valore monetario. Non fa nient'altro.</p>
-        </div>
-
-        <div class="vs-row">
-          <div class="vs-box vs-bad">
-            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Bassa coesione</div>
-            <p>Una <code>GameManager</code> class che inizializza il gioco, gestisce l'input utente, salva lo
-              stato, suona gli effetti audio e aggiorna la UI. Ogni parte è separata dalle altre.</p>
-          </div>
-          <div class="vs-box vs-good">
-            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Alta coesione
+          <div class="example-label">Esempio 2 — Citylogic-Engine-BYZZ (MainView Tutto-fare vs MVC)</div>
+          <p style="margin-bottom: 1rem;">Una classe dovrebbe avere un unico scopo e responsabilità focalizzate. Mescolare l'aggiornamento della UI con i calcoli della logica di business distrugge la coesione.</p>
+          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Bassa Coesione (Problema)</h5>
+              <p style="font-size: 0.85rem; margin-bottom: 1rem;">La classe <code>MainView</code> disegna la grafica, cattura l'input e calcola direttamente le tasse. Fa troppe cose slegate tra loro.</p>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    M[MainView<br/>Tutto-fare]:::bad
+    M --> GUI[Disegna Grafica]
+    M --> INPUT[Cattura Input]
+    M --> CALC[Calcola Tasse]
+    style GUI fill:#2b2b36,stroke:#444,color:#aaa
+    style INPUT fill:#2b2b36,stroke:#444,color:#aaa
+    style CALC fill:#2b2b36,stroke:#444,color:#aaa
+              </pre>
             </div>
-            <p><code>GameSession</code> gestisce solo il ciclo di vita della partita. <code>InputHandler</code>
-              solo l'input. <code>AudioManager</code> solo l'audio. Ciascuna ha responsabilità focalizzate.
-            </p>
+            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Alta Coesione (Soluzione MVC)</h5>
+              <p style="font-size: 0.85rem; margin-bottom: 1rem;">I compiti vengono divisi: <code>MainView</code> disegna l'interfaccia, <code>GameController</code> gestisce l'input e <code>Citta</code> calcola le tasse.</p>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    V[MainView]:::good -->|Disegna| GUI[Grafica]
+    C[GameController]:::good -->|Cattura| INPUT[Input]
+    M[Citta]:::good -->|Calcola| TASSE[Tasse]
+    
+    style GUI fill:#2b2b36,stroke:#444,color:#aaa
+    style INPUT fill:#2b2b36,stroke:#444,color:#aaa
+    style TASSE fill:#2b2b36,stroke:#444,color:#aaa
+              </pre>
+            </div>
           </div>
         </div>
       </div>
@@ -1018,7 +1060,7 @@ flowchart LR
      5. CONTROLLER
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="ct">
-      <h2><span class="dot"></span> GRASP 05: Controller</h2>
+      <h2><span class="dot"></span> GRASP 05: Controller <span class="sub-tag">fondamentale</span></h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         Gli eventi di sistema (azioni dell'utente, richieste esterne) devono essere ricevuti da un oggetto
         Controller che non è parte dell'UI. Il Controller coordina la risposta senza fare la logica di business da
@@ -1086,44 +1128,47 @@ flowchart LR
               il modello notifica gli observer, la UI si aggiorna da sola. Separazione netta.</p>
           </div>
         </div>
-      </div>
 
-      <div class="code-block" style="margin-top:1.25rem">
-        <div class="code-header">
-          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-          </div>
-          <span class="code-filename">GameController.java</span>
+        <div style="margin-top: 2rem; background: rgba(124, 92, 252, 0.05); border: 1px solid rgba(124, 92, 252, 0.2); padding: 1.5rem; border-radius: 8px;">
+          <h4 style="color: #7c5cfc; margin-top: 0; text-align: center;">Citylogic-Engine-BYZZ: Flusso del GameController</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
+            Il <code>GameController</code> agisce da vero "direttore d'orchestra" (Pattern Controller GRASP). La Logica Core a sinistra è indipendente, e la View a destra gestisce solo l'input/output. Il Controller fa da smistatore bidirezionale.
+          </p>
+          <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    subgraph Model["Core Citylogic"]
+        direction TB
+        C[Citta]:::good
+        G[Griglia]:::good
+        F[EntityFactory]:::good
+    end
+    
+    GC[GameController]:::purple
+    
+    subgraph View["Azioni Utente (View)"]
+        direction TB
+        B1[Menu Tasse]:::grey
+        B2[Click Costruzione]:::grey
+        B3[Fine Giorno]:::grey
+    end
+    
+    C <--> GC
+    G <--> GC
+    F <--> GC
+    
+    GC <--> B1
+    GC <--> B2
+    GC <--> B3
+          </pre>
         </div>
-        <div class="code-body">
-          <pre><code class="language-java">public class GameController {
-
-  private final GameSession    session;
-  private final GameSystem     system;
-  private final List&lt;IGameObserver&gt; observers;
-
-  // Evento di sistema: l'utente si muove
-  public void onMove(Direction dir) {
-    session.getCurrentPlayer().move(dir);   // delega al modello
-    notifyAll(Event.MOVE);                  // notifica la vista
-  }
-
-  // Evento di sistema: raccoglie un item
-  public void onCollectItem(String itemId) {
-    Item item = session.getItem(itemId);
-    item.apply(session.getCurrentPlayer());  // Information Expert
-    session.removeItem(itemId);
-    notifyAll(Event.ITEM_COLLECTED);
-  }
-}</code></pre>
-        </div>
       </div>
-    </div>
+      
 
     <!-- ═══════════════════════════════════════════
      6. POLYMORPHISM
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="pl">
-      <h2><span class="dot"></span> GRASP 06: Polymorphism</h2>
+      <h2><span class="dot"></span> GRASP 06: Polymorphism <span class="sub-tag">fondamentale</span></h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         Quando il comportamento varia in base al tipo, usa il polimorfismo invece di if/switch. Ogni tipo gestisce
         la propria variazione implementando un'interfaccia comune.
@@ -1145,48 +1190,27 @@ flowchart LR
 
       <div class="examples-block" style="margin-top:1.5rem">
         <div class="example-item">
-          <div class="example-label">Esempio 1 — Gioco: tipi di Item</div>
-          <p><code>HealthPotion</code>, <code>Sword</code>, <code>Shield</code> implementano tutti
-            <code>Item.apply(player)</code> in modo diverso. Il controller chiama
-            <code>item.apply(player)</code> senza sapere il tipo concreto.
-          </p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 2 — Pagamenti</div>
-          <p><code>CreditCard</code>, <code>PayPal</code>, <code>BankTransfer</code> implementano
-            <code>IPaymentMethod.charge(amount)</code>. <code>CheckoutService</code> chiama solo
-            <code>method.charge(total)</code>, senza if/switch sul tipo di pagamento.
-          </p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 3 — Forme geometriche</div>
-          <p><code>Circle</code>, <code>Rectangle</code>, <code>Triangle</code> implementano
-            <code>Shape.area()</code> e <code>Shape.perimeter()</code>. Un renderer chiama
-            <code>shape.draw()</code> senza sapere quale forma sta disegnando.
-          </p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 4 — Report</div>
-          <p><code>PdfReport</code>, <code>ExcelReport</code>, <code>HtmlReport</code> implementano
-            <code>IReport.generate(data)</code>. Il servizio di esportazione non cambia quando si aggiunge un
-            nuovo formato.
-          </p>
+          <div class="example-label">Esempio — Calcolo Tasse in Citylogic-Engine-BYZZ</div>
+          <p>La città deve calcolare il gettito fiscale di tutti gli edifici. Ogni tipo di edificio (Residenziale, Commerciale, Industriale) ha regole di tassazione completamente diverse. Invece di far calcolare alla Città le tasse chiedendo il "tipo" dell'edificio, deleghiamo il calcolo all'edificio stesso tramite il polimorfismo (interfaccia <code>Tassabile</code>).</p>
         </div>
 
         <div class="vs-row">
           <div class="vs-box vs-bad">
             <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Senza polimorfismo
             </div>
-            <p>
-              <code>if (item.type.equals("health")) player.heal(30);</code><br><code>else if (item.type.equals("weapon")) player.addWeapon(...);</code><br>Ogni
-              nuovo tipo richiede di toccare questo blocco.
-            </p>
+            <div class="code-body">
+              <pre style="margin:0; background:transparent; padding:0;"><code class="language-java">if (edificio.getTipo().equals("Residenziale")) {
+    return calcolaTassaResidenziale();
+} else if (edificio.getTipo().equals("Commerciale")) {
+    return calcolaTassaCommerciale();
+}</code></pre>
+            </div>
+          <p>Alto rischio di refusi (es. "residenziale" con la minuscola) e forte violazione dell'Open/Closed Principle: ogni nuovo edificio richiede di modificare questo if-else.</p>  
           </div>
           <div class="vs-box vs-good">
             <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con polimorfismo
             </div>
-            <p><code>item.apply(player);</code><br>Ogni implementazione sa cosa fare. Aggiungere
-              <code>ShieldItem</code> non modifica niente di esistente.
+            <p><code>edificio.calcolaTassa();</code><br>Ogni implementazione di <code>Tassabile</code> (o sottoclasse di <code>Edificio</code>) sa calcolare la propria tassa in autonomia. Aggiungere l'edificio <code>Industriale</code> non toccherà mai il codice esistente.
             </p>
           </div>
         </div>
@@ -1196,32 +1220,35 @@ flowchart LR
         <div class="code-header">
           <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
           </div>
-          <span class="code-filename">Item.java — Polymorphism</span>
+          <span class="code-filename">Tassabile.java — Polymorphism in Citylogic</span>
         </div>
         <div class="code-body">
-          <pre><code class="language-java">public interface Item {
-  void apply(Player player);
-  String getName();
+          <pre><code class="language-java">public interface Tassabile {
+  double calcolaTassa();
 }
 
-public class HealthPotion implements Item {
-  private final int healAmount;
-  public void apply(Player p) { p.heal(healAmount); }
+public class EdificioResidenziale implements Tassabile {
+  private int numeroAbitanti;
+  
+  @Override
+  public double calcolaTassa() { 
+      return numeroAbitanti * 10.5; // Logica residenziale 
+  }
 }
 
-public class Sword implements Item {
-  private final int damage;
-  public void apply(Player p) { p.setAttack(damage); }
+public class EdificioCommerciale implements Tassabile {
+  private double fatturato;
+  
+  @Override
+  public double calcolaTassa() { 
+      return fatturato * 0.22; // Logica commerciale 
+  }
 }
 
-public class Shield implements Item {
-  private final int defense;
-  public void apply(Player p) { p.setDefense(defense); }
-}
-
-// ✔️ Il controller non sa (e non deve sapere) qual è il tipo
-for (Item item : collectedItems) {
-  item.apply(currentPlayer);
+// ✔️ La Citta calcola il totale invocando l'interfaccia (Polimorfismo puro)
+double totaleTasse = 0;
+for (Tassabile t : edificiTassabili) {
+  totaleTasse += t.calcolaTassa(); 
 }</code></pre>
         </div>
       </div>
