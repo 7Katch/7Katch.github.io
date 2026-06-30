@@ -825,28 +825,122 @@ flowchart TD
       <div class="examples-block" style="margin-top:1.5rem">
         <div class="example-item">
           <div class="example-label">Esempio 1 — Gioco</div>
-          <p><code>GameController</code> dipende da <code>IGameObserver</code>, non da <code>ScoreUI</code> o
-            <code>SoundManager</code>. Cambiare tutta la UI non richiede toccare il controller.
-          </p>
+          <p style="margin-bottom: 1rem;"><code>GameController</code> dipende da <code>IGameObserver</code>, non da <code>ScoreUI</code> o <code>SoundManager</code>. Cambiare tutta la UI non richiede toccare il controller.</p>
+          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte (Problema)</h5>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    GC[GameController] --> SUI[ScoreUI]
+    GC --> SM[SoundManager]
+    style GC fill:#2b2b36,stroke:#444,color:#fff
+    style SUI fill:#442222,stroke:#ff5f57,color:#fff
+    style SM fill:#442222,stroke:#ff5f57,color:#fff
+              </pre>
+            </div>
+            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    GC[GameController] -.-> I[ IGameObserver ]
+    SUI[ScoreUI] -.->|implementa| I
+    SM[SoundManager] -.->|implementa| I
+    style GC fill:#2b2b36,stroke:#444,color:#fff
+    style SUI fill:#2b2b36,stroke:#444,color:#fff
+    style SM fill:#2b2b36,stroke:#444,color:#fff
+    style I fill:#1a1a24,stroke:#28c840,stroke-dasharray: 5 5,color:#fff
+              </pre>
+            </div>
+          </div>
         </div>
+
         <div class="example-item">
           <div class="example-label">Esempio 2 — Repository pattern</div>
-          <p>Un servizio dipende da <code>IUserRepository</code>, non da <code>MySQLUserRepository</code>. In test
-            si inietta un <code>InMemoryUserRepository</code>; in produzione si usa quello reale. Il servizio
-            non cambia mai.</p>
+          <p style="margin-bottom: 1rem;">Un servizio dipende da <code>IUserRepository</code>, non da <code>MySQLUserRepository</code>. In test si inietta un finto repo in memoria; in produzione si usa quello reale. Il servizio non cambia mai.</p>
+          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte (Problema)</h5>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    S[UserService] --> M[MySQLRepo]
+    style S fill:#2b2b36,stroke:#444,color:#fff
+    style M fill:#442222,stroke:#ff5f57,color:#fff
+              </pre>
+            </div>
+            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    S[UserService] -.-> I[ IUserRepository ]
+    M[MySQLRepo] -.->|implementa| I
+    style S fill:#2b2b36,stroke:#444,color:#fff
+    style M fill:#2b2b36,stroke:#444,color:#fff
+    style I fill:#1a1a24,stroke:#28c840,stroke-dasharray: 5 5,color:#fff
+              </pre>
+            </div>
+          </div>
         </div>
+
         <div class="example-item">
           <div class="example-label">Esempio 3 — Notifiche</div>
-          <p>Un <code>OrderService</code> non chiama direttamente <code>EmailSender.send()</code> e
-            <code>SmsSender.send()</code>. Dipende da <code>INotifier</code>. Se si aggiunge WhatsApp, basta
-            aggiungere un'implementazione — il servizio non si tocca.
-          </p>
+          <p style="margin-bottom: 1rem;">Un <code>OrderService</code> non chiama direttamente <code>EmailSender.send()</code> o <code>SmsSender.send()</code>. Dipende da un'astrazione. Aggiungere notifiche WhatsApp non tocca il servizio.</p>
+          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte (Problema)</h5>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    OS[OrderService] --> ES[EmailSender]
+    OS --> SMS[SmsSender]
+    style OS fill:#2b2b36,stroke:#444,color:#fff
+    style ES fill:#442222,stroke:#ff5f57,color:#fff
+    style SMS fill:#442222,stroke:#ff5f57,color:#fff
+              </pre>
+            </div>
+            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    OS[OrderService] -.-> I[ INotifier ]
+    ES[EmailSender] -.->|implementa| I
+    SMS[SmsSender] -.->|implementa| I
+    style OS fill:#2b2b36,stroke:#444,color:#fff
+    style ES fill:#2b2b36,stroke:#444,color:#fff
+    style SMS fill:#2b2b36,stroke:#444,color:#fff
+    style I fill:#1a1a24,stroke:#28c840,stroke-dasharray: 5 5,color:#fff
+              </pre>
+            </div>
+          </div>
         </div>
+
         <div class="example-item">
           <div class="example-label">Esempio 4 — Logging</div>
-          <p>Le classi di business non chiamano <code>System.out.println()</code> né dipendono da Log4j. Dipendono
-            da <code>ILogger</code>. L'implementazione può essere sostituita (console, file, cloud) senza
-            toccare la logica applicativa.</p>
+          <p style="margin-bottom: 1rem;">Le classi di business non dipendono da <code>System.out.println()</code> né da <code>Log4j</code>. Dipendono dall'interfaccia <code>ILogger</code> sostituibile a runtime.</p>
+          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte (Problema)</h5>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    B[BusinessLogic] --> L4J[Log4j]
+    B --> SOUT[System.out]
+    style B fill:#2b2b36,stroke:#444,color:#fff
+    style L4J fill:#442222,stroke:#ff5f57,color:#fff
+    style SOUT fill:#442222,stroke:#ff5f57,color:#fff
+              </pre>
+            </div>
+            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
+              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    B[BusinessLogic] -.-> I[ ILogger ]
+    L4J[Log4jAdapter] -.->|implementa| I
+    C[ConsoleAdapter] -.->|implementa| I
+    style B fill:#2b2b36,stroke:#444,color:#fff
+    style L4J fill:#2b2b36,stroke:#444,color:#fff
+    style C fill:#2b2b36,stroke:#444,color:#fff
+    style I fill:#1a1a24,stroke:#28c840,stroke-dasharray: 5 5,color:#fff
+              </pre>
+            </div>
+          </div>
         </div>
       </div>
     </div>
