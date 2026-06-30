@@ -785,6 +785,43 @@ public class EntityFactory {
         </div>
       </div>
 
+      <div class="two-col" style="margin-top: 1.5rem; align-items: stretch;">
+        <div style="background: rgba(255,95,87,0.05); border: 1px solid rgba(255,95,87,0.2); padding: 1.5rem; border-radius: 8px; text-align: center;">
+          <h4 style="color: #ff5f57; margin-top: 0;">High Coupling (Il problema)</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Un "piatto di spaghetti": se modifichi <strong>A</strong>, l'errore si propaga a cascata a <strong>B</strong>, <strong>C</strong> e <strong>D</strong> perché sono strettamente intrecciate.</p>
+          <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart LR
+    A[Classe A<br/>Modificata] --> B[Classe B]
+    A --> C[Classe C]
+    B --> D[Classe D]
+    C --> B
+    A --> D
+    
+    style A fill:#ff5f57,stroke:#333,stroke-width:2px,color:#fff
+    style B fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
+    style C fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
+    style D fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
+          </pre>
+        </div>
+        <div style="background: rgba(40,200,64,0.05); border: 1px solid rgba(40,200,64,0.2); padding: 1.5rem; border-radius: 8px; text-align: center;">
+          <h4 style="color: #28c840; margin-top: 0;">Low Coupling (La soluzione)</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Design a "stella": le classi comunicano tramite un'<strong>Astrazione</strong> (es. Interfaccia). Modificare <strong>A</strong> non rompe le altre classi.</p>
+          <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+flowchart TD
+    A[Classe A<br/>Modificata] -.-> I[ Astrazione ]
+    B[Classe B] -.-> I
+    C[Classe C] -.-> I
+    D[Classe D] -.-> I
+    
+    style A fill:#28c840,stroke:#333,stroke-width:2px,color:#fff
+    style B fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
+    style C fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
+    style D fill:#2b2b36,stroke:#444,stroke-width:1px,color:#aaa
+    style I fill:#1a1a24,stroke:#666,stroke-width:2px,color:#fff,stroke-dasharray: 5 5
+          </pre>
+        </div>
+      </div>
+
       <div class="examples-block" style="margin-top:1.5rem">
         <div class="example-item">
           <div class="example-label">Esempio 1 — Gioco</div>
@@ -810,21 +847,6 @@ public class EntityFactory {
           <p>Le classi di business non chiamano <code>System.out.println()</code> né dipendono da Log4j. Dipendono
             da <code>ILogger</code>. L'implementazione può essere sostituita (console, file, cloud) senza
             toccare la logica applicativa.</p>
-        </div>
-
-        <div class="vs-row">
-          <div class="vs-box vs-bad">
-            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> High Coupling</div>
-            <p><code>GameController</code> importa e istanzia <code>ScoreUI</code>, <code>SoundManager</code>,
-              <code>AchievementTracker</code>. Aggiungere un observer richiede modificare il controller.
-            </p>
-          </div>
-          <div class="vs-box vs-good">
-            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Low Coupling
-            </div>
-            <p><code>GameController</code> ha una lista di <code>IGameObserver</code>. Si aggiungono observers a
-              runtime senza toccare il controller. Testabile con mock.</p>
-          </div>
         </div>
       </div>
     </div>
