@@ -1404,6 +1404,17 @@ code.inline {
   overflow-x: auto;
 }
 
+/* Override Prism.js default backgrounds to blend with our Mac window */
+.code-body pre[class*="language-"] {
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.code-body code[class*="language-"] {
+  background: transparent !important;
+}
+
 /* Diagrammi di Stato */
 .state-diagram {
   display: flex;

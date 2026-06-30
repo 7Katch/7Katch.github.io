@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../shared/katchkit.css">
   
 </head>
-<body class="dot-grid theme-amber">
+<body class="dot-grid theme-blue">
   <aside class="so-sidebar">
   <div class="sb-label">Macroargomenti</div>
   <ul class="sb-pages">
@@ -88,20 +88,32 @@
         </div>
       </div>
 
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Gli "8 Problemi" (Eight Issues) dell'Architettura</div>
-        <div class="content">
-          <p style="margin:0; color:var(--text-secondary);">Progettare un'architettura significa risolvere simultaneamente 8 sfide critiche:</p>
-          <ol style="margin-top:0.5rem; margin-bottom:0; padding-left: 1.2rem;">
-            <li><strong>Struttura e Topologia:</strong> Come sono connessi i nodi.</li>
-            <li><strong>Modello di Dati:</strong> Gestione e strutturazione dei <em>dati persistenti</em>.</li>
-            <li><strong>Concorrenza e Parallelismo:</strong> Gestione di thread e lock.</li>
-            <li><strong>Gestione degli Errori e Resilienza:</strong> Come il sistema reagisce ai guasti.</li>
-            <li><strong>Sicurezza e Controllo Accessi:</strong> Autenticazione e autorizzazione.</li>
-            <li><strong>Interfacce di Comunicazione:</strong> Protocolli e formati dati.</li>
-            <li><strong>Mappatura Hardware/Software:</strong> Su quali macchine o reti fisiche gira il codice.</li>
-            <li><strong>Prestazioni e Scalabilità:</strong> Tempi di risposta e gestione dei picchi.</li>
-          </ol>
+      <div class="kmind-board" style="width: 100%; margin-top: 1.5rem;">
+        <div class="markmap">
+          <script type="text/template">
+            ---
+            markmap:
+              colorFreezeLevel: 3
+              maxWidth: 300
+            ---
+            # Gli 8 Problemi dell'Architettura
+            ## 1. Struttura e Topologia
+            - Come sono connessi i nodi
+            ## 2. Modello di Dati
+            - Gestione dati persistenti
+            ## 3. Concorrenza e Parallelismo
+            - Thread e lock
+            ## 4. Gestione Errori e Resilienza
+            - Reazione ai guasti
+            ## 5. Sicurezza e Controllo Accessi
+            - Autenticazione e autorizzazione
+            ## 6. Interfacce di Comunicazione
+            - Protocolli e formati dati
+            ## 7. Mappatura Hardware/Software
+            - Macchine fisiche / Cloud
+            ## 8. Prestazioni e Scalabilità
+            - Tempi di risposta e picchi
+          </script>
         </div>
       </div>
     </div>
@@ -205,6 +217,62 @@
         </div>
       </div>
 
+      <!-- GRAFICO 3D AKF CUBE -->
+      <div style="display: flex; justify-content: center; padding: 2rem 1rem; background: rgba(0,0,0,0.15); border: 1px solid var(--border); border-radius: 8px; margin-top: 2rem; margin-bottom: 2rem; overflow: visible;">
+        <svg width="100%" height="350" viewBox="0 0 600 350" style="max-width: 700px; overflow: visible;">
+          <defs>
+            <marker id="arrowX" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981" />
+            </marker>
+            <marker id="arrowY" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6" />
+            </marker>
+            <marker id="arrowZ" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b" />
+            </marker>
+            
+            <linearGradient id="gradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(59, 130, 246, 0.15);stop-opacity:1" />
+              <stop offset="100%" style="stop-color:rgba(59, 130, 246, 0.02);stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="gradLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(245, 158, 11, 0.2);stop-opacity:1" />
+              <stop offset="100%" style="stop-color:rgba(245, 158, 11, 0.05);stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="gradRight" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(16, 185, 129, 0.2);stop-opacity:1" />
+              <stop offset="100%" style="stop-color:rgba(16, 185, 129, 0.05);stop-opacity:1" />
+            </linearGradient>
+          </defs>
+
+          <!-- Cubo base -->
+          <polygon points="300,200 210,148 300,96 390,148" fill="url(#gradTop)" stroke="rgba(59, 130, 246, 0.4)" stroke-width="1.5" />
+          <polygon points="300,200 210,148 210,252 300,304" fill="url(#gradLeft)" stroke="rgba(245, 158, 11, 0.4)" stroke-width="1.5" />
+          <polygon points="300,200 390,148 390,252 300,304" fill="url(#gradRight)" stroke="rgba(16, 185, 129, 0.4)" stroke-width="1.5" />
+
+          <!-- Assi 3D (X, Y, Z) -->
+          <line x1="300" y1="200" x2="300" y2="40" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowY)" stroke-dasharray="5,5" />
+          <line x1="300" y1="200" x2="480" y2="304" stroke="#10b981" stroke-width="3" marker-end="url(#arrowX)" />
+          <line x1="300" y1="200" x2="120" y2="304" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrowZ)" />
+
+          <!-- Label Y -->
+          <text x="300" y="20" fill="#3b82f6" font-family="'Inter', sans-serif" font-weight="bold" font-size="14" text-anchor="middle">Asse Y (Functional Decomposition)</text>
+          <text x="300" y="38" fill="rgba(255,255,255,0.7)" font-family="'Inter', sans-serif" font-size="12" text-anchor="middle">Microservizi (separazione logica)</text>
+          
+          <!-- Label X -->
+          <text x="490" y="310" fill="#10b981" font-family="'Inter', sans-serif" font-weight="bold" font-size="14" text-anchor="start">Asse X (Cloning)</text>
+          <text x="490" y="328" fill="rgba(255,255,255,0.7)" font-family="'Inter', sans-serif" font-size="12" text-anchor="start">Duplicazione nodi / Bilanciamento</text>
+          
+          <!-- Label Z -->
+          <text x="110" y="310" fill="#f59e0b" font-family="'Inter', sans-serif" font-weight="bold" font-size="14" text-anchor="end">Asse Z (Data Partitioning)</text>
+          <text x="110" y="328" fill="rgba(255,255,255,0.7)" font-family="'Inter', sans-serif" font-size="12" text-anchor="end">Sharding dei dati (es. per Cliente)</text>
+          
+          <!-- Origine -->
+          <circle cx="300" cy="200" r="5" fill="#fff" />
+          <text x="300" y="190" fill="#fff" font-family="'Inter', sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Monolite (Base)</text>
+        </svg>
+      </div>
+
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Monolite vs SOA vs Microservizi</div>
         <div class="content">
@@ -255,5 +323,6 @@
   </footer>
 
   <script src="../../shared/katchkit.js"></script>
+  <script src="../../shared/kmind.js"></script>
 </body>
 </html>

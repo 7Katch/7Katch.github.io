@@ -1,47 +1,45 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>05 · Modellazione & Design — EDIDS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../../shared/katchkit.css">
-  
+
 </head>
+
 <body class="dot-grid theme-coral">
   <aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-fondamenti.html"><span class="sb-pdot"></span>01 · Fondamenti</a></li>
-    <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
-    <li><a href="03-ingegneria-requisiti.html"><span class="sb-pdot"></span>03 · Requisiti</a></li>
-    <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
-    <li>
-      <div class="sb-cur"><span class="sb-pdot"></span>05 · Modellazione & Design</div>
-    </li>
-    <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
-    <li><a href="07-cloud-aws.html"><span class="sb-pdot"></span>07 · Cloud AWS</a></li>
-    <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections">
-  </ul>
-</aside>
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-fondamenti.html"><span class="sb-pdot"></span>01 · Fondamenti</a></li>
+      <li><a href="02-ciclo-di-vita.html"><span class="sb-pdot"></span>02 · Ciclo di Vita</a></li>
+      <li><a href="03-ingegneria-requisiti.html"><span class="sb-pdot"></span>03 · Requisiti</a></li>
+      <li><a href="04-architettura.html"><span class="sb-pdot"></span>04 · Architettura</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>05 · Modellazione & Design</div>
+      </li>
+      <li><a href="06-strumenti-devops.html"><span class="sb-pdot"></span>06 · Strumenti & DevOps</a></li>
+      <li><a href="07-cloud-aws.html"><span class="sb-pdot"></span>07 · Cloud AWS</a></li>
+      <li><a href="08-evoluzione-riuso.html"><span class="sb-pdot"></span>08 · Evoluzione & Riuso</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections">
+    </ul>
+  </aside>
 
 
   <!-- ═══════ NAV ═══════ -->
-  <site-navbar 
-    logo-text="// EDIDS · Modellazione & Design" 
-    back-url="../teoria.html" 
-    back-text="Indice EDIDS">
+  <site-navbar logo-text="// EDIDS · Modellazione & Design" back-url="../teoria.html" back-text="Indice EDIDS">
   </site-navbar>
 
-  <site-hero 
-    eyebrow="Macroargomento 05" 
-    topic-num="05 / 08" 
-    title="Modellazione e Design (UML e Pattern)" 
+  <site-hero eyebrow="Macroargomento 05" topic-num="05 / 08" title="Modellazione e Design (UML e Pattern)"
     sub="Dal dominio al codice, Pattern GRASP e Design Pattern GoF.">
   </site-hero>
 
@@ -88,20 +86,28 @@
     <div class="section-block" id="uml">
       <h2><span class="dot"></span> Grammatica UML Rigorosa</h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-        L'UML è il linguaggio formale dell'architettura del software. La conoscenza esatta della sua sintassi (i 7 diagrammi principali) è un requisito ineludibile in sede di progettazione.
+        L'UML è il linguaggio formale dell'architettura del software. La conoscenza esatta della sua sintassi (i 7
+        diagrammi principali) è un requisito ineludibile in sede di progettazione.
       </p>
-      
+
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">1. Class Diagram (Diagramma delle Classi)</div>
         <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Descrive la struttura statica. È vitale conoscere la semantica visiva delle relazioni:</p>
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Descrive la struttura statica. È
+            vitale conoscere la semantica visiva delle relazioni:</p>
           <ul style="margin:0;">
-            <li><strong>Inheritance (Ereditarietà):</strong> Freccia con punta vuota. Indica una relazione <em>"is-a"</em>.</li>
-            <li><strong>Composition (Composizione):</strong> Rombo pieno. Relazione forte <em>"part-of"</em>. Il ciclo di vita è vincolato: se il contenitore viene distrutto, anche le parti muoiono (es. una Casa e le sue Stanze).</li>
-            <li><strong>Aggregation (Aggregazione):</strong> Rombo vuoto. Relazione debole <em>"has-a"</em>. Le parti possono esistere indipendentemente (es. un Dipartimento e i suoi Professori).</li>
-            <li><strong>Dependency (Dipendenza):</strong> Freccia tratteggiata. Relazione <em>"uses"</em> temporanea (es. un metodo riceve un oggetto come parametro).</li>
+            <li><strong>Inheritance (Ereditarietà):</strong> Freccia con punta vuota. Indica una relazione
+              <em>"is-a"</em>.</li>
+            <li><strong>Composition (Composizione):</strong> Rombo pieno. Relazione forte <em>"part-of"</em>. Il ciclo
+              di vita è vincolato: se il contenitore viene distrutto, anche le parti muoiono (es. una Casa e le sue
+              Stanze).</li>
+            <li><strong>Aggregation (Aggregazione):</strong> Rombo vuoto. Relazione debole <em>"has-a"</em>. Le parti
+              possono esistere indipendentemente (es. un Dipartimento e i suoi Professori).</li>
+            <li><strong>Dependency (Dipendenza):</strong> Freccia tratteggiata. Relazione <em>"uses"</em> temporanea
+              (es. un metodo riceve un oggetto come parametro).</li>
           </ul>
-          <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
+          <pre class="mermaid"
+            style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
 classDiagram
     User <|-- Admin : Inheritance (is-a)
     House *-- Room : Composition (part-of)
@@ -114,14 +120,23 @@ classDiagram
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">2. Design Sequence Diagram (ISD - Interaction Sequence Diagram)</div>
         <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">A differenza dell'SSD, questo diagramma "esplode" la scatola nera e rappresenta le interazioni dinamiche interne tra gli oggetti del sistema. I messaggi si dividono in Sincroni (freccia piena, blocca il chiamante), Asincroni (freccia aperta) e di Ritorno (linea tratteggiata). I flussi logici complessi si modellano coi <strong>Combined Fragments</strong>:</p>
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">A differenza dell'SSD, questo
+            diagramma "esplode" la scatola nera e rappresenta le interazioni dinamiche interne tra gli oggetti del
+            sistema. I messaggi si dividono in Sincroni (freccia piena, blocca il chiamante), Asincroni (freccia aperta)
+            e di Ritorno (linea tratteggiata). I flussi logici complessi si modellano coi <strong>Combined
+              Fragments</strong>:</p>
           <ul style="margin:0;">
-            <li><strong>alt:</strong> Percorsi alternativi mutuamente esclusivi (il classico costrutto <em>if/else</em> o <em>switch</em>).</li>
-            <li><strong>loop:</strong> Iterazioni ripetute finché la guardia (condizione tra parentesi quadre) è vera.</li>
-            <li><strong>opt:</strong> Frammento opzionale (un blocco <em>if</em> senza l'<em>else</em>). Si esegue solo se la guardia è vera.</li>
-            <li><strong>par:</strong> Frammenti eseguiti in parallelo (gestione della concorrenza / multi-threading).</li>
+            <li><strong>alt:</strong> Percorsi alternativi mutuamente esclusivi (il classico costrutto <em>if/else</em>
+              o <em>switch</em>).</li>
+            <li><strong>loop:</strong> Iterazioni ripetute finché la guardia (condizione tra parentesi quadre) è vera.
+            </li>
+            <li><strong>opt:</strong> Frammento opzionale (un blocco <em>if</em> senza l'<em>else</em>). Si esegue solo
+              se la guardia è vera.</li>
+            <li><strong>par:</strong> Frammenti eseguiti in parallelo (gestione della concorrenza / multi-threading).
+            </li>
           </ul>
-          <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
+          <pre class="mermaid"
+            style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
 sequenceDiagram
     actor Cliente
     participant Sistema
@@ -142,9 +157,12 @@ sequenceDiagram
         Sistema-->>Cliente: Completato
     end
           </pre>
-          <details style="margin-top: 1rem; background: rgba(0,0,0,0.1); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
-            <summary style="cursor: pointer; font-weight: 600; color: var(--text-primary);">Visualizza Esempio Avanzato PlantUML (Design Controller)</summary>
-            <pre style="margin-top: 1rem; font-size: 0.8rem; overflow-x: auto; background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 4px;"><code>@startuml
+          <details
+            style="margin-top: 1rem; background: rgba(0,0,0,0.1); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
+            <summary style="cursor: pointer; font-weight: 600; color: var(--text-primary);">Visualizza Esempio Avanzato
+              PlantUML (Design Controller)</summary>
+            <pre
+              style="margin-top: 1rem; font-size: 0.8rem; overflow-x: auto; background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 4px;"><code>@startuml
 skinparam sequenceArrowThickness 1.5
 skinparam sequenceMessageAlign center
 
@@ -193,11 +211,18 @@ end
         <div class="header">Altri Diagrammi Essenziali</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><strong>Use Case Diagram:</strong> Definisce le funzionalità utente. Le relazioni avanzate sono <em>&lt;&lt;include&gt;&gt;</em> (comportamento condiviso obbligatorio) ed <em>&lt;&lt;extend&gt;&gt;</em> (comportamento opzionale/aggiuntivo).</li>
-            <li><strong>Component & Deployment Diagram:</strong> Mappatura fisica HW/SW. Si distinguono i <em>Device Node</em> (macchine fisiche) dagli <em>Execution Environment Node</em> (es. JVM, Docker). Il software in esecuzione prende il nome di <em>Artifacts</em>. Le interfacce si delineano in Lollipop (servizio offerto) e Socket (servizio richiesto).</li>
-            <li><strong>Activity & State Diagram:</strong> Modellano macchine a stati o workflow, usando nodi iniziali (pallino nero), nodi finali (pallino nero cerchiato) e "composite states" per stati annidati.</li>
+            <li><strong>Use Case Diagram:</strong> Definisce le funzionalità utente. Le relazioni avanzate sono
+              <em>&lt;&lt;include&gt;&gt;</em> (comportamento condiviso obbligatorio) ed <em>&lt;&lt;extend&gt;&gt;</em>
+              (comportamento opzionale/aggiuntivo).</li>
+            <li><strong>Component & Deployment Diagram:</strong> Mappatura fisica HW/SW. Si distinguono i <em>Device
+                Node</em> (macchine fisiche) dagli <em>Execution Environment Node</em> (es. JVM, Docker). Il software in
+              esecuzione prende il nome di <em>Artifacts</em>. Le interfacce si delineano in Lollipop (servizio offerto)
+              e Socket (servizio richiesto).</li>
+            <li><strong>Activity & State Diagram:</strong> Modellano macchine a stati o workflow, usando nodi iniziali
+              (pallino nero), nodi finali (pallino nero cerchiato) e "composite states" per stati annidati.</li>
           </ul>
-          <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
+          <pre class="mermaid"
+            style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
 flowchart LR
     C((Cliente))
     UC1([Pagare Ordine])
@@ -223,8 +248,13 @@ flowchart LR
         <div class="header">Domain Model e Description Classes</div>
         <div class="content">
           <ul style="margin:0;">
-            <li><strong>Domain vs Data Model:</strong> Il Domain Model non è lo schema del database. Rappresenta astrazioni del mondo reale (oggetti fisici, concetti, transazioni) estraendo i "sostantivi" (Noun phrases) dai casi d'uso. Esclude rigorosamente costrutti tecnici software (es. DatabaseConnection).</li>
-            <li><strong>Description Classes:</strong> Per evitare la perdita di informazioni di catalogo, si separa la classe fisica (es. <code>Item</code> con un numero seriale univoco) dalla sua descrizione (es. <code>ProductDescription</code>). In questo modo, se il negozio vende tutti gli "Item" fisici di un certo modello, le informazioni su quel prodotto (prezzo, specifiche) non vanno perse.</li>
+            <li><strong>Domain vs Data Model:</strong> Il Domain Model non è lo schema del database. Rappresenta
+              astrazioni del mondo reale (oggetti fisici, concetti, transazioni) estraendo i "sostantivi" (Noun phrases)
+              dai casi d'uso. Esclude rigorosamente costrutti tecnici software (es. DatabaseConnection).</li>
+            <li><strong>Description Classes:</strong> Per evitare la perdita di informazioni di catalogo, si separa la
+              classe fisica (es. <code>Item</code> con un numero seriale univoco) dalla sua descrizione (es.
+              <code>ProductDescription</code>). In questo modo, se il negozio vende tutti gli "Item" fisici di un certo
+              modello, le informazioni su quel prodotto (prezzo, specifiche) non vanno perse.</li>
           </ul>
         </div>
       </div>
@@ -233,21 +263,28 @@ flowchart LR
         <div class="header">System Sequence Diagram (SSD) e il Controller</div>
         <div class="content">
           <p style="margin:0; color:var(--text-secondary);">
-            L'SSD mappa le interazioni visualizzando il Sistema come una <strong>Scatola Nera</strong> (Black Box). Non mostra le chiamate interne, ma solo l'attore esterno che invia messaggi al sistema nel suo complesso. Questi messaggi (Eventi di Sistema) sono fondamentali: essi diventeranno l'elenco esatto dei metodi che il pattern architetturale <strong>Controller</strong> dovrà intercettare e gestire.
+            L'SSD mappa le interazioni visualizzando il Sistema come una <strong>Scatola Nera</strong> (Black Box). Non
+            mostra le chiamate interne, ma solo l'attore esterno che invia messaggi al sistema nel suo complesso. Questi
+            messaggi (Eventi di Sistema) sono fondamentali: essi diventeranno l'elenco esatto dei metodi che il pattern
+            architetturale <strong>Controller</strong> dovrà intercettare e gestire.
           </p>
-          <pre class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
-sequenceDiagram
-    actor Giocatore
-    participant Sistema
+          <pre class="mermaid"
+            style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; display: flex; justify-content: center;">
+            sequenceDiagram
+                actor Giocatore
+                participant Sistema
 
-    Giocatore->>Sistema: 1. costruisci(x, y, z, strumento)
-    Sistema-->>Giocatore: 2. aggiornaMappa()
-    
-    Giocatore->>Sistema: 3. demolisci(x, y, z)
-    Sistema-->>Giocatore: 4. aggiornaMappa()
+                Giocatore->>Sistema: 1. costruisci(x, y, z, strumento)
+                Sistema-->>Giocatore: 2. aggiornaMappa()
+                
+                Giocatore->>Sistema: 3. demolisci(x, y, z)
+                Sistema-->>Giocatore: 4. aggiornaMappa()
           </pre>
           <div class="highlight-box" style="margin-top: 1rem;">
-            <i class="bi bi-info-circle-fill" style="margin-right:0.25rem;"></i> Come vedi, nell'SSD non esistono oggetti di design interni come <code>EntityFactory</code> o <code>Griglia</code> presenti nell'ISD. Esiste solo l'entità <code>Sistema</code>. I metodi invocati dal Giocatore diventeranno la firma esatta dei metodi pubblici del nostro <strong>GameController</strong>.
+            <i class="bi bi-info-circle-fill" style="margin-right:0.25rem;"></i> Come vedi, nell'SSD non esistono
+            oggetti di design interni come <code>EntityFactory</code> o <code>Griglia</code> presenti nell'ISD. Esiste
+            solo l'entità <code>Sistema</code>. I metodi invocati dal Giocatore diventeranno la firma esatta dei metodi
+            pubblici del nostro <strong>GameController</strong>.
           </div>
         </div>
       </div>
@@ -257,27 +294,193 @@ sequenceDiagram
     <div class="section-block" id="m2c">
       <h2><span class="dot"></span> Dal Modello al Codice (Transformations & BCE)</h2>
 
-      <div class="card-def" style="margin-top: 1.5rem;">
-        <div class="header">Design to Code (Model Transformations)</div>
-        <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Il passaggio UML -> Codice avviene tramite trasformazioni logiche formali per ridurre la ridondanza (Refactoring):</p>
-          <ul style="margin:0;">
-            <li><strong>Mappatura base:</strong> Le Associazioni UML diventano attributi di riferimento. I Messaggi del sequence diagram diventano chiamate a metodo.</li>
-            <li><strong>Pull Up Field & Constructor:</strong> Se più sottoclassi condividono un attributo o una logica di inizializzazione, vengono "tirati su" (spostati) nella superclasse comune (es. usando <code>super()</code> in Java) per massimizzare il polimorfismo.</li>
-            <li><strong>Collapsing Objects:</strong> Se un oggetto concettuale del dominio non ha comportamento ma porta solo dati (es. l'oggetto logico "CodiceFiscale"), lo si "collassa" nel design trasformandolo in un semplice attributo (es. <code>String cf</code>) della classe madre (es. <code>Persona</code>).</li>
-            <li><strong>Delaying Expensive Computations:</strong> Per caricamenti lenti (es. grosse immagini o query), la trasformazione implementa il pattern <strong>Proxy</strong> per caricare il dato solo alla prima richiesta effettiva (Lazy Loading).</li>
-          </ul>
+      <div style="margin-bottom: 3rem;">
+        <p style="margin-top:0; font-size:1.05rem; color:var(--text-secondary); margin-bottom: 2rem;">Il passaggio dal
+          Modello UML al Codice avviene tramite trasformazioni formali per massimizzare l'efficienza e ridurre la
+          ridondanza (Refactoring):</p>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-soft);">1. Mappatura Base (Associazioni e
+          Metodi)</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Le Associazioni UML strutturali diventano
+          attributi di riferimento (istanze di altre classi). I messaggi dinamici diventano chiamate a metodo.</p>
+        <div class="two-col" style="align-items: center; margin-bottom: 3rem;">
+          <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px;">
+            <pre class="mermaid" style="margin: 0; display: flex; justify-content: center;">
+                classDiagram
+                    class Giocatore {
+                      -Mappa mappaAttuale
+                      +avviaPartita()
+                    }
+                    class Mappa {
+                      +genera(seed)
+                    }
+                    Giocatore --> Mappa : "1" mappaAttuale
+            </pre>
+          </div>
+          <div
+            style="background: #0a0a16; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div
+              style="background: rgba(255,255,255,0.05); padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border);">
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+            </div>
+            <div style="padding: 1rem; overflow-x: auto;">
+              <pre style="margin:0; font-size: 13px; background: transparent; padding: 0;"><code class="language-java">public class Giocatore {
+    // L'associazione UML diventa attributo
+    private Mappa mappaAttuale;
+
+    public void avviaPartita() {
+        // Il messaggio diventa chiamata a metodo
+        mappaAttuale.genera(42);
+    }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-soft);">2. Pull Up Field & Constructor
+        </h3>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Se più sottoclassi condividono un attributo o una
+          logica di inizializzazione, vengono "tirati su" nella superclasse comune per massimizzare il polimorfismo.</p>
+        <div class="two-col" style="align-items: center; margin-bottom: 3rem;">
+          <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px;">
+            <pre class="mermaid" style="margin: 0; display: flex; justify-content: center;">
+classDiagram
+    class Entita {
+      #int hp
+      +Entita(hp)
+    }
+    class Edificio {
+      +Edificio()
+    }
+    class Unita {
+      +Unita()
+    }
+    Entita <|-- Edificio
+    Entita <|-- Unita
+            </pre>
+          </div>
+          <div
+            style="background: #0a0a16; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div
+              style="background: rgba(255,255,255,0.05); padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border);">
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+            </div>
+            <div style="padding: 1rem; overflow-x: auto;">
+              <pre style="margin:0; font-size: 13px; background: transparent; padding: 0;"><code class="language-java">public abstract class Entita {
+    protected int hp;
+    
+    public Entita(int hp) {
+        this.hp = hp;
+    }
+}
+
+public class Edificio extends Entita {
+    public Edificio() {
+        super(100); // Costruttore della madre
+    }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-soft);">3. Collapsing Objects</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Se un oggetto del dominio ha solo dati e non ha
+          comportamento, lo si "collassa" nel design trasformandolo in un semplice attributo della classe che lo
+          possiede.</p>
+        <div class="two-col" style="align-items: center; margin-bottom: 3rem;">
+          <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px;">
+            <pre class="mermaid" style="margin: 0; display: flex; justify-content: center;">
+classDiagram
+    %% Prima: Oggetto logico
+    class Persona {
+      -String nome
+    }
+    class CodiceFiscale {
+      -String codice
+    }
+    Persona "1" --> "1" CodiceFiscale : possiede >
+            </pre>
+          </div>
+          <div
+            style="background: #0a0a16; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div
+              style="background: rgba(255,255,255,0.05); padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border);">
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+            </div>
+            <div style="padding: 1rem; overflow-x: auto;">
+              <pre style="margin:0; font-size: 13px; background: transparent; padding: 0;"><code class="language-java">public class Persona {
+    private String nome;
+    
+    // CodiceFiscale rimosso come classe.
+    // Viene "collassato" in una String!
+    private String codiceFiscale;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-soft);">4. Delaying Expensive Computations
+        </h3>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Per caricamenti lenti (es. grosse texture
+          grafiche), si implementa il pattern <strong>Proxy</strong> per caricare il dato <em>Lazy</em> (solo alla
+          primissima richiesta reale), risparmiando RAM.</p>
+        <div class="two-col" style="align-items: center; margin-bottom: 1rem;">
+          <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px;">
+            <pre class="mermaid" style="margin: 0; display: flex; justify-content: center;">
+classDiagram
+    class Texture {
+      +disegna()
+    }
+    class ProxyTexture {
+      -Texture veraTexture
+      +disegna()
+    }
+    ProxyTexture ..> Texture : istanzia
+            </pre>
+          </div>
+          <div
+            style="background: #0a0a16; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div
+              style="background: rgba(255,255,255,0.05); padding: 8px 12px; display: flex; gap: 6px; border-bottom: 1px solid var(--border);">
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f56;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e;"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></div>
+            </div>
+            <div style="padding: 1rem; overflow-x: auto;">
+              <pre style="margin:0; font-size: 13px; background: transparent; padding: 0;"><code class="language-java">public class ProxyTexture {
+    private Texture veraTexture;
+    
+    public void disegna() {
+        if (veraTexture == null) {
+            // Caricata in RAM solo se serve
+            veraTexture = new Texture();
+        }
+        veraTexture.disegna();
+    }
+}</code></pre>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="card-def" style="margin-top: 1.5rem;">
         <div class="header">Categorizzazione Logica BCE</div>
         <div class="content">
-          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Per garantire un Low Coupling a livello architetturale, le classi vanno rigorosamente divise in 3 strati:</p>
+          <p style="margin-top:0; font-size:0.9rem; color:var(--text-secondary);">Per garantire un Low Coupling a
+            livello architetturale, le classi vanno rigorosamente divise in 3 strati:</p>
           <ul style="margin:0;">
-            <li><strong>Boundary Objects:</strong> Gestiscono le interfacce verso il mondo esterno (la UI, le API, altri sistemi).</li>
-            <li><strong>Control Objects:</strong> Ricevono gli eventi dai Boundary e coordinano le entità. Non fanno vera logica, ma agiscono da "vigili urbani".</li>
-            <li><strong>Entity Objects:</strong> Contengono la vera e propria logica di business e i dati fondamentali del dominio.</li>
+            <li><strong>Boundary Objects:</strong> Gestiscono le interfacce verso il mondo esterno (la UI, le API, altri
+              sistemi).</li>
+            <li><strong>Control Objects:</strong> Ricevono gli eventi dai Boundary e coordinano le entità. Non fanno
+              vera logica, ma agiscono da "vigili urbani".</li>
+            <li><strong>Entity Objects:</strong> Contengono la vera e propria logica di business e i dati fondamentali
+              del dominio.</li>
           </ul>
         </div>
       </div>
@@ -287,921 +490,994 @@ sequenceDiagram
      1. INFORMATION EXPERT
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="ie">
-        <h2><span class="dot"></span> GRASP 01: Information Expert</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            Assegna la responsabilità alla classe che possiede le informazioni necessarie per adempierla. Il principio è
-            semplice: <strong>chi sa, fa</strong>. Non spostare i dati fuori dalla classe per elaborarli altrove.
-        </p>
+      <h2><span class="dot"></span> GRASP 01: Information Expert</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Assegna la responsabilità alla classe che possiede le informazioni necessarie per adempierla. Il principio è
+        semplice: <strong>chi sa, fa</strong>. Non spostare i dati fuori dalla classe per elaborarli altrove.
+      </p>
 
-        <div class="card-def">
-            <div class="header">IE · Definizione formale</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                Quando devi assegnare una responsabilità, inizia chiedendoti: <em>chi ha i dati per soddisfarla?</em>
-                Quella classe è l'esperta dell'informazione e dovrebbe gestire la responsabilità in modo autonomo.
-                Questo riduce l'accoppiamento, perché non è necessario esporre i dati verso l'esterno.
-            </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">responsabilità</span></div>
-            </div>
+      <div class="card-def">
+        <div class="header">IE · Definizione formale</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            Quando devi assegnare una responsabilità, inizia chiedendoti: <em>chi ha i dati per soddisfarla?</em>
+            Quella classe è l'esperta dell'informazione e dovrebbe gestire la responsabilità in modo autonomo.
+            Questo riduce l'accoppiamento, perché non è necessario esporre i dati verso l'esterno.
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">responsabilità</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco (dal progetto)</div>
+          <p>
+            <code>Player</code> ha <code>score</code> e <code>lives</code>. Quindi è <code>Player</code> a
+            calcolare il proprio totale punti con <code>getTotalScore()</code>, non un manager esterno che legge
+            i campi. Se il calcolo cambia, si modifica solo <code>Player</code>.
+          </p>
         </div>
 
-        <div class="examples-block" style="margin-top:1.5rem">
-
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco (dal progetto)</div>
-                <p>
-                    <code>Player</code> ha <code>score</code> e <code>lives</code>. Quindi è <code>Player</code> a
-                    calcolare il proprio totale punti con <code>getTotalScore()</code>, non un manager esterno che legge
-                    i campi. Se il calcolo cambia, si modifica solo <code>Player</code>.
-                </p>
-            </div>
-
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — E-commerce</div>
-                <p>
-                    Un <code>Order</code> conosce i propri <code>OrderItem</code>. Quindi il totale dell'ordine si
-                    calcola con <code>order.getTotal()</code>, non con un servizio esterno che somma i prezzi dopo
-                    averli estratti uno a uno. <code>Order</code> è l'esperto del suo contenuto.
-                </p>
-            </div>
-
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — Biblioteca</div>
-                <p>
-                    Un oggetto <code>Book</code> conosce il proprio ISBN, titolo e autore. È lui a decidere se due libri
-                    sono uguali (<code>equals()</code>) e come si rappresenta come stringa (<code>toString()</code>).
-                    Non serve un <code>BookComparator</code> esterno che accede ai campi pubblici.
-                </p>
-            </div>
-
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — Scacchi</div>
-                <p>
-                    Un <code>ChessPiece</code> conosce la propria posizione e tipo. È lui a dire se una mossa è valida:
-                    <code>piece.isValidMove(from, to)</code>. Non è il <code>Board</code> che deve conoscere le regole
-                    di ogni singolo pezzo.
-                </p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Violazione</div>
-                    <p>Un <code>GameController</code> legge <code>player.score</code> e <code>player.multiplier</code> e
-                        calcola il totale lui stesso. I dati stanno in <code>Player</code> ma la logica è altrove.</p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Corretto</div>
-                    <p><code>player.getTotal()</code> incapsula il calcolo dove stanno i dati. Il controller chiama
-                        un'unica operazione e non dipende dai dettagli interni.</p>
-                </div>
-            </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — E-commerce</div>
+          <p>
+            Un <code>Order</code> conosce i propri <code>OrderItem</code>. Quindi il totale dell'ordine si
+            calcola con <code>order.getTotal()</code>, non con un servizio esterno che somma i prezzi dopo
+            averli estratti uno a uno. <code>Order</code> è l'esperto del suo contenuto.
+          </p>
         </div>
 
-        <div class="code-block" style="margin-top:1.25rem">
-            <div class="code-header">
-                <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-                </div>
-                <span class="code-filename">Player.java — Information Expert</span>
-            </div>
-            <div class="code-body">
-                <pre>
-<span class="kw">public class</span> <span class="tp">Player</span> {
-  <span class="kw">private int</span> baseScore;
-  <span class="kw">private double</span> multiplier;
-  <span class="kw">private int</span> bonusPoints;
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — Biblioteca</div>
+          <p>
+            Un oggetto <code>Book</code> conosce il proprio ISBN, titolo e autore. È lui a decidere se due libri
+            sono uguali (<code>equals()</code>) e come si rappresenta come stringa (<code>toString()</code>).
+            Non serve un <code>BookComparator</code> esterno che accede ai campi pubblici.
+          </p>
+        </div>
 
-  <span class="cm">// <i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Player è l'esperto: conosce tutti i dati necessari</span>
-  <span class="kw">public int</span> <span class="fn">getTotalScore</span>() {
-    <span class="kw">return</span> (int)(baseScore * multiplier) + bonusPoints;
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — Scacchi</div>
+          <p>
+            Un <code>ChessPiece</code> conosce la propria posizione e tipo. È lui a dire se una mossa è valida:
+            <code>piece.isValidMove(from, to)</code>. Non è il <code>Board</code> che deve conoscere le regole
+            di ogni singolo pezzo.
+          </p>
+        </div>
+
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Violazione</div>
+            <p>Un <code>GameController</code> legge <code>player.score</code> e <code>player.multiplier</code> e
+              calcola il totale lui stesso. I dati stanno in <code>Player</code> ma la logica è altrove.</p>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Corretto</div>
+            <p><code>player.getTotal()</code> incapsula il calcolo dove stanno i dati. Il controller chiama
+              un'unica operazione e non dipende dai dettagli interni.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block" style="margin-top:1.25rem">
+        <div class="code-header">
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <span class="code-filename">Player.java — Information Expert</span>
+        </div>
+        <div class="code-body">
+          <pre><code class="language-java">public class Player {
+  private int baseScore;
+  private double multiplier;
+  private int bonusPoints;
+
+  // ✔️ Player è l'esperto: conosce tutti i dati necessari
+  public int getTotalScore() {
+    return (int)(baseScore * multiplier) + bonusPoints;
   }
 
-  <span class="cm">// <i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Solo Player sa se ha ancora vite</span>
-  <span class="kw">public boolean</span> <span class="fn">isAlive</span>() {
-    <span class="kw">return</span> lives > 0;
+  // ✔️ Solo Player sa se ha ancora vite
+  public boolean isAlive() {
+    return lives > 0;
   }
 }
 
-<span class="cm">// <i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Violazione — il controller non dovrebbe sapere come si calcola il punteggio</span>
-<span class="cm">// int total = (int)(player.baseScore * player.multiplier) + player.bonusPoints;</span>
-</pre>
-            </div>
+// ❌ Violazione — il controller non dovrebbe sapere come si calcola il punteggio
+// int total = (int)(player.baseScore * player.multiplier) + player.bonusPoints;</code></pre>
         </div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      2. CREATOR
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="cr">
-        <h2><span class="dot"></span> GRASP 02: Creator</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            B dovrebbe creare istanze di A se: B <em>contiene</em> o <em>aggrega</em> A; B <em>registra</em> A; B
-            <em>usa strettamente</em> A; o B ha i dati di inizializzazione di A. La regola evita creazioni sparse
-            ovunque nel codice.
-        </p>
+      <h2><span class="dot"></span> GRASP 02: Creator</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        B dovrebbe creare istanze di A se: B <em>contiene</em> o <em>aggrega</em> A; B <em>registra</em> A; B
+        <em>usa strettamente</em> A; o B ha i dati di inizializzazione di A. La regola evita creazioni sparse
+        ovunque nel codice.
+      </p>
 
-        <div class="card-def">
-            <div class="header">CR · Chi crea chi?</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                La responsabilità di creare un oggetto appartiene a chi ha il contesto per farlo in modo sensato.
-                Centralizzare la creazione riduce la dipendenza da dettagli costruttivi e rende il codice più testabile.
-            </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">creazione</span></div>
-            </div>
+      <div class="card-def">
+        <div class="header">CR · Chi crea chi?</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            La responsabilità di creare un oggetto appartiene a chi ha il contesto per farlo in modo sensato.
+            Centralizzare la creazione riduce la dipendenza da dettagli costruttivi e rende il codice più testabile.
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">creazione</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco</div>
+          <p><code>GameSession</code> aggrega i <code>Player</code> per tutta la sessione, quindi è
+            <code>GameSession</code> a crearli: <code>new Player(name, startingLives)</code>. Ha anche i dati di
+            configurazione iniziale.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — Fatturazione</div>
+          <p>Un <code>Invoice</code> aggrega le sue <code>InvoiceLine</code>. È <code>Invoice</code> ad aggiungere
+            righe: <code>invoice.addLine(product, qty, price)</code>, non un servizio esterno che costruisce
+            righe e le inietta.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — Forum</div>
+          <p>Un <code>Thread</code> contiene <code>Post</code>. Quando un utente risponde, è il
+            <code>Thread</code> a creare il nuovo <code>Post</code>:
+            <code>thread.addReply(author, content)</code>. Il <code>Thread</code> ha tutto il contesto: data,
+            posizione nella sequenza, metadati.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — Gioco di carte</div>
+          <p>Un <code>Deck</code> (mazzo) aggrega e registra tutte le <code>Card</code>. È lui a crearle nella
+            fase di setup: <code>deck.build()</code> genera le 52 carte. Nessun'altra classe deve sapere come si
+            costruisce una carta.</p>
         </div>
 
-        <div class="examples-block" style="margin-top:1.5rem">
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco</div>
-                <p><code>GameSession</code> aggrega i <code>Player</code> per tutta la sessione, quindi è
-                    <code>GameSession</code> a crearli: <code>new Player(name, startingLives)</code>. Ha anche i dati di
-                    configurazione iniziale.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — Fatturazione</div>
-                <p>Un <code>Invoice</code> aggrega le sue <code>InvoiceLine</code>. È <code>Invoice</code> ad aggiungere
-                    righe: <code>invoice.addLine(product, qty, price)</code>, non un servizio esterno che costruisce
-                    righe e le inietta.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — Forum</div>
-                <p>Un <code>Thread</code> contiene <code>Post</code>. Quando un utente risponde, è il
-                    <code>Thread</code> a creare il nuovo <code>Post</code>:
-                    <code>thread.addReply(author, content)</code>. Il <code>Thread</code> ha tutto il contesto: data,
-                    posizione nella sequenza, metadati.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — Gioco di carte</div>
-                <p>Un <code>Deck</code> (mazzo) aggrega e registra tutte le <code>Card</code>. È lui a crearle nella
-                    fase di setup: <code>deck.build()</code> genera le 52 carte. Nessun'altra classe deve sapere come si
-                    costruisce una carta.</p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Violazione</div>
-                    <p>Un <code>GameController</code> fa <code>new Player(...)</code> in mezzo alla logica di gioco. Il
-                        controller non aggrega Player, quindi non è il responsabile naturale della creazione.</p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Corretto</div>
-                    <p><code>GameSession.startSession()</code> crea i <code>Player</code>. La sessione li possiede, li
-                        gestisce, e ha tutti i parametri di setup necessari.</p>
-                </div>
-            </div>
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Violazione</div>
+            <p>Un <code>GameController</code> fa <code>new Player(...)</code> in mezzo alla logica di gioco. Il
+              controller non aggrega Player, quindi non è il responsabile naturale della creazione.</p>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Corretto</div>
+            <p><code>GameSession.startSession()</code> crea i <code>Player</code>. La sessione li possiede, li
+              gestisce, e ha tutti i parametri di setup necessari.</p>
+          </div>
         </div>
+      </div>
 
-        <div class="principle-link" style="margin-top:2rem; padding:1.25rem; background:rgba(255,255,255,0.02); border-left:3px solid var(--kk-primary); color:var(--text-secondary); font-size:0.95rem; line-height:1.6; border-radius:0 10px 10px 0;">
-            <strong>Collegamento →</strong>&nbsp; Creator e Factory Method sono complementari: quando la creazione
-            diventa complessa o richiede varianti, si passa a una Factory senza violare Creator — la Factory diventa il
-            creatore naturale.
-        </div>
+      <div class="principle-link"
+        style="margin-top:2rem; padding:1.25rem; background:rgba(255,255,255,0.02); border-left:3px solid var(--kk-primary); color:var(--text-secondary); font-size:0.95rem; line-height:1.6; border-radius:0 10px 10px 0;">
+        <strong>Collegamento →</strong>&nbsp; Creator e Factory Method sono complementari: quando la creazione
+        diventa complessa o richiede varianti, si passa a una Factory senza violare Creator — la Factory diventa il
+        creatore naturale.
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      3. LOW COUPLING
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="lc">
-        <h2><span class="dot"></span> GRASP 03: Low Coupling</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            Minimizza le dipendenze tra classi. Un'alta dipendenza (high coupling) significa che una modifica in A
-            costringe a cambiare B, C, D. Con basso accoppiamento le classi sono intercambiabili e testabili in
-            isolamento.
-        </p>
+      <h2><span class="dot"></span> GRASP 03: Low Coupling</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Minimizza le dipendenze tra classi. Un'alta dipendenza (high coupling) significa che una modifica in A
+        costringe a cambiare B, C, D. Con basso accoppiamento le classi sono intercambiabili e testabili in
+        isolamento.
+      </p>
 
-        <div class="card-def">
-            <div class="header">LC · Forme di accoppiamento</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                L'accoppiamento può essere su tipi concreti (il peggiore), su interfacce (accettabile) o su astrazioni
-                (ottimale). L'obiettivo non è zero dipendenze — impossibile — ma dipendenze verso le astrazioni giuste.
+      <div class="card-def">
+        <div class="header">LC · Forme di accoppiamento</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            L'accoppiamento può essere su tipi concreti (il peggiore), su interfacce (accettabile) o su astrazioni
+            (ottimale). L'obiettivo non è zero dipendenze — impossibile — ma dipendenze verso le astrazioni giuste.
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">accoppiamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco</div>
+          <p><code>GameController</code> dipende da <code>IGameObserver</code>, non da <code>ScoreUI</code> o
+            <code>SoundManager</code>. Cambiare tutta la UI non richiede toccare il controller.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — Repository pattern</div>
+          <p>Un servizio dipende da <code>IUserRepository</code>, non da <code>MySQLUserRepository</code>. In test
+            si inietta un <code>InMemoryUserRepository</code>; in produzione si usa quello reale. Il servizio
+            non cambia mai.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — Notifiche</div>
+          <p>Un <code>OrderService</code> non chiama direttamente <code>EmailSender.send()</code> e
+            <code>SmsSender.send()</code>. Dipende da <code>INotifier</code>. Se si aggiunge WhatsApp, basta
+            aggiungere un'implementazione — il servizio non si tocca.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — Logging</div>
+          <p>Le classi di business non chiamano <code>System.out.println()</code> né dipendono da Log4j. Dipendono
+            da <code>ILogger</code>. L'implementazione può essere sostituita (console, file, cloud) senza
+            toccare la logica applicativa.</p>
+        </div>
+
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> High Coupling</div>
+            <p><code>GameController</code> importa e istanzia <code>ScoreUI</code>, <code>SoundManager</code>,
+              <code>AchievementTracker</code>. Aggiungere un observer richiede modificare il controller.
             </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">accoppiamento</span></div>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Low Coupling
             </div>
+            <p><code>GameController</code> ha una lista di <code>IGameObserver</code>. Si aggiungono observers a
+              runtime senza toccare il controller. Testabile con mock.</p>
+          </div>
         </div>
-
-        <div class="examples-block" style="margin-top:1.5rem">
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco</div>
-                <p><code>GameController</code> dipende da <code>IGameObserver</code>, non da <code>ScoreUI</code> o
-                    <code>SoundManager</code>. Cambiare tutta la UI non richiede toccare il controller.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — Repository pattern</div>
-                <p>Un servizio dipende da <code>IUserRepository</code>, non da <code>MySQLUserRepository</code>. In test
-                    si inietta un <code>InMemoryUserRepository</code>; in produzione si usa quello reale. Il servizio
-                    non cambia mai.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — Notifiche</div>
-                <p>Un <code>OrderService</code> non chiama direttamente <code>EmailSender.send()</code> e
-                    <code>SmsSender.send()</code>. Dipende da <code>INotifier</code>. Se si aggiunge WhatsApp, basta
-                    aggiungere un'implementazione — il servizio non si tocca.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — Logging</div>
-                <p>Le classi di business non chiamano <code>System.out.println()</code> né dipendono da Log4j. Dipendono
-                    da <code>ILogger</code>. L'implementazione può essere sostituita (console, file, cloud) senza
-                    toccare la logica applicativa.</p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> High Coupling</div>
-                    <p><code>GameController</code> importa e istanzia <code>ScoreUI</code>, <code>SoundManager</code>,
-                        <code>AchievementTracker</code>. Aggiungere un observer richiede modificare il controller.</p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Low Coupling</div>
-                    <p><code>GameController</code> ha una lista di <code>IGameObserver</code>. Si aggiungono observers a
-                        runtime senza toccare il controller. Testabile con mock.</p>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      4. HIGH COHESION
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="hc">
-        <h2><span class="dot"></span> GRASP 04: High Cohesion</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            Ogni classe dovrebbe avere responsabilità strettamente correlate e focalizzate. Una classe con bassa
-            coesione fa troppe cose diverse ed è difficile da capire, mantenere e riusare.
-        </p>
+      <h2><span class="dot"></span> GRASP 04: High Cohesion</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Ogni classe dovrebbe avere responsabilità strettamente correlate e focalizzate. Una classe con bassa
+        coesione fa troppe cose diverse ed è difficile da capire, mantenere e riusare.
+      </p>
 
-        <div class="card-def">
-            <div class="header">HC · Test della coesione</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                Prova a descrivere la classe in una frase senza usare "e". Se non ci riesci, probabilmente la classe ha
-                responsabilità multiple e andrebbe spezzata. Una classe coesa fa una cosa sola e la fa bene.
+      <div class="card-def">
+        <div class="header">HC · Test della coesione</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            Prova a descrivere la classe in una frase senza usare "e". Se non ci riesci, probabilmente la classe ha
+            responsabilità multiple e andrebbe spezzata. Una classe coesa fa una cosa sola e la fa bene.
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">coesione</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco</div>
+          <p><code>Item</code> sa solo come applicarsi a un <code>Player</code>: <code>apply(player)</code>. Non
+            gestisce sessioni, non salva nulla, non notifica nessuno. Una responsabilità.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — Classe coesa</div>
+          <p><code>EmailValidator</code> fa una cosa: validare indirizzi email. Non invia email, non le salva nel
+            DB, non le formatta. Ogni metodo è correlato alla validazione.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — Da spezzare</div>
+          <p>Una classe <code>UserManager</code> che: autentica utenti, manda email, aggiorna il profilo, calcola
+            statistiche e scrive log — viola completamente High Cohesion. Va divisa in <code>AuthService</code>,
+            <code>ProfileService</code>, <code>NotificationService</code>, <code>UserStatsService</code>.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — Valore immutabile</div>
+          <p><code>Money</code> (con importo e valuta) è altamente coesa: tutti i suoi metodi — somma, sottrai,
+            converti, confronta — riguardano le operazioni su un valore monetario. Non fa nient'altro.</p>
+        </div>
+
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Bassa coesione</div>
+            <p>Una <code>GameManager</code> class che inizializza il gioco, gestisce l'input utente, salva lo
+              stato, suona gli effetti audio e aggiorna la UI. Ogni parte è separata dalle altre.</p>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Alta coesione
+            </div>
+            <p><code>GameSession</code> gestisce solo il ciclo di vita della partita. <code>InputHandler</code>
+              solo l'input. <code>AudioManager</code> solo l'audio. Ciascuna ha responsabilità focalizzate.
             </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">coesione</span></div>
-            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="examples-block" style="margin-top:1.5rem">
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco</div>
-                <p><code>Item</code> sa solo come applicarsi a un <code>Player</code>: <code>apply(player)</code>. Non
-                    gestisce sessioni, non salva nulla, non notifica nessuno. Una responsabilità.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — Classe coesa</div>
-                <p><code>EmailValidator</code> fa una cosa: validare indirizzi email. Non invia email, non le salva nel
-                    DB, non le formatta. Ogni metodo è correlato alla validazione.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — Da spezzare</div>
-                <p>Una classe <code>UserManager</code> che: autentica utenti, manda email, aggiorna il profilo, calcola
-                    statistiche e scrive log — viola completamente High Cohesion. Va divisa in <code>AuthService</code>,
-                    <code>ProfileService</code>, <code>NotificationService</code>, <code>UserStatsService</code>.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — Valore immutabile</div>
-                <p><code>Money</code> (con importo e valuta) è altamente coesa: tutti i suoi metodi — somma, sottrai,
-                    converti, confronta — riguardano le operazioni su un valore monetario. Non fa nient'altro.</p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Bassa coesione</div>
-                    <p>Una <code>GameManager</code> class che inizializza il gioco, gestisce l'input utente, salva lo
-                        stato, suona gli effetti audio e aggiorna la UI. Ogni parte è separata dalle altre.</p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Alta coesione</div>
-                    <p><code>GameSession</code> gestisce solo il ciclo di vita della partita. <code>InputHandler</code>
-                        solo l'input. <code>AudioManager</code> solo l'audio. Ciascuna ha responsabilità focalizzate.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="warn-box" style="margin-top:1.25rem">
-            <strong>⚠️ HC + LC vanno insieme:</strong> spezzare una classe può aumentare il coupling se non si usano
-            interfacce. I due principi si bilanciano: alta coesione interna a ogni classe, basso accoppiamento tra le
-            classi.
-        </div>
+      <div class="warn-box" style="margin-top:1.25rem">
+        <strong>⚠️ HC + LC vanno insieme:</strong> spezzare una classe può aumentare il coupling se non si usano
+        interfacce. I due principi si bilanciano: alta coesione interna a ogni classe, basso accoppiamento tra le
+        classi.
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      5. CONTROLLER
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="ct">
-        <h2><span class="dot"></span> GRASP 05: Controller</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            Gli eventi di sistema (azioni dell'utente, richieste esterne) devono essere ricevuti da un oggetto
-            Controller che non è parte dell'UI. Il Controller coordina la risposta senza fare la logica di business da
-            solo.
-        </p>
+      <h2><span class="dot"></span> GRASP 05: Controller</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Gli eventi di sistema (azioni dell'utente, richieste esterne) devono essere ricevuti da un oggetto
+        Controller che non è parte dell'UI. Il Controller coordina la risposta senza fare la logica di business da
+        solo.
+      </p>
 
-        <div class="card-def">
-            <div class="header">CT · Due tipi di Controller</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                <strong style="color:var(--text-primary)">Facade Controller:</strong> un unico oggetto per tutti gli
-                eventi di sistema (es. <code>GameController</code> per tutti gli eventi del gioco). Adatto a sistemi più
-                semplici.<br><br>
-                <strong style="color:var(--text-primary)">Use Case Controller:</strong> un controller per ogni caso
-                d'uso (es. <code>LoginController</code>, <code>CheckoutController</code>). Più scalabile per
-                applicazioni grandi.
+      <div class="card-def">
+        <div class="header">CT · Due tipi di Controller</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            <strong style="color:var(--text-primary)">Facade Controller:</strong> un unico oggetto per tutti gli
+            eventi di sistema (es. <code>GameController</code> per tutti gli eventi del gioco). Adatto a sistemi più
+            semplici.<br><br>
+            <strong style="color:var(--text-primary)">Use Case Controller:</strong> un controller per ogni caso
+            d'uso (es. <code>LoginController</code>, <code>CheckoutController</code>). Più scalabile per
+            applicazioni grandi.
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">architettura</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco</div>
+          <p><code>GameController</code> riceve <code>move(direction)</code>, <code>collectItem(itemId)</code>,
+            <code>endGame()</code> dall'interfaccia e orchestra la logica: valida, aggiorna il modello, notifica
+            gli observer. Non è UI.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — Web app (MVC)</div>
+          <p>In un'app web, <code>OrderController</code> riceve la request HTTP e chiama
+            <code>orderService.placeOrder(dto)</code>. Non contiene logica di business — la delega al service
+            layer. Non è una vista — restituisce dati al framework.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — ATM</div>
+          <p><code>ATMController</code> riceve gli eventi fisici (carta inserita, PIN digitato, importo
+            selezionato) e coordina <code>CardReader</code>, <code>PinValidator</code>,
+            <code>CashDispenser</code>. L'utente interagisce solo con lo schermo fisico, mai con questi oggetti
+            direttamente.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — Sistema ospedaliero</div>
+          <p><code>AppointmentController</code> gestisce i casi d'uso "prenota visita" e "cancella appuntamento".
+            Separa la UI (form web) dalla logica (controllo disponibilità, invio reminder) e dalla persistenza
+            (repository).</p>
+        </div>
+
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Sbagliato</div>
+            <p>Un pulsante UI fa direttamente <code>player.lives--</code> e
+              <code>scoreLabel.setText(...)</code>. La logica di gioco è nell'interfaccia grafica. Impossibile
+              testare, riusare o cambiare la UI.
             </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">architettura</span></div>
-            </div>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Corretto</div>
+            <p>Il pulsante chiama <code>gameController.onPlayerHit()</code>. Il controller aggiorna il modello,
+              il modello notifica gli observer, la UI si aggiorna da sola. Separazione netta.</p>
+          </div>
         </div>
+      </div>
 
-        <div class="examples-block" style="margin-top:1.5rem">
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco</div>
-                <p><code>GameController</code> riceve <code>move(direction)</code>, <code>collectItem(itemId)</code>,
-                    <code>endGame()</code> dall'interfaccia e orchestra la logica: valida, aggiorna il modello, notifica
-                    gli observer. Non è UI.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — Web app (MVC)</div>
-                <p>In un'app web, <code>OrderController</code> riceve la request HTTP e chiama
-                    <code>orderService.placeOrder(dto)</code>. Non contiene logica di business — la delega al service
-                    layer. Non è una vista — restituisce dati al framework.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — ATM</div>
-                <p><code>ATMController</code> riceve gli eventi fisici (carta inserita, PIN digitato, importo
-                    selezionato) e coordina <code>CardReader</code>, <code>PinValidator</code>,
-                    <code>CashDispenser</code>. L'utente interagisce solo con lo schermo fisico, mai con questi oggetti
-                    direttamente.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — Sistema ospedaliero</div>
-                <p><code>AppointmentController</code> gestisce i casi d'uso "prenota visita" e "cancella appuntamento".
-                    Separa la UI (form web) dalla logica (controllo disponibilità, invio reminder) e dalla persistenza
-                    (repository).</p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Sbagliato</div>
-                    <p>Un pulsante UI fa direttamente <code>player.lives--</code> e
-                        <code>scoreLabel.setText(...)</code>. La logica di gioco è nell'interfaccia grafica. Impossibile
-                        testare, riusare o cambiare la UI.</p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Corretto</div>
-                    <p>Il pulsante chiama <code>gameController.onPlayerHit()</code>. Il controller aggiorna il modello,
-                        il modello notifica gli observer, la UI si aggiorna da sola. Separazione netta.</p>
-                </div>
-            </div>
+      <div class="code-block" style="margin-top:1.25rem">
+        <div class="code-header">
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <span class="code-filename">GameController.java</span>
         </div>
+        <div class="code-body">
+          <pre><code class="language-java">public class GameController {
 
-        <div class="code-block" style="margin-top:1.25rem">
-            <div class="code-header">
-                <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-                </div>
-                <span class="code-filename">GameController.java</span>
-            </div>
-            <div class="code-body">
-                <pre>
-<span class="kw">public class</span> <span class="tp">GameController</span> {
+  private final GameSession    session;
+  private final GameSystem     system;
+  private final List&lt;IGameObserver&gt; observers;
 
-  <span class="kw">private final</span> <span class="tp">GameSession</span>    session;
-  <span class="kw">private final</span> <span class="tp">GameSystem</span>     system;
-  <span class="kw">private final</span> <span class="tp">List</span>&lt;<span class="tp">IGameObserver</span>&gt; observers;
-
-  <span class="cm">// Evento di sistema: l'utente si muove</span>
-  <span class="kw">public void</span> <span class="fn">onMove</span>(<span class="tp">Direction</span> dir) {
-    session.<span class="fn">getCurrentPlayer</span>().<span class="fn">move</span>(dir);   <span class="cm">// delega al modello</span>
-    <span class="fn">notifyAll</span>(<span class="tp">Event</span>.MOVE);                  <span class="cm">// notifica la vista</span>
+  // Evento di sistema: l'utente si muove
+  public void onMove(Direction dir) {
+    session.getCurrentPlayer().move(dir);   // delega al modello
+    notifyAll(Event.MOVE);                  // notifica la vista
   }
 
-  <span class="cm">// Evento di sistema: raccoglie un item</span>
-  <span class="kw">public void</span> <span class="fn">onCollectItem</span>(<span class="tp">String</span> itemId) {
-    <span class="tp">Item</span> item = session.<span class="fn">getItem</span>(itemId);
-    item.<span class="fn">apply</span>(session.<span class="fn">getCurrentPlayer</span>());  <span class="cm">// Information Expert</span>
-    session.<span class="fn">removeItem</span>(itemId);
-    <span class="fn">notifyAll</span>(<span class="tp">Event</span>.ITEM_COLLECTED);
+  // Evento di sistema: raccoglie un item
+  public void onCollectItem(String itemId) {
+    Item item = session.getItem(itemId);
+    item.apply(session.getCurrentPlayer());  // Information Expert
+    session.removeItem(itemId);
+    notifyAll(Event.ITEM_COLLECTED);
   }
-}
-</pre>
-            </div>
+}</code></pre>
         </div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      6. POLYMORPHISM
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="pl">
-        <h2><span class="dot"></span> GRASP 06: Polymorphism</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            Quando il comportamento varia in base al tipo, usa il polimorfismo invece di if/switch. Ogni tipo gestisce
-            la propria variazione implementando un'interfaccia comune.
-        </p>
+      <h2><span class="dot"></span> GRASP 06: Polymorphism</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Quando il comportamento varia in base al tipo, usa il polimorfismo invece di if/switch. Ogni tipo gestisce
+        la propria variazione implementando un'interfaccia comune.
+      </p>
 
-        <div class="card-def">
-            <div class="header">PL · Polimorfismo vs. if/switch</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                Un <code>if (type == "HEALTH") ... else if (type == "WEAPON") ...</code> deve essere aggiornato ogni
-                volta che si aggiunge un tipo. Con il polimorfismo si aggiunge una nuova classe — il codice esistente
-                non si tocca (Open/Closed Principle).
+      <div class="card-def">
+        <div class="header">PL · Polimorfismo vs. if/switch</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            Un <code>if (type == "HEALTH") ... else if (type == "WEAPON") ...</code> deve essere aggiornato ogni
+            volta che si aggiunge un tipo. Con il polimorfismo si aggiunge una nuova classe — il codice esistente
+            non si tocca (Open/Closed Principle).
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">OOP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco: tipi di Item</div>
+          <p><code>HealthPotion</code>, <code>Sword</code>, <code>Shield</code> implementano tutti
+            <code>Item.apply(player)</code> in modo diverso. Il controller chiama
+            <code>item.apply(player)</code> senza sapere il tipo concreto.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — Pagamenti</div>
+          <p><code>CreditCard</code>, <code>PayPal</code>, <code>BankTransfer</code> implementano
+            <code>IPaymentMethod.charge(amount)</code>. <code>CheckoutService</code> chiama solo
+            <code>method.charge(total)</code>, senza if/switch sul tipo di pagamento.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — Forme geometriche</div>
+          <p><code>Circle</code>, <code>Rectangle</code>, <code>Triangle</code> implementano
+            <code>Shape.area()</code> e <code>Shape.perimeter()</code>. Un renderer chiama
+            <code>shape.draw()</code> senza sapere quale forma sta disegnando.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — Report</div>
+          <p><code>PdfReport</code>, <code>ExcelReport</code>, <code>HtmlReport</code> implementano
+            <code>IReport.generate(data)</code>. Il servizio di esportazione non cambia quando si aggiunge un
+            nuovo formato.
+          </p>
+        </div>
+
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Senza polimorfismo
+            </div>
+            <p>
+              <code>if (item.type.equals("health")) player.heal(30);</code><br><code>else if (item.type.equals("weapon")) player.addWeapon(...);</code><br>Ogni
+              nuovo tipo richiede di toccare questo blocco.</p>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con polimorfismo
+            </div>
+            <p><code>item.apply(player);</code><br>Ogni implementazione sa cosa fare. Aggiungere
+              <code>ShieldItem</code> non modifica niente di esistente.
             </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">OOP</span></div>
-            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="examples-block" style="margin-top:1.5rem">
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco: tipi di Item</div>
-                <p><code>HealthPotion</code>, <code>Sword</code>, <code>Shield</code> implementano tutti
-                    <code>Item.apply(player)</code> in modo diverso. Il controller chiama
-                    <code>item.apply(player)</code> senza sapere il tipo concreto.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — Pagamenti</div>
-                <p><code>CreditCard</code>, <code>PayPal</code>, <code>BankTransfer</code> implementano
-                    <code>IPaymentMethod.charge(amount)</code>. <code>CheckoutService</code> chiama solo
-                    <code>method.charge(total)</code>, senza if/switch sul tipo di pagamento.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — Forme geometriche</div>
-                <p><code>Circle</code>, <code>Rectangle</code>, <code>Triangle</code> implementano
-                    <code>Shape.area()</code> e <code>Shape.perimeter()</code>. Un renderer chiama
-                    <code>shape.draw()</code> senza sapere quale forma sta disegnando.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — Report</div>
-                <p><code>PdfReport</code>, <code>ExcelReport</code>, <code>HtmlReport</code> implementano
-                    <code>IReport.generate(data)</code>. Il servizio di esportazione non cambia quando si aggiunge un
-                    nuovo formato.</p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Senza polimorfismo</div>
-                    <p><code>if (item.type.equals("health")) player.heal(30);</code><br><code>else if (item.type.equals("weapon")) player.addWeapon(...);</code><br>Ogni
-                        nuovo tipo richiede di toccare questo blocco.</p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con polimorfismo</div>
-                    <p><code>item.apply(player);</code><br>Ogni implementazione sa cosa fare. Aggiungere
-                        <code>ShieldItem</code> non modifica niente di esistente.</p>
-                </div>
-            </div>
+      <div class="code-block" style="margin-top:1.25rem">
+        <div class="code-header">
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <span class="code-filename">Item.java — Polymorphism</span>
         </div>
-
-        <div class="code-block" style="margin-top:1.25rem">
-            <div class="code-header">
-                <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-                </div>
-                <span class="code-filename">Item.java — Polymorphism</span>
-            </div>
-            <div class="code-body">
-                <pre>
-<span class="kw">public interface</span> <span class="tp">Item</span> {
-  <span class="kw">void</span> <span class="fn">apply</span>(<span class="tp">Player</span> player);
-  <span class="tp">String</span> <span class="fn">getName</span>();
+        <div class="code-body">
+          <pre><code class="language-java">public interface Item {
+  void apply(Player player);
+  String getName();
 }
 
-<span class="kw">public class</span> <span class="tp">HealthPotion</span> <span class="kw">implements</span> <span class="tp">Item</span> {
-  <span class="kw">private final int</span> healAmount;
-  <span class="kw">public void</span> <span class="fn">apply</span>(<span class="tp">Player</span> p) { p.<span class="fn">heal</span>(healAmount); }
+public class HealthPotion implements Item {
+  private final int healAmount;
+  public void apply(Player p) { p.heal(healAmount); }
 }
 
-<span class="kw">public class</span> <span class="tp">Sword</span> <span class="kw">implements</span> <span class="tp">Item</span> {
-  <span class="kw">private final int</span> damage;
-  <span class="kw">public void</span> <span class="fn">apply</span>(<span class="tp">Player</span> p) { p.<span class="fn">setAttack</span>(damage); }
+public class Sword implements Item {
+  private final int damage;
+  public void apply(Player p) { p.setAttack(damage); }
 }
 
-<span class="kw">public class</span> <span class="tp">Shield</span> <span class="kw">implements</span> <span class="tp">Item</span> {
-  <span class="kw">private final int</span> defense;
-  <span class="kw">public void</span> <span class="fn">apply</span>(<span class="tp">Player</span> p) { p.<span class="fn">setDefense</span>(defense); }
+public class Shield implements Item {
+  private final int defense;
+  public void apply(Player p) { p.setDefense(defense); }
 }
 
-<span class="cm">// <i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Il controller non sa (e non deve sapere) qual è il tipo</span>
-<span class="kw">for</span> (<span class="tp">Item</span> item : collectedItems) {
-  item.<span class="fn">apply</span>(currentPlayer);
-}
-</pre>
-            </div>
+// ✔️ Il controller non sa (e non deve sapere) qual è il tipo
+for (Item item : collectedItems) {
+  item.apply(currentPlayer);
+}</code></pre>
         </div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      7. PURE FABRICATION
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="pf">
-        <h2><span class="dot"></span> GRASP 07: Pure Fabrication</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            Classe "artificiale" che non esiste nel dominio del problema, ma viene creata per rispettare Low Coupling e
-            High Cohesion. Risolve problemi tecnici (persistenza, logging, comunicazione) senza sporcare le classi di
-            dominio.
-        </p>
+      <h2><span class="dot"></span> GRASP 07: Pure Fabrication</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Classe "artificiale" che non esiste nel dominio del problema, ma viene creata per rispettare Low Coupling e
+        High Cohesion. Risolve problemi tecnici (persistenza, logging, comunicazione) senza sporcare le classi di
+        dominio.
+      </p>
 
-        <div class="card-def">
-            <div class="header">PF · Quando inventare una classe</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                Quando nessuna classe del dominio è il posto giusto per una responsabilità tecnica (salvare su DB,
-                inviare email, fare cache), si inventa una classe di servizio. Non deve avere senso nel dominio reale —
-                deve avere senso nel design.
+      <div class="card-def">
+        <div class="header">PF · Quando inventare una classe</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            Quando nessuna classe del dominio è il posto giusto per una responsabilità tecnica (salvare su DB,
+            inviare email, fare cache), si inventa una classe di servizio. Non deve avere senso nel dominio reale —
+            deve avere senso nel design.
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">astrazione</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco</div>
+          <p><code>ScoreService</code> e <code>GameRepository</code> non esistono nel dominio del gioco, ma
+            gestiscono persistenza e logica di punteggio senza inquinare <code>Player</code> o
+            <code>GameSession</code> con dipendenze tecniche.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — E-commerce</div>
+          <p>Un <code>TaxCalculator</code> non è un'entità del dominio ordini, ma è necessario per calcolare le
+            tasse. Meglio una classe dedicata che mettere la logica fiscale dentro <code>Order</code> o
+            <code>Product</code>.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — Social network</div>
+          <p><code>FriendRecommendationEngine</code> non è un concetto del dominio "amicizia", ma è una Pure
+            Fabrication che incapsula l'algoritmo di raccomandazione. L'utente non sa che esiste, ma il sistema
+            ne ha bisogno.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — Mapper</div>
+          <p>Un <code>UserMapper</code> che converte tra <code>UserEntity</code> (DB) e <code>UserDTO</code> (API)
+            è una Pure Fabrication. Non corrisponde a nulla nel dominio reale, ma risolve il problema del
+            disaccoppiamento tra layer.</p>
+        </div>
+
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Senza Pure
+              Fabrication</div>
+            <p><code>Player</code> contiene metodi per salvarsi su DB, inviare notifiche email e calcolare
+              statistiche. Classe gonfia, dipendenze tecniche nel dominio, impossibile testare in isolamento.
             </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">astrazione</span></div>
-            </div>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con Pure
+              Fabrication</div>
+            <p><code>Player</code> è solo logica di dominio. <code>PlayerRepository</code> gestisce la
+              persistenza. <code>PlayerNotifier</code> le notifiche. Ciascuno testabile, sostituibile,
+              indipendente.</p>
+          </div>
         </div>
-
-        <div class="examples-block" style="margin-top:1.5rem">
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco</div>
-                <p><code>ScoreService</code> e <code>GameRepository</code> non esistono nel dominio del gioco, ma
-                    gestiscono persistenza e logica di punteggio senza inquinare <code>Player</code> o
-                    <code>GameSession</code> con dipendenze tecniche.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — E-commerce</div>
-                <p>Un <code>TaxCalculator</code> non è un'entità del dominio ordini, ma è necessario per calcolare le
-                    tasse. Meglio una classe dedicata che mettere la logica fiscale dentro <code>Order</code> o
-                    <code>Product</code>.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — Social network</div>
-                <p><code>FriendRecommendationEngine</code> non è un concetto del dominio "amicizia", ma è una Pure
-                    Fabrication che incapsula l'algoritmo di raccomandazione. L'utente non sa che esiste, ma il sistema
-                    ne ha bisogno.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — Mapper</div>
-                <p>Un <code>UserMapper</code> che converte tra <code>UserEntity</code> (DB) e <code>UserDTO</code> (API)
-                    è una Pure Fabrication. Non corrisponde a nulla nel dominio reale, ma risolve il problema del
-                    disaccoppiamento tra layer.</p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Senza Pure Fabrication</div>
-                    <p><code>Player</code> contiene metodi per salvarsi su DB, inviare notifiche email e calcolare
-                        statistiche. Classe gonfia, dipendenze tecniche nel dominio, impossibile testare in isolamento.
-                    </p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con Pure Fabrication</div>
-                    <p><code>Player</code> è solo logica di dominio. <code>PlayerRepository</code> gestisce la
-                        persistenza. <code>PlayerNotifier</code> le notifiche. Ciascuno testabile, sostituibile,
-                        indipendente.</p>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      8. INDIRECTION
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="in">
-        <h2><span class="dot"></span> GRASP 08: Indirection</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            Introduce un intermediario per ridurre l'accoppiamento diretto tra due classi. L'intermediario assorbe le
-            dipendenze e consente a ciascun lato di evolversi indipendentemente.
-        </p>
+      <h2><span class="dot"></span> GRASP 08: Indirection</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Introduce un intermediario per ridurre l'accoppiamento diretto tra due classi. L'intermediario assorbe le
+        dipendenze e consente a ciascun lato di evolversi indipendentemente.
+      </p>
 
-        <div class="card-def">
-            <div class="header">IN · Il valore dell'intermediario</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                "All problems in computer science can be solved by another level of indirection." — David Wheeler.
-                L'indirezione è la base di pattern come Observer, Adapter, Proxy, Facade, e dell'intera architettura a
-                layer.
+      <div class="card-def">
+        <div class="header">IN · Il valore dell'intermediario</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            "All problems in computer science can be solved by another level of indirection." — David Wheeler.
+            L'indirezione è la base di pattern come Observer, Adapter, Proxy, Facade, e dell'intera architettura a
+            layer.
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">disaccoppiamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco</div>
+          <p><code>IGameObserver</code> è il livello di indirezione tra <code>GameSystem</code> e
+            <code>ScoreUI</code> / <code>SoundManager</code>. I due lati non si conoscono, comunicano solo
+            attraverso l'interfaccia.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — Adapter</div>
+          <p>La tua app usa <code>IEmailService</code>. Oggi l'implementazione chiama SendGrid, domani Mailgun.
+            L'adapter è l'intermediario che traduce l'interfaccia comune nell'API specifica del provider. L'app
+            non cambia mai.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — Message Broker</div>
+          <p>Un microservizio A pubblica un evento su Kafka. Il microservizio B lo consuma. Non si conoscono
+            direttamente. Kafka è il livello di indirezione che li disaccoppia: A e B possono scalare,
+            aggiornarsi e fallire indipendentemente.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — DNS</div>
+          <p>Il DNS è indirezione pura: il client chiede "dove trovo google.com?" e riceve un IP. Se Google cambia
+            server, aggiorna il DNS — tutti i client continuano a funzionare senza sapere nulla del cambio.</p>
+        </div>
+
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Dipendenza diretta
+            </div>
+            <p><code>GameSystem</code> chiama <code>scoreUI.update()</code>, <code>soundManager.play()</code>,
+              <code>achievementTracker.check()</code> direttamente. Aggiungere un effetto richiede modificare
+              <code>GameSystem</code>.
             </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">disaccoppiamento</span></div>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con indirezione
             </div>
+            <p><code>GameSystem</code> chiama <code>notifyObservers(event)</code>. Chi vuole reagire implementa
+              <code>IGameObserver</code> e si registra. <code>GameSystem</code> non conosce chi ascolta.
+            </p>
+          </div>
         </div>
+      </div>
 
-        <div class="examples-block" style="margin-top:1.5rem">
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco</div>
-                <p><code>IGameObserver</code> è il livello di indirezione tra <code>GameSystem</code> e
-                    <code>ScoreUI</code> / <code>SoundManager</code>. I due lati non si conoscono, comunicano solo
-                    attraverso l'interfaccia.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — Adapter</div>
-                <p>La tua app usa <code>IEmailService</code>. Oggi l'implementazione chiama SendGrid, domani Mailgun.
-                    L'adapter è l'intermediario che traduce l'interfaccia comune nell'API specifica del provider. L'app
-                    non cambia mai.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — Message Broker</div>
-                <p>Un microservizio A pubblica un evento su Kafka. Il microservizio B lo consuma. Non si conoscono
-                    direttamente. Kafka è il livello di indirezione che li disaccoppia: A e B possono scalare,
-                    aggiornarsi e fallire indipendentemente.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — DNS</div>
-                <p>Il DNS è indirezione pura: il client chiede "dove trovo google.com?" e riceve un IP. Se Google cambia
-                    server, aggiorna il DNS — tutti i client continuano a funzionare senza sapere nulla del cambio.</p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Dipendenza diretta</div>
-                    <p><code>GameSystem</code> chiama <code>scoreUI.update()</code>, <code>soundManager.play()</code>,
-                        <code>achievementTracker.check()</code> direttamente. Aggiungere un effetto richiede modificare
-                        <code>GameSystem</code>.</p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con indirezione</div>
-                    <p><code>GameSystem</code> chiama <code>notifyObservers(event)</code>. Chi vuole reagire implementa
-                        <code>IGameObserver</code> e si registra. <code>GameSystem</code> non conosce chi ascolta.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="principle-link" style="margin-top:2rem; padding:1.25rem; background:rgba(255,255,255,0.02); border-left:3px solid var(--kk-primary); color:var(--text-secondary); font-size:0.95rem; line-height:1.6; border-radius:0 10px 10px 0;">
-            <strong>Collegamento →</strong>&nbsp; Indirection e Pure Fabrication spesso coincidono: l'intermediario che
-            si introduce è spesso una Pure Fabrication (una classe che non esiste nel dominio, ma serve per
-            disaccoppiare).
-        </div>
+      <div class="principle-link"
+        style="margin-top:2rem; padding:1.25rem; background:rgba(255,255,255,0.02); border-left:3px solid var(--kk-primary); color:var(--text-secondary); font-size:0.95rem; line-height:1.6; border-radius:0 10px 10px 0;">
+        <strong>Collegamento →</strong>&nbsp; Indirection e Pure Fabrication spesso coincidono: l'intermediario che
+        si introduce è spesso una Pure Fabrication (una classe che non esiste nel dominio, ma serve per
+        disaccoppiare).
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      9. PROTECTED VARIATIONS
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="pv">
-        <h2><span class="dot"></span> GRASP 09: Protected Variations</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-            Identifica i punti del sistema dove le variazioni sono prevedibili (algoritmi, formati, provider esterni,
-            regole di business) e proteggi le parti stabili con interfacce. Le variazioni sono libere; il nucleo stabile
-            non si tocca mai.
-        </p>
+      <h2><span class="dot"></span> GRASP 09: Protected Variations</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Identifica i punti del sistema dove le variazioni sono prevedibili (algoritmi, formati, provider esterni,
+        regole di business) e proteggi le parti stabili con interfacce. Le variazioni sono libere; il nucleo stabile
+        non si tocca mai.
+      </p>
 
-        <div class="card-def">
-            <div class="header">PV · Cosa è stabile, cosa cambia?</div>
-            <div class="content">
-                <p style="margin:0; color:var(--text-secondary);">
-                Il design migliore isola ciò che cambia da ciò che rimane stabile. Ciò che è stabile (interfaccia
-                pubblica, contratto) va protetto. Ciò che cambia (implementazione, algoritmo, fornitore) va isolato
-                dietro un'astrazione.
+      <div class="card-def">
+        <div class="header">PV · Cosa è stabile, cosa cambia?</div>
+        <div class="content">
+          <p style="margin:0; color:var(--text-secondary);">
+            Il design migliore isola ciò che cambia da ciò che rimane stabile. Ciò che è stabile (interfaccia
+            pubblica, contratto) va protetto. Ciò che cambia (implementazione, algoritmo, fornitore) va isolato
+            dietro un'astrazione.
+          </p>
+          <div style="margin-top:1rem;"><span class="badge-sm"
+              style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">stabilità</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="examples-block" style="margin-top:1.5rem">
+        <div class="example-item">
+          <div class="example-label">Esempio 1 — Gioco</div>
+          <p>Il rendering può cambiare (console, GUI Swing, web): <code>IGameObserver</code> protegge il core. La
+            logica di gioco non cambia mai per colpa del rendering. Il contratto è stabile; l'implementazione è
+            libera di variare.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 2 — Sorting</div>
+          <p><code>ISortStrategy</code> protegge il codice che ordina dati dalle variazioni di algoritmo
+            (quicksort, mergesort, timsort). Si può cambiare l'algoritmo a runtime senza toccare chi usa il
+            sort.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 3 — Provider di pagamento</div>
+          <p>Il contratto <code>IPaymentGateway</code> è stabile. Le implementazioni (<code>StripeGateway</code>,
+            <code>PayPalGateway</code>) possono cambiare o aggiungersi. Il sistema di checkout non sa quale
+            gateway usa e non cambia.
+          </p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 4 — Serializzazione</div>
+          <p><code>ISerializer</code> con <code>serialize(obj)</code> e <code>deserialize(bytes)</code> protegge
+            il codice dal formato: JSON, XML, Protobuf, MessagePack. Si cambia implementazione senza toccare la
+            logica applicativa.</p>
+        </div>
+        <div class="example-item">
+          <div class="example-label">Esempio 5 — Cambio di database</div>
+          <p>L'interfaccia <code>IProductRepository</code> è stabile. Sotto c'è
+            <code>PostgreSQLProductRepository</code>. Migrare a MongoDB significa scrivere
+            <code>MongoProductRepository</code> senza toccare nessun servizio. Il contratto protegge tutto il
+            resto.
+          </p>
+        </div>
+
+        <div class="vs-row">
+          <div class="vs-box vs-bad">
+            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Non protetto</div>
+            <p>Il codice di business chiama direttamente metodi specifici di Stripe. Cambiare provider significa
+              riscrivere metà applicazione. Ogni variazione di API esterna si propaga nel codice interno.</p>
+          </div>
+          <div class="vs-box vs-good">
+            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Protetto</div>
+            <p>Il codice di business chiama <code>IPaymentGateway.charge(amount)</code>. La variazione (quale
+              provider) è isolata dietro l'interfaccia. Il business logic non cambia mai per motivi tecnici.
             </p>
-                <div style="margin-top:1rem;"><span class="badge-sm" style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">stabilità</span></div>
-            </div>
+          </div>
         </div>
-
-        <div class="examples-block" style="margin-top:1.5rem">
-            <div class="example-item">
-                <div class="example-label">Esempio 1 — Gioco</div>
-                <p>Il rendering può cambiare (console, GUI Swing, web): <code>IGameObserver</code> protegge il core. La
-                    logica di gioco non cambia mai per colpa del rendering. Il contratto è stabile; l'implementazione è
-                    libera di variare.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 2 — Sorting</div>
-                <p><code>ISortStrategy</code> protegge il codice che ordina dati dalle variazioni di algoritmo
-                    (quicksort, mergesort, timsort). Si può cambiare l'algoritmo a runtime senza toccare chi usa il
-                    sort.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 3 — Provider di pagamento</div>
-                <p>Il contratto <code>IPaymentGateway</code> è stabile. Le implementazioni (<code>StripeGateway</code>,
-                    <code>PayPalGateway</code>) possono cambiare o aggiungersi. Il sistema di checkout non sa quale
-                    gateway usa e non cambia.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 4 — Serializzazione</div>
-                <p><code>ISerializer</code> con <code>serialize(obj)</code> e <code>deserialize(bytes)</code> protegge
-                    il codice dal formato: JSON, XML, Protobuf, MessagePack. Si cambia implementazione senza toccare la
-                    logica applicativa.</p>
-            </div>
-            <div class="example-item">
-                <div class="example-label">Esempio 5 — Cambio di database</div>
-                <p>L'interfaccia <code>IProductRepository</code> è stabile. Sotto c'è
-                    <code>PostgreSQLProductRepository</code>. Migrare a MongoDB significa scrivere
-                    <code>MongoProductRepository</code> senza toccare nessun servizio. Il contratto protegge tutto il
-                    resto.</p>
-            </div>
-
-            <div class="vs-row">
-                <div class="vs-box vs-bad">
-                    <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Non protetto</div>
-                    <p>Il codice di business chiama direttamente metodi specifici di Stripe. Cambiare provider significa
-                        riscrivere metà applicazione. Ogni variazione di API esterna si propaga nel codice interno.</p>
-                </div>
-                <div class="vs-box vs-good">
-                    <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Protetto</div>
-                    <p>Il codice di business chiama <code>IPaymentGateway.charge(amount)</code>. La variazione (quale
-                        provider) è isolata dietro l'interfaccia. Il business logic non cambia mai per motivi tecnici.
-                    </p>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════
      TABELLA RIASSUNTIVA
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="summary">
-        <div class="eyebrow">Tutti e 9 · Riepilogo</div>
-        <h2 class="section-title">Tabella riassuntiva</h2>
-        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">Un colpo d'occhio su tutti i principi GRASP con la domanda chiave da porsi durante il
-            design.</p>
+      <div class="eyebrow">Tutti e 9 · Riepilogo</div>
+      <h2 class="section-title">Tabella riassuntiva</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">Un colpo d'occhio su tutti i
+        principi GRASP con la domanda chiave da porsi durante il
+        design.</p>
 
-        <div
-            style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
-            <table style="width:100%; border-collapse:collapse; text-align:left; font-size:14px;">
-                <thead style="background:rgba(255,255,255,0.03); border-bottom:1px solid var(--border);">
-                    <tr>
-                        <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Principio</th>
-                        <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Categoria</th>
-                        <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Domanda chiave</th>
-                        <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Anti-pattern che risolve</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Information Expert</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-resp">responsabilità</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Chi ha i dati per fare questa cosa?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Logica sparsa fuori dai dati</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Creator</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-resp">responsabilità</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Chi aggrega / usa / conosce A?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Creazione sparsa ovunque</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Low Coupling</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Dipendo da un'astrazione o da un concreto?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Modifiche a cascata</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">High Cohesion</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Posso descrivere questa classe senza "e"?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">God class, classi bloated</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Controller</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Chi riceve questo evento di sistema senza essere UI?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Logica nell'interfaccia grafica</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Polymorphism</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-oop">OOP</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Sto usando if/switch sul tipo? Posso sostituirlo?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Switch sulle varianti di tipo</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Pure Fabrication</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-abs">astrazione</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Nessuna classe di dominio è il posto giusto?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Responsabilità tecniche nel dominio</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Indirection</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Posso aggiungere un intermediario tra questi due?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Dipendenze dirette tra moduli</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Protected Variations</strong></td>
-                        <td style="padding:1rem;"><span class="badge-sm b-abs">astrazione</span></td>
-                        <td style="padding:1rem; color:var(--text-secondary);">Cosa cambierà? Come proteggo il resto?</td>
-                        <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Variazioni che si propagano</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <div
+        style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:14px;">
+          <thead style="background:rgba(255,255,255,0.03); border-bottom:1px solid var(--border);">
+            <tr>
+              <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Principio</th>
+              <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Categoria</th>
+              <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Domanda chiave</th>
+              <th style="padding:1rem; font-weight:600; color:var(--text-primary);">Anti-pattern che risolve</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Information Expert</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-resp">responsabilità</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Chi ha i dati per fare questa cosa?</td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Logica sparsa fuori dai dati</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Creator</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-resp">responsabilità</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Chi aggrega / usa / conosce A?</td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Creazione sparsa ovunque</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Low Coupling</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Dipendo da un'astrazione o da un concreto?</td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Modifiche a cascata</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">High Cohesion</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Posso descrivere questa classe senza "e"?</td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">God class, classi bloated</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Controller</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Chi riceve questo evento di sistema senza essere
+                UI?</td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Logica nell'interfaccia grafica</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Polymorphism</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-oop">OOP</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Sto usando if/switch sul tipo? Posso sostituirlo?
+              </td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Switch sulle varianti di tipo</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Pure Fabrication</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-abs">astrazione</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Nessuna classe di dominio è il posto giusto?</td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Responsabilità tecniche nel dominio
+              </td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Indirection</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-arch">architettura</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Posso aggiungere un intermediario tra questi due?
+              </td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Dipendenze dirette tra moduli</td>
+            </tr>
+            <tr>
+              <td style="padding:1rem;"><strong style="color:var(--kk-primary);">Protected Variations</strong></td>
+              <td style="padding:1rem;"><span class="badge-sm b-abs">astrazione</span></td>
+              <td style="padding:1rem; color:var(--text-secondary);">Cosa cambierà? Come proteggo il resto?</td>
+              <td style="padding:1rem; color:var(--text-muted); font-size:12px;">Variazioni che si propagano</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <div class="highlight-box" style="margin-top:1.75rem">
-            <strong>Regola pratica:</strong> Low Coupling e High Cohesion sono i due principi "madre" — tutti gli altri
-            sono modi specifici per raggiungerli. Se il design li rispetta, quasi certamente rispetta anche gli altri
-            sette.
-        </div>
+      <div class="highlight-box" style="margin-top:1.75rem">
+        <strong>Regola pratica:</strong> Low Coupling e High Cohesion sono i due principi "madre" — tutti gli altri
+        sono modi specifici per raggiungerli. Se il design li rispetta, quasi certamente rispetta anche gli altri
+        sette.
+      </div>
     </div>
 
-<!-- ===== SINGLETON ===== -->
-<div class="section-block" id="singleton">
-  <h2><span class="dot"></span> GoF (Creazionale): Singleton</h2>
-  <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-    Garantisce una sola istanza di una classe con un punto di accesso globale controllato. Nel gioco, <code style="color:var(--accent-soft)">GameSystem</code> è un Singleton: esiste un solo sistema di gioco attivo che gestisce livelli, regole e stato globale.
-  </p>
-
-  <div class="two-col">
-    <div>
-      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.8;margin-bottom:1rem">
-        Il costruttore è <strong style="color:var(--text-primary)">privato</strong>: nessuno può creare istanze dall'esterno. L'unico accesso avviene tramite il metodo statico <code style="color:var(--accent-soft);font-size:12px">getInstance()</code>, che crea l'istanza al primo invio e la restituisce sempre nelle chiamate successive.
+    <!-- ===== SINGLETON ===== -->
+    <div class="section-block" id="singleton">
+      <h2><span class="dot"></span> GoF (Creazionale): Singleton</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Garantisce una sola istanza di una classe con un punto di accesso globale controllato. Nel gioco, <code
+          style="color:var(--accent-soft)">GameSystem</code> è un Singleton: esiste un solo sistema di gioco attivo che
+        gestisce livelli, regole e stato globale.
       </p>
-      <div class="pros-cons">
-        <div class="pros-cons-box pro">
-          <h5>Vantaggi</h5>
-          <ul>
-            <li>Istanza controllata</li>
-            <li>Accesso globale</li>
-            <li>Lazy initialization</li>
-            <li>Stato condiviso sicuro</li>
-          </ul>
-        </div>
-        <div class="pros-cons-box con">
-          <h5>Attenzione</h5>
-          <ul>
-            <li>Difficile da testare</li>
-            <li>Stato globale nascosto</li>
-            <li>Thread safety richiesta</li>
-            <li>Viola SRP (spesso)</li>
-          </ul>
-        </div>
-      </div>
-      <div class="warn-box" style="margin-top:1.25rem">
-        ⚠️ Nei sistemi moderni preferisci la <strong>Dependency Injection</strong>. Il Singleton va usato solo quando l'unicità è un requisito reale del dominio, non solo convenienza.
-      </div>
-    </div>
 
-    <div>
-      <div class="code-block">
-        <div class="code-header">
-          <div class="code-dots">
-            <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
+      <div class="two-col">
+        <div>
+          <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.8;margin-bottom:1rem">
+            Il costruttore è <strong style="color:var(--text-primary)">privato</strong>: nessuno può creare istanze
+            dall'esterno. L'unico accesso avviene tramite il metodo statico <code
+              style="color:var(--accent-soft);font-size:12px">getInstance()</code>, che crea l'istanza al primo invio e
+            la restituisce sempre nelle chiamate successive.
+          </p>
+          <div class="pros-cons">
+            <div class="pros-cons-box pro">
+              <h5>Vantaggi</h5>
+              <ul>
+                <li>Istanza controllata</li>
+                <li>Accesso globale</li>
+                <li>Lazy initialization</li>
+                <li>Stato condiviso sicuro</li>
+              </ul>
+            </div>
+            <div class="pros-cons-box con">
+              <h5>Attenzione</h5>
+              <ul>
+                <li>Difficile da testare</li>
+                <li>Stato globale nascosto</li>
+                <li>Thread safety richiesta</li>
+                <li>Viola SRP (spesso)</li>
+              </ul>
+            </div>
           </div>
-          <span class="code-filename">GameSystem.java</span>
+          <div class="warn-box" style="margin-top:1.25rem">
+            ⚠️ Nei sistemi moderni preferisci la <strong>Dependency Injection</strong>. Il Singleton va usato solo
+            quando l'unicità è un requisito reale del dominio, non solo convenienza.
+          </div>
         </div>
-        <div class="code-body"><pre>
-<span class="cm">// «Singleton» — Thread-safe (Holder idiom)</span>
-<span class="kw">public class</span> <span class="tp">GameSystem</span> {
 
-  <span class="cm">// Holder: creato solo quando richiesto</span>
-  <span class="kw">private static class</span> <span class="tp">Holder</span> {
-    <span class="kw">private static final</span> <span class="tp">GameSystem</span>
-      INSTANCE = <span class="kw">new</span> <span class="tp">GameSystem</span>();
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots">
+                <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green-dot"></span>
+              </div>
+              <span class="code-filename">GameSystem.java</span>
+            </div>
+            <div class="code-body">
+              <pre><code class="language-java">// «Singleton» — Thread-safe (Holder idiom)
+public class GameSystem {
+
+  // Holder: creato solo quando richiesto
+  private static class Holder {
+    private static final GameSystem
+      INSTANCE = new GameSystem();
   }
 
-  <span class="kw">private</span> <span class="fn">GameSystem</span>() {
-    <span class="cm">// inizializzazione livelli, regole…</span>
+  private GameSystem() {
+    // inizializzazione livelli, regole…
   }
 
-  <span class="kw">public static</span> <span class="tp">GameSystem</span> <span class="fn">getInstance</span>() {
-    <span class="kw">return</span> <span class="tp">Holder</span>.INSTANCE;
+  public static GameSystem getInstance() {
+    return Holder.INSTANCE;
   }
 
-  <span class="kw">public boolean</span> <span class="fn">checkWin</span>(<span class="tp">Player</span> p) {
-    <span class="kw">return</span> p.<span class="fn">getScore</span>() >= winThreshold;
+  public boolean checkWin(Player p) {
+    return p.getScore() >= winThreshold;
   }
 
-  <span class="kw">public void</span> <span class="fn">nextLevel</span>() { ... }
+  public void nextLevel() { ... }
 }
 
-<span class="cm">// Utilizzo da GameController</span>
-<span class="tp">GameSystem</span> sys = <span class="tp">GameSystem</span>.<span class="fn">getInstance</span>();
-<span class="kw">boolean</span> won = sys.<span class="fn">checkWin</span>(player);
-</pre></div>
+// Utilizzo da GameController
+GameSystem sys = GameSystem.getInstance();
+boolean won = sys.checkWin(player);</code></pre>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- ===== OBSERVER ===== -->
-<div class="section-block" id="observer">
-  <h2><span class="dot"></span> GoF (Comportamentale): Observer Pattern</h2>
-  <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-    Definisce una dipendenza uno-a-molti: quando il <strong>Subject</strong> cambia stato, tutti gli <strong>Observer</strong> registrati vengono notificati automaticamente. Nel gioco: <code style="color:var(--accent-soft)">GameSystem</code> è il Subject, <code style="color:var(--teal)">ScoreUI</code> e <code style="color:var(--teal)">SoundManager</code> sono Observer.
-  </p>
-  <div class="highlight-box">
-    <i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Nel progetto del gioco: gli Observer vengono notificati quando il punteggio o lo stato del Player cambia. Questo garantisce il <strong>Low Coupling</strong> tra il core e la UI.
-  </div>
-</div>
-
-<!-- ===== ALTRI GOF ===== -->
-<div class="section-block" id="gof">
-  <h2><span class="dot"></span> Altri Pattern GoF (Gang of Four)</h2>
-  <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-    Oltre ai principi GRASP, il design model si appoggia pesantemente ai classici pattern GoF per risolvere problemi ricorrenti:
-  </p>
-
-  <div class="card-def" style="margin-top: 1.5rem;">
-    <div class="header">Pattern Creazionali</div>
-    <div class="content">
-      <ul style="margin:0;">
-        <li><strong>Factory / Abstract Factory:</strong> Delega la logica complessa di creazione degli oggetti a una classe specifica (la Factory). Utile quando la classe esatta da istanziare è decisa a runtime (es. creare un nemico diverso in base al livello di difficoltà).</li>
-      </ul>
+    <!-- ===== OBSERVER ===== -->
+    <div class="section-block" id="observer">
+      <h2><span class="dot"></span> GoF (Comportamentale): Observer Pattern</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Definisce una dipendenza uno-a-molti: quando il <strong>Subject</strong> cambia stato, tutti gli
+        <strong>Observer</strong> registrati vengono notificati automaticamente. Nel gioco: <code
+          style="color:var(--accent-soft)">GameSystem</code> è il Subject, <code
+          style="color:var(--teal)">ScoreUI</code> e <code style="color:var(--teal)">SoundManager</code> sono Observer.
+      </p>
+      <div class="highlight-box">
+        <i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Nel progetto del gioco: gli Observer
+        vengono notificati quando il punteggio o lo stato del Player cambia. Questo garantisce il <strong>Low
+          Coupling</strong> tra il core e la UI.
+      </div>
     </div>
-  </div>
 
-  <div class="card-def" style="margin-top: 1.5rem;">
-    <div class="header">Pattern Strutturali e Comportamentali</div>
-    <div class="content">
-      <ul style="margin:0;">
-        <li><strong>Delegation:</strong> Non è un pattern rigoroso GoF ma un principio fondamentale: un oggetto esprime un certo comportamento delegando la reale esecuzione a un oggetto helper interno, favorendo la Composizione sull'Ereditarietà.</li>
-        <li><strong>Adapter (Wrapper):</strong> Traduce l'interfaccia di una classe in un'altra interfaccia attesa dal client. È il tipico <em>"Glue Code"</em> usato per integrare librerie COTS esterne senza modificare il nostro codice core.</li>
-        <li><strong>Façade (Facciata):</strong> Fornisce un'interfaccia unificata e semplificata per un intero sottosistema complesso (es. una singola classe <code>VideoConverter</code> che nasconde decine di classi complesse per la gestione dei codec audio/video).</li>
-        <li><strong>Proxy:</strong> Fornisce un surrogato o un placeholder per controllare l'accesso a un altro oggetto. È il pattern chiave usato nella trasformazione di <em>"Delaying expensive computations"</em> (Lazy Loading) o per controllare i diritti di accesso prima di eseguire metodi sensibili.</li>
-      </ul>
+    <!-- ===== ALTRI GOF ===== -->
+    <div class="section-block" id="gof">
+      <h2><span class="dot"></span> Altri Pattern GoF (Gang of Four)</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        Oltre ai principi GRASP, il design model si appoggia pesantemente ai classici pattern GoF per risolvere problemi
+        ricorrenti:
+      </p>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Pattern Creazionali</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Factory / Abstract Factory:</strong> Delega la logica complessa di creazione degli oggetti a una
+              classe specifica (la Factory). Utile quando la classe esatta da istanziare è decisa a runtime (es. creare
+              un nemico diverso in base al livello di difficoltà).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-def" style="margin-top: 1.5rem;">
+        <div class="header">Pattern Strutturali e Comportamentali</div>
+        <div class="content">
+          <ul style="margin:0;">
+            <li><strong>Delegation:</strong> Non è un pattern rigoroso GoF ma un principio fondamentale: un oggetto
+              esprime un certo comportamento delegando la reale esecuzione a un oggetto helper interno, favorendo la
+              Composizione sull'Ereditarietà.</li>
+            <li><strong>Adapter (Wrapper):</strong> Traduce l'interfaccia di una classe in un'altra interfaccia attesa
+              dal client. È il tipico <em>"Glue Code"</em> usato per integrare librerie COTS esterne senza modificare il
+              nostro codice core.</li>
+            <li><strong>Façade (Facciata):</strong> Fornisce un'interfaccia unificata e semplificata per un intero
+              sottosistema complesso (es. una singola classe <code>VideoConverter</code> che nasconde decine di classi
+              complesse per la gestione dei codec audio/video).</li>
+            <li><strong>Proxy:</strong> Fornisce un surrogato o un placeholder per controllare l'accesso a un altro
+              oggetto. È il pattern chiave usato nella trasformazione di <em>"Delaying expensive computations"</em>
+              (Lazy Loading) o per controllare i diritti di accesso prima di eseguire metodi sensibili.</li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
     <!-- Navigation -->
     <div class="back-btn-wrap" style="margin-top: 2rem;">
       <a href="04-architettura.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 04 · Architettura</a>
-      <a href="06-strumenti-devops.html" class="btn btn-ghost">06 · Strumenti & DevOps <i class="bi bi-arrow-right"></i></a>
+      <a href="06-strumenti-devops.html" class="btn btn-ghost">06 · Strumenti & DevOps <i
+          class="bi bi-arrow-right"></i></a>
     </div>
 
   </div>
@@ -1211,9 +1487,13 @@ sequenceDiagram
   </footer>
 
   <script src="../../shared/katchkit.js"></script>
+  <!-- Caricamento dinamico Prism.js -->
+  <script src="../../shared/prism-loader.js"></script>
+
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'dark' });
   </script>
 </body>
+
 </html>
