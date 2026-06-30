@@ -706,6 +706,11 @@ classDiagram
             costruisce una carta.</p>
         </div>
 
+        <div class="example-item">
+          <div class="example-label">Esempio 5 — Entity Factory (dal progetto)</div>
+          <p>Nel caso in cui la logica di creazione di un'entità diventi complessa (es. decidere se istanziare una <code>Casa</code>, un <code>Ospedale</code> o un <code>Parco</code>), non usiamo più <code>new</code> direttamente, ma introduciamo una classe <code>EntityFactory</code>. La Factory si assume la piena e unica responsabilità della creazione (diventando il Creator ufficiale) e solleva la <code>Griglia</code> da questo fardello.</p>
+        </div>
+
         <div class="vs-row">
           <div class="vs-box vs-bad">
             <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Violazione</div>
@@ -723,8 +728,36 @@ classDiagram
       <div class="principle-link"
         style="margin-top:2rem; padding:1.25rem; background:rgba(255,255,255,0.02); border-left:3px solid var(--kk-primary); color:var(--text-secondary); font-size:0.95rem; line-height:1.6; border-radius:0 10px 10px 0;">
         <strong>Collegamento →</strong>&nbsp; Creator e Factory Method sono complementari: quando la creazione
-        diventa complessa o richiede varianti, si passa a una Factory senza violare Creator — la Factory diventa il
-        creatore naturale.
+        diventa complessa o richiede varianti (come visto con le Entità della città), si passa a una Factory senza violare Creator — la Factory diventa semplicemente il nuovo creatore naturale dedicato.
+      </div>
+
+      <div class="code-block" style="margin-top:1.25rem">
+        <div class="code-header">
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <span class="code-filename">EntityFactory.java — Factory Pattern</span>
+        </div>
+        <div class="code-body">
+          <pre><code class="language-java">// ✔️ La Factory accentra tutta la logica complessa di creazione e inizializzazione
+public class EntityFactory {
+  public static Entity createEntity(String type, int x, int y) {
+    switch (type.toLowerCase()) {
+      case "casa":
+        return new HomeEntity(x, y, 4); // 4 abitanti di default
+      case "ospedale":
+        return new HospitalEntity(x, y, 100); // 100 posti letto
+      case "parco":
+        return new ParkEntity(x, y, 50); // 50 capienza
+      default:
+        throw new IllegalArgumentException("Tipo entità sconosciuto: " + type);
+    }
+  }
+}
+
+// Nel codice della Griglia o del gestore eventi:
+// Entity newBuilding = EntityFactory.createEntity("casa", 10, 20);
+// griglia.addEntity(newBuilding);</code></pre>
+        </div>
       </div>
     </div>
 
