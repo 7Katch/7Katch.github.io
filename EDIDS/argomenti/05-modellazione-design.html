@@ -73,7 +73,17 @@
             <li data-target="summary">Tabella riassuntiva</li>
           </ul>
         </li>
-        <li data-target="gof-patterns">I 7 Pattern GoF in CityLogic</li>
+        <li data-target="gof">I 7 Pattern GoF
+          <ul>
+            <li data-target="gof-factory">1. Factory</li>
+            <li data-target="gof-singleton">2. Singleton</li>
+            <li data-target="gof-observer">3. Observer</li>
+            <li data-target="gof-delegation">4. Delegation</li>
+            <li data-target="gof-adapter">5. Adapter</li>
+            <li data-target="gof-facade">6. Façade</li>
+            <li data-target="gof-proxy">7. Proxy</li>
+          </ul>
+        </li>
       </ul>
     </div>
 
@@ -1543,64 +1553,325 @@ classDiagram
         </div>
       </div>
 
-      <!-- ===== I 7 PATTERN GOF IN CITYLOGIC ===== -->
-      <div class="section-block" id="gof-patterns">
-        <h2><span class="dot"></span> I Pattern GoF (Gang of Four) in CityLogic</h2>
+      <!-- ═══════════════════════════════════════════
+     I 7 PATTERN GOF IN CITYLOGIC
+     ═══════════════════════════════════════════ -->
+      <div class="section-block" id="gof">
+        <div class="eyebrow">Design Patterns</div>
+        <h2 class="section-title">I 7 Pattern GoF (Gang of Four) in CityLogic</h2>
         <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
-          Oltre ai principi GRASP, l'architettura di CityLogic poggia fortemente sui classici pattern GoF per risolvere
-          problemi ricorrenti in modo elegante. Ecco i 7 pattern più utilizzati nel nostro motore:
+          Oltre ai principi GRASP (che assegnano le responsabilità), l'architettura di un buon software poggia
+          fortemente sui <strong>Design Patterns GoF</strong>. Questi sono 23 "modelli" standardizzati che offrono
+          soluzioni eleganti e comprovate a problemi di design ricorrenti. Ne vedremo 7, applicati direttamente al
+          nostro motore CityLogic.
+        </p>
+      </div>
+
+      <!-- ===== 1. FACTORY ===== -->
+      <div class="section-block" id="gof-factory">
+        <h2><span class="dot"></span> GoF 01: Factory (Creazionale) <span class="sub-tag">struttura</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Delega la logica complessa di creazione degli oggetti a una classe specifica (la Factory). Utile quando la
+          classe esatta da istanziare è complessa o decisa a runtime.
         </p>
 
-        <div class="card-def" style="margin-top: 1.5rem;">
-          <div class="header">Pattern Creazionali</div>
+        <div class="card-def">
+          <div class="header">Factory · Creazione Centralizzata</div>
           <div class="content">
-            <ul style="margin:0; padding-left:1.25rem;">
-              <li style="margin-bottom:0.75rem;"><strong>1. Singleton:</strong> Garantisce che esista una sola istanza
-                globale di una classe. In CityLogic, il <code class="text-accent">Simulatore</code> è un Singleton
-                (raggiungibile via <code>Simulatore.getInstance()</code>), perché non ha senso avere due motori di
-                simulazione che girano in parallelo sulla stessa partita.</li>
-              <li><strong>2. Factory / Abstract Factory:</strong> Nasconde la logica complessa di creazione degli
-                oggetti. In CityLogic non facciamo mai <code>new Ospedale()</code> direttamente, ma usiamo una <code
-                  class="text-teal">EdificioFactory</code> che decide quale edificio istanziare in base alla zona
-                (Residenziale, Commerciale) o ai fondi del giocatore.</li>
-            </ul>
+            <p style="margin:0; color:var(--text-secondary);">
+              Invece di spargere costruttori <code>new Ospedale()</code> o <code>new Stadio()</code> in giro per il
+              codice (creando un forte accoppiamento col costruttore esatto), si chiede a una Factory di fabbricare
+              l'oggetto.
+            </p>
           </div>
         </div>
 
-        <div class="card-def" style="margin-top: 1.5rem;">
-          <div class="header">Pattern Strutturali</div>
+        <div class="examples-block" style="margin-top:1.5rem">
+          <div class="vs-row">
+            <div class="vs-box vs-bad">
+              <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Non protetto
+                (Costruttori Diretti)</div>
+              <p>Il <code>Simulatore</code> fa <code>new Ospedale()</code>. Se l'Ospedale in futuro richiede nuovi
+                parametri nel costruttore (es. livello di efficienza), il Simulatore si rompe.</p>
+              <pre class="mermaid vs-diagram-mermaid">
+classDiagram
+  class Simulatore
+  class Ospedale
+  class Stadio
+  
+  Simulatore ..> Ospedale : "new Ospedale()"
+  Simulatore ..> Stadio : "new Stadio()"
+  
+  style Simulatore :::grey
+  style Ospedale :::bad
+  style Stadio :::bad
+              </pre>
+            </div>
+            <div class="vs-box vs-good">
+              <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Protetto
+                (Factory)</div>
+              <p>Il <code>Simulatore</code> chiede a <code>EdificioFactory.crea("Ospedale")</code>. La Factory si smazza
+                la complessità del costruttore. Il Simulatore è disaccoppiato.</p>
+              <pre class="mermaid vs-diagram-mermaid">
+classDiagram
+  class Simulatore
+  class EdificioFactory {
+    +creaEdificio(tipo) IEdificio
+  }
+  class Ospedale
+  
+  Simulatore ..> EdificioFactory : Chiama crea()
+  EdificioFactory ..> Ospedale : Istanzia
+  
+  style Simulatore :::grey
+  style EdificioFactory :::good
+  style Ospedale :::grey
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 2. SINGLETON ===== -->
+      <div class="section-block" id="gof-singleton">
+        <h2><span class="dot"></span> GoF 02: Singleton (Creazionale) <span class="sub-tag">base</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Garantisce che esista <strong>una e una sola istanza</strong> di una classe in tutto il ciclo di vita del
+          programma, fornendo un punto di accesso globale ad essa.
+        </p>
+
+        <div class="card-def">
+          <div class="header">Singleton · L'Unico e Solo</div>
           <div class="content">
-            <ul style="margin:0; padding-left:1.25rem;">
-              <li style="margin-bottom:0.75rem;"><strong>3. Adapter (Wrapper):</strong> Serve a far comunicare due
-                interfacce incompatibili. Se CityLogic integra una libreria meteo esterna che usa
-                <code>WeatherAPI.fetchCelsius()</code>, creiamo un <code class="text-amber">MeteoAdapter</code> che
-                avvolge l'API esterna e la converte nella nostra interfaccia standard
-                <code>IMeteoProvider.getTemperatura()</code>.</li>
-              <li style="margin-bottom:0.75rem;"><strong>4. Façade (Facciata):</strong> Offre un unico punto di
-                accesso semplificato a un sottosistema complesso. Per salvare la partita, la UI non chiama
-                <code>Serializer</code>, <code>DBConnection</code> e <code>FileCompressor</code> separatamente; chiama
-                solo <code>CitySaveFacade.salvaPartita()</code>, che orchestra il tutto dietro le quinte.</li>
-              <li><strong>5. Proxy:</strong> Fornisce un "sostituto" leggero di un oggetto pesante, caricandolo solo
-                quando serve (Lazy Loading). In CityLogic, un <code class="text-teal">EdificioProxy</code> mostra solo i
-                dati base (ID, coordinate) e carica il costoso modello 3D in RAM solo quando la telecamera fa zoom sulla
-                struttura.</li>
-            </ul>
+            <p style="margin:0; color:var(--text-secondary);">
+              Nel nostro gioco, il <code>GameSystem</code> o il <code>Simulatore</code> sono Singleton. Non ha alcun
+              senso avere due motori di simulazione che modificano le stesse tasse o lo stesso inquinamento in
+              parallelo. Ne serve uno solo.
+            </p>
           </div>
         </div>
 
-        <div class="card-def" style="margin-top: 1.5rem;">
-          <div class="header">Pattern Comportamentali e di Design Base</div>
+        <div class="examples-block" style="margin-top:1.5rem">
+          <div class="vs-row">
+            <div class="vs-box vs-bad">
+              <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Attenzione
+                (Svantaggi)</div>
+              <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.95rem;">
+                <li>È a tutti gli effetti una <strong>variabile globale mascherata</strong>.</li>
+                <li>Rende molto difficili gli Unit Test a causa dello stato condiviso.</li>
+                <li>In multi-threading rischia race conditions se non si usa l'Holder Idiom.</li>
+              </ul>
+              <div style="margin-top:0.75rem; font-size:0.9rem; color:var(--text-secondary);">
+                ⚠️ Nei sistemi moderni spesso si preferisce la <strong>Dependency Injection</strong>.
+              </div>
+            </div>
+            <div class="vs-box vs-good">
+              <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Vantaggi</div>
+              <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.95rem;">
+                <li>Unica istanza rigorosamente controllata (tramite costruttore privato).</li>
+                <li>Accesso globale facile con <code>Simulatore.getInstance()</code>.</li>
+                <li>Lazy initialization (viene istanziato in RAM solo al primo utilizzo effettivo).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="kk-code-window" style="margin-top:1.5rem;">
+            <div class="kk-window-header">
+              <div class="kk-window-dots">
+                <div class="kk-window-dot red"></div>
+                <div class="kk-window-dot yellow"></div>
+                <div class="kk-window-dot green"></div>
+              </div>
+              <div class="kk-window-title">Simulatore.java (Thread-safe)</div>
+            </div>
+            <div class="kk-window-body">
+              <pre style="margin:0; font-size:13px; background:transparent; padding:0;"><code class="language-java">public class Simulatore {
+  // Costruttore privato! Nessuno può fare new dall'esterno.
+  private Simulatore() {
+    System.out.println("Motore avviato.");
+  }
+
+  // Holder Class Idiom (100% Thread-safe e Lazy)
+  private static class Holder {
+    private static final Simulatore INSTANCE = new Simulatore();
+  }
+
+  // L'unico modo per ottenere l'istanza globale
+  public static Simulatore getInstance() {
+    return Holder.INSTANCE;
+  }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 3. OBSERVER ===== -->
+        <div class="section-block" id="gof-observer">
+          <h2><span class="dot"></span> GoF 03: Observer (Comportamentale) <span class="sub-tag">eventi</span></h2>
+          <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+            Definisce una dipendenza uno-a-molti in puro stile <strong>Pub/Sub (Iscrizione-Notifica)</strong>. Quando il
+            <em>Subject</em> (soggetto) cambia stato, tutti i suoi <em>Observer</em> (iscritti) vengono notificati in
+            automatico.
+          </p>
+
+          <div class="card-def">
+            <div class="header">Observer · Chiama non chiamare, ti chiamiamo noi</div>
+            <div class="content">
+              <p style="margin:0; color:var(--text-secondary);">
+                Il <code>Simulatore</code> (Subject) non sa nulla dell'interfaccia grafica. Quando l'inquinamento sale
+                oltre i limiti legali, il Simulatore lancia semplicemente un evento <code>notifica()</code>. Le finestre
+                della UI (Observer) che si erano registrate ascoltano l'evento e fanno comparire un pop-up rosso.
+                Accoppiamento zero!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="examples-block"
+          style="margin-top:1.5rem; display:flex; justify-content:center; background:var(--bg-code); padding: 1.5rem; border-radius: 8px;">
+          <pre class="mermaid" style="background:transparent; padding:0; margin:0;">
+flowchart TB
+  
+  C[Citta]:::good -. "Implementa" .-> T[[TickObserver]]:::purple
+  G[Griglia]:::good -. "Implementa" .-> T
+  M[Meteo]:::good -. "Implementa" .-> T
+  E[EventoCasuale]:::good -. "Implementa" .-> T
+  
+  T -- "usato da" --- S[Simulatore]:::grey 
+          </pre>
+        </div>
+      </div>
+
+      <!-- ===== 4. DELEGATION ===== -->
+      <div class="section-block" id="gof-delegation">
+        <h2><span class="dot"></span> GoF 04: Delegation (Design Base) <span class="sub-tag">composizione</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Più che un pattern strutturato, è il principio cardine dell'Object-Oriented Programming moderno: <em>"Favorire
+            la composizione sull'ereditarietà"</em>. Invece di far fare tutto a una classe, si <strong>delega</strong>
+          il lavoro a un helper interno.
+        </p>
+
+        <div class="card-def">
+          <div class="header">Delegation · L'arte di far lavorare gli altri</div>
           <div class="content">
-            <ul style="margin:0; padding-left:1.25rem;">
-              <li style="margin-bottom:0.75rem;"><strong>6. Observer:</strong> Modello "iscrizione-notifica" (Pub/Sub).
-                Il <code>Simulatore</code> (Subject) non sa nulla della UI. Quando l'inquinamento cambia, notifica
-                semplicemente gli Observer iscritti (es. <code class="text-coral">InquinamentoUI</code> o <code
-                  class="text-coral">AllarmeAudio</code>) affinché si aggiornino da soli.</li>
-              <li><strong>7. Delegation:</strong> È il principio di base della composizione: invece di ereditare o
-                fare tutto da soli, si delega il lavoro a un helper interno. In CityLogic, il <code>Simulatore</code>
-                non fa i calcoli fiscali direttamente, ma li "delega" a una classe specializzata <code
-                  class="text-accent">TaxManager</code>.</li>
-            </ul>
+            <p style="margin:0; color:var(--text-secondary);">
+              In CityLogic, se il <code>Simulatore</code> dovesse calcolare il PIL, le Tasse, la Felicità e il Traffico,
+              diventerebbe una God Class illeggibile di 10.000 righe. Invece, il Simulatore <em>delega</em>: ha un
+              oggetto privato <code>TaxManager</code> al suo interno. Quando qualcuno chiede le tasse al Simulatore, lui
+              di nascosto risponde <code>return this.taxManager.calcola()</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 5. ADAPTER ===== -->
+      <div class="section-block" id="gof-adapter">
+        <h2><span class="dot"></span> GoF 05: Adapter (Strutturale) <span class="sub-tag">integrazione</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Traduce l'interfaccia di una classe in un'altra interfaccia attesa dal client. È il tipico <strong>"Glue
+            Code"</strong> (codice colla) usato per integrare librerie esterne che non possiamo o vogliamo modificare.
+        </p>
+
+        <div class="card-def">
+          <div class="header">Adapter · L'adattatore di prese internazionali</div>
+          <div class="content">
+            <p style="margin:0; color:var(--text-secondary);">
+              CityLogic ha bisogno di sapere che tempo fa. L'architettura esige che ogni provider meteo implementi
+              <code>IMeteoProvider.getTemperatura()</code>. Compriamo una libreria meteo fantastica (una .dll esterna)
+              che però usa un metodo proprietario <code>MeteoPro.fetchCelsius()</code>. Invece di sporcare CityLogic
+              cambiando le chiamate, creiamo un <code>MeteoAdapter</code> che implementa <code>IMeteoProvider</code> e
+              al suo interno nasconde la chiamata a <code>MeteoPro</code>!
+            </p>
+          </div>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem">
+          <div class="kk-code-window">
+            <div class="kk-window-header">
+              <div class="kk-window-dots">
+                <div class="kk-window-dot red"></div>
+                <div class="kk-window-dot yellow"></div>
+                <div class="kk-window-dot green"></div>
+              </div>
+              <div class="kk-window-title">CityLogic Meteo Adapter (UML)</div>
+            </div>
+            <div class="kk-window-body" style="display:flex; justify-content:center;">
+              <pre class="mermaid" style="background:transparent; padding:0; margin:0;">
+classDiagram
+  class Simulatore
+  class IMeteoProvider {
+    &lt;&lt;interface&gt;&gt;
+    +getTemperatura()
+  }
+  class MeteoAdapter {
+    -libreriaEsterna: MeteoPro
+    +getTemperatura()
+  }
+  class MeteoPro {
+    &lt;&lt;Terze Parti&gt;&gt;
+    +fetchCelsius()
+  }
+  
+  Simulatore --> IMeteoProvider : Usa la porta standard
+  IMeteoProvider &lt;|.. MeteoAdapter : Implementa
+  MeteoAdapter --> MeteoPro : Traduce e chiama
+  
+  style Simulatore :::grey
+  style IMeteoProvider :::purple
+  style MeteoAdapter :::good
+  style MeteoPro :::bad
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 6. FAÇADE ===== -->
+      <div class="section-block" id="gof-facade">
+        <h2><span class="dot"></span> GoF 06: Façade (Strutturale) <span class="sub-tag">architettura</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Fornisce un'interfaccia <strong>unificata e semplificata</strong> per un intero sottosistema molto complesso,
+          mascherando decine di classi sotto a un unico punto di accesso (una Facciata, appunto).
+        </p>
+
+        <div class="card-def">
+          <div class="header">Façade · Il pulsante Magico</div>
+          <div class="content">
+            <p style="margin:0; color:var(--text-secondary);">
+              Quando in CityLogic clicchi "Salva Partita", sotto il cofano succedono mille cose: si estraggono i dati
+              dalla Griglia, si passano a un <code>JSONSerializer</code>, poi si comprimono con
+              <code>ZipCompressor</code>, poi si apre una <code>DBConnection</code> e si scrivono su disco. Costringere
+              il pulsante della UI a chiamare queste 4 classi distruggerebbe il <em>Low Coupling</em>. Invece, creiamo
+              un <code>SaveSystemFacade</code> con un solo metodo pubblico: <code>salvaGioco()</code>. La UI chiama
+              quello, la facciata orchestra il caos.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 7. PROXY ===== -->
+      <div class="section-block" id="gof-proxy">
+        <h2><span class="dot"></span> GoF 07: Proxy (Strutturale) <span class="sub-tag">performance</span></h2>
+        <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+          Fornisce un "sostituto" o un segnaposto (placeholder) per controllare l'accesso a un altro oggetto. È il
+          pattern sacro usato per il <strong>Lazy Loading</strong> (ritardare caricamenti pesanti in RAM).
+        </p>
+
+        <div class="card-def">
+          <div class="header">Proxy · Lo Scudo di Protezione della RAM (Virtual Proxy)</div>
+          <div class="content">
+            <p style="margin:0; color:var(--text-secondary);">
+              In CityLogic abbiamo un menù per caricare le partite. Se per mostrare ogni slot il motore leggesse per intero il mastodontico file JSON del salvataggio (contenente tutti gli edifici, la griglia e il traffico), il gioco si bloccherebbe e saturerebbe la RAM solo per disegnare una lista!
+              <br><br>
+              Invece, usiamo un <strong><code>SaveGameProxy</code></strong>. All'apertura del menù, il Proxy legge dal JSON <em>esclusivamente</em> l'intestazione (Nome e Data) e mostra la lista all'istante. Solo quando decidi di avviare davvero quel salvataggio, il Proxy istanzia l'oggetto pesante <code>SaveGameReale</code>, cedendogli il controllo.
+            </p>
+          </div>
+        </div>
+
+        <div class="examples-block" style="margin-top:1.5rem; display:flex; flex-direction: column; justify-content: center; align-items: center;">
+          <img src="../risorse/img1.png" alt="Menu Carica Partita (Proxy in azione)" style="max-width: 50%; border-radius: 8px; border: 2px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          <div style="font-size:0.9rem; color:var(--text-secondary); margin-top:0.75rem;">
+            <em>Esempio pratico: I dati visibili in questo menù (SALVATAGGIO1, 28/06/2026) sono forniti dai Proxy leggeri in Lazy Loading.</em>
           </div>
         </div>
       </div>
