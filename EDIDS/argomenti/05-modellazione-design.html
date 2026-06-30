@@ -765,7 +765,7 @@ public class EntityFactory {
      3. LOW COUPLING
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="lc">
-      <h2><span class="dot"></span> GRASP 03: Low Coupling</h2>
+      <h2><span class="dot"></span> GRASP 03: Low Coupling <span class="sub-tag">fondamentale</span></h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         Minimizza le dipendenze tra classi. Un'alta dipendenza (high coupling) significa che una modifica in A
         costringe a cambiare B, C, D. Con basso accoppiamento le classi sono intercambiabili e testabili in
@@ -949,7 +949,7 @@ flowchart LR
      4. HIGH COHESION
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="hc">
-      <h2><span class="dot"></span> GRASP 04: High Cohesion</h2>
+      <h2><span class="dot"></span> GRASP 04: High Cohesion <span class="sub-tag">fondamentale</span></h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         Ogni classe dovrebbe avere responsabilità strettamente correlate e focalizzate. Una classe con bassa
         coesione fa troppe cose diverse ed è difficile da capire, mantenere e riusare.
@@ -959,8 +959,7 @@ flowchart LR
         <div class="header">HC · Test della coesione</div>
         <div class="content">
           <p style="margin:0; color:var(--text-secondary);">
-            Prova a descrivere la classe in una frase senza usare "e". Se non ci riesci, probabilmente la classe ha
-            responsabilità multiple e andrebbe spezzata. Una classe coesa fa una cosa sola e la fa bene.
+            L'Alta Coesione si ottiene quando una classe gestisce un numero limitato di task (compiti), oppure esiste esclusivamente per assolvere a funzionalità molto specifiche e mirate. Invece di fare decine di operazioni slegate tra loro, una classe coesa si concentra solo su task strettamente connessi al suo scopo principale.
           </p>
           <div style="margin-top:1rem;"><span class="badge-sm"
               style="border:1px solid var(--border); padding:4px 8px; border-radius:4px; color:var(--kk-primary);">coesione</span>
@@ -1702,10 +1701,8 @@ boolean won = sys.checkWin(player);</code></pre>
   <!-- Caricamento dinamico Prism.js -->
   <script src="../../shared/prism-loader.js"></script>
 
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
-  </script>
+  <!-- Caricamento dinamico Mermaid.js -->
+  <script type="module" src="../../shared/custom-diagrams.js"></script>
 </body>
 
 </html>

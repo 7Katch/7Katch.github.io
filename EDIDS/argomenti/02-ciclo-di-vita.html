@@ -401,146 +401,69 @@
           il lavoro in iterazioni a tempo fisso dette <span class="keyword">Sprint</span> (solitamente 2-4 settimane).
         </p>
 
-        <!-- Scrum Canvas Element -->
+        <!-- Scrum Mermaid Block-Beta -->
         <div
-          style="margin: 2rem 0; background: rgba(20,20,25,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; text-align: center; overflow-x: auto;">
-          <canvas id="scrumCanvas" width="800" height="280"
-            style="max-width: 100%; height: auto; display: block; margin: 0 auto;"></canvas>
+          style="margin: 2rem 0; background: rgba(20,20,25,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 2rem; text-align: center; overflow-x: auto;">
+          <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+block-beta
+  columns 7
+  
+  block:PBBlock:1
+    columns 1
+    PTitle("Product Backlog<br/>(PO)")
+    P1["&nbsp;"]
+    P2["&nbsp;"]
+    P3["&nbsp;"]
+    P4["&nbsp;"]
+  end
+
+  space:1
+
+  block:SBBlock:1
+    columns 1
+    STitle("Sprint Backlog<br/>(Dev Team)")
+    S1["&nbsp;"]
+    S2["&nbsp;"]
+  end
+
+  space:1
+
+  block:SprintBlock:1
+    columns 1
+    S(("SPRINT<br/>1-4 Settimane"))
+    D(("Daily 24h"))
+  end
+
+  space:1
+
+  block:IncBlock:1
+    columns 1
+    ITitle("Valore Rilasciato")
+    INC["Incremento"]
+  end
+
+  PBBlock -- "Sprint Planning" --> SBBlock
+  SBBlock --> SprintBlock
+  SprintBlock -- "Review & Retro" --> IncBlock
+
+  classDef transparent fill:transparent,stroke:none,color:#fff
+  classDef slot fill:#475569,stroke:none
+  classDef slotSprint fill:#7c5cfc,stroke:none
+  classDef circleSprint fill:transparent,stroke:#7c5cfc,stroke-width:4px,color:#fff
+  classDef circleDaily fill:transparent,stroke:#10b981,stroke-width:4px,color:#fff
+  classDef inc fill:#10b981,stroke:none,color:#000
+  classDef container fill:#334155,stroke:#475569,stroke-width:2px
+  
+  class PTitle,STitle,ITitle transparent
+  class P1,P2,P3,P4 slot
+  class S1,S2 slotSprint
+  class S circleSprint
+  class D circleDaily
+  class INC inc
+  class PBBlock,SBBlock container
+  class SprintBlock,IncBlock transparent
+          </pre>
         </div>
-
-        <script>
-          document.addEventListener('DOMContentLoaded', () => {
-            const canvas = document.getElementById('scrumCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-
-            function roundRect(x, y, w, h, r, bg, text, textColor = "#fff") {
-              ctx.beginPath();
-              ctx.moveTo(x + r, y);
-              ctx.lineTo(x + w - r, y);
-              ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-              ctx.lineTo(x + w, y + h - r);
-              ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-              ctx.lineTo(x + r, y + h);
-              ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-              ctx.lineTo(x, y + r);
-              ctx.quadraticCurveTo(x, y, x + r, y);
-              ctx.closePath();
-
-              ctx.fillStyle = bg;
-              ctx.fill();
-
-              if (text) {
-                ctx.fillStyle = textColor;
-                ctx.font = "500 13px Inter, sans-serif";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(text, x + w / 2, y + h / 2);
-              }
-            }
-
-            function drawArrow(x1, y1, x2, y2, color) {
-              ctx.beginPath();
-              ctx.moveTo(x1, y1);
-              ctx.lineTo(x2, y2);
-              ctx.strokeStyle = color;
-              ctx.lineWidth = 2;
-              ctx.stroke();
-
-              const angle = Math.atan2(y2 - y1, x2 - x1);
-              ctx.beginPath();
-              ctx.moveTo(x2, y2);
-              ctx.lineTo(x2 - 10 * Math.cos(angle - Math.PI / 6), y2 - 10 * Math.sin(angle - Math.PI / 6));
-              ctx.lineTo(x2 - 10 * Math.cos(angle + Math.PI / 6), y2 - 10 * Math.sin(angle + Math.PI / 6));
-              ctx.closePath();
-              ctx.fillStyle = color;
-              ctx.fill();
-            }
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
-            // 1. Product Backlog
-            roundRect(20, 100, 100, 120, 6, "#334155");
-            roundRect(25, 105, 90, 20, 4, "#475569");
-            roundRect(25, 130, 90, 20, 4, "#475569");
-            roundRect(25, 155, 90, 20, 4, "#475569");
-            roundRect(25, 180, 90, 20, 4, "#475569");
-            ctx.fillStyle = "rgba(255,255,255,0.8)";
-            ctx.font = "600 14px Inter, sans-serif";
-            ctx.fillText("Product Backlog", 70, 70);
-            ctx.font = "400 12px Inter, sans-serif";
-            ctx.fillText("(Product Owner)", 70, 90);
-
-            drawArrow(130, 160, 200, 160, "rgba(255,255,255,0.3)");
-            ctx.fillText("Sprint Planning", 165, 150);
-
-            // 2. Sprint Backlog
-            roundRect(210, 110, 90, 100, 6, "#334155");
-            roundRect(215, 115, 80, 20, 4, "#7c5cfc");
-            roundRect(215, 140, 80, 20, 4, "#7c5cfc");
-            ctx.fillStyle = "rgba(255,255,255,0.8)";
-            ctx.font = "600 14px Inter, sans-serif";
-            ctx.fillText("Sprint Backlog", 255, 70);
-            ctx.font = "400 12px Inter, sans-serif";
-            ctx.fillText("(Dev Team)", 255, 90);
-
-            drawArrow(310, 160, 380, 160, "rgba(255,255,255,0.3)");
-
-            // 3. Sprint Circle
-            const cx = 460;
-            const cy = 160;
-            ctx.beginPath();
-            ctx.arc(cx, cy, 60, 0, Math.PI * 2);
-            ctx.strokeStyle = "#7c5cfc";
-            ctx.lineWidth = 6;
-            ctx.stroke();
-
-            // Sprint Arrowhead
-            ctx.beginPath();
-            ctx.moveTo(cx, cy - 60);
-            ctx.lineTo(cx + 15, cy - 70);
-            ctx.lineTo(cx + 15, cy - 50);
-            ctx.fillStyle = "#7c5cfc";
-            ctx.fill();
-
-            ctx.fillStyle = "rgba(255,255,255,0.9)";
-            ctx.font = "700 16px Inter, sans-serif";
-            ctx.fillText("SPRINT", cx, cy - 10);
-            ctx.font = "400 12px Inter, sans-serif";
-            ctx.fillText("1-4 Settimane", cx, cy + 15);
-
-            // Daily Scrum Circle (small)
-            ctx.beginPath();
-            ctx.arc(cx, cy + 60, 25, 0, Math.PI * 2);
-            ctx.strokeStyle = "#10b981";
-            ctx.lineWidth = 3;
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(cx, cy + 35);
-            ctx.lineTo(cx + 8, cy + 28);
-            ctx.lineTo(cx + 8, cy + 42);
-            ctx.fillStyle = "#10b981";
-            ctx.fill();
-
-            ctx.fillStyle = "#10b981";
-            ctx.font = "600 11px Inter, sans-serif";
-            ctx.fillText("Daily 24h", cx, cy + 60);
-
-            drawArrow(530, 160, 620, 160, "rgba(255,255,255,0.3)");
-            ctx.fillStyle = "rgba(255,255,255,0.8)";
-            ctx.font = "400 12px Inter, sans-serif";
-            ctx.fillText("Review & Retro", 575, 150);
-
-            // 4. Increment
-            roundRect(630, 130, 100, 60, 8, "#10b981", "Incremento", "#000");
-            ctx.fillStyle = "rgba(255,255,255,0.8)";
-            ctx.font = "600 14px Inter, sans-serif";
-            ctx.fillText("Valore Rilasciato", 680, 70);
-          });
-        </script>
 
         <p>
           Scrum si basa su tre pilastri fondamentali: <strong>trasparenza</strong>, <strong>ispezione</strong> e
@@ -760,6 +683,8 @@
 
     <script src="../../shared/katchkit.js"></script>
     <script src="../../shared/kmind.js"></script>
+    <!-- Caricamento dinamico Mermaid.js -->
+    <script type="module" src="../../shared/custom-diagrams.js"></script>
 </body>
 
 </html>
