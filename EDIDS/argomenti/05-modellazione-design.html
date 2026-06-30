@@ -840,32 +840,23 @@ flowchart TD
           <p style="margin-bottom: 1rem;"><code>GameController</code> dipende da <code>IGameObserver</code>, non da
             <code>ScoreUI</code> o <code>SoundManager</code>. Cambiare tutta la UI non richiede toccare il controller.
           </p>
-          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div
-              style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte
-                (Problema)</h5>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+          <div class="vs-diagram-row">
+            <div class="vs-diagram-box vs-diagram-bad">
+              <h5 class="vs-diagram-title">❌ Accoppiamento Forte (Problema)</h5>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    GC[GameController] --> SUI[ScoreUI]
-    GC --> SM[SoundManager]
-    style GC fill:#2b2b36,stroke:#444,color:#fff
-    style SUI fill:#442222,stroke:#ff5f57,color:#fff
-    style SM fill:#442222,stroke:#ff5f57,color:#fff
+    GC[GameController]:::grey --> SUI[ScoreUI]:::bad
+    GC --> SM[SoundManager]:::bad
               </pre>
             </div>
-            <div
-              style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento
-                (Soluzione)</h5>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+            <div class="vs-diagram-box vs-diagram-good">
+              <h5 class="vs-diagram-title">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    GC[GameController] -.-> I[ IGameObserver ]
-    SUI[ScoreUI] -.->|implementa| I
-    SM[SoundManager] -.->|implementa| I
-    style GC fill:#2b2b36,stroke:#444,color:#fff
-    style SUI fill:#2b2b36,stroke:#444,color:#fff
-    style SM fill:#2b2b36,stroke:#444,color:#fff
+    GC[GameController]:::grey -.-> I[ IGameObserver ]
+    SUI[ScoreUI]:::grey -.->|implementa| I
+    SM[SoundManager]:::grey -.->|implementa| I
+    
     style I fill:#1a1a24,stroke:#28c840,stroke-dasharray: 5 5,color:#fff
               </pre>
             </div>
@@ -878,28 +869,21 @@ flowchart LR
             <code>MySQLUserRepository</code>. In test si inietta un finto repo in memoria; in produzione si usa quello
             reale. Il servizio non cambia mai.
           </p>
-          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div
-              style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte
-                (Problema)</h5>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+          <div class="vs-diagram-row">
+            <div class="vs-diagram-box vs-diagram-bad">
+              <h5 class="vs-diagram-title">❌ Accoppiamento Forte (Problema)</h5>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    S[UserService] --> M[MySQLRepo]
-    style S fill:#2b2b36,stroke:#444,color:#fff
-    style M fill:#442222,stroke:#ff5f57,color:#fff
+    S[UserService]:::grey --> M[MySQLRepo]:::bad
               </pre>
             </div>
-            <div
-              style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento
-                (Soluzione)</h5>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+            <div class="vs-diagram-box vs-diagram-good">
+              <h5 class="vs-diagram-title">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    S[UserService] -.-> I[ IUserRepository ]
-    M[MySQLRepo] -.->|implementa| I
-    style S fill:#2b2b36,stroke:#444,color:#fff
-    style M fill:#2b2b36,stroke:#444,color:#fff
+    S[UserService]:::grey -.-> I[ IUserRepository ]
+    M[MySQLRepo]:::grey -.->|implementa| I
+    
     style I fill:#1a1a24,stroke:#28c840,stroke-dasharray: 5 5,color:#fff
               </pre>
             </div>
@@ -912,32 +896,23 @@ flowchart LR
             <code>EmailSender.send()</code> o <code>SmsSender.send()</code>. Dipende da un'astrazione. Aggiungere
             notifiche WhatsApp non tocca il servizio.
           </p>
-          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div
-              style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte
-                (Problema)</h5>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+          <div class="vs-diagram-row">
+            <div class="vs-diagram-box vs-diagram-bad">
+              <h5 class="vs-diagram-title">❌ Accoppiamento Forte (Problema)</h5>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    OS[OrderService] --> ES[EmailSender]
-    OS --> SMS[SmsSender]
-    style OS fill:#2b2b36,stroke:#444,color:#fff
-    style ES fill:#442222,stroke:#ff5f57,color:#fff
-    style SMS fill:#442222,stroke:#ff5f57,color:#fff
+    OS[OrderService]:::grey --> ES[EmailSender]:::bad
+    OS --> SMS[SmsSender]:::bad
               </pre>
             </div>
-            <div
-              style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento
-                (Soluzione)</h5>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+            <div class="vs-diagram-box vs-diagram-good">
+              <h5 class="vs-diagram-title">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    OS[OrderService] -.-> I[ INotifier ]
-    ES[EmailSender] -.->|implementa| I
-    SMS[SmsSender] -.->|implementa| I
-    style OS fill:#2b2b36,stroke:#444,color:#fff
-    style ES fill:#2b2b36,stroke:#444,color:#fff
-    style SMS fill:#2b2b36,stroke:#444,color:#fff
+    OS[OrderService]:::grey -.-> I[ INotifier ]
+    ES[EmailSender]:::grey -.->|implementa| I
+    SMS[SmsSender]:::grey -.->|implementa| I
+    
     style I fill:#1a1a24,stroke:#28c840,stroke-dasharray: 5 5,color:#fff
               </pre>
             </div>
@@ -949,32 +924,23 @@ flowchart LR
           <p style="margin-bottom: 1rem;">Le classi di business non dipendono da <code>System.out.println()</code> né da
             <code>Log4j</code>. Dipendono dall'interfaccia <code>ILogger</code> sostituibile a runtime.
           </p>
-          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div
-              style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Accoppiamento Forte
-                (Problema)</h5>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+          <div class="vs-diagram-row">
+            <div class="vs-diagram-box vs-diagram-bad">
+              <h5 class="vs-diagram-title">❌ Accoppiamento Forte (Problema)</h5>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    B[BusinessLogic] --> L4J[Log4j]
-    B --> SOUT[System.out]
-    style B fill:#2b2b36,stroke:#444,color:#fff
-    style L4J fill:#442222,stroke:#ff5f57,color:#fff
-    style SOUT fill:#442222,stroke:#ff5f57,color:#fff
+    B[BusinessLogic]:::grey --> L4J[Log4j]:::bad
+    B --> SOUT[System.out]:::bad
               </pre>
             </div>
-            <div
-              style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Basso Accoppiamento
-                (Soluzione)</h5>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+            <div class="vs-diagram-box vs-diagram-good">
+              <h5 class="vs-diagram-title">✔️ Basso Accoppiamento (Soluzione)</h5>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
-    B[BusinessLogic] -.-> I[ ILogger ]
-    L4J[Log4jAdapter] -.->|implementa| I
-    C[ConsoleAdapter] -.->|implementa| I
-    style B fill:#2b2b36,stroke:#444,color:#fff
-    style L4J fill:#2b2b36,stroke:#444,color:#fff
-    style C fill:#2b2b36,stroke:#444,color:#fff
+    B[BusinessLogic]:::grey -.-> I[ ILogger ]
+    L4J[Log4jAdapter]:::grey -.->|implementa| I
+    C[ConsoleAdapter]:::grey -.->|implementa| I
+    
     style I fill:#1a1a24,stroke:#28c840,stroke-dasharray: 5 5,color:#fff
               </pre>
             </div>
@@ -1016,11 +982,11 @@ flowchart LR
         <div class="example-item">
           <div class="example-label">Esempio 2 — Citylogic-Engine-BYZZ (MainView Tutto-fare vs MVC)</div>
           <p style="margin-bottom: 1rem;">Una classe dovrebbe avere un unico scopo e responsabilità focalizzate. Mescolare l'aggiornamento della UI con i calcoli della logica di business distrugge la coesione.</p>
-          <div style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background: rgba(255,95,87,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #ff5f57; margin-top: 0; font-size: 0.85rem; text-align: center;">❌ Bassa Coesione (Problema)</h5>
-              <p style="font-size: 0.85rem; margin-bottom: 1rem;">La classe <code>MainView</code> disegna la grafica, cattura l'input e calcola direttamente le tasse. Fa troppe cose slegate tra loro.</p>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+          <div class="vs-diagram-row">
+            <div class="vs-diagram-box vs-diagram-bad">
+              <h5 class="vs-diagram-title">❌ Bassa Coesione (Problema)</h5>
+              <p class="vs-diagram-desc">La classe <code>MainView</code> disegna la grafica, cattura l'input e calcola direttamente le tasse. Fa troppe cose slegate tra loro.</p>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     M[MainView<br/>Tutto-fare]:::bad
     M --> GUI[Disegna Grafica]
@@ -1031,10 +997,10 @@ flowchart LR
     style CALC fill:#2b2b36,stroke:#444,color:#aaa
               </pre>
             </div>
-            <div style="flex: 1; min-width: 250px; background: rgba(40,200,64,0.05); padding: 1rem; border-radius: 8px;">
-              <h5 style="color: #28c840; margin-top: 0; font-size: 0.85rem; text-align: center;">✔️ Alta Coesione (Soluzione MVC)</h5>
-              <p style="font-size: 0.85rem; margin-bottom: 1rem;">I compiti vengono divisi: <code>MainView</code> disegna l'interfaccia, <code>GameController</code> gestisce l'input e <code>Citta</code> calcola le tasse.</p>
-              <pre class="mermaid" style="background: transparent; margin: 0; display: flex; justify-content: center;">
+            <div class="vs-diagram-box vs-diagram-good">
+              <h5 class="vs-diagram-title">✔️ Alta Coesione (Soluzione MVC)</h5>
+              <p class="vs-diagram-desc">I compiti vengono divisi: <code>MainView</code> disegna l'interfaccia, <code>GameController</code> gestisce l'input e <code>Citta</code> calcola le tasse.</p>
+              <pre class="mermaid vs-diagram-mermaid">
 flowchart LR
     V[MainView]:::good -->|Disegna| GUI[Grafica]
     C[GameController]:::good -->|Cattura| INPUT[Input]
@@ -1258,10 +1224,10 @@ for (Tassabile t : edificiTassabili) {
      7. PURE FABRICATION
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="pf">
-      <h2><span class="dot"></span> GRASP 07: Pure Fabrication</h2>
+      <h2><span class="dot"></span> GRASP 07: Pure Fabrication <span class="sub-tag">fondamentale</span></h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         Classe "artificiale" che non esiste nel dominio del problema, ma viene creata per rispettare Low Coupling e
-        High Cohesion. Risolve problemi tecnici (persistenza, logging, comunicazione) senza sporcare le classi di
+        High Cohesion. Risolve problemi tecnici (salvataggi, logging, comunicazione) senza sporcare le classi di
         dominio.
       </p>
 
@@ -1281,46 +1247,26 @@ for (Tassabile t : edificiTassabili) {
 
       <div class="examples-block" style="margin-top:1.5rem">
         <div class="example-item">
-          <div class="example-label">Esempio 1 — Gioco</div>
-          <p><code>ScoreService</code> e <code>GameRepository</code> non esistono nel dominio del gioco, ma
-            gestiscono persistenza e logica di punteggio senza inquinare <code>Player</code> o
-            <code>GameSession</code> con dipendenze tecniche.
-          </p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 2 — E-commerce</div>
-          <p>Un <code>TaxCalculator</code> non è un'entità del dominio ordini, ma è necessario per calcolare le
-            tasse. Meglio una classe dedicata che mettere la logica fiscale dentro <code>Order</code> o
-            <code>Product</code>.
-          </p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 3 — Social network</div>
-          <p><code>FriendRecommendationEngine</code> non è un concetto del dominio "amicizia", ma è una Pure
-            Fabrication che incapsula l'algoritmo di raccomandazione. L'utente non sa che esiste, ma il sistema
-            ne ha bisogno.</p>
-        </div>
-        <div class="example-item">
-          <div class="example-label">Esempio 4 — Mapper</div>
-          <p>Un <code>UserMapper</code> che converte tra <code>UserEntity</code> (DB) e <code>UserDTO</code> (API)
-            è una Pure Fabrication. Non corrisponde a nulla nel dominio reale, ma risolve il problema del
-            disaccoppiamento tra layer.</p>
+          <div class="example-label">Esempio — Salvataggio in Citylogic-Engine-BYZZ</div>
+          <p>La classe <code>Simulatore</code> gestisce il tempo e le regole del gioco. Se le assegnassimo anche il compito di salvare e caricare i file su disco, diventerebbe una "God Class" inquinata da logiche tecniche (File I/O, Json, Eccezioni di scrittura). Invece, inventiamo una classe "artificiale", il <code>SaveManager</code>, che si fa carico unicamente di questo compito.</p>
         </div>
 
-        <div class="vs-row">
-          <div class="vs-box vs-bad">
-            <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Senza Pure
-              Fabrication</div>
-            <p><code>Player</code> contiene metodi per salvarsi su DB, inviare notifiche email e calcolare
-              statistiche. Classe gonfia, dipendenze tecniche nel dominio, impossibile testare in isolamento.
-            </p>
+        <div class="vs-diagram-row">
+          <div class="vs-diagram-box vs-diagram-bad">
+            <h5 class="vs-diagram-title">❌ Senza Pure Fabrication</h5>
+            <p class="vs-diagram-desc">Il <code>Simulatore</code> fa tutto da solo, inquinando il dominio del gioco con responsabilità tecniche.</p>
+            <pre class="mermaid vs-diagram-mermaid">
+flowchart TD
+    S["<b>Simulatore (God Class)</b><hr/>+ avanzaTempo()<br/>+ aggiornaMeteo()<br/>+ salvaPartita()<br/>+ caricaPartita()"]:::bad
+            </pre>
           </div>
-          <div class="vs-box vs-good">
-            <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con Pure
-              Fabrication</div>
-            <p><code>Player</code> è solo logica di dominio. <code>PlayerRepository</code> gestisce la
-              persistenza. <code>PlayerNotifier</code> le notifiche. Ciascuno testabile, sostituibile,
-              indipendente.</p>
+          <div class="vs-diagram-box vs-diagram-good">
+            <h5 class="vs-diagram-title">✔️ Con Pure Fabrication</h5>
+            <p class="vs-diagram-desc">Fabbrichiamo un <code>SaveManager</code>. Alta coesione per entrambi, e il Simulatore rimane "puro".</p>
+            <pre class="mermaid vs-diagram-mermaid">
+flowchart LR
+    S[Simulatore]:::good -->|Delega| SM[SaveManager<br/>Pure Fabricator]:::good
+            </pre>
           </div>
         </div>
       </div>

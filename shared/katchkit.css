@@ -3038,6 +3038,61 @@ a.overview-card h3 {
   color: var(--green);
 }
 
+/* VS Diagram Visual Boxes (per confronti visivi con diagrammi Mermaid) */
+.vs-diagram-row {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.vs-diagram-box {
+  flex: 1;
+  min-width: 250px;
+  padding: 1.25rem;
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.vs-diagram-bad {
+  background: rgba(248, 113, 113, 0.05); /* coral */
+  border: 1px solid rgba(248, 113, 113, 0.15);
+}
+.vs-diagram-bad .vs-diagram-title {
+  color: var(--coral);
+}
+
+.vs-diagram-good {
+  background: rgba(52, 211, 153, 0.05); /* emerald */
+  border: 1px solid rgba(52, 211, 153, 0.15);
+}
+.vs-diagram-good .vs-diagram-title {
+  color: var(--green);
+}
+
+.vs-diagram-title {
+  margin-top: 0;
+  font-size: 0.85rem;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.vs-diagram-desc {
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.vs-diagram-mermaid {
+  background: transparent;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
 .vs-box p {
   font-size: 13px;
   color: var(--text-secondary);
