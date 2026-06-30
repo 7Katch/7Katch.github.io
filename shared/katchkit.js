@@ -136,6 +136,16 @@ const KatchKitCore = {
       }
     });
 
+    // LOGICA DI APERTURA DA TASTIERA (Tasto 'm')
+    document.addEventListener('keydown', function (e) {
+      // Ignora l'evento se l'utente sta scrivendo in un campo di testo
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      
+      if ((e.key === 'm' || e.key === 'M') && sidebar) {
+        sidebar.classList.toggle('open');
+      }
+    });
+
     // INIEZIONE ICONA (Legacy per navbar statiche rimaste nel progetto)
     const toggleBtnStatic = document.getElementById('sidebar-toggle');
     if (toggleBtnStatic && !toggleBtnStatic.innerHTML.trim()) {

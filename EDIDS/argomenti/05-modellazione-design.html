@@ -97,7 +97,8 @@
             vitale conoscere la semantica visiva delle relazioni:</p>
           <ul style="margin:0;">
             <li><strong>Inheritance (Ereditarietà):</strong> Freccia con punta vuota. Indica una relazione
-              <em>"is-a"</em>.</li>
+              <em>"is-a"</em>.
+            </li>
             <li><strong>Composition (Composizione):</strong> Rombo pieno. Relazione forte <em>"part-of"</em>. Il ciclo
               di vita è vincolato: se il contenitore viene distrutto, anche le parti muoiono (es. una Casa e le sue
               Stanze).</li>
@@ -213,7 +214,8 @@ end
           <ul style="margin:0;">
             <li><strong>Use Case Diagram:</strong> Definisce le funzionalità utente. Le relazioni avanzate sono
               <em>&lt;&lt;include&gt;&gt;</em> (comportamento condiviso obbligatorio) ed <em>&lt;&lt;extend&gt;&gt;</em>
-              (comportamento opzionale/aggiuntivo).</li>
+              (comportamento opzionale/aggiuntivo).
+            </li>
             <li><strong>Component & Deployment Diagram:</strong> Mappatura fisica HW/SW. Si distinguono i <em>Device
                 Node</em> (macchine fisiche) dagli <em>Execution Environment Node</em> (es. JVM, Docker). Il software in
               esecuzione prende il nome di <em>Artifacts</em>. Le interfacce si delineano in Lollipop (servizio offerto)
@@ -254,7 +256,8 @@ flowchart LR
             <li><strong>Description Classes:</strong> Per evitare la perdita di informazioni di catalogo, si separa la
               classe fisica (es. <code>Item</code> con un numero seriale univoco) dalla sua descrizione (es.
               <code>ProductDescription</code>). In questo modo, se il negozio vende tutti gli "Item" fisici di un certo
-              modello, le informazioni su quel prodotto (prezzo, specifiche) non vanno perse.</li>
+              modello, le informazioni su quel prodotto (prezzo, specifiche) non vanno perse.
+            </li>
           </ul>
         </div>
       </div>
@@ -487,17 +490,41 @@ classDiagram
     </div>
 
     <!-- ═══════════════════════════════════════════
+     INTRODUZIONE GRASP
+     ═══════════════════════════════════════════ -->
+    <div class="section-block" id="grasp-intro">
+      <h2><span class="dot"></span> I Pattern GRASP</h2>
+      <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
+        <strong>GRASP</strong> (<em>General Responsibility Assignment Software Patterns</em>) rappresenta un insieme di nove principi guida per l'assegnazione delle responsabilità alle classi e agli oggetti nell'Object-Oriented Design. Non sono "pezzi di codice" pronti all'uso, ma un vocabolario e una mentalità fondamentale per creare software ben strutturato.
+      </p>
+
+      <div class="card-def">
+        <div class="header">Cosa significa "Responsabilità"?</div>
+        <div class="content">
+          <p style="margin-top:0;">Nella progettazione a oggetti, una responsabilità rientra generalmente in due categorie:</p>
+          <ul style="margin-bottom:0;">
+            <li><strong>Knowing (Conoscere):</strong> La responsabilità di un oggetto di conoscere i propri dati privati, di conoscere gli oggetti a lui correlati, o le informazioni che è in grado di calcolare.</li>
+            <li><strong>Doing (Fare):</strong> La responsabilità di fare qualcosa direttamente, coordinare attività con altri oggetti, o creare/distruggere istanze.</li>
+          </ul>
+          <p style="margin-top:1rem; margin-bottom:0; color:var(--text-secondary); font-size:0.95rem;">
+            Quando ci si siede a progettare un sistema e ci si chiede <em>"A quale classe assegno questa funzione?"</em> oppure <em>"Chi deve creare questo oggetto?"</em>, si ricorre ai pattern GRASP per trovare la risposta più razionale (che mantenga il codice pulito, altamente coeso e a basso accoppiamento).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
      1. INFORMATION EXPERT
      ═══════════════════════════════════════════ -->
     <div class="section-block" id="ie">
-      <h2><span class="dot"></span> GRASP 01: Information Expert</h2>
+      <h2><span class="dot"></span> GRASP 01: Information Expert <span class="sub-tag">fondamentale</span></h2>
       <p style="color:var(--text-secondary); font-size:1.05rem; margin-bottom:1.5rem;">
         Assegna la responsabilità alla classe che possiede le informazioni necessarie per adempierla. Il principio è
         semplice: <strong>chi sa, fa</strong>. Non spostare i dati fuori dalla classe per elaborarli altrove.
       </p>
 
       <div class="card-def">
-        <div class="header">IE · Definizione formale</div>
+        <div class="header">Definizione formale · IE</div>
         <div class="content">
           <p style="margin:0; color:var(--text-secondary);">
             Quando devi assegnare una responsabilità, inizia chiedendoti: <em>chi ha i dati per soddisfarla?</em>
@@ -548,16 +575,51 @@ classDiagram
           </p>
         </div>
 
+        <div class="example-item">
+          <div class="example-label">Esempio 5 — Simulatore di Città</div>
+          <p>
+            In un gestionale con <code>Simulatore</code>, <code>Griglia</code> e <code>Cella</code>,
+            siccome la <code>Griglia</code> detiene la mappa con popolazione, inquinamento e strade,
+            è lei a dover calcolare i collegamenti (es. tramite un algoritmo BFS). Non deve essere il
+            <code>Simulatore</code> a farsi estrarre tutti i dati dalla griglia per calcolarsi il percorso
+            esternamente. La griglia è l'esperta della propria topologia.
+          </p>
+        </div>
+
         <div class="vs-row">
           <div class="vs-box vs-bad">
             <div class="vs-label"><i class="bi bi-x-circle-fill" style="margin-right:0.25rem;"></i> Violazione</div>
-            <p>Un <code>GameController</code> legge <code>player.score</code> e <code>player.multiplier</code> e
-              calcola il totale lui stesso. I dati stanno in <code>Player</code> ma la logica è altrove.</p>
+            <p>Il <code>Simulatore</code> estrae l'elenco delle celle dalla <code>Griglia</code> e si calcola da solo i
+              percorsi BFS. I dati si trovano nella Griglia, ma la logica è nel Simulatore.</p>
+            <pre class="mermaid" style="margin: 1rem 0 0 0; background: transparent;">
+classDiagram
+  direction TB
+  class Simulatore {
+    +calcolaPercorsiBFS(Griglia g)
+  }
+  class Griglia {
+    -celle: List~Cella~
+    +getCelle() List~Cella~
+  }
+  Simulatore ..> Griglia : "Estrae dati"
+            </pre>
           </div>
           <div class="vs-box vs-good">
             <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Corretto</div>
-            <p><code>player.getTotal()</code> incapsula il calcolo dove stanno i dati. Il controller chiama
-              un'unica operazione e non dipende dai dettagli interni.</p>
+            <p><code>Griglia.calcolaPercorsiBFS()</code> incapsula l'algoritmo di calcolo nel posto in cui risiedono i
+              dati (le celle). Il <code>Simulatore</code> si limita a invocare l'operazione.</p>
+            <pre class="mermaid" style="margin: 1rem 0 0 0; background: transparent;">
+classDiagram
+  direction TB
+  class Simulatore {
+    +aggiornaTraffico()
+  }
+  class Griglia {
+    -celle: List~Cella~
+    +calcolaPercorsiBFS()
+  }
+  Simulatore ..> Griglia : "Invoca calcolo"
+            </pre>
           </div>
         </div>
       </div>
@@ -969,7 +1031,8 @@ classDiagram
             </div>
             <p>
               <code>if (item.type.equals("health")) player.heal(30);</code><br><code>else if (item.type.equals("weapon")) player.addWeapon(...);</code><br>Ogni
-              nuovo tipo richiede di toccare questo blocco.</p>
+              nuovo tipo richiede di toccare questo blocco.
+            </p>
           </div>
           <div class="vs-box vs-good">
             <div class="vs-label"><i class="bi bi-check-circle-fill" style="margin-right:0.25rem;"></i> Con polimorfismo
