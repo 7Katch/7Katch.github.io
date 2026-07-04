@@ -1,0 +1,79 @@
+{
+  "slides": [
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "type": "video",
+      "direction": "horizontal",
+      "file": "slides\\files\\Equazione\\0fef3be3e0ba551fdc7543007f7e34b44c9fc2e38fa84b7b01418f44a84ee7de.mp4",
+      "rev_file": "slides\\files\\Equazione\\0fef3be3e0ba551fdc7543007f7e34b44c9fc2e38fa84b7b01418f44a84ee7de_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "type": "video",
+      "direction": "horizontal",
+      "file": "slides\\files\\Equazione\\d1849d49c1b0899a9dd9685592bc69e94a1143db423ac893952a2b1220f55779.mp4",
+      "rev_file": "slides\\files\\Equazione\\d1849d49c1b0899a9dd9685592bc69e94a1143db423ac893952a2b1220f55779_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "type": "video",
+      "direction": "horizontal",
+      "file": "slides\\files\\Equazione\\0a9ce59cf81614900de7759bdde07e9ff0f92b280ac17bdd241a0df2e3382160.mp4",
+      "rev_file": "slides\\files\\Equazione\\0a9ce59cf81614900de7759bdde07e9ff0f92b280ac17bdd241a0df2e3382160_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "type": "video",
+      "direction": "horizontal",
+      "file": "slides\\files\\Equazione\\81c30dfe82b2455109bc903f5f0669bd1df6c450c0688cbd400474e967dcdbc6.mp4",
+      "rev_file": "slides\\files\\Equazione\\81c30dfe82b2455109bc903f5f0669bd1df6c450c0688cbd400474e967dcdbc6_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "src": null,
+      "type": "video",
+      "direction": "horizontal",
+      "file": "slides\\files\\Equazione\\296ffb1b6f5ff1f6dd91c6f38855746e2b58bcfb1eaa9ddd408c3fd7f1ffb675.mp4",
+      "rev_file": "slides\\files\\Equazione\\296ffb1b6f5ff1f6dd91c6f38855746e2b58bcfb1eaa9ddd408c3fd7f1ffb675_reversed.mp4"
+    }
+  ],
+  "resolution": [
+    854,
+    480
+  ],
+  "background_color": "black"
+}

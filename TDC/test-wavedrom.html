@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Circuiti WaveDrom</title>
+  <!-- Includo lo stile base del sito per coerenza visiva -->
+  <link rel="stylesheet" href="../shared/index.css">
+  
+  <!-- Includo il nostro nuovo script centralizzato per i circuiti -->
+  <script src="../shared/custom-circuits.js" defer></script>
+</head>
+
+<body>
+  <div class="content-container">
+    <div class="header-main">
+      <div class="header-subtitle">Teoria dei Circuiti (TDC)</div>
+      <h1>Test WaveDrom</h1>
+      <p style="color: var(--text-secondary);">Pagina di test per diagrammi logici e temporali generati via codice.</p>
+    </div>
+
+    <!-- Esempio 1: Circuito Logico -->
+    <div class="section-block">
+      <h2><span class="dot" style="background-color: #0a84ff;"></span> 1. Esempio Rete Logica</h2>
+      <p style="color:var(--text-secondary); margin-bottom:1.5rem;">
+        Un multiplexer o una semplice rete di porte logiche disegnate con WaveDrom.
+      </p>
+
+      <div class="examples-block" style="background:var(--bg-code); padding: 2rem; border-radius: 8px; text-align: center;">
+        
+        <!-- Qui c'è la magia: basta usare script type="WaveDrom" -->
+        <script type="WaveDrom">
+        { assign:[
+          ["out",
+            ["|",
+              ["&", ["~", "a"], "b"],
+              ["&", ["~", "b"], "a"]
+            ]
+          ]
+        ]}
+        </script>
+
+      </div>
+    </div>
+
+    <!-- Esempio 2: Segnali Temporali (Clock) -->
+    <div class="section-block">
+      <h2><span class="dot" style="background-color: #ffbd2e;"></span> 2. Esempio Diagramma Temporale (Timing)</h2>
+      <p style="color:var(--text-secondary); margin-bottom:1.5rem;">
+        Fondamentale in elettronica digitale per visualizzare i cicli di clock.
+      </p>
+
+      <div class="examples-block" style="background:var(--bg-code); padding: 2rem; border-radius: 8px; text-align: center;">
+        
+        <script type="WaveDrom">
+        { signal: [
+          { name: "clk",         wave: "p.....|..." },
+          { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
+          { name: "Request",     wave: "0.1..0|1.0" },
+          {},
+          { name: "Acknowledge", wave: "1.....|01." }
+        ]}
+        </script>
+
+      </div>
+    </div>
+
+    <!-- Esempio 3: Circuito Analogico RLC (Simulatore) -->
+    <div class="section-block">
+      <h2><span class="dot" style="background-color: var(--accent-red);"></span> 3. Esempio Circuito Analogico (RLC)</h2>
+      <p style="color:var(--text-secondary); margin-bottom:1.5rem;">
+        <strong>Attenzione:</strong> WaveDrom serve <em>esclusivamente</em> per circuiti logici (reti digitali) e segnali di clock temporali. Non ha i simboli per l'elettronica analogica (Resistenze, Condensatori, Induttori).
+        <br><br>
+        Il metodo migliore per studiare l'elettronica analogica sul web è l'uso di simulatori integrati! Qui sotto c'è un <strong>circuito RLC perfettamente funzionante e interattivo</strong> generato da <em>Falstad Circuit Simulator</em>. (Prova a cliccare sull'interruttore!)
+      </p>
+
+      <div class="examples-block" style="background:var(--bg-code); padding: 1rem; border-radius: 8px; text-align: center;">
+        
+        <iframe 
+          src="https://www.falstad.com/circuit/circuitjs.html?startCircuit=lrc.txt" 
+          width="100%" 
+          height="500px" 
+          style="border:none; border-radius: 4px;"
+          title="Simulatore RLC Falstad"
+        ></iframe>
+
+      </div>
+    </div>
+
+    <!-- Esempio 4: Circuito SVG con CSS Cyberpunk -->
+    <div class="section-block">
+      <h2><span class="dot" style="background-color: #ff00ff;"></span> 4. Esempio Circuito SVG (Stile Neon Cyberpunk)</h2>
+      <p style="color:var(--text-secondary); margin-bottom:1.5rem;">
+        Questo circuito è stato generato in Python tramite <code>schemdraw</code> ed esportato come file <strong>SVG puro</strong>.
+        Dopodiché, tramite 2 semplici regole CSS, abbiamo applicato l'effetto bagliore Neon Cyberpunk!
+      </p>
+
+      <style>
+        /* Magia CSS per il Neon applicata direttamente sull'immagine */
+        .circuito-neon img {
+          /* Usiamo filter per trasformare il bianco dell'SVG in colori al neon! */
+          /* 1. Invert per sicurezza se fosse nero, 2. Sepia e Hue per colorare, 3. Drop-shadow per l'alone */
+          filter: drop-shadow(0 0 2px #0ff) 
+                  drop-shadow(0 0 8px #0ff) 
+                  drop-shadow(0 0 15px #0055ff);
+          max-width: 100%;
+          height: auto;
+        }
+      </style>
+
+      <div class="examples-block circuito-neon" style="background:#0a0a10; padding: 3rem; border-radius: 8px; text-align: center; border: 1px solid #222;">
+        
+        <!-- Importiamo il file SVG come immagine -->
+        <img src="circuito_rlc_neon.svg" alt="Circuito RLC Cyberpunk Neon">
+
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
