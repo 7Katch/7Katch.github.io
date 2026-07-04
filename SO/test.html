@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Animazione MMAP — P5.js</title>
+  
+  <!-- Font di sistema e Katchkit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/katchkit.css">
+
+  <!-- Caricamento librerie animazione (P5 + GSAP) -->
+  <script src="../shared/animation.js"></script>
+
+  <style>
+    /* Aggiustamenti per contenitore Canvas */
+    #p5-container {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      background: #05050a;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+  </style>
+</head>
+
+<body class="dot-grid theme-blue"> <!-- Il blu tecnologico è perfetto per Sistemi Operativi -->
+
+  <site-navbar logo-text="// SO · Memory Management" back-url="index.html" back-text="SO">
+  </site-navbar>
+
+  <site-hero 
+    eyebrow="Test P5.js" 
+    title-class="hero-title-edids" 
+    title="Simulazione <br>MMAP()"
+    sub="Guarda come il file su disco viene mappato negli indirizzi virtuali e infine risiede nella RAM fisica, in tempo reale nel tuo browser.">
+  </site-hero>
+
+  <div class="intro-section" style="max-width: 1000px; margin-top: 3rem; padding-bottom: 4rem;">
+    
+    <div class="section-eyebrow">Simulazione Interattiva</div>
+    <h2 class="section-title">Memory-Mapped Files</h2>
+    
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+      Usa i bottoni sottostanti per attivare l'animazione. Il codice P5.js calcolerà fluidamente 60 frame al secondo per animare i blocchi di memoria!
+    </p>
+
+    <!-- Contenitore per il canvas di P5.js -->
+    <div id="p5-container"></div>
+
+    <!-- Controlli interattivi HTML che parlano con P5.js -->
+    <div class="controls">
+      <button id="actionBtn" class="btn btn-primary" onclick="nextStep()">Step 1: Crea Page Table</button>
+      <button class="btn btn-ghost" onclick="resetMmap()">Resetta</button>
+    </div>
+
+  </div>
+
+  <script src="../shared/katchkit.js"></script>
+  
+  <!-- SCRIPT P5.JS + GSAP PER L'ANIMAZIONE -->
+  <script>
+    let pages = [];
+    let state = "IDLE"; // IDLE, PAGE_TABLE, RAM
+    
+    // Un oggetto fittizio per far animare a GSAP le linee di connessione
+    let linesProgress = { p1: 0, p2: 0 };
+
+    // Colori tema (Cyberpunk SO)
+    let colorDisk, colorVirtual, colorRam, colorBg;
+
+    function setup() {
+      let canvas = createCanvas(900, 450);
+      canvas.parent('p5-container');
+      
+      colorBg = color(8, 8, 16);
+      colorDisk = color(148, 163, 184); // Slate
+      colorVirtual = color(167, 139, 250); // Purple
+      colorRam = color(34, 211, 238); // Teal
+      
+      initPages();
+    }
+
+    function initPages() {
+      pages = [];
+      linesProgress.p1 = 0;
+      linesProgress.p2 = 0;
+      
+      for(let i=0; i<4; i++) {
+        pages.push({
+          id: i,
+          x: 120, // Posizione iniziale su DISCO
+          y: 120 + i * 60,
+          w: 80,
+          h: 40,
+          // Variabili colore per farle animare a GSAP
+          r: 148, g: 163, b: 184, 
+          label: "Page " + i
+        });
+      }
+    }
+
+    function draw() {
+      background(colorBg);
+      
+      drawGrid();
+      drawHardwareBoxes();
+      
+      // Disegna le linee usando l'oggetto linesProgress che GSAP sta animando
+      drawMappingLines(linesProgress.p1, linesProgress.p2);
+
+      // Disegno delle Pagine
+      for(let i=0; i<4; i++) {
+        let p = pages[i];
+        
+        let currentColor = color(p.r, p.g, p.b);
+        
+        drawingContext.shadowBlur = 15;
+        drawingContext.shadowColor = currentColor;
+        
+        fill(30, 30, 45); // Sfondo interno
+        strokeWeight(2);
+        stroke(currentColor);
+        rect(p.x, p.y, p.w, p.h, 6); // Rettangolo arrotondato
+        
+        drawingContext.shadowBlur = 0;
+        
+        fill(255);
+        noStroke();
+        textAlign(CENTER, CENTER);
+        textFont('JetBrains Mono');
+        textSize(12);
+        text(p.label, p.x + p.w/2, p.y + p.h/2);
+      }
+    }
+
+    function nextStep() {
+      let btn = document.getElementById("actionBtn");
+      
+      if (state === "IDLE") {
+        state = "PAGE_TABLE";
+        
+        // --- TIMELINE GSAP PER STEP 1 ---
+        let tl = gsap.timeline();
+        
+        // Anima x di tutti i blocchi con un fantastico effetto "stagger" (partono a catena)
+        tl.to(pages, {
+          x: 410,
+          duration: 1,
+          ease: "power2.inOut",
+          stagger: 0.1 
+        }, 0);
+        
+        // Anima i colori verso il viola (Page Table) in sincrono
+        tl.to(pages, {
+          r: 167, g: 139, b: 250,
+          duration: 0.5,
+          stagger: 0.1
+        }, 0);
+        
+        // Anima il riempimento delle prime linee
+        tl.to(linesProgress, {
+          p1: 1,
+          duration: 1.2,
+          ease: "power1.inOut"
+        }, 0.2);
+        
+        btn.innerText = "Step 2: Carica in RAM";
+        
+      } else if (state === "PAGE_TABLE") {
+        state = "RAM";
+        
+        // --- TIMELINE GSAP PER STEP 2 ---
+        let tl = gsap.timeline();
+        
+        // Siccome ogni blocco va in una "y" diversa, li iteriamo
+        pages.forEach((p, index) => {
+           tl.to(p, {
+             x: 700,
+             y: 120 + (3 - index) * 60, // Incrociamo le posizioni
+             r: 34, g: 211, b: 238,     // Colore ciano RAM
+             duration: 1.2,
+             ease: "power3.inOut"
+           }, index * 0.15); // Stagger manuale
+        });
+        
+        // Anima le seconde linee contemporaneamente
+        tl.to(linesProgress, {
+          p2: 1,
+          duration: 1.5,
+          ease: "power2.inOut"
+        }, 0);
+        
+        btn.innerText = "Finito";
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+      }
+    }
+
+    function resetMmap() {
+      state = "IDLE";
+      
+      // Stop drastico a tutte le animazioni GSAP attive per evitare glitch
+      gsap.killTweensOf(pages);
+      gsap.killTweensOf(linesProgress);
+      
+      initPages();
+      
+      let btn = document.getElementById("actionBtn");
+      btn.innerText = "Step 1: Crea Page Table";
+      btn.disabled = false;
+      btn.style.opacity = "1";
+    }
+
+    // --- FUNZIONI DI DISEGNO HARDWARE ---
+    
+    function drawGrid() {
+      stroke(255, 255, 255, 10);
+      strokeWeight(1);
+      for(let x=0; x<width; x+=30) line(x, 0, x, height);
+      for(let y=0; y<height; y+=30) line(0, y, width, y);
+    }
+
+    function drawHardwareBoxes() {
+      drawingContext.shadowBlur = 0;
+      
+      // DISCO
+      drawBox(80, 80, 160, 300, "HARD DISK", colorDisk);
+      
+      // PAGE TABLE (VIRTUAL MEMORY)
+      drawBox(370, 80, 160, 300, "PAGE TABLE", colorVirtual);
+      
+      // RAM
+      drawBox(660, 80, 160, 300, "RAM FISICA", colorRam);
+    }
+
+    function drawBox(x, y, w, h, label, c) {
+      noFill();
+      stroke(c);
+      strokeWeight(1);
+      drawingContext.setLineDash([5, 5]); // Linea tratteggiata
+      rect(x, y, w, h, 10);
+      drawingContext.setLineDash([]); // Ripristina
+      
+      noStroke();
+      fill(c);
+      textAlign(CENTER, CENTER);
+      textFont('Inter');
+      textSize(14);
+      textStyle(BOLD);
+      text(label, x + w/2, y - 20);
+      textStyle(NORMAL);
+    }
+
+    function drawMappingLines(progress1, progress2) {
+      noFill();
+      strokeWeight(2);
+      drawingContext.shadowBlur = 20;
+      
+      for(let i=0; i<4; i++) {
+        let startY = 120 + i * 60 + 20;
+        let midY = 120 + i * 60 + 20; // Passa dritto nella page table
+        
+        // Da Disco a Page Table
+        if (progress1 > 0) {
+          stroke(167, 139, 250, 150 * progress1);
+          drawingContext.shadowColor = color(167, 139, 250);
+          bezier(200, startY, 285, startY, 285, midY, 370, midY);
+        }
+               
+        // Da Page Table a RAM (Le frecce si incrociano!)
+        if (progress2 > 0) {
+          stroke(34, 211, 238, 150 * progress2);
+          drawingContext.shadowColor = color(34, 211, 238);
+          
+          let endY = 120 + (3-i) * 60 + 20;
+          bezier(530, midY, 595, midY, 595, endY, 660, endY);
+        }
+      }
+      drawingContext.shadowBlur = 0;
+    }
+  </script>
+</body>
+
+</html>

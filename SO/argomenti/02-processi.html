@@ -1,11 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>02 · Processi — SO</title>
-  <link rel="stylesheet" href="/shared/katchkit.css">
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+  <script src="../../shared/animation.js"></script>
+
+
 </head>
 
 <body class="dot-grid">
@@ -167,9 +170,15 @@
         <li><span class="keyword">Terminated</span>: il processo ha concluso la sua esecuzione.</li>
       </ol>
 
-      <div class="kk-flex-media">
-        <img style="width:70%" src="../risorse/img3.png" alt="Stati del processo">
-
+      <div id="p5-process-container"></div>
+      
+      <div class="process-controls">
+        <button class="btn btn-primary" onclick="animNew()">1. Crea Processo (New)</button>
+        <button class="btn btn-ghost" onclick="animDispatch()">2. CPU (Run)</button>
+        <button class="btn btn-ghost" onclick="animWait()">3. I/O (Wait)</button>
+        <button class="btn btn-ghost" onclick="animIoEnd()">4. Fine I/O (Ready)</button>
+        <button class="btn btn-ghost" onclick="animInterrupt()">Interrupt (Timer)</button>
+        <button class="btn btn-ghost" onclick="animTerminate()">Termina</button>
       </div>
       <br>
       <p>Le transizioni sono gestite dallo scheduler (Ready <i class="bi bi-arrow-right"></i> Running, Running <i class="bi bi-arrow-right"></i> Ready per preemption) e dagli eventi di
@@ -307,7 +316,193 @@
     <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
   </footer>
 
-  <script src="/shared/katchkit.js"></script>
+  <script src="../../shared/katchkit.js"></script>
+  <!-- ANIMAZIONE STATI DEL PROCESSO -->
+  <script>
+    const nodes = {
+      NEW:        { x: 150, y: 100, label: "NEW", color: [148, 163, 184] },
+      READY:      { x: 350, y: 220, label: "READY", color: [52, 211, 153] },
+      RUNNING:    { x: 650, y: 220, label: "RUNNING", color: [251, 191, 36] },
+      WAITING:    { x: 500, y: 380, label: "WAITING", color: [34, 211, 238] },
+      TERMINATED: { x: 800, y: 100, label: "TERMINATED", color: [248, 113, 113] }
+    };
+
+    let pState = "NONE";
+    let processDot = { x: 20, y: 100, r: 255, g: 255, b: 255, visible: 0 };
+
+    function setup() {
+      let canvas = createCanvas(950, 480);
+      canvas.parent('p5-process-container');
+    }
+
+    function draw() {
+      background(10, 10, 20);
+      drawGrid();
+      
+      // Disegna i percorsi fissi (frecce deboli)
+      drawConnection(nodes.NEW, nodes.READY, "admit");
+      drawConnection(nodes.READY, nodes.RUNNING, "dispatch");
+      drawConnection(nodes.RUNNING, nodes.READY, "interrupt (timeout)", true);
+      drawConnection(nodes.RUNNING, nodes.WAITING, "I/O or event wait");
+      drawConnection(nodes.WAITING, nodes.READY, "I/O or event completion");
+      drawConnection(nodes.RUNNING, nodes.TERMINATED, "exit");
+      
+      // Disegna le stazioni (nodi)
+      for(let key in nodes) {
+        let n = nodes[key];
+        fill(20, 20, 30);
+        stroke(n.color[0], n.color[1], n.color[2]);
+        strokeWeight(2);
+        rectMode(CENTER);
+        rect(n.x, n.y, 120, 50, 8);
+        
+        noStroke();
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textFont('JetBrains Mono');
+        textSize(14);
+        text(n.label, n.x, n.y);
+      }
+      
+      // Disegna il processo animato se esiste
+      if(processDot.visible > 0) {
+        drawingContext.shadowBlur = 25;
+        let c = color(processDot.r, processDot.g, processDot.b);
+        drawingContext.shadowColor = c;
+        
+        fill(c);
+        noStroke();
+        circle(processDot.x, processDot.y, 22 * processDot.visible);
+        
+        // Simbolo del processo
+        drawingContext.shadowBlur = 0;
+        fill(10,10,20);
+        textSize(10);
+        text("P1", processDot.x, processDot.y);
+      }
+    }
+
+    function drawGrid() {
+      stroke(255, 255, 255, 5);
+      strokeWeight(1);
+      for(let x=0; x<width; x+=30) line(x, 0, x, height);
+      for(let y=0; y<height; y+=30) line(0, y, width, y);
+    }
+    
+    function drawConnection(n1, n2, label, curveUp=false) {
+      stroke(255, 255, 255, 30);
+      strokeWeight(2);
+      noFill();
+      
+      let midX = (n1.x + n2.x) / 2;
+      let midY = (n1.y + n2.y) / 2;
+      
+      if(curveUp) {
+        bezier(n1.x, n1.y - 25, midX, n1.y - 80, midX, n2.y - 80, n2.x, n2.y - 25);
+        midY -= 60;
+      } else {
+        line(n1.x, n1.y, n2.x, n2.y);
+      }
+      
+      noStroke();
+      fill(255, 255, 255, 100);
+      textSize(11);
+      textFont('Inter');
+      // Aggiungi freccia
+      text(label, midX, midY - 10);
+    }
+
+    // --- GSAP ANIMATIONS --- //
+    function animNew() {
+      gsap.killTweensOf(processDot);
+      pState = "READY"; // Sarà ready alla fine
+      
+      processDot.x = 20;
+      processDot.y = 100;
+      processDot.r = 255; processDot.g = 255; processDot.b = 255;
+      processDot.visible = 0;
+      
+      let tl = gsap.timeline();
+      tl.to(processDot, { visible: 1, duration: 0.5 })
+        .to(processDot, { 
+           x: nodes.NEW.x, y: nodes.NEW.y, 
+           r: nodes.NEW.color[0], g: nodes.NEW.color[1], b: nodes.NEW.color[2],
+           duration: 1 
+        })
+        .to(processDot, { 
+           x: nodes.READY.x, y: nodes.READY.y, 
+           r: nodes.READY.color[0], g: nodes.READY.color[1], b: nodes.READY.color[2],
+           duration: 1.5, ease: "power2.inOut"
+        }, "+=0.5");
+    }
+    
+    function animDispatch() {
+      if(pState !== "READY") return;
+      gsap.killTweensOf(processDot);
+      pState = "RUNNING";
+      
+      gsap.to(processDot, {
+        x: nodes.RUNNING.x, y: nodes.RUNNING.y,
+        r: nodes.RUNNING.color[0], g: nodes.RUNNING.color[1], b: nodes.RUNNING.color[2],
+        duration: 1.2, ease: "power2.inOut"
+      });
+    }
+    
+    function animWait() {
+      if(pState !== "RUNNING") return;
+      gsap.killTweensOf(processDot);
+      pState = "WAITING";
+      
+      gsap.to(processDot, {
+        x: nodes.WAITING.x, y: nodes.WAITING.y,
+        r: nodes.WAITING.color[0], g: nodes.WAITING.color[1], b: nodes.WAITING.color[2],
+        duration: 1.2, ease: "power2.inOut"
+      });
+    }
+    
+    function animIoEnd() {
+      if(pState !== "WAITING") return;
+      gsap.killTweensOf(processDot);
+      pState = "READY";
+      
+      gsap.to(processDot, {
+        x: nodes.READY.x, y: nodes.READY.y,
+        r: nodes.READY.color[0], g: nodes.READY.color[1], b: nodes.READY.color[2],
+        duration: 1.2, ease: "power2.inOut"
+      });
+    }
+    
+    function animInterrupt() {
+      if(pState !== "RUNNING") return;
+      gsap.killTweensOf(processDot);
+      pState = "READY";
+      
+      let tl = gsap.timeline();
+      let midX = (nodes.RUNNING.x + nodes.READY.x)/2;
+      let midY = nodes.RUNNING.y - 80;
+      
+      // Anima seguendo la curva verso l'alto
+      tl.to(processDot, { x: midX, y: midY, duration: 0.6, ease: "power1.out" })
+        .to(processDot, { 
+            x: nodes.READY.x, y: nodes.READY.y, 
+            r: nodes.READY.color[0], g: nodes.READY.color[1], b: nodes.READY.color[2],
+            duration: 0.6, ease: "power1.in" 
+         });
+    }
+    
+    function animTerminate() {
+      if(pState !== "RUNNING") return;
+      gsap.killTweensOf(processDot);
+      pState = "TERMINATED";
+      
+      let tl = gsap.timeline();
+      tl.to(processDot, {
+        x: nodes.TERMINATED.x, y: nodes.TERMINATED.y,
+        r: nodes.TERMINATED.color[0], g: nodes.TERMINATED.color[1], b: nodes.TERMINATED.color[2],
+        duration: 1.2, ease: "power2.inOut"
+      }).to(processDot, { visible: 0, duration: 0.5 }, "+=0.5");
+    }
+  </script>
 </body>
 
 </html>

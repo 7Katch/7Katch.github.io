@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>04 · CPU Scheduling — SO</title>
-  <link rel="stylesheet" href="/shared/katchkit.css">
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+  <script src="../../shared/animation.js"></script>
+
 </head>
 
 <body class="dot-grid theme-teal">
@@ -95,9 +97,17 @@
       <p>Il più semplice degli algoritmi: i processi vengono eseguiti nell'ordine in cui arrivano nella ready queue,
         senza preemption. L'implementazione usa una coda FIFO.</p>
       <p>Il problema principale è l'<span class="keyword">effetto convoy</span>: se un processo lungo arriva prima di
-        molti processi brevi, questi ultimi devono aspettare tutta la sua esecuzione. Con un processo da 10 secondi
-        seguito da cento processi da 0.1 secondi, il waiting time medio si avvicina a 10 secondi. FCFS è inadatto per
+        molti processi brevi, questi ultimi devono aspettare tutta la sua esecuzione. Con un processo da 5 secondi
+        seguito da cento processi da 0.1 secondi, il waiting time medio si avvicina a 5 secondi. FCFS è inadatto per
         sistemi interattivi o time-sharing.</p>
+
+      <!-- FCFS SIMULATION -->
+      <div id="FCFS-example-animation"></div>
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStart()"><i class="bi bi-play-fill"></i> Inizia Simulazione</button>
+        <button class="btn btn-ghost" onclick="animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset Coda</button>
+      </div>
+
     </div>
 
     <div class="section-block" id="section-3">
@@ -124,6 +134,14 @@
         burst stimato minore.</p>
       <p>Il rischio è la <span class="keyword">starvation</span> dei processi lunghi: se continuano ad arrivare processi
         corti, i lunghi non vengono mai schedulati.</p>
+
+      <!-- SJF SIMULATION -->
+      <div id="SJF-example-animation"></div>
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartSJF()"><i class="bi bi-play-fill"></i> Inizia Simulazione SJF</button>
+        <button class="btn btn-ghost" onclick="animResetSJF()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+      </div>
+
     </div>
 
     <div class="section-block" id="section-4">
@@ -135,6 +153,14 @@
         equità (nessun processo aspetta più di (n-1)×quantum) e ottima risposta per processi interattivi. La scelta del
         quantum è cruciale: troppo piccolo <i class="bi bi-arrow-right"></i> troppi context switch; troppo grande <i
           class="bi bi-arrow-right"></i> degrada a FCFS.</p>
+
+      <!-- RR SIMULATION -->
+      <div id="RR-example-animation"></div>
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartRR()"><i class="bi bi-play-fill"></i> Inizia Simulazione RR (Quantum: 2.0s)</button>
+        <button class="btn btn-ghost" onclick="animResetRR()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+      </div>
+
     </div>
 
     <div class="section-block" id="section-5">
@@ -200,7 +226,371 @@
     <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
   </footer>
 
-  <script src="/shared/katchkit.js"></script>
+  <script src="../../shared/katchkit.js"></script>
+
+  <!-- ANIMATION LOGIC -->
+  <script>
+    // Colori Cyberpunk
+    const cSlate = [148, 163, 184];
+    const cTeal = [34, 211, 238];
+    const cAmber = [251, 191, 36];
+
+    // =========================================================================
+    // 1. FCFS - FIRST COME FIRST SERVED (INSTANCE MODE)
+    // =========================================================================
+    let sketchFCFS = function(p) {
+      let cpu = { x: 650, y: 150, label: "CPU" };
+      let readyQueue = { x: 200, y: 150, label: "READY QUEUE" };
+      let p1, p2, p3;
+
+      p.resetProcesses = function() {
+        p1 = { id: "P1", timeLeft: 5.0, w: 120, x: 265, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        p2 = { id: "P2", timeLeft: 0.1, w: 40, x: 160, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        p3 = { id: "P3", timeLeft: 0.1, w: 40, x: 95, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+      };
+
+      p.setup = function() {
+        let canvas = p.createCanvas(850, 300);
+        canvas.parent('FCFS-example-animation');
+        p.resetProcesses();
+      };
+
+      p.draw = function() {
+        p.background(10, 10, 20);
+
+        // Disegna CPU
+        p.stroke(cAmber[0], cAmber[1], cAmber[2]);
+        p.strokeWeight(2);
+        p.fill(20, 20, 30);
+        p.rectMode(p.CENTER);
+        p.rect(cpu.x, cpu.y, 160, 120, 8);
+        p.noStroke();
+        p.fill(255);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.textSize(16);
+        p.textFont('JetBrains Mono');
+        p.text(cpu.label, cpu.x, cpu.y - 40);
+
+        // Disegna Ready Queue
+        p.stroke(cTeal[0], cTeal[1], cTeal[2], 100);
+        p.strokeWeight(2);
+        p.noFill();
+        p.rect(readyQueue.x, readyQueue.y, 300, 100, 8);
+        p.noStroke();
+        p.fill(cTeal[0], cTeal[1], cTeal[2]);
+        p.textSize(12);
+        p.text(readyQueue.label, readyQueue.x, readyQueue.y - 70);
+
+        // Freccia da Queue a CPU
+        p.stroke(255, 255, 255, 50);
+        p.strokeWeight(2);
+        p.line(360, 150, 560, 150);
+        p.triangle(560, 150, 550, 145, 550, 155);
+
+        // Render Processes (Passive rendering)
+        [p3, p2, p1].forEach(pr => {
+          if(pr.alpha > 0) {
+            p.fill(pr.r, pr.g, pr.b, pr.alpha);
+            p.noStroke();
+            p.rect(pr.x, pr.y, pr.w, 60, 4);
+            
+            p.fill(10, 10, 20, pr.alpha);
+            p.textSize(14);
+            p.text(pr.id, pr.x, pr.y - 10);
+            p.textSize(10);
+            p.text(pr.timeLeft.toFixed(1) + "s", pr.x, pr.y + 10);
+          }
+        });
+      };
+
+      p.animReset = function() {
+        gsap.killTweensOf([p1, p2, p3]);
+        p.resetProcesses();
+      };
+
+      p.animStart = function() {
+        p.animReset();
+        let tl = gsap.timeline();
+        const calcDur = (t) => Math.max(0.4, t / 5.0);
+
+        tl.to(p1, { x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2], duration: 1, ease: "power2.inOut" })
+          .to(p1, { timeLeft: 0.0, duration: calcDur(p1.timeLeft), ease: "linear" }, "+=0.2")
+          .to(p1, { alpha: 0, y: -50, duration: 0.5 });
+
+        tl.to(p2, { x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2], duration: 0.6, ease: "power2.inOut" }, "-=0.2")
+          .to(p3, { x: 250, duration: 0.6 }, "<")
+          .to(p2, { timeLeft: 0.0, duration: calcDur(p2.timeLeft), ease: "linear" })
+          .to(p2, { alpha: 0, y: -50, duration: 0.4 });
+
+        tl.to(p3, { x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2], duration: 0.6, ease: "power2.inOut" }, "-=0.2")
+          .to(p3, { timeLeft: 0.0, duration: calcDur(p3.timeLeft), ease: "linear" })
+          .to(p3, { alpha: 0, y: -50, duration: 0.4 });
+      };
+    };
+
+    // Global hooks per HTML
+    let instFCFS = new p5(sketchFCFS);
+    function animStart() { instFCFS.animStart(); }
+    function animReset() { instFCFS.animReset(); }
+
+
+    // =========================================================================
+    // 2. SJF - SHORTEST JOB FIRST (INSTANCE MODE)
+    // =========================================================================
+    let sketchSJF = function(p) {
+      let cpu = { x: 650, y: 150, label: "CPU" };
+      let readyQueue = { x: 200, y: 150, label: "READY QUEUE" };
+      let p1, p2, p3;
+      let scanner = { x: 0, y: 0, w: 0, h: 0, alpha: 0 };
+
+      p.resetProcesses = function() {
+        p1 = { id: "P1", timeLeft: 5.0, w: 90, x: 125, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 }; // Ultimo nella coda
+        p2 = { id: "P2", timeLeft: 1.0, w: 50, x: 295, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 }; // Primo nella coda
+        p3 = { id: "P3", timeLeft: 0.5, w: 40, x: 220, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 }; // In mezzo
+        scanner.alpha = 0;
+      };
+
+      p.setup = function() {
+        let canvas = p.createCanvas(850, 300);
+        canvas.parent('SJF-example-animation');
+        p.resetProcesses();
+      };
+
+      p.draw = function() {
+        p.background(10, 10, 20);
+
+        // CPU
+        p.stroke(cAmber[0], cAmber[1], cAmber[2]);
+        p.strokeWeight(2);
+        p.fill(20, 20, 30);
+        p.rectMode(p.CENTER);
+        p.rect(cpu.x, cpu.y, 160, 120, 8);
+        p.noStroke();
+        p.fill(255);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.textSize(16);
+        p.textFont('JetBrains Mono');
+        p.text(cpu.label, cpu.x, cpu.y - 40);
+
+        // Ready Queue
+        p.stroke(cTeal[0], cTeal[1], cTeal[2], 100);
+        p.strokeWeight(2);
+        p.noFill();
+        p.rect(readyQueue.x, readyQueue.y, 300, 100, 8);
+        p.noStroke();
+        p.fill(cTeal[0], cTeal[1], cTeal[2]);
+        p.textSize(12);
+        p.text(readyQueue.label, readyQueue.x, readyQueue.y - 70);
+
+        p.stroke(255, 255, 255, 50);
+        p.strokeWeight(2);
+        p.line(360, 150, 560, 150);
+        p.triangle(560, 150, 550, 145, 550, 155);
+
+        // Scanner Highlight (per l'algoritmo SJF)
+        if(scanner.alpha > 0) {
+          p.stroke(cTeal[0], cTeal[1], cTeal[2], scanner.alpha);
+          p.strokeWeight(2);
+          p.noFill();
+          p.rect(scanner.x, scanner.y, scanner.w, scanner.h, 6);
+        }
+
+        // Render Processes
+        [p3, p2, p1].forEach(pr => {
+          if(pr.alpha > 0) {
+            p.fill(pr.r, pr.g, pr.b, pr.alpha);
+            p.noStroke();
+            p.rect(pr.x, pr.y, pr.w, 60, 4);
+            
+            p.fill(10, 10, 20, pr.alpha);
+            p.textSize(14);
+            p.text(pr.id, pr.x, pr.y - 10);
+            p.textSize(10);
+            p.text(pr.timeLeft.toFixed(1) + "s", pr.x, pr.y + 10);
+          }
+        });
+      };
+
+      p.animReset = function() {
+        gsap.killTweensOf([p1, p2, p3, scanner]);
+        p.resetProcesses();
+      };
+
+      p.animStart = function() {
+        p.animReset();
+        let tl = gsap.timeline();
+        const calcDur = (t) => Math.max(0.4, t / 5.0);
+
+        // Funzione per animare lo scanner (Highlight del più corto)
+        const scanProcess = (pr) => {
+            tl.set(scanner, { x: pr.x, y: pr.y, w: pr.w + 10, h: 70 })
+              .to(scanner, { alpha: 255, duration: 0.3 })
+              .to(scanner, { alpha: 0, duration: 0.3 }, "+=0.3");
+        };
+
+        // 1. SJF trova il più corto: P3 (0.5s)
+        scanProcess(p3);
+        tl.to(p3, { x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2], duration: 0.8, ease: "power2.inOut" })
+          .to(p3, { timeLeft: 0.0, duration: calcDur(p3.timeLeft), ease: "linear" })
+          .to(p3, { alpha: 0, y: -50, duration: 0.4 });
+
+        // 2. SJF trova il prossimo: P2 (1.0s)
+        scanProcess(p2);
+        tl.to(p2, { x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2], duration: 0.8, ease: "power2.inOut" })
+          .to(p2, { timeLeft: 0.0, duration: calcDur(p2.timeLeft), ease: "linear" })
+          .to(p2, { alpha: 0, y: -50, duration: 0.4 });
+
+        // 3. SJF trova l'ultimo: P1 (5.0s)
+        scanProcess(p1);
+        tl.to(p1, { x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2], duration: 0.8, ease: "power2.inOut" })
+          .to(p1, { timeLeft: 0.0, duration: calcDur(p1.timeLeft), ease: "linear" })
+          .to(p1, { alpha: 0, y: -50, duration: 0.4 });
+      };
+    };
+
+    // Global hooks per HTML
+    let instSJF = new p5(sketchSJF);
+    function animStartSJF() { instSJF.animStart(); }
+    function animResetSJF() { instSJF.animReset(); }
+
+    // =========================================================================
+    // 3. RR - ROUND ROBIN (INSTANCE MODE)
+    // =========================================================================
+    let sketchRR = function(p) {
+      let cpu = { x: 650, y: 150, label: "CPU" };
+      let readyQueue = { x: 200, y: 150, label: "READY QUEUE" };
+      let p1, p2, p3;
+      let qSlots = [290, 200, 110]; // Posizioni X: davanti, mezzo, fondo calcolate in modo simmetrico
+
+      p.resetProcesses = function() {
+        p1 = { id: "P1", timeLeft: 5.0, w: 70, x: qSlots[0], y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        p2 = { id: "P2", timeLeft: 3.0, w: 70, x: qSlots[1], y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        p3 = { id: "P3", timeLeft: 1.5, w: 70, x: qSlots[2], y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+      };
+
+      p.setup = function() {
+        let canvas = p.createCanvas(850, 320); // Un po' più alto per l'animazione di rientro
+        canvas.parent('RR-example-animation');
+        p.resetProcesses();
+      };
+
+      p.draw = function() {
+        p.background(10, 10, 20);
+
+        // CPU
+        p.stroke(cAmber[0], cAmber[1], cAmber[2]);
+        p.strokeWeight(2);
+        p.fill(20, 20, 30);
+        p.rectMode(p.CENTER);
+        p.rect(cpu.x, cpu.y, 160, 120, 8);
+        p.noStroke();
+        p.fill(255);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.textSize(16);
+        p.textFont('JetBrains Mono');
+        p.text(cpu.label, cpu.x, cpu.y - 40);
+
+        // Ready Queue
+        p.stroke(cTeal[0], cTeal[1], cTeal[2], 100);
+        p.strokeWeight(2);
+        p.noFill();
+        p.rect(readyQueue.x, readyQueue.y, 300, 100, 8);
+        p.noStroke();
+        p.fill(cTeal[0], cTeal[1], cTeal[2]);
+        p.textSize(12);
+        p.text(readyQueue.label, readyQueue.x, readyQueue.y - 70);
+
+        p.stroke(255, 255, 255, 50);
+        p.strokeWeight(2);
+        p.line(360, 150, 560, 150);
+        p.triangle(560, 150, 550, 145, 550, 155);
+
+        // Processi
+        [p3, p2, p1].forEach(pr => {
+          if(pr.alpha > 0) {
+            p.fill(pr.r, pr.g, pr.b, pr.alpha);
+            p.noStroke();
+            p.rect(pr.x, pr.y, pr.w, 60, 4);
+            
+            p.fill(10, 10, 20, pr.alpha);
+            p.textSize(14);
+            p.text(pr.id, pr.x, pr.y - 10);
+            p.textSize(10);
+            p.text(pr.timeLeft.toFixed(1) + "s", pr.x, pr.y + 10);
+          }
+        });
+      };
+
+      p.animReset = function() {
+        gsap.killTweensOf([p1, p2, p3]);
+        p.resetProcesses();
+      };
+
+      p.animStart = function() {
+        p.animReset();
+        let tl = gsap.timeline();
+        const calcDur = (t) => Math.max(0.4, t / 4.0); // Ratio 1s reale = 4s simulati
+        let quantum = 2.0;
+
+        // Logica Algoritmica per costruire la GSAP timeline
+        let q = [
+          { p: p1, t: 5.0 },
+          { p: p2, t: 3.0 },
+          { p: p3, t: 1.5 }
+        ];
+
+        let loopCount = 0; // Protezione infinita loop
+        while(q.length > 0 && loopCount < 20) {
+            loopCount++;
+            let current = q.shift(); // Estrae dalla testa della coda (slot 0)
+            
+            // 1. Sposta in CPU
+            tl.to(current.p, { x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2], duration: 0.6, ease: "power2.inOut" });
+
+            let runTime = Math.min(quantum, current.t);
+            let nextTime = current.t - runTime;
+
+            // 2. Countdown per la durata del runTime
+            tl.to(current.p, { timeLeft: nextTime, duration: calcDur(runTime), ease: "linear" });
+
+            if(nextTime > 0.01) {
+                // Quantum Scaduto! Preemption in corso...
+                let backPos = qSlots[q.length]; // Va a mettersi nel primo slot libero in coda
+                
+                // Rientro con traiettoria ad arco passando sotto (per non cozzare con chi esce)
+                tl.to(current.p, { y: 240, duration: 0.4, ease: "power1.in" })
+                  .to(current.p, { x: backPos, r: cSlate[0], g: cSlate[1], b: cSlate[2], duration: 0.5, ease: "linear" })
+                  .to(current.p, { y: 150, duration: 0.4, ease: "power1.out" });
+
+                // Nel frattempo, tutti gli altri processi avanzano (Slide forward)
+                let shiftLabel = "shift" + loopCount;
+                tl.add(shiftLabel, "-=0.9"); // Inizia mentre lui sta tornando indietro
+                
+                q.forEach((item, index) => {
+                    tl.to(item.p, { x: qSlots[index], duration: 0.6, ease: "power2.inOut" }, shiftLabel);
+                });
+
+                current.t = nextTime;
+                q.push(current); // Re-infila in coda
+            } else {
+                // Terminazione volontaria
+                tl.to(current.p, { alpha: 0, y: -50, duration: 0.5 });
+                
+                // Avanzamento coda
+                let shiftLabel = "shift" + loopCount;
+                tl.add(shiftLabel, "-=0.3");
+                q.forEach((item, index) => {
+                    tl.to(item.p, { x: qSlots[index], duration: 0.6, ease: "power2.inOut" }, shiftLabel);
+                });
+            }
+        }
+      };
+    };
+
+    let instRR = new p5(sketchRR);
+    function animStartRR() { instRR.animStart(); }
+    function animResetRR() { instRR.animReset(); }
+  </script>
 </body>
 
 </html>
