@@ -1,0 +1,10 @@
+.venv/
+
+# --- Manim ---
+# Ignora tutto il contenuto della cartella media (i vari file temporanei, LaTeX, ecc)
+media/**/*
+# ...ma fai un'eccezione tenendo i file video mp4 finali!
+!media/**/*.mp4
+
+# Ignora anche la cache di python
+__pycache__/
