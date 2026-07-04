@@ -1,593 +1,666 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Il Progetto — EDIDS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../shared/index.css">
-<link rel="stylesheet" href="../shared/katchkit.css">
-</head>
-<body>
 
-<site-navbar 
-    logo-text="// EDIDS · Il Progetto" 
-    back-url="index.html" 
-    back-text="EDIDS">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Il Progetto — EDIDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../shared/katchkit.css">
+</head>
+
+<body class="dot-grid theme-purple">
+
+  <site-navbar logo-text="// EDIDS · Il Progetto" back-url="index.html" back-text="EDIDS">
   </site-navbar>
 
-<div class="page-hero">
-  <div class="breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a>
-    <span>/</span>
-    <a href="index.html">EDIDS</a>
-    <span>/</span>
-    <span>Progetto</span>
-  </div>
-  <div class="page-eyebrow">01 · Progetto</div>
-  <h1>Metodologia<br>del Progetto</h1>
-  <p>Artefatti e diagrammi fondamentali per portare un'idea software dalla specifica dei requisiti all'implementazione strutturata.</p>
-</div>
-
-<div class="toc">
-  <a href="#us" class="toc-item">User Stories</a>
-  <a href="#dm" class="toc-item">Domain Model</a>
-  <a href="#ssd" class="toc-item">System Sequence Diagram</a>
-  <a href="#dcm" class="toc-item">Design Class Model</a>
-  <a href="#isd" class="toc-item">Internal Sequence Diagram</a>
-</div>
-
-<hr class="divider" style="max-width:900px;margin:1rem auto 0;">
-
-<!-- ===== USER STORIES ===== -->
-<div class="content-section" id="us">
-  <div class="section-eyebrow">Requisiti</div>
-  <h2 class="section-title">User Stories</h2>
-  <p class="section-intro">
-    Una user story descrive una funzionalità dal punto di vista dell'utente finale, usando un formato standard che ne cattura identità, obiettivo e motivazione. Non è una specifica tecnica: è una promessa di conversazione tra team e cliente.
-  </p>
-
-  <div class="us-layout">
-    <div class="us-card">
-      <div class="us-meta">ID: LIB-102 | Estimate: 5 pts | Title: Search Filter</div>
-      <div class="us-body">
-        <strong>As a</strong> student,<br>
-        <em>I want to</em> filter the library search results by "Available Now,"<br>
-        <strong>so that</strong> I don't waste time looking for books that are already checked out.
-      </div>
+  <div class="page-hero">
+    <div class="breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a>
+      <span>/</span>
+      <a href="index.html">EDIDS</a>
+      <span>/</span>
+      <span>Progetto</span>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-secondary);justify-content:center;padding:1rem 0;">
-      <div><strong style="color:var(--text-primary)">As a</strong> <span style="color:var(--accent-soft)">[ruolo]</span> — chi è l'utente che trae beneficio</div>
-      <div><strong style="color:var(--text-primary)">I want to</strong> <span style="color:var(--teal)">[azione]</span> — cosa vuole fare concretamente</div>
-      <div><strong style="color:var(--text-primary)">So that</strong> <span style="color:var(--green)">[motivazione]</span> — perché, il valore di business</div>
-      <div style="margin-top:8px;padding:8px 12px;background:var(--tag-bg);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted)">
-        ID identifica la storia · Estimate = story points (complessità relativa)
-      </div>
-    </div>
+    <div class="page-eyebrow">01 · Progetto</div>
+    <h1>Metodologia<br>del Progetto</h1>
+    <p>Artefatti e diagrammi fondamentali per portare un'idea software dalla specifica dei requisiti all'implementazione
+      strutturata.</p>
   </div>
 
-  <div class="section-eyebrow" style="margin-top:2.5rem">Acceptance Criteria — formato Given/When/Then</div>
-  <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:1.25rem;line-height:1.75">
-    Ogni user story viene completata con gli acceptance criteria (AC): scenari eseguibili che definiscono quando la storia è "done". Il formato standard è <strong style="color:var(--text-primary)">Given / When / Then</strong>.
-  </p>
+  <div class="toc">
+    <a href="#us" class="toc-item">User Stories</a>
+    <a href="#dm" class="toc-item">Domain Model</a>
+    <a href="#ssd" class="toc-item">System Sequence Diagram</a>
+    <a href="#dcm" class="toc-item">Design Class Model</a>
+    <a href="#isd" class="toc-item">Internal Sequence Diagram</a>
+  </div>
 
-  <div class="ac-stack">
-    <div class="ac-card ac-green">
-      <div class="ac-title">
-        AC 1: Successfully filtering by availability
-        <span class="ac-badge happy">The Happy Path</span>
+  <hr class="divider" style="max-width:900px;margin:1rem auto 0;">
+
+  <!-- ===== USER STORIES ===== -->
+  <div class="content-section" id="us">
+    <div class="section-eyebrow">Requisiti</div>
+    <h2 class="section-title">User Stories</h2>
+    <p class="section-intro">
+      Una user story descrive una funzionalità dal punto di vista dell'utente finale, usando un formato standard che ne
+      cattura identità, obiettivo e motivazione. Non è una specifica tecnica: è una promessa di conversazione tra team e
+      cliente.
+    </p>
+
+    <div class="us-layout">
+      <div class="us-card">
+        <div class="us-meta">ID: LIB-102 | Estimate: 5 pts | Title: Search Filter</div>
+        <div class="us-body">
+          <strong>As a</strong> student,<br>
+          <em>I want to</em> filter the library search results by "Available Now,"<br>
+          <strong>so that</strong> I don't waste time looking for books that are already checked out.
+        </div>
       </div>
-      <div class="ac-row"><span class="ac-kw kw-given">Given</span><span>sono sulla pagina dei risultati per "Software Engineering" e i risultati contengono sia libri "Available" che "Checked Out"</span></div>
-      <div class="ac-row"><span class="ac-kw kw-when">When</span><span>seleziono la checkbox "Available Now"</span></div>
-      <div class="ac-row"><span class="ac-kw kw-then">Then</span><span>la lista si aggiorna mostrando solo libri con status "Available"</span></div>
-      <div class="ac-row"><span class="ac-kw kw-and">And</span><span>il "Results Count" diminuisce per rispecchiare solo gli item disponibili</span></div>
+      <div
+        style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-secondary);justify-content:center;padding:1rem 0;">
+        <div><strong style="color:var(--text-primary)">As a</strong> <span
+            style="color:var(--accent-soft)">[ruolo]</span> — chi è l'utente che trae beneficio</div>
+        <div><strong style="color:var(--text-primary)">I want to</strong> <span
+            style="color:var(--teal)">[azione]</span> — cosa vuole fare concretamente</div>
+        <div><strong style="color:var(--text-primary)">So that</strong> <span
+            style="color:var(--green)">[motivazione]</span> — perché, il valore di business</div>
+        <div
+          style="margin-top:8px;padding:8px 12px;background:var(--tag-bg);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted)">
+          ID identifica la storia · Estimate = story points (complessità relativa)
+        </div>
+      </div>
     </div>
 
-    <div class="ac-card">
-      <div class="ac-title">
-        AC 2: Removing the filter to see all results
-        <span class="ac-badge alt">Alternate Path</span>
+    <div class="section-eyebrow" style="margin-top:2.5rem">Acceptance Criteria — formato Given/When/Then</div>
+    <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:1.25rem;line-height:1.75">
+      Ogni user story viene completata con gli acceptance criteria (AC): scenari eseguibili che definiscono quando la
+      storia è "done". Il formato standard è <strong style="color:var(--text-primary)">Given / When / Then</strong>.
+    </p>
+
+    <div class="ac-stack">
+      <div class="ac-card ac-green">
+        <div class="ac-title">
+          AC 1: Successfully filtering by availability
+          <span class="ac-badge happy">The Happy Path</span>
+        </div>
+        <div class="ac-row"><span class="ac-kw kw-given">Given</span><span>sono sulla pagina dei risultati per "Software
+            Engineering" e i risultati contengono sia libri "Available" che "Checked Out"</span></div>
+        <div class="ac-row"><span class="ac-kw kw-when">When</span><span>seleziono la checkbox "Available Now"</span>
+        </div>
+        <div class="ac-row"><span class="ac-kw kw-then">Then</span><span>la lista si aggiorna mostrando solo libri con
+            status "Available"</span></div>
+        <div class="ac-row"><span class="ac-kw kw-and">And</span><span>il "Results Count" diminuisce per rispecchiare
+            solo gli item disponibili</span></div>
       </div>
-      <div class="ac-row"><span class="ac-kw kw-given">Given</span><span>ho già applicato il filtro "Available Now" ai risultati</span></div>
-      <div class="ac-row"><span class="ac-kw kw-when">When</span><span>de-seleziono la checkbox "Available Now"</span></div>
-      <div class="ac-row"><span class="ac-kw kw-then">Then</span><span>la lista si aggiorna mostrando tutti i libri corrispondenti alla ricerca, indipendentemente dallo status</span></div>
-      <div class="ac-row"><span class="ac-kw kw-and">And</span><span>il "Results Count" aumenta per mostrare il totale dei libri nel catalogo</span></div>
+
+      <div class="ac-card">
+        <div class="ac-title">
+          AC 2: Removing the filter to see all results
+          <span class="ac-badge alt">Alternate Path</span>
+        </div>
+        <div class="ac-row"><span class="ac-kw kw-given">Given</span><span>ho già applicato il filtro "Available Now" ai
+            risultati</span></div>
+        <div class="ac-row"><span class="ac-kw kw-when">When</span><span>de-seleziono la checkbox "Available Now"</span>
+        </div>
+        <div class="ac-row"><span class="ac-kw kw-then">Then</span><span>la lista si aggiorna mostrando tutti i libri
+            corrispondenti alla ricerca, indipendentemente dallo status</span></div>
+        <div class="ac-row"><span class="ac-kw kw-and">And</span><span>il "Results Count" aumenta per mostrare il totale
+            dei libri nel catalogo</span></div>
+      </div>
+
+      <div class="ac-card ac-coral">
+        <div class="ac-title">
+          AC 3: No items match the filter
+          <span class="ac-badge edge">Edge Case</span>
+        </div>
+        <div class="ac-row"><span class="ac-kw kw-given">Given</span><span>sto visualizzando risultati dove tutti i
+            libri sono "Checked Out"</span></div>
+        <div class="ac-row"><span class="ac-kw kw-when">When</span><span>seleziono la checkbox "Available Now"</span>
+        </div>
+        <div class="ac-row"><span class="ac-kw kw-then">Then</span><span>visualizzo il messaggio "No books matching your
+            search are currently available"</span></div>
+        <div class="ac-row"><span class="ac-kw kw-and">And</span><span>la lista dei risultati è vuota</span></div>
+      </div>
     </div>
 
-    <div class="ac-card ac-coral">
-      <div class="ac-title">
-        AC 3: No items match the filter
-        <span class="ac-badge edge">Edge Case</span>
+    <div class="section-eyebrow" style="margin-top:2.5rem">Acceptance Criteria — formato Checklist</div>
+    <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:1rem;line-height:1.75">
+      In alternativa al formato narrativo, gli AC possono essere espressi come una checklist binaria, spesso usata in
+      GitHub Issues o ticket Jira per tracciare lo stato di completamento.
+    </p>
+    <div class="checklist-box">
+      <div class="checklist-title">// Acceptance Criteria — LIB-102 · Checklist format</div>
+      <div class="check-item">
+        <div class="check-box done">✓</div>
+        <span>Quando il filtro è attivo, appaiono solo i libri con status "Available"</span>
       </div>
-      <div class="ac-row"><span class="ac-kw kw-given">Given</span><span>sto visualizzando risultati dove tutti i libri sono "Checked Out"</span></div>
-      <div class="ac-row"><span class="ac-kw kw-when">When</span><span>seleziono la checkbox "Available Now"</span></div>
-      <div class="ac-row"><span class="ac-kw kw-then">Then</span><span>visualizzo il messaggio "No books matching your search are currently available"</span></div>
-      <div class="ac-row"><span class="ac-kw kw-and">And</span><span>la lista dei risultati è vuota</span></div>
+      <div class="check-item">
+        <div class="check-box done">✓</div>
+        <span>Il Results Count si aggiorna dinamicamente all'attivazione del filtro</span>
+      </div>
+      <div class="check-item">
+        <div class="check-box done">✓</div>
+        <span>Rimuovere il filtro ripristina la lista completa con tutti gli status</span>
+      </div>
+      <div class="check-item">
+        <div class="check-box todo"></div>
+        <span>Se nessun libro è disponibile, viene mostrato un messaggio di feedback</span>
+      </div>
+      <div class="check-item">
+        <div class="check-box todo"></div>
+        <span>Il filtro persiste durante la navigazione tra le pagine di risultati</span>
+      </div>
     </div>
   </div>
 
-  <div class="section-eyebrow" style="margin-top:2.5rem">Acceptance Criteria — formato Checklist</div>
-  <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:1rem;line-height:1.75">
-    In alternativa al formato narrativo, gli AC possono essere espressi come una checklist binaria, spesso usata in GitHub Issues o ticket Jira per tracciare lo stato di completamento.
-  </p>
-  <div class="checklist-box">
-    <div class="checklist-title">// Acceptance Criteria — LIB-102 · Checklist format</div>
-    <div class="check-item">
-      <div class="check-box done">✓</div>
-      <span>Quando il filtro è attivo, appaiono solo i libri con status "Available"</span>
+  <!-- ===== DOMAIN MODEL ===== -->
+  <div class="content-section" id="dm">
+    <div class="section-eyebrow">Analisi del dominio</div>
+    <h2 class="section-title">Domain Model</h2>
+    <p class="section-intro">
+      Il Domain Model rappresenta i concetti chiave del dominio applicativo e le relazioni tra di essi — senza logica
+      implementativa. Per un gioco software con Player e Sistema, individua le entità reali che esistono nel "mondo del
+      gioco".
+    </p>
+
+    <div class="info-box">
+      📐 Un Domain Model NON è un diagramma di classi Java. È una mappa concettuale: mostra cosa esiste nel dominio, non
+      come è implementato. Gli attributi sono proprietà reali degli oggetti del mondo, non campi di database.
     </div>
-    <div class="check-item">
-      <div class="check-box done">✓</div>
-      <span>Il Results Count si aggiorna dinamicamente all'attivazione del filtro</span>
-    </div>
-    <div class="check-item">
-      <div class="check-box done">✓</div>
-      <span>Rimuovere il filtro ripristina la lista completa con tutti gli status</span>
-    </div>
-    <div class="check-item">
-      <div class="check-box todo"></div>
-      <span>Se nessun libro è disponibile, viene mostrato un messaggio di feedback</span>
-    </div>
-    <div class="check-item">
-      <div class="check-box todo"></div>
-      <span>Il filtro persiste durante la navigazione tra le pagine di risultati</span>
-    </div>
-  </div>
-</div>
 
-<!-- ===== DOMAIN MODEL ===== -->
-<div class="content-section" id="dm">
-  <div class="section-eyebrow">Analisi del dominio</div>
-  <h2 class="section-title">Domain Model</h2>
-  <p class="section-intro">
-    Il Domain Model rappresenta i concetti chiave del dominio applicativo e le relazioni tra di essi — senza logica implementativa. Per un gioco software con Player e Sistema, individua le entità reali che esistono nel "mondo del gioco".
-  </p>
+    <div class="diagram-wrap">
+      <svg width="820" height="400" viewBox="0 0 820 400" xmlns="http://www.w3.org/2000/svg"
+        font-family="'JetBrains Mono', monospace">
+        <!-- GameSession -->
+        <g>
+          <rect x="10" y="20" width="160" height="120" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.5)"
+            stroke-width="1.5" />
+          <rect x="10" y="20" width="160" height="28" rx="6" fill="rgba(124,92,252,0.18)" />
+          <rect x="10" y="40" width="160" height="8" fill="rgba(124,92,252,0.18)" />
+          <text x="90" y="39" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">GameSession</text>
+          <line x1="10" y1="48" x2="170" y2="48" stroke="rgba(124,92,252,0.3)" stroke-width="1" />
+          <text x="20" y="65" fill="#9488c2" font-size="10">sessionID: String</text>
+          <text x="20" y="80" fill="#9488c2" font-size="10">startTime: Date</text>
+          <text x="20" y="95" fill="#9488c2" font-size="10">status: GameStatus</text>
+          <line x1="10" y1="103" x2="170" y2="103" stroke="rgba(124,92,252,0.2)" stroke-width="1" />
+          <text x="20" y="118" fill="#22d3ee" font-size="10">+ start()</text>
+          <text x="20" y="133" fill="#22d3ee" font-size="10">+ end()</text>
+        </g>
 
-  <div class="info-box">
-    📐 Un Domain Model NON è un diagramma di classi Java. È una mappa concettuale: mostra cosa esiste nel dominio, non come è implementato. Gli attributi sono proprietà reali degli oggetti del mondo, non campi di database.
-  </div>
+        <!-- Player -->
+        <g>
+          <rect x="240" y="20" width="160" height="130" rx="6" fill="#0f0f1a" stroke="rgba(34,211,238,0.4)"
+            stroke-width="1.5" />
+          <rect x="240" y="20" width="160" height="28" rx="6" fill="rgba(34,211,238,0.1)" />
+          <rect x="240" y="40" width="160" height="8" fill="rgba(34,211,238,0.1)" />
+          <text x="320" y="39" text-anchor="middle" fill="#22d3ee" font-size="12" font-weight="700">Player</text>
+          <line x1="240" y1="48" x2="400" y2="48" stroke="rgba(34,211,238,0.25)" stroke-width="1" />
+          <text x="250" y="65" fill="#9488c2" font-size="10">playerID: String</text>
+          <text x="250" y="80" fill="#9488c2" font-size="10">username: String</text>
+          <text x="250" y="95" fill="#9488c2" font-size="10">score: int</text>
+          <text x="250" y="110" fill="#9488c2" font-size="10">lives: int</text>
+          <line x1="240" y1="118" x2="400" y2="118" stroke="rgba(34,211,238,0.2)" stroke-width="1" />
+          <text x="250" y="133" fill="#22d3ee" font-size="10">+ move(direction)</text>
+          <text x="250" y="148" fill="#22d3ee" font-size="10">+ useItem()</text>
+        </g>
 
-  <div class="diagram-wrap">
-    <svg width="820" height="400" viewBox="0 0 820 400" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', monospace">
-      <!-- GameSession -->
-      <g>
-        <rect x="10" y="20" width="160" height="120" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.5)" stroke-width="1.5"/>
-        <rect x="10" y="20" width="160" height="28" rx="6" fill="rgba(124,92,252,0.18)"/>
-        <rect x="10" y="40" width="160" height="8" fill="rgba(124,92,252,0.18)"/>
-        <text x="90" y="39" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">GameSession</text>
-        <line x1="10" y1="48" x2="170" y2="48" stroke="rgba(124,92,252,0.3)" stroke-width="1"/>
-        <text x="20" y="65" fill="#9488c2" font-size="10">sessionID: String</text>
-        <text x="20" y="80" fill="#9488c2" font-size="10">startTime: Date</text>
-        <text x="20" y="95" fill="#9488c2" font-size="10">status: GameStatus</text>
-        <line x1="10" y1="103" x2="170" y2="103" stroke="rgba(124,92,252,0.2)" stroke-width="1"/>
-        <text x="20" y="118" fill="#22d3ee" font-size="10">+ start()</text>
-        <text x="20" y="133" fill="#22d3ee" font-size="10">+ end()</text>
-      </g>
+        <!-- GameSystem -->
+        <g>
+          <rect x="470" y="20" width="160" height="130" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.5)"
+            stroke-width="1.5" />
+          <rect x="470" y="20" width="160" height="28" rx="6" fill="rgba(124,92,252,0.18)" />
+          <rect x="470" y="40" width="160" height="8" fill="rgba(124,92,252,0.18)" />
+          <text x="550" y="39" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">GameSystem</text>
+          <line x1="470" y1="48" x2="630" y2="48" stroke="rgba(124,92,252,0.3)" stroke-width="1" />
+          <text x="480" y="65" fill="#9488c2" font-size="10">currentLevel: int</text>
+          <text x="480" y="80" fill="#9488c2" font-size="10">difficulty: Difficulty</text>
+          <text x="480" y="95" fill="#9488c2" font-size="10">maxPlayers: int</text>
+          <text x="480" y="110" fill="#9488c2" font-size="10">rules: RuleSet</text>
+          <line x1="470" y1="118" x2="630" y2="118" stroke="rgba(124,92,252,0.2)" stroke-width="1" />
+          <text x="480" y="133" fill="#22d3ee" font-size="10">+ checkWin()</text>
+          <text x="480" y="148" fill="#22d3ee" font-size="10">+ nextLevel()</text>
+        </g>
 
-      <!-- Player -->
-      <g>
-        <rect x="240" y="20" width="160" height="130" rx="6" fill="#0f0f1a" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
-        <rect x="240" y="20" width="160" height="28" rx="6" fill="rgba(34,211,238,0.1)"/>
-        <rect x="240" y="40" width="160" height="8" fill="rgba(34,211,238,0.1)"/>
-        <text x="320" y="39" text-anchor="middle" fill="#22d3ee" font-size="12" font-weight="700">Player</text>
-        <line x1="240" y1="48" x2="400" y2="48" stroke="rgba(34,211,238,0.25)" stroke-width="1"/>
-        <text x="250" y="65" fill="#9488c2" font-size="10">playerID: String</text>
-        <text x="250" y="80" fill="#9488c2" font-size="10">username: String</text>
-        <text x="250" y="95" fill="#9488c2" font-size="10">score: int</text>
-        <text x="250" y="110" fill="#9488c2" font-size="10">lives: int</text>
-        <line x1="240" y1="118" x2="400" y2="118" stroke="rgba(34,211,238,0.2)" stroke-width="1"/>
-        <text x="250" y="133" fill="#22d3ee" font-size="10">+ move(direction)</text>
-        <text x="250" y="148" fill="#22d3ee" font-size="10">+ useItem()</text>
-      </g>
+        <!-- Leaderboard -->
+        <g>
+          <rect x="650" y="20" width="160" height="110" rx="6" fill="#0f0f1a" stroke="rgba(251,191,36,0.35)"
+            stroke-width="1.5" />
+          <rect x="650" y="20" width="160" height="28" rx="6" fill="rgba(251,191,36,0.08)" />
+          <rect x="650" y="40" width="160" height="8" fill="rgba(251,191,36,0.08)" />
+          <text x="730" y="39" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">Leaderboard</text>
+          <line x1="650" y1="48" x2="810" y2="48" stroke="rgba(251,191,36,0.2)" stroke-width="1" />
+          <text x="660" y="65" fill="#9488c2" font-size="10">entries: List</text>
+          <text x="660" y="80" fill="#9488c2" font-size="10">lastUpdated: Date</text>
+          <line x1="650" y1="88" x2="810" y2="88" stroke="rgba(251,191,36,0.15)" stroke-width="1" />
+          <text x="660" y="103" fill="#22d3ee" font-size="10">+ addEntry()</text>
+          <text x="660" y="118" fill="#22d3ee" font-size="10">+ getTop(n)</text>
+        </g>
 
-      <!-- GameSystem -->
-      <g>
-        <rect x="470" y="20" width="160" height="130" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.5)" stroke-width="1.5"/>
-        <rect x="470" y="20" width="160" height="28" rx="6" fill="rgba(124,92,252,0.18)"/>
-        <rect x="470" y="40" width="160" height="8" fill="rgba(124,92,252,0.18)"/>
-        <text x="550" y="39" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">GameSystem</text>
-        <line x1="470" y1="48" x2="630" y2="48" stroke="rgba(124,92,252,0.3)" stroke-width="1"/>
-        <text x="480" y="65" fill="#9488c2" font-size="10">currentLevel: int</text>
-        <text x="480" y="80" fill="#9488c2" font-size="10">difficulty: Difficulty</text>
-        <text x="480" y="95" fill="#9488c2" font-size="10">maxPlayers: int</text>
-        <text x="480" y="110" fill="#9488c2" font-size="10">rules: RuleSet</text>
-        <line x1="470" y1="118" x2="630" y2="118" stroke="rgba(124,92,252,0.2)" stroke-width="1"/>
-        <text x="480" y="133" fill="#22d3ee" font-size="10">+ checkWin()</text>
-        <text x="480" y="148" fill="#22d3ee" font-size="10">+ nextLevel()</text>
-      </g>
+        <!-- Level -->
+        <g>
+          <rect x="240" y="240" width="160" height="110" rx="6" fill="#0f0f1a" stroke="rgba(52,211,153,0.4)"
+            stroke-width="1.5" />
+          <rect x="240" y="240" width="160" height="28" rx="6" fill="rgba(52,211,153,0.08)" />
+          <rect x="240" y="260" width="160" height="8" fill="rgba(52,211,153,0.08)" />
+          <text x="320" y="259" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">Level</text>
+          <line x1="240" y1="268" x2="400" y2="268" stroke="rgba(52,211,153,0.2)" stroke-width="1" />
+          <text x="250" y="285" fill="#9488c2" font-size="10">levelNumber: int</text>
+          <text x="250" y="300" fill="#9488c2" font-size="10">map: GameMap</text>
+          <text x="250" y="315" fill="#9488c2" font-size="10">enemies: List</text>
+          <line x1="240" y1="323" x2="400" y2="323" stroke="rgba(52,211,153,0.15)" stroke-width="1" />
+          <text x="250" y="338" fill="#22d3ee" font-size="10">+ load()</text>
+        </g>
 
-      <!-- Leaderboard -->
-      <g>
-        <rect x="650" y="20" width="160" height="110" rx="6" fill="#0f0f1a" stroke="rgba(251,191,36,0.35)" stroke-width="1.5"/>
-        <rect x="650" y="20" width="160" height="28" rx="6" fill="rgba(251,191,36,0.08)"/>
-        <rect x="650" y="40" width="160" height="8" fill="rgba(251,191,36,0.08)"/>
-        <text x="730" y="39" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">Leaderboard</text>
-        <line x1="650" y1="48" x2="810" y2="48" stroke="rgba(251,191,36,0.2)" stroke-width="1"/>
-        <text x="660" y="65" fill="#9488c2" font-size="10">entries: List</text>
-        <text x="660" y="80" fill="#9488c2" font-size="10">lastUpdated: Date</text>
-        <line x1="650" y1="88" x2="810" y2="88" stroke="rgba(251,191,36,0.15)" stroke-width="1"/>
-        <text x="660" y="103" fill="#22d3ee" font-size="10">+ addEntry()</text>
-        <text x="660" y="118" fill="#22d3ee" font-size="10">+ getTop(n)</text>
-      </g>
+        <!-- Item -->
+        <g>
+          <rect x="470" y="240" width="160" height="110" rx="6" fill="#0f0f1a" stroke="rgba(248,113,113,0.35)"
+            stroke-width="1.5" />
+          <rect x="470" y="240" width="160" height="28" rx="6" fill="rgba(248,113,113,0.08)" />
+          <rect x="470" y="260" width="160" height="8" fill="rgba(248,113,113,0.08)" />
+          <text x="550" y="259" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">Item</text>
+          <line x1="470" y1="268" x2="630" y2="268" stroke="rgba(248,113,113,0.2)" stroke-width="1" />
+          <text x="480" y="285" fill="#9488c2" font-size="10">itemID: String</text>
+          <text x="480" y="300" fill="#9488c2" font-size="10">type: ItemType</text>
+          <text x="480" y="315" fill="#9488c2" font-size="10">effect: int</text>
+          <line x1="470" y1="323" x2="630" y2="323" stroke="rgba(248,113,113,0.15)" stroke-width="1" />
+          <text x="480" y="338" fill="#22d3ee" font-size="10">+ apply(player)</text>
+        </g>
 
-      <!-- Level -->
-      <g>
-        <rect x="240" y="240" width="160" height="110" rx="6" fill="#0f0f1a" stroke="rgba(52,211,153,0.4)" stroke-width="1.5"/>
-        <rect x="240" y="240" width="160" height="28" rx="6" fill="rgba(52,211,153,0.08)"/>
-        <rect x="240" y="260" width="160" height="8" fill="rgba(52,211,153,0.08)"/>
-        <text x="320" y="259" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">Level</text>
-        <line x1="240" y1="268" x2="400" y2="268" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
-        <text x="250" y="285" fill="#9488c2" font-size="10">levelNumber: int</text>
-        <text x="250" y="300" fill="#9488c2" font-size="10">map: GameMap</text>
-        <text x="250" y="315" fill="#9488c2" font-size="10">enemies: List</text>
-        <line x1="240" y1="323" x2="400" y2="323" stroke="rgba(52,211,153,0.15)" stroke-width="1"/>
-        <text x="250" y="338" fill="#22d3ee" font-size="10">+ load()</text>
-      </g>
+        <!-- RELATIONS -->
+        <!-- GameSession — Player: partecipa (1..*) -->
+        <line x1="170" y1="75" x2="240" y2="75" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <text x="175" y="68" fill="#5a5080" font-size="9">1</text>
+        <text x="222" y="68" fill="#5a5080" font-size="9">1..*</text>
+        <text x="188" y="90" fill="#5a5080" font-size="9">partecipa</text>
 
-      <!-- Item -->
-      <g>
-        <rect x="470" y="240" width="160" height="110" rx="6" fill="#0f0f1a" stroke="rgba(248,113,113,0.35)" stroke-width="1.5"/>
-        <rect x="470" y="240" width="160" height="28" rx="6" fill="rgba(248,113,113,0.08)"/>
-        <rect x="470" y="260" width="160" height="8" fill="rgba(248,113,113,0.08)"/>
-        <text x="550" y="259" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">Item</text>
-        <line x1="470" y1="268" x2="630" y2="268" stroke="rgba(248,113,113,0.2)" stroke-width="1"/>
-        <text x="480" y="285" fill="#9488c2" font-size="10">itemID: String</text>
-        <text x="480" y="300" fill="#9488c2" font-size="10">type: ItemType</text>
-        <text x="480" y="315" fill="#9488c2" font-size="10">effect: int</text>
-        <line x1="470" y1="323" x2="630" y2="323" stroke="rgba(248,113,113,0.15)" stroke-width="1"/>
-        <text x="480" y="338" fill="#22d3ee" font-size="10">+ apply(player)</text>
-      </g>
+        <!-- Player — GameSystem: interagisce -->
+        <line x1="400" y1="75" x2="470" y2="75" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <text x="403" y="68" fill="#5a5080" font-size="9">*</text>
+        <text x="453" y="68" fill="#5a5080" font-size="9">1</text>
+        <text x="412" y="90" fill="#5a5080" font-size="9">gestisce</text>
 
-      <!-- RELATIONS -->
-      <!-- GameSession — Player: partecipa (1..*) -->
-      <line x1="170" y1="75" x2="240" y2="75" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <text x="175" y="68" fill="#5a5080" font-size="9">1</text>
-      <text x="222" y="68" fill="#5a5080" font-size="9">1..*</text>
-      <text x="188" y="90" fill="#5a5080" font-size="9">partecipa</text>
+        <!-- GameSystem — Leaderboard -->
+        <line x1="630" y1="75" x2="650" y2="75" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <text x="633" y="68" fill="#5a5080" font-size="9">1</text>
+        <text x="637" y="90" fill="#5a5080" font-size="9">aggiorna</text>
 
-      <!-- Player — GameSystem: interagisce -->
-      <line x1="400" y1="75" x2="470" y2="75" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <text x="403" y="68" fill="#5a5080" font-size="9">*</text>
-      <text x="453" y="68" fill="#5a5080" font-size="9">1</text>
-      <text x="412" y="90" fill="#5a5080" font-size="9">gestisce</text>
-
-      <!-- GameSystem — Leaderboard -->
-      <line x1="630" y1="75" x2="650" y2="75" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <text x="633" y="68" fill="#5a5080" font-size="9">1</text>
-      <text x="637" y="90" fill="#5a5080" font-size="9">aggiorna</text>
-
-      <!-- GameSystem — Level -->
-      <line x1="550" y1="150" x2="550" y2="200" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <line x1="550" y1="200" x2="320" y2="200" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <line x1="320" y1="200" x2="320" y2="240" stroke="rgba(160,140,255,0.5
+        <!-- GameSystem — Level -->
+        <line x1="550" y1="150" x2="550" y2="200" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <line x1="550" y1="200" x2="320" y2="200" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <line x1="320" y1="200" x2="320" y2="240" stroke="rgba(160,140,255,0.5
       <!-- Player — Item -->
-      <line x1="320" y1="150" x2="320" y2="185" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <line x1="320" y1="185" x2="550" y2="185" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <line x1="550" y1="185" x2="550" y2="240" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <text x="395" y="178" fill="#5a5080" font-size="9">raccoglie 0..*</text>
-    </svg>
+      <line x1=" 320" y1="150" x2="320" y2="185" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <line x1="320" y1="185" x2="550" y2="185" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <line x1="550" y1="185" x2="550" y2="240" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <text x="395" y="178" fill="#5a5080" font-size="9">raccoglie 0..*</text>
+      </svg>
+    </div>
+
+    <div class="highlight-box">
+      ✅ Il Domain Model non contiene metodi di logica applicativa complessa. I metodi mostrati (move, checkWin…)
+      rappresentano responsabilità concettuali, non firme Java finali.
+    </div>
   </div>
 
-  <div class="highlight-box">
-    ✅ Il Domain Model non contiene metodi di logica applicativa complessa. I metodi mostrati (move, checkWin…) rappresentano responsabilità concettuali, non firme Java finali.
-  </div>
-</div>
+  <!-- ===== SSD ===== -->
+  <div class="content-section" id="ssd">
+    <div class="section-eyebrow">Interazione sistema</div>
+    <h2 class="section-title">System Sequence Diagram</h2>
+    <p class="section-intro">
+      Il System Sequence Diagram (SSD) mostra le interazioni tra attori esterni (Player) e il sistema trattato come una
+      black box. Definisce i messaggi di sistema — i contratti di operazione — senza rivelare l'implementazione interna.
+    </p>
 
-<!-- ===== SSD ===== -->
-<div class="content-section" id="ssd">
-  <div class="section-eyebrow">Interazione sistema</div>
-  <h2 class="section-title">System Sequence Diagram</h2>
-  <p class="section-intro">
-    Il System Sequence Diagram (SSD) mostra le interazioni tra attori esterni (Player) e il sistema trattato come una black box. Definisce i messaggi di sistema — i contratti di operazione — senza rivelare l'implementazione interna.
-  </p>
+    <div class="warn-box">
+      ⚠️ Nell'SSD il sistema è una singola scatola nera chiamata "System". Non si vedono classi interne, oggetti o
+      componenti. L'obiettivo è definire <em>cosa</em> entra nel sistema e <em>cosa</em> esce, non come.
+    </div>
 
-  <div class="warn-box">
-    ⚠️ Nell'SSD il sistema è una singola scatola nera chiamata "System". Non si vedono classi interne, oggetti o componenti. L'obiettivo è definire <em>cosa</em> entra nel sistema e <em>cosa</em> esce, non come.
-  </div>
+    <div class="diagram-wrap">
+      <svg width="560" height="380" viewBox="0 0 560 380" xmlns="http://www.w3.org/2000/svg"
+        font-family="'JetBrains Mono', monospace">
+        <!-- Actors header -->
+        <rect x="60" y="10" width="100" height="30" rx="5" fill="rgba(34,211,238,0.12)" stroke="rgba(34,211,238,0.4)"
+          stroke-width="1.5" />
+        <text x="110" y="30" text-anchor="middle" fill="#22d3ee" font-size="12" font-weight="700">:Player</text>
+        <rect x="360" y="10" width="130" height="30" rx="5" fill="rgba(124,92,252,0.12)" stroke="rgba(124,92,252,0.4)"
+          stroke-width="1.5" />
+        <text x="425" y="30" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">:System</text>
 
-  <div class="diagram-wrap">
-    <svg width="560" height="380" viewBox="0 0 560 380" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', monospace">
-      <!-- Actors header -->
-      <rect x="60" y="10" width="100" height="30" rx="5" fill="rgba(34,211,238,0.12)" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
-      <text x="110" y="30" text-anchor="middle" fill="#22d3ee" font-size="12" font-weight="700">:Player</text>
-      <rect x="360" y="10" width="130" height="30" rx="5" fill="rgba(124,92,252,0.12)" stroke="rgba(124,92,252,0.4)" stroke-width="1.5"/>
-      <text x="425" y="30" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">:System</text>
+        <!-- Lifelines -->
+        <line x1="110" y1="40" x2="110" y2="370" stroke="#22d3ee" stroke-width="1" stroke-dasharray="5,6"
+          opacity="0.3" />
+        <line x1="425" y1="40" x2="425" y2="370" stroke="#a78bfa" stroke-width="1" stroke-dasharray="5,6"
+          opacity="0.3" />
 
-      <!-- Lifelines -->
-      <line x1="110" y1="40" x2="110" y2="370" stroke="#22d3ee" stroke-width="1" stroke-dasharray="5,6" opacity="0.3"/>
-      <line x1="425" y1="40" x2="425" y2="370" stroke="#a78bfa" stroke-width="1" stroke-dasharray="5,6" opacity="0.3"/>
+        <!-- Activation boxes -->
+        <rect x="104" y="40" width="12" height="330" rx="2" fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.3)"
+          stroke-width="1" />
+        <rect x="419" y="80" width="12" height="280" rx="2" fill="rgba(124,92,252,0.15)" stroke="rgba(124,92,252,0.3)"
+          stroke-width="1" />
 
-      <!-- Activation boxes -->
-      <rect x="104" y="40" width="12" height="330" rx="2" fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.3)" stroke-width="1"/>
-      <rect x="419" y="80" width="12" height="280" rx="2" fill="rgba(124,92,252,0.15)" stroke="rgba(124,92,252,0.3)" stroke-width="1"/>
+        <!-- msg 1: startGame() -->
+        <line x1="116" y1="80" x2="419" y2="80" stroke="#a78bfa" stroke-width="1.5" />
+        <polygon points="415,75 425,80 415,85" fill="#a78bfa" />
+        <text x="200" y="72" fill="#a78bfa" font-size="10">startGame(playerID)</text>
 
-      <!-- msg 1: startGame() -->
-      <line x1="116" y1="80" x2="419" y2="80" stroke="#a78bfa" stroke-width="1.5"/>
-      <polygon points="415,75 425,80 415,85" fill="#a78bfa"/>
-      <text x="200" y="72" fill="#a78bfa" font-size="10">startGame(playerID)</text>
+        <!-- return 1 -->
+        <line x1="419" y1="110" x2="116" y2="110" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4" />
+        <polygon points="120,105 110,110 120,115" fill="#5a5080" />
+        <text x="200" y="104" fill="#5a5080" font-size="10">sessionToken, levelData</text>
 
-      <!-- return 1 -->
-      <line x1="419" y1="110" x2="116" y2="110" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4"/>
-      <polygon points="120,105 110,110 120,115" fill="#5a5080"/>
-      <text x="200" y="104" fill="#5a5080" font-size="10">sessionToken, levelData</text>
+        <!-- msg 2: move() -->
+        <line x1="116" y1="150" x2="419" y2="150" stroke="#a78bfa" stroke-width="1.5" />
+        <polygon points="415,145 425,150 415,155" fill="#a78bfa" />
+        <text x="180" y="143" fill="#a78bfa" font-size="10">move(direction: UP)</text>
 
-      <!-- msg 2: move() -->
-      <line x1="116" y1="150" x2="419" y2="150" stroke="#a78bfa" stroke-width="1.5"/>
-      <polygon points="415,145 425,150 415,155" fill="#a78bfa"/>
-      <text x="180" y="143" fill="#a78bfa" font-size="10">move(direction: UP)</text>
+        <!-- return 2 -->
+        <line x1="419" y1="185" x2="116" y2="185" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4" />
+        <polygon points="120,180 110,185 120,190" fill="#5a5080" />
+        <text x="185" y="178" fill="#5a5080" font-size="10">newPosition, score</text>
 
-      <!-- return 2 -->
-      <line x1="419" y1="185" x2="116" y2="185" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4"/>
-      <polygon points="120,180 110,185 120,190" fill="#5a5080"/>
-      <text x="185" y="178" fill="#5a5080" font-size="10">newPosition, score</text>
+        <!-- msg 3: collectItem() -->
+        <line x1="116" y1="225" x2="419" y2="225" stroke="#a78bfa" stroke-width="1.5" />
+        <polygon points="415,220 425,225 415,230" fill="#a78bfa" />
+        <text x="180" y="217" fill="#a78bfa" font-size="10">collectItem(itemID)</text>
 
-      <!-- msg 3: collectItem() -->
-      <line x1="116" y1="225" x2="419" y2="225" stroke="#a78bfa" stroke-width="1.5"/>
-      <polygon points="415,220 425,225 415,230" fill="#a78bfa"/>
-      <text x="180" y="217" fill="#a78bfa" font-size="10">collectItem(itemID)</text>
+        <!-- return 3 -->
+        <l <polygon points="120,255 110,260 120,265" fill="#5a5080" />
+        <text x="195" y="253" fill="#5a5080" font-size="10">updatedInventory</text>
 
-      <!-- return 3 -->
-      <l      <polygon points="120,255 110,260 120,265" fill="#5a5080"/>
-      <text x="195" y="253" fill="#5a5080" font-size="10">updatedInventory</text>
+        <!-- msg 4: endGame() -->
+        <line x1="116" y1="300" x2="419" y2="300" stroke="#a78bfa" stroke-width="1.5" />
+        <polygon points="415,295 425,300 415,305" fill="#a78bfa" />
+        <text x="200" y="292" fill="#a78bfa" font-size="10">endGame()</text>
 
-      <!-- msg 4: endGame() -->
-      <line x1="116" y1="300" x2="419" y2="300" stroke="#a78bfa" stroke-width="1.5"/>
-      <polygon points="415,295 425,300 415,305" fill="#a78bfa"/>
-      <text x="200" y="292" fill="#a78bfa" font-size="10">endGame()</text>
+        <!-- return 4 -->
+        <line x1="419" y1="340" x2="116" y2="340" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4" />
+        <polygon points="120,335 110,340 120,345" fill="#5a5080" />
+        <text x="195" y="333" fill="#5a5080" font-size="10">finalScore, rank</text>
 
-      <!-- return 4 -->
-      <line x1="419" y1="340" x2="116" y2="340" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4"/>
-      <polygon points="120,335 110,340 120,345" fill="#5a5080"/>
-      <text x="195" y="333" fill="#5a5080" font-size="10">finalScore, rank</text>
+        <!-- labels time axis -->
+        <text x="18" y="83" fill="#5a5080" font-size="9">t1</text>
+        <text x="18" y="153" fill="#5a5080" font-size="9">t2</text>
+        <text x="18" y="228" fill="#5a5080" font-size="9">t3</text>
+        <text x="18" y="303" fill="#5a5080" font-size="9">t4</text>
+      </svg>
+    </div>
 
-      <!-- labels time axis -->
-      <text x="18" y="83" fill="#5a5080" font-size="9">t1</text>
-      <text x="18" y="153" fill="#5a5080" font-size="9">t2</text>
-      <text x="18" y="228" fill="#5a5080" font-size="9">t3</text>
-      <text x="18" y="303" fill="#5a5080" font-size="9">t4</text>
-    </svg>
-  </div>
-
-  <div class="highlight-box">
-    ✅ Ogni freccia solida è un'operazione di sistema. Ogni freccia tratteggiata è un valore di ritorno. Le operazioni di sistema diventano poi i metodi pubblici del Controller (pattern GRASP).
-  </div>
-</div>
-
-<!-- ===== DCM ===== -->
-<div class="content-section" id="dcm">
-  <div class="section-eyebrow">Design</div>
-  <h2 class="section-title">Design Class Model</h2>
-  <p class="section-intro">
-    Il Design Class Model (DCM) è il diagramma delle classi che evolve dal Domain Model per riflettere le decisioni implementative: aggiunge pattern, relazioni di dipendenza, interfacce e visibilità degli attributi.
-  </p>
-
-  <div class="diagram-wrap">
-    <svg width="820" height="440" viewBox="0 0 820 440" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', monospace">
-      <!-- GameController -->
-      <g>
-        <rect x="10" y="10" width="185" height="155" rx="6" fill="#0f0f1a" stroke="rgba(251,191,36,0.5)" stroke-width="1.5"/>
-        <rect x="10" y="10" width="185" height="28" rx="6" fill="rgba(251,191,36,0.1)"/>
-        <rect x="10" y="30" width="185" height="8" fill="rgba(251,191,36,0.1)"/>
-        <text x="102" y="28" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">GameController</text>
-        <text x="102" y="20" text-anchor="middle" fill="#fbbf24" font-size="9">«Controller»</text>
-        <line x1="10" y1="38" x2="195" y2="38" stroke="rgba(251,191,36,0.25)" stroke-width="1"/>
-        <text x="20" y="53" fill="#9488c2" font-size="9">− session: GameSession</text>
-        <text x="20" y="66" fill="#9488c2" font-size="9">− players: List&lt;Player&gt;</text>
-        <line x1="10" y1="74" x2="195" y2="74" stroke="rgba(251,191,36,0.15)" stroke-width="1"/>
-        <text x="20" y="88" fill="#22d3ee" font-size="9">+ startGame(id): Token</text>
-        <text x="20" y="101" fill="#22d3ee" font-size="9">+ move(dir): Position</text>
-        <text x="20" y="114" fill="#22d3ee" font-size="9">+ collectItem(id): Inv</text>
-        <text x="20" y="127" fill="#22d3ee" font-size="9">+ endGame(): Result</text>
-        <text x="20" y="140" fill="#22d3ee" font-size="9">− validateMove(dir): bool</text>
-        <text x="20" y="153" fill="#22d3ee" font-size="9">− notifyObservers()</text>
-      </g>
-
-      <!-- IGameObserver interface -->
-      <g>
-        <rect x="10" y="220" width="185" height="80" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <rect x="10" y="220" width="185" height="28" rx="6" fill="rgba(124,92,252,0.08)"/>
-        <text x="102" y="230" text-anchor="middle" fill="#a78bfa" font-size="9">«interface»</text>
-        <text x="102" y="242" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">IGameObserver</text>
-        <line x1="10" y1="248" x2="195" y2="248" stroke="rgba(124,92,252,0.2)" stroke-width="1"/>
-        <text x="20" y="262" fill="#22d3ee" font-size="9">+ onScoreChange(s: int)</text>
-        <text x="20" y="276" fill="#22d3ee" font-size="9">+ onLevelUp(l: int)</text>
-        <text x="20" y="290" fill="#22d3ee" font-size="9">+ onGameOver()</text>
-      </g>
-
-      <!-- Player DCM -->
-      <g>
-        <rect x="255" y="10" width="175" height="155" rx="6" fill="#0f0f1a" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
-        <rect x="255" y="10" width="175" height="28" rx="6" fill="rgba(34,211,238,0.1)"/>
-        <rect x="255" y="30" width="175" height="8" fill="rgba(34,211,238,0.1)"/>
-        <text x="342" y="28" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="700">Player</text>
-        <line x1="255" y1="38" x2="430" y2="38" stroke="rgba(34,211,238,0.25)" stroke-width="1"/>
-        <text x="265" y="53" fill="#9488c2" font-size="9">− playerID: String</text>
-        <text x="265" y="66" fill="#9488c2" font-size="9">− score: int</text>
-        <text x="265" y="79" fill="#9488c2" font-size="9">− lives: int</text>
-        <text x="265" y="92" fill="#9488c2" font-size="9">− inventory: List&lt;Item&gt;</text>
-        <line x1="255" y1="100" x2="430" y2="100" stroke="rgba(34,211,238,0.2)" stroke-width="1"/>
-        <text x="265" y="114" fill="#22d3ee" font-size="9">+ move(dir): Position</text>
-        <text x="265" y="127" fill="#22d3ee" font-size="9">+ addItem(item: Item)</text>
-        <text x="265" y="140" fill="#22d3ee" font-size="9">+ getScore(): int</text>
-        <text x="265" y="153" fill="#22d3ee" font-size="9">− updateLives(delta)</text>
-      </g>
-
-      <!-- GameSystem DCM -->
-      <g>
-        <rect x="490" y="10" width="185" height="155" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.5)" stroke-width="1.5"/>
-        <rect x="490" y="10" width="185" height="28" rx="6" fill="rgba(124,92,252,0.15)"/>
-        <rect x="490" y="30" width="185" height="8" fill="rgba(124,92,252,0.15)"/>
-        <text x="582" y="20" text-anchor="middle" fill="#a78bfa" font-size="9">«Singleton»</text>
-        <text x="582" y="28" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">GameSystem</text>
-        <line x1="490" y1="38" x2="675" y2="38" stroke="rgba(124,92,252,0.3)" stroke-width="1"/>
-        <text x="500" y="53" fill="#9488c2" font-size="9">− instance: GameSystem</text>
-        <text x="500" y="66" fill="#9488c2" font-size="9">− currentLevel: int</text>
-        <text x="500" y="79" fill="#9488c2" font-size="9">− observers: List</text>
-        <line x1="490" y1="87" x2="675" y2="87" stroke="rgba(124,92,252,0.2)" stroke-width="1"/>
-        <text x="500" y="101" fill="#22d3ee" font-size="9">+ getInstance(): GameSystem</text>
-        <text x="500" y="114" fill="#22d3ee" font-size="9">+ checkWin(): bool</text>
-        <text x="500" y="127" fill="#22d3ee" font-size="9">+ addObserver(o)</text>
-        <text x="500" y="140" fill="#22d3ee" font-size="9">+ notifyAll(event)</text>
-        <text x="500" y="153" fill="#22d3ee" font-size="9">− nextLevel()</text>
-      </g>
-
-      <!-- ScoreUI (Observer impl) -->
-      <g>
-        <rect x="255" y="220" width="175" height="105" rx="6" fill="#0f0f1a" stroke="rgba(52,211,153,0.4)" stroke-width="1.5"/>
-        <rect x="255" y="220" width="175" height="28" rx="6" fill="rgba(52,211,153,0.08)"/>
-        <text x="342" y="230" text-anchor="middle" fill="#34d399" font-size="9">«implements IGameObserver»</text>
-        <text x="342" y="242" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">ScoreUI</text>
-        <line x1="255" y1="248" x2="430" y2="248" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
-        <text x="265" y="263" fill="#22d3ee" font-size="9">+ onScoreChange(s)</text>
-        <text x="265" y="276" fill="#22d3ee" font-size="9">+ onLevelUp(l)</text>
-        <text x="265" y="289" fill="#22d3ee" font-size="9">+ onGameOver()</text>
-        <text x="265" y="310" fill="#9488c2" font-size="8">Aggiorna la UI al cambio di stato</text>
-      </g>
-
-      <!-- Item DCM -->
-      <g>
-        <rect x="490" y="220" width="175" height="100" rx="6" fill="#0f0f1a" stroke="rgba(248,113,113,0.35)" stroke-width="1.5"/>
-        <rect x="490" y="220" width="175" height="28" rx="6" fill="rgba(248,113,113,0.08)"/>
-        <text x="577" y="238" text-anchor="middle" fill="#f87171" font-size="11" font-weight="700">Item</text>
-        <line x1="490" y1="248" x2="665" y2="248" stroke="rgba(248,113,113,0.2)" stroke-width="1"/>
-        <text x="500" y="263" fill="#9488c2" font-size="9">− itemID: String</text>
-        <text x="500" y="276" fill="#9488c2" font-size="9">− type: ItemType</text>
-        <text x="500" y="289" fill="#9488c2" font-size="9">− effect: int</text>
-        <line x1="490" y1="297" x2="665" y2="297" stroke="rgba(248,113,113,0.15)" stroke-width="1"/>
-        <text x="500" y="311" fill="#22d3ee" font-size="9">+ apply(p: Player)</text>
-      </g>
-
-      <!-- Relations -->
-      <!-- Controller -> Player : uses -->
-      <line x1="195" y1="60" x2="255" y2="60" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <polygon points="249,55 259,60 249,65" fill="rgba(160,140,255,0.5)"/>
-      <text x="205" y="53" fill="#5a5080" font-size="8">uses</text>
-
-      <!-- Controller -> GameSystem : uses -->
-      <line x1="195" y1="100" x2="490" y2="100" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <polygon points="484,95 494,100 484,105" fill="rgba(160,140,255,0.5)"/>
-      <text x="300" y="93" fill="#5a5080" font-size="8">delegates to</text>
-
-      <!-- Controller -> IGameObserver (notify) -->
-      <line x1="102" y1="165" x2="102" y2="220" stroke="rgba(160,140,255,0.5)" stroke-width="1.2"/>
-      <polygon points="97,214 102,224 107,214" fill="rgba(160,140,255,0.5)"/>
-      <text x="108" y="198" fill="#5a5080" font-size="8">notifies</text>
-
-      <!-- ScoreUI implements IGameObserver -->
-      <line x1="255" y1="265" x2="195" y2="265" stroke="rgba(52,211,153,0.4)" stroke-width="1.2" stroke-dasharray="4,3"/>
-      <polygon points="200,260 190,265 200,270" fill="none" stroke="rgba(52,211,153,0.4)" stroke-width="1.2"/>
-      <text x="200" y="257" fill="#5a5080" font-size="8">implements</text>
-
-      <!-- GameSystem -> observer list -->
-      <line x1="582" y1="165" x2="582" y2="200" stroke="rgba(160,140,255,0.4)" stroke-width="1.2"/>
-      <line x1="582" y1="200" x2="342" y2="200" stroke="rgba(160,140,255,0.4)" stroke-width="1.2"/>
-      <line x1="342" y1="200" x2="342" y2="220" stroke="rgba(160,140,255,0.4)" stroke-width="1.2"/>
-      <text x="420" y="195" fill="#5a5080" font-size="8">observes *</text>
-
-      <!-- Player -> Item -->
-      <line x1="430" y1="100" x2="490" y2="270" stroke="rgba(160,140,255,0.3)" stroke-width="1"/>
-      <text x="445" y="200" fill="#5a5080" font-size="8">inventory 0..*</text>
-    </svg>
-  </div>
-</div>
-
-<!-- ===== ISD ===== -->
-<div class="content-section" id="isd">
-  <div class="section-eyebrow">Design interno</div>
-  <h2 class="section-title">Internal Sequence Diagram</h2>
-  <p class="section-intro">
-    L'Internal Sequence Diagram (ISD) apre la scatola nera del sistema e mostra come le classi interne collaborano per realizzare un'operazione di sistema. È la traduzione delle decisioni di design in collaborazioni concrete tra oggetti.
-  </p>
-
-  <div class="info-box">
-    📐 Mentre l'SSD mostra "cosa fa il sistema", l'ISD mostra "come lo fa internamente". Ogni oggetto nel diagramma corrisponde a una classe del Design Class Model.
+    <div class="highlight-box">
+      ✅ Ogni freccia solida è un'operazione di sistema. Ogni freccia tratteggiata è un valore di ritorno. Le operazioni
+      di sistema diventano poi i metodi pubblici del Controller (pattern GRASP).
+    </div>
   </div>
 
-  <div class="diagram-wrap">
-    <svg width="780" height="420" viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', monospace">
-      <!-- Headers -->
-      <rect x="10" y="10" width="100" height="28" rx="5" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.4)" stroke-width="1.5"/>
-      <text x="60" y="28" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="700">:Player</text>
-      <text x="60" y="18" text-anchor="middle" fill="#22d3ee" font-size="8">(actor)</text>
+  <!-- ===== DCM ===== -->
+  <div class="content-section" id="dcm">
+    <div class="section-eyebrow">Design</div>
+    <h2 class="section-title">Design Class Model</h2>
+    <p class="section-intro">
+      Il Design Class Model (DCM) è il diagramma delle classi che evolve dal Domain Model per riflettere le decisioni
+      implementative: aggiunge pattern, relazioni di dipendenza, interfacce e visibilità degli attributi.
+    </p>
 
-      <rect x="155" y="10" width="130" height="28" rx="5" fill="rgba(251,191,36,0.1)" stroke="rgba(251,191,36,0.4)" stroke-width="1.5"/>
-      <text x=
-      <rect x="335" y="10" width="130" height="28" rx="5" fill="rgba(124,92,252,0.12)" stroke="rgba(124,92,252,0.4)" stroke-width="1.5"/>
-      <text x="400" y="28" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">:GameSystem</text>
+    <div class="diagram-wrap">
+      <svg width="820" height="440" viewBox="0 0 820 440" xmlns="http://www.w3.org/2000/svg"
+        font-family="'JetBrains Mono', monospace">
+        <!-- GameController -->
+        <g>
+          <rect x="10" y="10" width="185" height="155" rx="6" fill="#0f0f1a" stroke="rgba(251,191,36,0.5)"
+            stroke-width="1.5" />
+          <rect x="10" y="10" width="185" height="28" rx="6" fill="rgba(251,191,36,0.1)" />
+          <rect x="10" y="30" width="185" height="8" fill="rgba(251,191,36,0.1)" />
+          <text x="102" y="28" text-anchor="middle" fill="#fbbf24" font-size="11"
+            font-weight="700">GameController</text>
+          <text x="102" y="20" text-anchor="middle" fill="#fbbf24" font-size="9">«Controller»</text>
+          <line x1="10" y1="38" x2="195" y2="38" stroke="rgba(251,191,36,0.25)" stroke-width="1" />
+          <text x="20" y="53" fill="#9488c2" font-size="9">− session: GameSession</text>
+          <text x="20" y="66" fill="#9488c2" font-size="9">− players: List&lt;Player&gt;</text>
+          <line x1="10" y1="74" x2="195" y2="74" stroke="rgba(251,191,36,0.15)" stroke-width="1" />
+          <text x="20" y="88" fill="#22d3ee" font-size="9">+ startGame(id): Token</text>
+          <text x="20" y="101" fill="#22d3ee" font-size="9">+ move(dir): Position</text>
+          <text x="20" y="114" fill="#22d3ee" font-size="9">+ collectItem(id): Inv</text>
+          <text x="20" y="127" fill="#22d3ee" font-size="9">+ endGame(): Result</text>
+          <text x="20" y="140" fill="#22d3ee" font-size="9">− validateMove(dir): bool</text>
+          <text x="20" y="153" fill="#22d3ee" font-size="9">− notifyObservers()</text>
+        </g>
 
-      <rect x="515" y="10" width="115" height="28" rx="5" fill="rgba(52,211,153,0.08)" stroke="rgba(52,211,153,0.4)" stroke-width="1.5"/>
-      <text x="572" y="28" text-anchor="middle" fill="#34d399" font-size="10" font-weight="700">:ScoreUI</text>
+        <!-- IGameObserver interface -->
+        <g>
+          <rect x="10" y="220" width="185" height="80" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.4)"
+            stroke-width="1.5" stroke-dasharray="5,3" />
+          <rect x="10" y="220" width="185" height="28" rx="6" fill="rgba(124,92,252,0.08)" />
+          <text x="102" y="230" text-anchor="middle" fill="#a78bfa" font-size="9">«interface»</text>
+          <text x="102" y="242" text-anchor="middle" fill="#a78bfa" font-size="11"
+            font-weight="700">IGameObserver</text>
+          <line x1="10" y1="248" x2="195" y2="248" stroke="rgba(124,92,252,0.2)" stroke-width="1" />
+          <text x="20" y="262" fill="#22d3ee" font-size="9">+ onScoreChange(s: int)</text>
+          <text x="20" y="276" fill="#22d3ee" font-size="9">+ onLevelUp(l: int)</text>
+          <text x="20" y="290" fill="#22d3ee" font-size="9">+ onGameOver()</text>
+        </g>
 
-      <rect x="665" y="10" width="100" height="28" rx="5" fill="rgba(248,113,113,0.08)" stroke="rgba(248,113,113,0.35)" stroke-width="1.5"/>
-      <text x="715" y="28" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">:Item</text>
+        <!-- Player DCM -->
+        <g>
+          <rect x="255" y="10" width="175" height="155" rx="6" fill="#0f0f1a" stroke="rgba(34,211,238,0.4)"
+            stroke-width="1.5" />
+          <rect x="255" y="10" width="175" height="28" rx="6" fill="rgba(34,211,238,0.1)" />
+          <rect x="255" y="30" width="175" height="8" fill="rgba(34,211,238,0.1)" />
+          <text x="342" y="28" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="700">Player</text>
+          <line x1="255" y1="38" x2="430" y2="38" stroke="rgba(34,211,238,0.25)" stroke-width="1" />
+          <text x="265" y="53" fill="#9488c2" font-size="9">− playerID: String</text>
+          <text x="265" y="66" fill="#9488c2" font-size="9">− score: int</text>
+          <text x="265" y="79" fill="#9488c2" font-size="9">− lives: int</text>
+          <text x="265" y="92" fill="#9488c2" font-size="9">− inventory: List&lt;Item&gt;</text>
+          <line x1="255" y1="100" x2="430" y2="100" stroke="rgba(34,211,238,0.2)" stroke-width="1" />
+          <text x="265" y="114" fill="#22d3ee" font-size="9">+ move(dir): Position</text>
+          <text x="265" y="127" fill="#22d3ee" font-size="9">+ addItem(item: Item)</text>
+          <text x="265" y="140" fill="#22d3ee" font-size="9">+ getScore(): int</text>
+          <text x="265" y="153" fill="#22d3ee" font-size="9">− updateLives(delta)</text>
+        </g>
 
-      <!-- Lifelines -->
-      <line x1="60"  y1="38" x2="60"  y2="410" stroke="#22d3ee" stroke-width="1" stroke-dasharray="5,6" opacity="0.25"/>
-      <line x1="220" y1="38" x2="220" y2="410" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5,6" opacity="0.25"/>
-      <line x1="400" y1="38" x2="400" y2="410" stroke="#a78bfa" stroke-width="1" stroke-dasharray="5,6" opacity="0.25"/>
-      <line x1="572" y1="38" x2="572" y2="410" stroke="#34d399" stroke-width="1" stroke-dasharray="5,6" opacity="0.25"/>
-      <line x1="715" y1="38" x2="715" y2="410" stroke="#f87171" stroke-width="1" stroke-dasharray="5,6" opacity="0.25"/>
+        <!-- GameSystem DCM -->
+        <g>
+          <rect x="490" y="10" width="185" height="155" rx="6" fill="#0f0f1a" stroke="rgba(124,92,252,0.5)"
+            stroke-width="1.5" />
+          <rect x="490" y="10" width="185" height="28" rx="6" fill="rgba(124,92,252,0.15)" />
+          <rect x="490" y="30" width="185" height="8" fill="rgba(124,92,252,0.15)" />
+          <text x="582" y="20" text-anchor="middle" fill="#a78bfa" font-size="9">«Singleton»</text>
+          <text x="582" y="28" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">GameSystem</text>
+          <line x1="490" y1="38" x2="675" y2="38" stroke="rgba(124,92,252,0.3)" stroke-width="1" />
+          <text x="500" y="53" fill="#9488c2" font-size="9">− instance: GameSystem</text>
+          <text x="500" y="66" fill="#9488c2" font-size="9">− currentLevel: int</text>
+          <text x="500" y="79" fill="#9488c2" font-size="9">− observers: List</text>
+          <line x1="490" y1="87" x2="675" y2="87" stroke="rgba(124,92,252,0.2)" stroke-width="1" />
+          <text x="500" y="101" fill="#22d3ee" font-size="9">+ getInstance(): GameSystem</text>
+          <text x="500" y="114" fill="#22d3ee" font-size="9">+ checkWin(): bool</text>
+          <text x="500" y="127" fill="#22d3ee" font-size="9">+ addObserver(o)</text>
+          <text x="500" y="140" fill="#22d3ee" font-size="9">+ notifyAll(event)</text>
+          <text x="500" y="153" fill="#22d3ee" font-size="9">− nextLevel()</text>
+        </g>
 
-      <!-- Activation boxes -->
-      <rect x="54"  y="38" width="12" height="372" rx="2" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.2)" stroke-width="1"/>
-      <rect x="214" y="75" width="12" height="300" rx="2" fill="rgba(251,191,36,0.12)" stroke="rgba(251,191,36,0.25)" stroke-width="1"/>
-      <rect x="394" y="120" width="12" height="180" rx="2" fill="rgba(124,92,252,0.12)" stroke="rgba(124,92,252,0.25)" stroke-width="1"/>
-      <rect x="566" y="275" width="12" height="60" rx="2" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
-      <rect x="709" y="200" width="12" height="60" rx="2" fill="rgba(248,113,113,0.1)" stroke="rgba(248,113,113,0.2)" stroke-width="1"/>
+        <!-- ScoreUI (Observer impl) -->
+        <g>
+          <rect x="255" y="220" width="175" height="105" rx="6" fill="#0f0f1a" stroke="rgba(52,211,153,0.4)"
+            stroke-width="1.5" />
+          <rect x="255" y="220" width="175" height="28" rx="6" fill="rgba(52,211,153,0.08)" />
+          <text x="342" y="230" text-anchor="middle" fill="#34d399" font-size="9">«implements IGameObserver»</text>
+          <text x="342" y="242" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">ScoreUI</text>
+          <line x1="255" y1="248" x2="430" y2="248" stroke="rgba(52,211,153,0.2)" stroke-width="1" />
+          <text x="265" y="263" fill="#22d3ee" font-size="9">+ onScoreChange(s)</text>
+          <text x="265" y="276" fill="#22d3ee" font-size="9">+ onLevelUp(l)</text>
+          <text x="265" y="289" fill="#22d3ee" font-size="9">+ onGameOver()</text>
+          <text x="265" y="310" fill="#9488c2" font-size="8">Aggiorna la UI al cambio di stato</text>
+        </g>
 
-      <!-- 1: Player -> Controller: collectItem(itemID) -->
-      <line x1="66" y1="75" x2="214" y2="75" stroke="#fbbf24" stroke-width="1.5"/>
-      <polygon points="210,70 220,75 210,80" fill="#fbbf24"/>
-      <text x="95" y="67" fill="#fbbf24" font-size="9">collectItem(itemID)</text>
+        <!-- Item DCM -->
+        <g>
+          <rect x="490" y="220" width="175" height="100" rx="6" fill="#0f0f1a" stroke="rgba(248,113,113,0.35)"
+            stroke-width="1.5" />
+          <rect x="490" y="220" width="175" height="28" rx="6" fill="rgba(248,113,113,0.08)" />
+          <text x="577" y="238" text-anchor="middle" fill="#f87171" font-size="11" font-weight="700">Item</text>
+          <line x1="490" y1="248" x2="665" y2="248" stroke="rgba(248,113,113,0.2)" stroke-width="1" />
+          <text x="500" y="263" fill="#9488c2" font-size="9">− itemID: String</text>
+          <text x="500" y="276" fill="#9488c2" font-size="9">− type: ItemType</text>
+          <text x="500" y="289" fill="#9488c2" font-size="9">− effect: int</text>
+          <line x1="490" y1="297" x2="665" y2="297" stroke="rgba(248,113,113,0.15)" stroke-width="1" />
+          <text x="500" y="311" fill="#22d3ee" font-size="9">+ apply(p: Player)</text>
+        </g>
 
-      <!-- 2: Controller -> GameSystem: validateItem(id) -->
-      <line x1="226" y1="120" x2="394" y2="120" stroke="#a78bfa" stroke-width="1.5"/>
-      <polygon points="390,115 400,120 390,125" fill="#a78bfa"/>
-      <text x="255" y="112" fill="#a78bfa" font-size="9">validateItem(itemID)</text>
+        <!-- Relations -->
+        <!-- Controller -> Player : uses -->
+        <line x1="195" y1="60" x2="255" y2="60" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <polygon points="249,55 259,60 249,65" fill="rgba(160,140,255,0.5)" />
+        <text x="205" y="53" fill="#5a5080" font-size="8">uses</text>
 
-      <!-- return: valid: true -->
-      <line x1="394" y1="150" x2="226" y2="150" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4"/>
-      <polygon points="230,145 220,150 230,155" fill="#5a5080"/>
-      <text x="265" y="143" fill="#5a5080" font-size="9">valid: true</text>
+        <!-- Controller -> GameSystem : uses -->
+        <line x1="195" y1="100" x2="490" y2="100" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <polygon points="484,95 494,100 484,105" fill="rgba(160,140,255,0.5)" />
+        <text x="300" y="93" fill="#5a5080" font-size="8">delegates to</text>
 
-      <!-- 3: Controller -> Item: apply(player) -->
-      <line x1="226" y1="200" x2="709" y2="200" stroke="#f87171" stroke-width="1.5"/>
-      <polygon points="705,195 715,200 705,205" fill="#f87171"/>
-      <text x="380" y="192" fill="#f87171" font-size="9">apply(player)</text>
+        <!-- Controller -> IGameObserver (notify) -->
+        <line x1="102" y1="165" x2="102" y2="220" stroke="rgba(160,140,255,0.5)" stroke-width="1.2" />
+        <polygon points="97,214 102,224 107,214" fill="rgba(160,140,255,0.5)" />
+        <text x="108" y="198" fill="#5a5080" font-size="8">notifies</text>
 
-      <!-- return from Item -->
-      <line x1="709" y1="260" x2="226" y2="260" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4"/>
-      <polygon points="230,255 220,260 230,265" fill="#5a5080"/>
-      <text x="370" y="253" fill="#5a5080" font-size="9">playerUpdated</text>
+        <!-- ScoreUI implements IGameObserver -->
+        <line x1="255" y1="265" x2="195" y2="265" stroke="rgba(52,211,153,0.4)" stroke-width="1.2"
+          stroke-dasharray="4,3" />
+        <polygon points="200,260 190,265 200,270" fill="none" stroke="rgba(52,211,153,0.4)" stroke-width="1.2" />
+        <text x="200" y="257" fill="#5a5080" font-size="8">implements</text>
 
-      <!-- 4: Controller -> GameSystem: notifyAll(SCORE_CHANGED) -->
-      <line x1="226" y1="275" x2="394" y2="275" stroke="#a78bfa" stroke-width="1.5"/>
-      <polygon points="390,270 400,275 390,280" fill="#a78bfa"/>
-      <text x="230" y="267" fill="#a78bfa" font-size="9">notifyAll(SCORE_CHANGED)</text>
+        <!-- GameSystem -> observer list -->
+        <line x1="582" y1="165" x2="582" y2="200" stroke="rgba(160,140,255,0.4)" stroke-width="1.2" />
+        <line x1="582" y1="200" x2="342" y2="200" stroke="rgba(160,140,255,0.4)" stroke-width="1.2" />
+        <line x1="342" y1="200" x2="342" y2="220" stroke="rgba(160,140,255,0.4)" stroke-width="1.2" />
+        <text x="420" y="195" fill="#5a5080" font-size="8">observes *</text>
 
-      <!-- 5: GameSystem -> ScoreUI: onScoreChange(newScore) -->
-      <line x1="406" y1="290" x2="566" y2="290" stroke="#34d399" stroke-width="1.5"/>
-      <polygon points="562,285 572,290 56      <text x="5" y="278" fill="#5a5080" font-size="8">4</text>
-      <text x="5" y="293" fill="#5a5080" font-size="8">5</text>
-    </svg>
+        <!-- Player -> Item -->
+        <line x1="430" y1="100" x2="490" y2="270" stroke="rgba(160,140,255,0.3)" stroke-width="1" />
+        <text x="445" y="200" fill="#5a5080" font-size="8">inventory 0..*</text>
+      </svg>
+    </div>
   </div>
 
-  <div class="highlight-box">
-    ✅ L'ISD mostra chiaramente il pattern Observer in azione: GameSystem notifica ScoreUI tramite l'interfaccia IGameObserver, senza dipendenza diretta. Il Controller applica GRASP Controller e Low Coupling.
+  <!-- ===== ISD ===== -->
+  <div class="content-section" id="isd">
+    <div class="section-eyebrow">Design interno</div>
+    <h2 class="section-title">Internal Sequence Diagram</h2>
+    <p class="section-intro">
+      L'Internal Sequence Diagram (ISD) apre la scatola nera del sistema e mostra come le classi interne collaborano per
+      realizzare un'operazione di sistema. È la traduzione delle decisioni di design in collaborazioni concrete tra
+      oggetti.
+    </p>
+
+    <div class="info-box">
+      📐 Mentre l'SSD mostra "cosa fa il sistema", l'ISD mostra "come lo fa internamente". Ogni oggetto nel diagramma
+      corrisponde a una classe del Design Class Model.
+    </div>
+
+    <div class="diagram-wrap">
+      <svg width="780" height="420" viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg"
+        font-family="'JetBrains Mono', monospace">
+        <!-- Headers -->
+        <rect x="10" y="10" width="100" height="28" rx="5" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.4)"
+          stroke-width="1.5" />
+        <text x="60" y="28" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="700">:Player</text>
+        <text x="60" y="18" text-anchor="middle" fill="#22d3ee" font-size="8">(actor)</text>
+
+        <rect x="155" y="10" width="130" height="28" rx="5" fill="rgba(251,191,36,0.1)" stroke="rgba(251,191,36,0.4)"
+          stroke-width="1.5" />
+        <text x=<rect x="335" y="10" width="130" height="28" rx="5" fill="rgba(124,92,252,0.12)"
+          stroke="rgba(124,92,252,0.4)" stroke-width="1.5" />
+        <text x="400" y="28" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">:GameSystem</text>
+
+        <rect x="515" y="10" width="115" height="28" rx="5" fill="rgba(52,211,153,0.08)" stroke="rgba(52,211,153,0.4)"
+          stroke-width="1.5" />
+        <text x="572" y="28" text-anchor="middle" fill="#34d399" font-size="10" font-weight="700">:ScoreUI</text>
+
+        <rect x="665" y="10" width="100" height="28" rx="5" fill="rgba(248,113,113,0.08)"
+          stroke="rgba(248,113,113,0.35)" stroke-width="1.5" />
+        <text x="715" y="28" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">:Item</text>
+
+        <!-- Lifelines -->
+        <line x1="60" y1="38" x2="60" y2="410" stroke="#22d3ee" stroke-width="1" stroke-dasharray="5,6"
+          opacity="0.25" />
+        <line x1="220" y1="38" x2="220" y2="410" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5,6"
+          opacity="0.25" />
+        <line x1="400" y1="38" x2="400" y2="410" stroke="#a78bfa" stroke-width="1" stroke-dasharray="5,6"
+          opacity="0.25" />
+        <line x1="572" y1="38" x2="572" y2="410" stroke="#34d399" stroke-width="1" stroke-dasharray="5,6"
+          opacity="0.25" />
+        <line x1="715" y1="38" x2="715" y2="410" stroke="#f87171" stroke-width="1" stroke-dasharray="5,6"
+          opacity="0.25" />
+
+        <!-- Activation boxes -->
+        <rect x="54" y="38" width="12" height="372" rx="2" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.2)"
+          stroke-width="1" />
+        <rect x="214" y="75" width="12" height="300" rx="2" fill="rgba(251,191,36,0.12)" stroke="rgba(251,191,36,0.25)"
+          stroke-width="1" />
+        <rect x="394" y="120" width="12" height="180" rx="2" fill="rgba(124,92,252,0.12)" stroke="rgba(124,92,252,0.25)"
+          stroke-width="1" />
+        <rect x="566" y="275" width="12" height="60" rx="2" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.2)"
+          stroke-width="1" />
+        <rect x="709" y="200" width="12" height="60" rx="2" fill="rgba(248,113,113,0.1)" stroke="rgba(248,113,113,0.2)"
+          stroke-width="1" />
+
+        <!-- 1: Player -> Controller: collectItem(itemID) -->
+        <line x1="66" y1="75" x2="214" y2="75" stroke="#fbbf24" stroke-width="1.5" />
+        <polygon points="210,70 220,75 210,80" fill="#fbbf24" />
+        <text x="95" y="67" fill="#fbbf24" font-size="9">collectItem(itemID)</text>
+
+        <!-- 2: Controller -> GameSystem: validateItem(id) -->
+        <line x1="226" y1="120" x2="394" y2="120" stroke="#a78bfa" stroke-width="1.5" />
+        <polygon points="390,115 400,120 390,125" fill="#a78bfa" />
+        <text x="255" y="112" fill="#a78bfa" font-size="9">validateItem(itemID)</text>
+
+        <!-- return: valid: true -->
+        <line x1="394" y1="150" x2="226" y2="150" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4" />
+        <polygon points="230,145 220,150 230,155" fill="#5a5080" />
+        <text x="265" y="143" fill="#5a5080" font-size="9">valid: true</text>
+
+        <!-- 3: Controller -> Item: apply(player) -->
+        <line x1="226" y1="200" x2="709" y2="200" stroke="#f87171" stroke-width="1.5" />
+        <polygon points="705,195 715,200 705,205" fill="#f87171" />
+        <text x="380" y="192" fill="#f87171" font-size="9">apply(player)</text>
+
+        <!-- return from Item -->
+        <line x1="709" y1="260" x2="226" y2="260" stroke="#5a5080" stroke-width="1" stroke-dasharray="4,4" />
+        <polygon points="230,255 220,260 230,265" fill="#5a5080" />
+        <text x="370" y="253" fill="#5a5080" font-size="9">playerUpdated</text>
+
+        <!-- 4: Controller -> GameSystem: notifyAll(SCORE_CHANGED) -->
+        <line x1="226" y1="275" x2="394" y2="275" stroke="#a78bfa" stroke-width="1.5" />
+        <polygon points="390,270 400,275 390,280" fill="#a78bfa" />
+        <text x="230" y="267" fill="#a78bfa" font-size="9">notifyAll(SCORE_CHANGED)</text>
+
+        <!-- 5: GameSystem -> ScoreUI: onScoreChange(newScore) -->
+        <line x1="406" y1="290" x2="566" y2="290" stroke="#34d399" stroke-width="1.5" />
+        <polygon points="562,285 572,290 56      <text x=" 5" y="278" fill="#5a5080" font-size="8">4</text>
+          <text x="5" y="293" fill="#5a5080" font-size="8">5</text>
+      </svg>
+    </div>
+
+    <div class="highlight-box">
+      ✅ L'ISD mostra chiaramente il pattern Observer in azione: GameSystem notifica ScoreUI tramite l'interfaccia
+      IGameObserver, senza dipendenza diretta. Il Controller applica GRASP Controller e Low Coupling.
+    </div>
   </div>
-</div>
 
-<!-- BACK BUTTONS -->
-<div class="back-btn-wrap">
-  <a href="index.html" class="back-btn btn-accent"><i class="bi bi-arrow-left"></i> Torna a EDIDS</a>
-  <a href="https://7Katch.github.io" class="back-btn btn-ghost"><i class="bi bi-house"></i> Home</a>
-</div>
+  <!-- BACK BUTTONS -->
+  <div class="back-btn-wrap">
+    <a href="index.html" class="back-btn btn-accent"><i class="bi bi-arrow-left"></i> Torna a EDIDS</a>
+    <a href="https://7Katch.github.io" class="back-btn btn-ghost"><i class="bi bi-house"></i> Home</a>
+  </div>
 
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · EDIDS · Il Progetto</p>
-</footer>
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · EDIDS · Il Progetto</p>
+  </footer>
 
-<script src="../shared/katchkit.js"></script>
+  <script src="../shared/katchkit.js"></script>
 </body>
+
 </html>
