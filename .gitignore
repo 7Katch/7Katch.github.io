@@ -1,5 +1,5 @@
 .venv/
-
+.Lezioni.pdf
 # --- Manim ---
 # Ignora tutto il contenuto della cartella media (i vari file temporanei, LaTeX, ecc)
 media/**/*
