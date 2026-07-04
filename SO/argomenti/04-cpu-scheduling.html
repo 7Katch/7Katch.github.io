@@ -172,6 +172,14 @@
         ricevere mai la CPU se ci sono continuamente processi ad alta priorità. La soluzione è l'<span
           class="keyword">aging</span>: la priorità di un processo aumenta proporzionalmente al tempo che trascorre in
         attesa, garantendo che prima o poi riceva la CPU.</p>
+
+      <!-- PRIORITY SIMULATION -->
+      <div id="PRIORITY-example-animation"></div>
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartPriority()"><i class="bi bi-play-fill"></i> Inizia Simulazione Priority</button>
+        <button class="btn btn-ghost" onclick="animResetPriority()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+      </div>
+
     </div>
 
     <div class="section-block" id="section-6">
@@ -189,6 +197,14 @@
           <img src="../risorse/img10.png" alt="" srcset="">
         </div>
       </div>
+
+      <!-- MLQ SIMULATION -->
+      <div id="MLQ-example-animation" style="margin-top: 30px;"></div>
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartMLQ()"><i class="bi bi-play-fill"></i> Inizia Simulazione MLQ</button>
+        <button class="btn btn-ghost" onclick="animResetMLQ()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+      </div>
+
     </div>
 
     <div class="section-block" id="section-7">
@@ -234,6 +250,7 @@
     const cSlate = [148, 163, 184];
     const cTeal = [34, 211, 238];
     const cAmber = [251, 191, 36];
+    const cPink = [236, 72, 153];
 
     // =========================================================================
     // 1. FCFS - FIRST COME FIRST SERVED (INSTANCE MODE)
@@ -590,6 +607,333 @@
     let instRR = new p5(sketchRR);
     function animStartRR() { instRR.animStart(); }
     function animResetRR() { instRR.animReset(); }
+
+    // =========================================================================
+    // 4. PRIORITY - PRIORITY SCHEDULING (INSTANCE MODE)
+    // =========================================================================
+    let sketchPriority = function(p) {
+      let cpu = { x: 650, y: 150, label: "CPU" };
+      let readyQueue = { x: 200, y: 150, label: "READY QUEUE" };
+      let p1, p2, p3;
+      let scanner = { x: 0, y: 0, w: 0, h: 0, alpha: 0 };
+
+      p.resetProcesses = function() {
+        // P1 priorità bassa (4) a sinistra
+        p1 = { id: "P1", timeLeft: 3.0, pri: 4, w: 70, x: 125, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        // P2 priorità altissima (1) a destra
+        p2 = { id: "P2", timeLeft: 2.0, pri: 1, w: 70, x: 295, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        // P3 priorità media (2) in mezzo
+        p3 = { id: "P3", timeLeft: 5.0, pri: 2, w: 70, x: 220, y: 150, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        scanner.alpha = 0;
+      };
+
+      p.setup = function() {
+        let canvas = p.createCanvas(850, 300);
+        canvas.parent('PRIORITY-example-animation');
+        p.resetProcesses();
+      };
+
+      p.draw = function() {
+        p.background(10, 10, 20);
+
+        // CPU
+        p.stroke(cAmber[0], cAmber[1], cAmber[2]);
+        p.strokeWeight(2);
+        p.fill(20, 20, 30);
+        p.rectMode(p.CENTER);
+        p.rect(cpu.x, cpu.y, 160, 120, 8);
+        p.noStroke();
+        p.fill(255);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.textSize(16);
+        p.textFont('JetBrains Mono');
+        p.text(cpu.label, cpu.x, cpu.y - 40);
+
+        // Ready Queue
+        p.stroke(cTeal[0], cTeal[1], cTeal[2], 100);
+        p.strokeWeight(2);
+        p.noFill();
+        p.rect(readyQueue.x, readyQueue.y, 300, 100, 8);
+        p.noStroke();
+        p.fill(cTeal[0], cTeal[1], cTeal[2]);
+        p.textSize(12);
+        p.text(readyQueue.label, readyQueue.x, readyQueue.y - 70);
+
+        p.stroke(255, 255, 255, 50);
+        p.strokeWeight(2);
+        p.line(360, 150, 560, 150);
+        p.triangle(560, 150, 550, 145, 550, 155);
+
+        // Disegna lo scanner luminoso
+        if (scanner.alpha > 0) {
+          p.stroke(cPink[0], cPink[1], cPink[2], scanner.alpha);
+          p.strokeWeight(4);
+          p.noFill();
+          p.rect(scanner.x, scanner.y, scanner.w, scanner.h, 6);
+          p.noStroke();
+        }
+
+        // Processi
+        [p3, p2, p1].forEach(pr => {
+          if(pr.alpha > 0) {
+            p.fill(pr.r, pr.g, pr.b, pr.alpha);
+            p.noStroke();
+            p.rect(pr.x, pr.y, pr.w, 65, 4);
+            
+            p.fill(10, 10, 20, pr.alpha);
+            p.textSize(14);
+            p.text(pr.id, pr.x, pr.y - 14);
+            
+            // Testo Priorità
+            p.fill(10, 10, 20, pr.alpha);
+            p.textSize(10);
+            p.text("priority: " + Math.floor(pr.pri), pr.x, pr.y + 7);
+
+            // Tempo Rimanente (sotto)
+            p.fill(10, 10, 20, pr.alpha);
+            p.textSize(10);
+            p.text(pr.timeLeft.toFixed(1) + "s", pr.x, pr.y + 24);
+          }
+        });
+      };
+
+      p.animReset = function() {
+        gsap.killTweensOf([p1, p2, p3, scanner]);
+        p.resetProcesses();
+      };
+
+      p.animStart = function() {
+        p.animReset();
+        let tl = gsap.timeline();
+        const calcDur = (t) => t / 4.0; // 1s = 4s simulati
+
+        // Ordine per priorità: P2 (1), P3 (2), P1 (4)
+        
+        let scanProcess = (target_p, nextLabel) => {
+          tl.to(scanner, {
+            x: target_p.x, y: target_p.y,
+            w: target_p.w + 12, h: 77,
+            alpha: 255, duration: 0.3, ease: "power2.out"
+          }, nextLabel)
+          .to(scanner, { alpha: 0, duration: 0.3 }, "+=0.2");
+        };
+
+        // ============ STEP 1: P2 ============
+        scanProcess(p2, "start");
+        
+        tl.to(p2, {
+          x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2],
+          duration: 0.8, ease: "power2.inOut"
+        });
+
+        // Esecuzione di P2 (2.0s). Mentre P2 esegue, AGING di P1 (da 4 a 3)
+        let exec1 = "exec1";
+        tl.add(exec1);
+        tl.to(p2, { timeLeft: 0.0, duration: calcDur(2.0), ease: "linear" }, exec1);
+        
+        // Animazione AGING: Snap properties con GSAP
+        tl.to(p1, { pri: 3, duration: calcDur(2.0), ease: "linear", snap: { pri: 1 } }, exec1);
+        
+        tl.to(p2, { alpha: 0, duration: 0.5 });
+
+        // ============ STEP 2: P3 ============
+        scanProcess(p3, "+=0.2");
+
+        tl.to(p3, {
+          x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2],
+          duration: 0.8, ease: "power2.inOut"
+        });
+
+        // Esecuzione di P3 (5.0s). Mentre P3 esegue, AGING di P1 (da 3 a 2)
+        let exec2 = "exec2";
+        tl.add(exec2);
+        tl.to(p3, { timeLeft: 0.0, duration: calcDur(5.0), ease: "linear" }, exec2);
+        
+        tl.to(p1, { pri: 2, duration: calcDur(5.0), ease: "linear", snap: { pri: 1 } }, exec2);
+
+        tl.to(p3, { alpha: 0, duration: 0.5 });
+
+        // ============ STEP 3: P1 ============
+        scanProcess(p1, "+=0.2");
+
+        tl.to(p1, {
+          x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2],
+          duration: 0.8, ease: "power2.inOut"
+        });
+
+        // Esecuzione di P1 (3.0s)
+        tl.to(p1, { timeLeft: 0.0, duration: calcDur(3.0), ease: "linear" });
+        tl.to(p1, { alpha: 0, duration: 0.5 });
+      };
+    };
+
+    let instPriority = new p5(sketchPriority);
+    function animStartPriority() { instPriority.animStart(); }
+    function animResetPriority() { instPriority.animReset(); }
+
+    // =========================================================================
+    // 5. MLQ - MULTILEVEL QUEUE (INSTANCE MODE)
+    // =========================================================================
+    let sketchMLQ = function(p) {
+      let cpu = { x: 650, y: 170, label: "CPU" };
+      let queue1 = { x: 200, y: 90, label: "Q1 - FOREGROUND (Round Robin)" };
+      let queue2 = { x: 200, y: 250, label: "Q2 - BACKGROUND (SJF)" };
+      
+      let p1, p2, p3, p4;
+      let scanner = { x: 0, y: 0, w: 0, h: 0, alpha: 0 };
+      
+      p.resetProcesses = function() {
+        // Q1
+        p1 = { id: "P1", timeLeft: 3.0, w: 70, x: 260, y: queue1.y, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        p2 = { id: "P2", timeLeft: 2.0, w: 70, x: 140, y: queue1.y, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        // Q2
+        p3 = { id: "P3", timeLeft: 4.0, w: 70, x: 260, y: queue2.y, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        p4 = { id: "P4", timeLeft: 1.0, w: 70, x: 140, y: queue2.y, r: cSlate[0], g: cSlate[1], b: cSlate[2], alpha: 255 };
+        scanner.alpha = 0;
+      };
+
+      p.setup = function() {
+        let canvas = p.createCanvas(850, 340);
+        canvas.parent('MLQ-example-animation');
+        p.resetProcesses();
+      };
+
+      p.draw = function() {
+        p.background(10, 10, 20);
+
+        // CPU
+        p.stroke(cAmber[0], cAmber[1], cAmber[2]);
+        p.strokeWeight(2);
+        p.fill(20, 20, 30);
+        p.rectMode(p.CENTER);
+        p.rect(cpu.x, cpu.y, 160, 140, 8);
+        p.noStroke();
+        p.fill(255);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.textSize(16);
+        p.textFont('JetBrains Mono');
+        p.text(cpu.label, cpu.x, cpu.y - 50);
+
+        // Disegna code
+        let drawQueue = (q) => {
+          p.stroke(cTeal[0], cTeal[1], cTeal[2], 100);
+          p.strokeWeight(2);
+          p.noFill();
+          p.rect(q.x, q.y, 300, 100, 8);
+          p.noStroke();
+          p.fill(cTeal[0], cTeal[1], cTeal[2]);
+          p.textSize(12);
+          p.text(q.label, q.x, q.y - 65);
+          
+          // Frecce
+          p.stroke(255, 255, 255, 50);
+          p.strokeWeight(2);
+          p.noFill();
+          p.beginShape();
+          p.vertex(360, q.y);
+          p.vertex(450, q.y);
+          p.vertex(480, cpu.y);
+          p.vertex(560, cpu.y);
+          p.endShape();
+          
+          p.fill(255,255,255,50);
+          p.noStroke();
+          p.triangle(560, cpu.y, 550, cpu.y-5, 550, cpu.y+5);
+        };
+
+        drawQueue(queue1);
+        drawQueue(queue2);
+
+        // Scanner
+        if (scanner.alpha > 0) {
+          p.stroke(cPink[0], cPink[1], cPink[2], scanner.alpha);
+          p.strokeWeight(4);
+          p.noFill();
+          p.rectMode(p.CENTER);
+          p.rect(scanner.x, scanner.y, scanner.w, scanner.h, 6);
+          p.noStroke();
+        }
+
+        // Processi
+        [p1, p2, p3, p4].forEach(pr => {
+          if(pr.alpha > 0) {
+            p.fill(pr.r, pr.g, pr.b, pr.alpha);
+            p.noStroke();
+            p.rect(pr.x, pr.y, pr.w, 60, 4);
+            
+            p.fill(10, 10, 20, pr.alpha);
+            p.textSize(14);
+            p.text(pr.id, pr.x, pr.y - 10);
+            p.textSize(10);
+            p.text(pr.timeLeft.toFixed(1) + "s", pr.x, pr.y + 10);
+          }
+        });
+      };
+
+      p.animReset = function() {
+        gsap.killTweensOf([p1, p2, p3, p4, scanner]);
+        p.resetProcesses();
+      };
+
+      p.animStart = function() {
+        p.animReset();
+        let tl = gsap.timeline();
+        const calcDur = (t) => t / 4.0;
+        
+        let moveCPU = (pr) => {
+           tl.to(pr, { x: 450, duration: 0.3, ease: "power1.in" })
+             .to(pr, { y: cpu.y, duration: 0.2, ease: "linear" })
+             .to(pr, { x: cpu.x, r: cAmber[0], g: cAmber[1], b: cAmber[2], duration: 0.3, ease: "power1.out" });
+        };
+        let endP = (pr) => tl.to(pr, { alpha: 0, y: pr.y - 50, duration: 0.5 });
+        
+        // Fase 1: Q1 (Round Robin, Q=2)
+        // P1 (3.0s) -> 2.0s
+        moveCPU(p1);
+        tl.to(p1, { timeLeft: 1.0, duration: calcDur(2.0), ease: "linear" });
+        tl.to(p1, { y: queue1.y - 80, duration: 0.3, ease: "power1.inOut" })
+          .to(p1, { x: 140, r: cSlate[0], g: cSlate[1], b: cSlate[2], duration: 0.4, ease: "linear" })
+          .to(p1, { y: queue1.y, duration: 0.3, ease: "power1.out" });
+        tl.to(p2, { x: 260, duration: 0.5 }, "-=0.8");
+        
+        // P2 (2.0s) -> 0.0s
+        moveCPU(p2);
+        tl.to(p2, { timeLeft: 0.0, duration: calcDur(2.0), ease: "linear" });
+        endP(p2);
+        tl.to(p1, { x: 260, duration: 0.5 }, "-=0.3");
+
+        // P1 (1.0s) -> 0.0s
+        moveCPU(p1);
+        tl.to(p1, { timeLeft: 0.0, duration: calcDur(1.0), ease: "linear" });
+        endP(p1);
+
+        // Fase 2: Q2 (SJF)
+        let scanProcess = (target_p, nextLabel) => {
+          tl.to(scanner, {
+            x: target_p.x, y: target_p.y,
+            w: target_p.w + 12, h: 72,
+            alpha: 255, duration: 0.3, ease: "power2.out"
+          }, nextLabel)
+          .to(scanner, { alpha: 0, duration: 0.3 }, "+=0.2");
+        };
+
+        // P4 (1.0s) è il più breve
+        scanProcess(p4, "+=0.2");
+        moveCPU(p4);
+        tl.to(p4, { timeLeft: 0.0, duration: calcDur(1.0), ease: "linear" });
+        endP(p4);
+
+        // P3 (4.0s)
+        scanProcess(p3, "+=0.2");
+        moveCPU(p3);
+        tl.to(p3, { timeLeft: 0.0, duration: calcDur(4.0), ease: "linear" });
+        endP(p3);
+      };
+    };
+
+    let instMLQ = new p5(sketchMLQ);
+    function animStartMLQ() { instMLQ.animStart(); }
+    function animResetMLQ() { instMLQ.animReset(); }
   </script>
 </body>
 
