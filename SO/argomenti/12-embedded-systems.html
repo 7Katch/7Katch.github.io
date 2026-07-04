@@ -1,32 +1,104 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>12 · Embedded Systems — SO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12 · Embedded Systems — SO</title>
+
   <link rel="stylesheet" href="/shared/katchkit.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: { primaryColor: '#0f172a', primaryTextColor: '#cbd5e1', primaryBorderColor: '#334155', lineColor: '#2dd4bf' }
+    });
+  </script>
+  <style>
+    /* Stili per le feature card dei RTOS */
+    .rtos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .rtos-card {
+      background: #0d0f12;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .rtos-card:hover {
+      border-color: rgba(52,211,153,.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    }
+    .rtos-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .rtos-card.tinyos .rtos-title { color: #60a5fa; }
+    .rtos-card.riot .rtos-title { color: #f43f5e; }
+    .rtos-card.freertos .rtos-title { color: #fbbf24; }
+    .rtos-card.zephyr .rtos-title { color: #a78bfa; }
+    
+    .rtos-body {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .rtos-body ul {
+      margin-top: 0.5rem;
+      padding-left: 1.2rem;
+    }
+    .rtos-body li {
+      margin-bottom: 0.25rem;
+    }
+    .rtos-glow {
+      position: absolute;
+      top: 0; right: 0;
+      width: 100px; height: 100px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+  </style>
 </head>
-<body class="dot-grid theme-coral">
-<aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-    <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-    <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-    <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-    <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-    <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-    <li><div class="sb-cur"><span class="sb-pdot"></span>12 · Embedded Systems</div></li>
-    <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
-</aside>
+
+<body class="dot-grid theme-teal">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
+      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
+      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
+      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
+      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
+      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>12 · Embedded Systems</div>
+      </li>
+      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
 
   <!-- ═══════ NAV ═══════ -->
   <site-navbar 
@@ -34,73 +106,200 @@
     back-url="../" 
     back-text="Indice SO">
   </site-navbar>
-<div class="hero" style="min-height:55vh">
-  <div class="hero-glow"></div>
-  <span class="hero-eyebrow" style="background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--coral)">Macroargomento 12 · Speciale</span>
-  <div class="topic-num">12 / 13</div>
-  <h1 class="topic-hero-title">Embedded Systems</h1>
-  <p class="hero-sub" style="max-width:640px">Sistemi real-time, Hard vs Soft RT, Rate Monotonic Scheduling (RMS), Earliest Deadline First (EDF) e caratteristiche degli RTOS.</p>
-</div>
-<hr class="divider">
-<div class="content-wrap">
-  <div class="nav-breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
-    <a href="../index.html">SO</a><span>/</span>
-    <span>12 · Embedded Systems</span>
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:var(--teal)">
+      Macroargomento 12 · Hardware
+    </span>
+    <div class="topic-num">12 / 13</div>
+    <h1 class="topic-hero-title">Embedded Systems</h1>
+    <p class="hero-sub" style="max-width:680px">
+      Sistemi dedicati, vincoli real-time, Embedded Linux e OS per microcontrollori (TinyOS, RIOT, FreeRTOS, Zephyr).
+    </p>
   </div>
-  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(248,113,113,.25)">Questa pagina copre i <strong style="color:var(--coral)">5 sottoargomenti</strong> del macroargomento 12: i sistemi real-time ed embedded.</div>
-  <div class="index-grid" data-prefix="12">
+  <hr class="divider">
+
+  <!-- ═══════ CONTENT ═══════ -->
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">SO</a><span>/</span>
+      <span>12 · Embedded Systems</span>
+    </div>
+
+    <!-- INDEX GRID -->
+    <div class="index-grid" data-prefix="12">
       <ul>
-        <li>Sistemi Real-Time</li>
-        <li>Hard vs Soft Real-Time</li>
-        <li>Rate Monotonic (RMS)</li>
-        <li>EDF</li>
-        <li>Caratteristiche RTOS</li>
+        <li>Microprocessori vs Microcontrollori</li>
+        <li>Embedded Linux (Buildroot, Yocto)</li>
+        <li>RTOS per MCU (TinyOS, RIOT, FreeRTOS, Zephyr)</li>
       </ul>
     </div>
 
-  <div class="section-block" id="section-1">
-    <h2><span class="dot"></span> Sistemi Real-Time <span class="sub-tag">fondamento</span></h2>
-    <p>Un <span class="keyword">sistema real-time</span> è un sistema in cui la correttezza del risultato dipende non solo dal valore computato, ma anche dal <em>momento</em> in cui viene prodotto. Un risultato corretto arrivato troppo tardi è un risultato sbagliato. I task in un sistema RT hanno <span class="keyword">deadline</span>: un tempo massimo entro cui devono completare la loro elaborazione.</p>
-    <p>I campi applicativi sono critici per la sicurezza umana: sistemi di controllo ABS, pacemaker, avionici, controllo di reattori nucleari, robot industriali, sistemi di guida autonoma. Un SO general-purpose come Linux non è adatto di default a questi scenari perché non garantisce latenze deterministiche: un interrupt può essere ritardato da decine di millisecondi a causa dello scheduler, della gestione degli interrupt stessi o del memory management.</p>
-  </div>
+    <!-- ══════════════════════════════════════════════════
+       12.01 — INTRO
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Il mondo Embedded <span class="sub-tag">MCU e Real-time</span></h2>
+      <p>I sistemi embedded (incorporati) non sono computer general-purpose. Sono integrati all'interno di dispositivi (lavatrici, auto, sensori) e progettati per una specifica funzione.</p>
+      
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr">
+        <div class="compare-col">
+          <div class="compare-col-head coral">Microprocessor-based</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Basati su microprocessori complessi, dotati di MMU (Memory Management Unit) e cache estese (es. Raspberry Pi).</div>
+            <div class="compare-row">Possono eseguire OS complessi come Linux, Android, gestire applicazioni multiple e grafica.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head green">Microcontroller-based (MCU)</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Chip che integrano CPU, RAM (~KB), memoria Flash e interfacce I/O nello stesso silicio. <strong>Spesso senza MMU</strong>.</div>
+            <div class="compare-row">Usati nei <em>deeply embedded systems</em> (sensori wireless, WSN). Dominano i vincoli Real-Time (gestione simultanea di timing precisi) e il bassissimo consumo energetico.</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="section-block" id="section-2">
-    <h2><span class="dot"></span> Hard vs Soft Real-Time</h2>
-    <p>I sistemi RT si dividono in due categorie in base alle conseguenze del mancato rispetto di una deadline. In un sistema <span class="keyword">Hard Real-Time</span>, ogni deadline mancata è un fallimento catastrofico del sistema — potenzialmente con conseguenze fisiche gravi. Esempi: controllo di un airbag (deve attivarsi entro 30 ms dall'impatto), sistema di controllo di un reattore (deve rispondere alle anomalie in microsecondi), controllore di volo di un aereo. Non è accettabile nessuna tolleranza: la deadline è assoluta.</p>
-    <p>In un sistema <span class="keyword">Soft Real-Time</span>, una deadline occasionalmente mancata degrada la qualità del servizio ma non è catastrofica. Esempi: streaming video (un frame in ritardo produce un artefatto visivo temporaneo), interfaccia utente (una risposta lenta è fastidiosa ma non pericolosa), trading ad alta frequenza (una transazione in ritardo perde opportunità ma non causa danni fisici). La maggior parte degli RTOS consumer-grade (Android RTOS, iOS) rientra in questa categoria.</p>
-  </div>
+    <!-- ══════════════════════════════════════════════════
+       12.02 — EMBEDDED LINUX
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Embedded Linux <span class="sub-tag">Buildroot e Yocto</span></h2>
+      <p>Portare Linux su sistemi compatti è possibile, ma richiede forti ottimizzazioni. La libreria standard del C (<code class="inline">glibc</code>) usata nei desktop pesa svariati MB, inaccettabili per un sistema con pochi MB di RAM. Nascono così alternative leggerissime come <span class="keyword">uClibc-ng</span> o <span class="keyword">musl libc</span>, che pesano poche decine di KB rinunciando ad alcune funzionalità o ottimizzando il codice al massimo.</p>
 
-  <div class="section-block" id="section-3">
-    <h2><span class="dot"></span> Rate Monotonic Scheduling (RMS)</h2>
-    <p>Il <span class="keyword">Rate Monotonic Scheduling</span> è l'algoritmo di scheduling real-time più studiato, proposto da Liu & Layland nel 1973. È un algoritmo <span class="keyword">preemptive a priorità statica</span>: le priorità dei task vengono assegnate prima dell'esecuzione e non cambiano mai. La regola di assegnamento è semplice e ottimale: il task con il periodo più breve riceve la priorità più alta.</p>
-    <p>RMS è ottimale tra tutti gli algoritmi a priorità statica: se un insieme di task periodici è schedulabile con un qualunque algoritmo a priorità fissa, lo è anche con RMS. Il suo limite teorico di utilizzazione è <strong style="color:var(--text-primary)">U = n × (2^(1/n) − 1)</strong>, che converge a ~69.3% per n grande. Significa che se l'utilizzo totale della CPU è sotto il 69%, RMS garantisce il rispetto di tutte le deadline. Sopra il 69%, potrebbero verificarsi deadline mancate, anche se non è detto (il test è sufficiente ma non necessario).</p>
-  </div>
+      <div class="amber-box" style="margin-top:1.5rem">
+        <strong style="color:var(--amber)">Build Systems: Buildroot e Yocto</strong><br>
+        <span style="font-size:0.9rem;color:rgba(255,255,255,.7)">Per compilare Linux e il suo file system per architetture diverse (cross-compilation), si utilizzano strumenti automatizzati. <br>
+        • <strong>Buildroot</strong>: genera toolchain, root filesystem, kernel image e bootloader tramite configurazioni semplici (stile make menuconfig).<br>
+        • <strong>Yocto Project</strong>: più complesso e modulare, offre una distribuzione di riferimento (Poky) e permette di cucire un OS su misura assemblando diverse "recipes".<br>
+        <em>(Nota per l'esame: sapere che esistono per costruire custom Linux senza scendere nei dettagli dei comandi).</em>
+        </span>
+      </div>
+    </div>
 
-  <div class="section-block" id="section-4">
-    <h2><span class="dot"></span> EDF — Earliest Deadline First</h2>
-    <p>L'<span class="keyword">Earliest Deadline First</span> è un algoritmo di scheduling <span class="keyword">preemptive a priorità dinamica</span>: in ogni istante, il task con la deadline più vicina nel tempo riceve la massima priorità. Le priorità cambiano dinamicamente al variare delle deadline dei task nella ready queue.</p>
-    <p>EDF è <span class="keyword">ottimale</span> per sistemi monoprocessore: può schedulare qualsiasi insieme di task periodici schedulabile da qualunque altro algoritmo. Il suo limite di utilizzazione è il 100%: se la somma delle utilizzazioni (tempo di computazione / periodo) di tutti i task è ≤ 1, EDF garantisce il rispetto di tutte le deadline. Il prezzo è la complessità implementativa: le priorità devono essere ricalcolate dinamicamente, e la struttura dati della ready queue deve supportare aggiornamenti efficienti (tipicamente un heap). EDF non è deterministico in overload (utilization > 1): non è prevedibile quali task mancheranno la deadline.</p>
-  </div>
+    <!-- ══════════════════════════════════════════════════
+       12.03 — RTOS COMPARISON
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> RTOS per Microcontrollori <span class="sub-tag">i grandi 4</span></h2>
+      <p>I chip MCU (Microcontroller Units) senza MMU non possono eseguire Linux. Usano quindi <strong>Real-Time Operating Systems (RTOS)</strong> leggerissimi che si differenziano per impronta di memoria, scheduler e supporto hardware.</p>
 
-  <div class="section-block" id="section-5">
-    <h2><span class="dot"></span> Caratteristiche di un RTOS</h2>
-    <p>Un <span class="keyword">Real-Time Operating System</span> è progettato per garantire comportamento deterministico e latenze prevedibili. Le caratteristiche fondamentali che lo distinguono da un SO general-purpose sono: <span class="keyword">latenza di interrupt minima e deterministica</span> (il tempo tra l'arrivo di un interrupt e l'esecuzione del suo handler deve essere garantito e limitato), <span class="keyword">preemption immediata</span> (un task ad alta priorità deve poter preemptare uno a bassa priorità in qualsiasi momento, anche dentro una syscall), assenza di <span class="keyword">memoria virtuale</span> (il demand paging introduce latenze non deterministiche per i page fault — i sistemi hard RT usano solo RAM fisica), <span class="keyword">clock ad alta risoluzione</span> (timer hardware in grado di innescare interrupt con precisione di microsecondi o nanosecondi).</p>
-    <p>Esempi di RTOS diffusi: <span class="keyword">FreeRTOS</span> (open source, usatissimo in microcontrollori, supporta ARM Cortex-M), <span class="keyword">VxWorks</span> (commerciale, usato in avionica e militare), <span class="keyword">QNX</span> (usato in automotive, sistemi medicali, infrastrutture critiche), <span class="keyword">Zephyr</span> (open source Linux Foundation, per IoT e wearable).</p>
-  </div>
+      <div class="rtos-grid">
+        <!-- TinyOS -->
+        <div class="rtos-card tinyos">
+          <div class="rtos-glow"></div>
+          <div class="rtos-title"><i class="bi bi-cpu"></i> TinyOS</div>
+          <div class="rtos-body">
+            Il sistema più minimale (famoso per le Wireless Sensor Networks). <strong>Non ha un vero kernel</strong> né un sistema di memoria dinamica.
+            <ul>
+              <li><strong>Component-based:</strong> le app sono moduli interconnessi.</li>
+              <li><strong>Task e Eventi:</strong> i Task non sono preemptable (run-to-completion, non si bloccano). Gli Eventi (da HW) possono invece interrompere i task.</li>
+              <li><strong>Scheduler:</strong> semplice FIFO (primo arrivato, primo servito). Se non c'è nulla da fare, entra in sleep-mode per risparmiare energia.</li>
+            </ul>
+          </div>
+        </div>
 
-  <div class="back-btn-wrap">
-    <a href="11-file-system.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 11 · File System</a>
-    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-    <a href="13-sicurezza.html" class="btn btn-ghost">13 · Sicurezza <i class="bi bi-arrow-right"></i></a>
-  </div>
+        <!-- RIOT -->
+        <div class="rtos-card riot">
+          <div class="rtos-glow"></div>
+          <div class="rtos-title"><i class="bi bi-lightning-charge"></i> RIOT OS</div>
+          <div class="rtos-body">
+            Progettato per l'IoT con basso consumo. Strutturato attorno a un <strong>microkernel</strong> molto snello (richiede pochissimi kB).
+            <ul>
+              <li><strong>Multithreading:</strong> supportato (opzionale), con IPC (mailboxes), mutex e semafori.</li>
+              <li><strong>Scheduler:</strong> <em>Tickless</em> (si sveglia solo quando serve, senza polling ciclico), preemptive e basato su priorità. Le ISR (Interrupt Service Routines) possono sempre interrompere.</li>
+              <li><strong>Hardware Abstraction:</strong> livello generico per le periferiche (SAUL, netdev) che astrae la singola CPU o board.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- FreeRTOS -->
+        <div class="rtos-card freertos">
+          <div class="rtos-glow"></div>
+          <div class="rtos-title"><i class="bi bi-box-fill"></i> FreeRTOS</div>
+          <div class="rtos-body">
+            Lo <strong>standard de-facto</strong> del mercato RTOS (passato poi sotto l'ala di Amazon AWS). Scritto in C, estremamente portabile.
+            <ul>
+              <li><strong>Scheduler a Tick:</strong> l'esecuzione viene divisa in "ticks" (1-10 ms dettati da un timer HW).</li>
+              <li>Supporta <strong>time-slicing</strong>, preemption (round-robin) e fixed-priority scheduling.</li>
+              <li>Fornisce 5 schemi diversi per l'allocazione dinamica/statica della memoria e librerie standard per semafori/mutex.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Zephyr -->
+        <div class="rtos-card zephyr">
+          <div class="rtos-glow"></div>
+          <div class="rtos-title"><i class="bi bi-wind"></i> Zephyr</div>
+          <div class="rtos-body">
+            Un progetto open-source sotto la tutela della <strong>Linux Foundation</strong>, diventato rapidamente popolarissimo.
+            <ul>
+              <li><strong>Kernel Monolitico:</strong> al contrario del microkernel di RIOT, racchiude molto nel core.</li>
+              <li>Supporta nativamente la MPU (Memory Protection Unit) su spazio di indirizzi singolo.</li>
+              <li>Ideale per il multi-processing: supporta sistemi Asymmetric (AMP) e Symmetric Multiprocessing (SMP).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       12.04 — INTERNET OF THINGS (IoT)
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Internet of Things (IoT)</h2>
+      <p>L'IoT rappresenta la quarta generazione di deployment tecnologico. &Egrave; l'interconnessione globale di dispositivi intelligenti (sensori, attuatori, RFID, microcontroller) che scambiano pacchetti di dati a bassa larghezza di banda e basso consumo (es. LoRaWAN, BLE).</p>
+
+      <h3>Architettura e Flusso Dati IoT</h3>
+      <p>I dati raccolti da un oceano di sensori devono essere processati, ma inviarli tutti direttamente al cloud intaserebbe la rete. Per questo si usano architetture intermedie:</p>
+      
+      <div class="mermaid-container" style="background:rgba(0,0,0,0.2); padding:1rem; border-radius:8px; margin: 1.5rem 0; overflow-x:auto;">
+<div class="mermaid">
+flowchart LR
+    E1((Sensor)) --- Edge["Edge Layer<br>(Sensori e Gateway)"]
+    E2((Actuator)) --- Edge
+    Edge -->|Filtra/Raccoglie| Fog["Fog Layer<br>(Data Pre-processing locale)"]
+    Fog -->|Dati Utili| Core["Core Network<br>(Backbone IP)"]
+    Core --> Cloud[("Cloud<br>Storage & Big Data")]
+    
+    style Edge fill:#0f172a,stroke:#334155,stroke-width:2px
+    style Fog fill:#1e293b,stroke:#475569,stroke-width:2px
+    style Core fill:#334155,stroke:#64748b,stroke-width:2px
+    style Cloud fill:#020617,stroke:#2dd4bf,stroke-width:2px,color:#2dd4bf
 </div>
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 12 · Embedded Systems</p>
-  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
-</footer>
+      </div>
 
+      <h3>Dispositivi "Constrained" e Requisiti OS</h3>
+      <p>I dispositivi IoT sono detti <em>constrained</em> (vincolati). Si dividono in classi (Class 0 per i sensori passivi minuscoli, Class 1 per quelli capaci di protocolli leggeri come CoAP, Class 2 per i gateway). A causa di questi vincoli, un <strong>IoT OS</strong> deve rispettare rigorosi requisiti:</p>
+      <ul>
+        <li><strong>Small Memory Footprint:</strong> Dimensioni dell'ordine dei Kilobyte (molto meno degli smartphone).</li>
+        <li><strong>Energy Efficiency:</strong> Il dispositivo deve vivere per anni con una singola batteria (frequente uso di <em>deep sleep</em>).</li>
+        <li><strong>Network Connectivity:</strong> Stack di rete superleggero.</li>
+        <li><strong>Hardware Eterogeneo:</strong> Supporto non solo a 32-bit (ARM) ma anche ai diffusissimi chip a 8 e 16-bit.</li>
+      </ul>
+    </div>
 
+    <!-- NAVIGATION -->
+    <div class="back-btn-wrap">
+      <a href="11-file-system.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 11 · File System</a>
+      <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+      <a href="13-sicurezza.html" class="btn btn-ghost">13 · Sicurezza <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+  </div><!-- /content-wrap -->
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 12 · Embedded Systems</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">argomentoStyle.css</span></p>
+  </footer>
+
+  <!-- ═══════ SCRIPTS ═══════ -->
   <script src="/shared/katchkit.js"></script>
 </body>
+
 </html>

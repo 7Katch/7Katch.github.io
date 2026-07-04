@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -27,6 +27,7 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
@@ -58,14 +59,13 @@
       processi e thread concorrenti.</div>
     <div class="index-grid" data-prefix="05">
       <ul>
-        <li>Race Condition</li>
-        <li>Sezione critica & Mutual Exclusion</li>
-        <li>Mutex Lock</li>
-        <li>Semafori</li>
+        <li>Race Condition e Sezione Critica</li>
+        <li>Soluzione di Peterson & Barrier</li>
+        <li>Supporto Hardware (TAS/CAS)</li>
+        <li>Mutex e Semafori (Waiting queue)</li>
         <li>Monitor</li>
-        <li>Produttore-Consumatore</li>
-        <li>Lettori-Scrittori</li>
-        <li>5 Filosofi</li>
+        <li>Liveness (Deadlock, Starvation)</li>
+        <li>Problemi Classici</li>
       </ul>
     </div>
 
@@ -98,6 +98,25 @@
           class="keyword">Bounded waiting</span>: esiste un limite al numero di volte che altri processi possono entrare
         nella sezione critica dopo che un processo ha fatto richiesta e prima che quella richiesta venga soddisfatta
         (nessuna starvation).</p>
+      <p>Un approccio primitivo per risolvere il problema (valido unicamente per sistemi uniprocessore) &egrave; l'<span class="keyword">Interrupt-based solution</span>: si disabilitano semplicemente gli interrupt prima di entrare nella sezione critica. Purtroppo, questa tecnica non &egrave; scalabile sui sistemi multiprocessore e permette ad un processo malevolo o difettoso di paralizzare l'intero sistema bloccando il clock e il context switch.</p>
+    </div>
+
+    <div class="section-block" id="section-peterson">
+      <h2><span class="dot"></span> Soluzione di Peterson & Memory Barrier</h2>
+      <p>Prima di arrivare a Peterson, un <span class="keyword">primo tentativo software</span> utilizzava solo una variabile <code class="inline">turn</code> per indicare a chi toccasse. Tale soluzione falliva per&ograve; il requisito del <em>progress</em>: i processi erano obbligati ad un'alternanza rigorosa (se il processo 0 era molto lento nella sua sezione rimanente, il processo 1 doveva attenderlo inutilmente).</p>
+      <p>La <span class="keyword">soluzione di Peterson</span> &egrave; un classico algoritmo per due processi. Usa due variabili condivise: <code class="inline">turn</code> (a chi tocca) e un array booleano <code class="inline">flag[2]</code> (chi è pronto). Sebbene dimostri perfettamente la correttezza teorica, non è garantito che funzioni sulle architetture moderne.</p>
+      <p>Questo perché i processori e compilatori odierni effettuano il <span class="keyword">reordering</span> (riordino delle istruzioni) per ottimizzare le prestazioni. Se due istruzioni indipendenti vengono eseguite in ordine diverso, la logica di Peterson si rompe e si verifica una race condition.</p>
+      <p>La soluzione moderna è la <span class="keyword">Memory Barrier</span>: un'istruzione speciale che forza la propagazione (visibilità) di tutte le modifiche in memoria a tutti gli altri processori prima di eseguire qualsiasi successiva istruzione di <em>load</em> o <em>store</em>.</p>
+    </div>
+
+    <div class="section-block" id="section-hw">
+      <h2><span class="dot"></span> Supporto Hardware alla Sincronizzazione</h2>
+      <p>Per risolvere la sezione critica, l'hardware fornisce istruzioni speciali e ininterrompibili (<span class="keyword">atomiche</span>):</p>
+      <ul>
+        <li><span class="keyword">Test-and-Set:</span> modifica il contenuto di una parola e ritorna il valore originale in un'unica operazione indivisibile.</li>
+        <li><span class="keyword">Compare-and-Swap (CAS):</span> scambia un valore in memoria con uno nuovo solo se il valore attuale corrisponde a quello atteso. È il blocco costruttivo fondamentale.</li>
+      </ul>
+      <p>Queste istruzioni sono alla base delle <span class="keyword">Variabili Atomiche</span>, strumenti che forniscono aggiornamenti atomici su tipi di base come interi e booleani (es. permettendo un <code class="inline">increment(&sequence)</code> totalmente sicuro).</p>
     </div>
 
     <div class="section-block" id="section-3">
@@ -116,29 +135,32 @@
 
     <div class="section-block" id="section-4">
       <h2><span class="dot"></span> Semafori <span class="sub-tag">fondamentale</span></h2> 
-      <p>Un <span class="keyword">semaforo</span> è una variabile intera <span class="keyword">gestita dal programmatore </span>con due operazioni atomiche: <code
-          class="inline">wait(S)</code> (anche detta P o down) e <code class="inline">signal(S)</code> (anche detta V o
-        up). <code class="inline">wait(S)</code> decrementa S e blocca il thread se S è diventato negativo. <code
-          class="inline">signal(S)</code> incrementa S e sblocca un thread in attesa se ce n'è uno.</p>
+      <p>Un <span class="keyword">semaforo</span> è una variabile intera speciale con due operazioni atomiche storiche: <code
+          class="inline">wait(S)</code> e <code class="inline">signal(S)</code>.</p>
+      <p>Per evitare il dispendioso busy-waiting (spinlock), i semafori implementano una <span class="keyword">waiting queue</span> (coda di attesa). Se un processo chiama wait() su un semaforo <= 0, chiama internamente <code class="inline">sleep()</code> e viene sospeso. Quando un altro processo fa signal(), invoca <code class="inline">wakeup()</code> per rimuovere un processo dalla coda e metterlo nella ready queue.</p>
       <p>Il <span class="keyword">semaforo binario</span> (valori 0/1) si comporta come un mutex. Il <span
-          class="keyword">semaforo contatore</span> (valori 0..N) controlla l'accesso a un pool di N risorse identiche:
-        <code class="inline">wait()</code> acquisisce una risorsa, <code class="inline">signal()</code> la rilascia.
-        Sono più potenti dei mutex: permettono la sincronizzazione tra thread (non solo mutua esclusione). In Linux:
-        <code class="inline">sem_init()</code>, <code class="inline">sem_wait()</code>, <code
-          class="inline">sem_post()</code>.
-      </p>
+          class="keyword">semaforo contatore</span> (valori illimitati) controlla l'accesso a un pool di N risorse identiche. In Linux POSIX l'API offre semafori "named" e "unnamed" (es. <code class="inline">sem_init()</code>, <code class="inline">sem_wait()</code>, <code class="inline">sem_post()</code>).</p>
+      <div class="alert alert-warning" style="margin-top:1rem">
+        <strong>Problemi di utilizzo:</strong> I semafori sono un potente strumento, ma estremamente vulnerabili a errori del programmatore. Sbagliare l'ordine delle chiamate (es. una <code class="inline">signal(S)</code> seguita da <code class="inline">wait(S)</code>), chiamare due <code class="inline">wait(S)</code> consecutive, o dimenticarsi del tutto di rilasciare il semaforo pu&ograve; provocare deadlock o violazioni della mutua esclusione difficili da tracciare.
+      </div>
     </div>
 
     <div class="section-block" id="section-5">
       <h2><span class="dot"></span> Monitor <span class="sub-tag">fondamentale</span></h2>
-      <p>Il <span class="keyword">monitor</span> è un costrutto di alto livello <span class="keyword">gestito dal compilatore o il runtime </span>che combina dati condivisi, operazioni
-        su quei dati e sincronizzazione in un'unica struttura. Il compilatore garantisce che solo un thread alla volta
-        esegua una procedura del monitor. In Java, la parola chiave <code class="inline">synchronized</code> trasforma
-        un metodo in una procedura di monitor.</p>
+      <p>Il <span class="keyword">monitor</span> è un tipo di dato astratto di alto livello che garantisce che solo un processo alla volta possa essere attivo al suo interno, nascondendo la complessità di mutex e semafori (i quali sono suscettibili a gravi errori se messi nell'ordine sbagliato).</p>
       <p>I monitor usano <span class="keyword">condition variables</span> per la sincronizzazione interna: <code
-          class="inline">wait()</code> sospende il thread e rilascia il monitor (permettendo ad altri di entrare), <code
-          class="inline">notify()</code> risveglia un thread in attesa sulla condition. Più sicuri dei semafori perché
-        nascondono i dettagli di sincronizzazione, ma meno flessibili.</p>
+          class="inline">x.wait()</code> sospende il thread finché non arriva una <code
+          class="inline">x.signal()</code>. Nelle implementazioni più complesse, si può usare il costrutto <code class="inline">x.wait(c)</code> dove <em>c</em> è la priorità per risvegliare il thread giusto in coda.</p>
+    </div>
+
+    <div class="section-block" id="section-liveness">
+      <h2><span class="dot"></span> Liveness <span class="sub-tag">problema</span></h2>
+      <p>La <span class="keyword">Liveness</span> (vitalità) definisce un set di proprietà per assicurare che un sistema faccia progressi. Il fallimento della liveness si manifesta in tre forme principali:</p>
+      <ul>
+        <li><span class="keyword">Deadlock</span> (stallo): due o più processi sono bloccati all'infinito, ognuno in attesa di una risorsa tenuta dall'altro.</li>
+        <li><span class="keyword">Starvation</span>: blocco indefinito (es. un processo non viene mai prelevato dalla coda LIFO di un semaforo).</li>
+        <li><span class="keyword">Priority Inversion</span>: un problema di scheduling in cui un processo a bassa priorità detiene un lock che serve a un processo ad alta priorità.</li>
+      </ul>
     </div>
 
     <div class="section-block" id="section-6">
@@ -161,11 +183,11 @@
     <div class="section-block" id="section-7">
       <h2><span class="dot"></span> Problema dei Lettori-Scrittori</h2>
       <p>Una risorsa (database, file) può essere letta contemporaneamente da più thread, ma la scrittura richiede
-        accesso esclusivo. Il problema è bilanciare il parallelismo dei lettori con l'esclusività degli scrittori.</p>
+        accesso esclusivo. Il problema è bilanciare il parallelismo dei lettori con l'esclusività degli scrittori. L'implementazione originale utilizza tre variabili: un intero <code class="inline">read_count</code> per contare i lettori attivi, un semaforo <code class="inline">mutex</code> per proteggere l'aggiornamento del contatore, e un semaforo <code class="inline">rw_mutex</code> condiviso tra gli scrittori e il primo (o l'ultimo) lettore.</p>
       <p><span class="keyword">Prima variante</span> (priorità ai lettori): nessun lettore aspetta a meno che uno
-        scrittore abbia già il lock. Rischio: starvation degli scrittori se i lettori arrivano continuamente. <span
+        scrittore abbia già il lock <code class="inline">rw_mutex</code>. Rischio: starvation degli scrittori se i lettori arrivano continuamente. <span
           class="keyword">Seconda variante</span> (priorità agli scrittori): quando uno scrittore è pronto, nessun nuovo
-        lettore può entrare. Rischio: starvation dei lettori. In pratica si usano <code
+        lettore può entrare. Rischio: starvation dei lettori. In pratica si usano primitive dedicate come <code
           class="inline">pthread_rwlock_t</code> con politica configurabile.</p>
     </div>
 

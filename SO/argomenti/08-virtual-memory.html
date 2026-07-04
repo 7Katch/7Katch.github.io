@@ -1,120 +1,434 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>08 · Virtual Memory — SO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 &middot; Virtual Memory &mdash; SO</title>
+
   <link rel="stylesheet" href="/shared/katchkit.css">
+  <style>
+    .ws-window {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 1rem 0;
+    }
+    .ws-cell {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(200,211,224,.5);
+      background: rgba(8,8,16,.4);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 4px;
+    }
+    .ws-cell.active {
+      color: #22d3ee;
+      background: rgba(34,211,238,.1);
+      border-color: rgba(34,211,238,.3);
+    }
+    .ws-cell.cursor {
+      color: #080810;
+      background: #fbbf24;
+      border-color: #fbbf24;
+      font-weight: bold;
+    }
+    .lru-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-align: center;
+    }
+    .lru-table th, .lru-table td {
+      border: 1px solid rgba(255,255,255,.1);
+      padding: 6px;
+    }
+    .lru-table th {
+      color: rgba(34,211,238,.7);
+      background: rgba(34,211,238,.05);
+    }
+    .fault { color: #f87171; font-weight: bold; }
+    .hit { color: #34d399; font-weight: bold; }
+    .evict { color: #fbbf24; }
+  </style>
 </head>
+
 <body class="dot-grid theme-teal">
-<aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-    <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-    <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-    <li><div class="sb-cur"><span class="sb-pdot"></span>08 · Virtual Memory</div></li>
-    <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-    <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-    <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-    <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
-</aside>
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 &middot; Sistemi Operativi</a></li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 &middot; Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 &middot; Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 &middot; CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 &middot; Sincronizzazione</a></li>
+      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 &middot; Deadlocks</a></li>
+      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 &middot; Main Memory</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>08 &middot; Virtual Memory</div>
+      </li>
+      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 &middot; I/O Systems</a></li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 &middot; Mass-Storage</a></li>
+      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 &middot; File System</a></li>
+      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 &middot; Embedded Systems</a></li>
+      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 &middot; Sicurezza</a></li>
+      <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 &middot; Laboratori (Teoria)</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
 
   <!-- ═══════ NAV ═══════ -->
   <site-navbar 
-    logo-text="// SO · Sistemi Operativi" 
+    logo-text="// SO &middot; Sistemi Operativi" 
     back-url="../" 
     back-text="Indice SO">
   </site-navbar>
-<div class="hero" style="min-height:55vh">
-  <div class="hero-glow"></div>
-  <span class="hero-eyebrow" style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:var(--teal)">Macroargomento 08 · Gestione Memoria</span>
-  <div class="topic-num">08 / 13</div>
-  <h1 class="topic-hero-title">Virtual Memory</h1>
-  <p class="hero-sub" style="max-width:640px">Demand paging, page fault, algoritmi di sostituzione (FIFO, OPT, LRU, Clock), thrashing, working set e memory-mapped files.</p>
-</div>
-<hr class="divider">
-<div class="content-wrap">
-  <div class="nav-breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
-    <a href="../index.html">SO</a><span>/</span>
-    <span>08 · Virtual Memory</span>
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow">
+      Macroargomento 08 &middot; Gestione Memoria Avanzata
+    </span>
+    <div class="topic-num">08 / 14</div>
+    <h1 class="topic-hero-title">Virtual Memory</h1>
+    <p class="hero-sub" style="max-width:680px">
+      Esecuzione di processi parzialmente caricati, Demand Paging, algoritmi di Page Replacement, prevenzione del Thrashing e strategie di allocazione per il Kernel (Buddy System e Slab Allocation).
+    </p>
   </div>
-  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(34,211,238,.25)">Questa pagina copre i <strong style="color:var(--teal)">7 sottoargomenti</strong> del macroargomento 8: la memoria virtuale e la gestione delle pagine.</div>
-  <div class="index-grid" data-prefix="08">
+  <hr class="divider">
+
+  <!-- ═══════ CONTENT ═══════ -->
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">SO</a><span>/</span>
+      <span>08 &middot; Virtual Memory</span>
+    </div>
+
+    <!-- INDEX GRID -->
+    <div class="index-grid" data-prefix="08">
       <ul>
-        <li>Demand Paging</li>
-        <li>Page Fault</li>
-        <li>Sostituzione delle pagine</li>
-        <li>Allocazione dei frame</li>
-        <li>Thrashing</li>
-        <li>Working Set Model</li>
-        <li>Memory-Mapped Files</li>
+        <li>Introduzione e Demand Paging</li>
+        <li>Page Faults e Effective Access Time (EAT)</li>
+        <li>Copy-on-Write (COW)</li>
+        <li>Algoritmi di Page Replacement (FIFO, LRU, Second-chance)</li>
+        <li>Frame Allocation e Thrashing (Working-Set)</li>
+        <li>Allocazione della Memoria Kernel (Buddy System vs Slab)</li>
       </ul>
     </div>
 
-  <div class="section-block" id="section-1">
-    <h2><span class="dot"></span> Demand Paging <span class="sub-tag">fondamento</span></h2>
-    <p>La <span class="keyword">memoria virtuale</span> è l'illusione di uno spazio di indirizzi molto più grande della RAM fisica disponibile. Il principio: non tutte le pagine di un processo devono stare in RAM contemporaneamente. Il <span class="keyword">demand paging</span> carica le pagine in memoria solo quando vengono effettivamente accedute (<em>lazy loading</em>).</p>
-    <p>Ogni entry della page table ha un <span class="keyword">valid bit</span>: se è 1, la pagina è in RAM e l'indirizzo del frame è valido. Se è 0, la pagina non è in RAM (è su disco o non è stata ancora allocata). Il vantaggio è significativo: un programma può avere uno spazio virtuale di 48 bit (256 TB su x86-64) anche con soli 16 GB di RAM fisica. Più processi possono girare contemporaneamente perché ognuno usa solo la RAM strettamente necessaria.</p>
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Introduzione e Spazio di Indirizzamento</h2>
+      <p>La <strong>Virtual Memory</strong> consente la separazione della memoria logica (vista dal processo) dalla memoria fisica (RAM). Ci&ograve; porta a un vantaggio clamoroso: <strong>solo una parte del programma deve risiedere in memoria per l'esecuzione.</strong> Questo supera i limiti fisici della RAM e permette un grado di multiprogrammazione nettamente superiore.</p>
+      
+      <h3>Virtual Address Space</h3>
+      <p>Lo spazio di indirizzamento virtuale di un processo in RAM solitamente &egrave; diviso agli estremi: lo <strong>Stack</strong> cresce verso il basso (per funzioni e variabili locali), mentre l'<strong>Heap</strong> cresce verso l'alto (per allocazioni dinamiche). L'enorme "buco" (hole) in mezzo &egrave; spazio virtuale non allocato, che non consuma vera memoria fisica finch&eacute; lo stack o l'heap non crescono al punto da richiederlo.</p>
+
+      <h3>Demand Paging</h3>
+      <p>Anzich&eacute; caricare tutto in blocco (Swapping completo), il sistema operativo carica solo le pagine strettamente necessarie, sfruttando la tecnica del <strong>Demand Paging</strong>. Le pagine risiedono sullo <em>storage secondario</em> (disco) e vengono spostate in memoria solo quando referenziate.</p>
+      
+      <p>Per tenere traccia di quali pagine sono in memoria, la page table utilizza un <strong>Valid-Invalid Bit</strong>:</p>
+      <ul>
+        <li><strong>v (valid):</strong> la pagina &egrave; in RAM (memory resident).</li>
+        <li><strong>i (invalid):</strong> la pagina NON &egrave; in RAM (potrebbe essere su disco, oppure la referenza &egrave; del tutto illegale).</li>
+      </ul>
+    </div>
+
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Page Faults ed Effective Access Time</h2>
+      <p>Se un processo tenta di accedere ad una pagina con bit a <code>i</code> (invalid), l'hardware della Memory Management Unit (MMU) genera un'eccezione detta <strong>Page Fault</strong>.</p>
+      
+      <div class="algo-steps">
+        <div class="algo-step"><span class="algo-step-n">1</span> Trap al Sistema Operativo per il Page Fault.</div>
+        <div class="algo-step"><span class="algo-step-n">2</span> Il SO controlla se il riferimento era legale. Se non lo era (accesso fuori dal range), abortisce il processo. Altrimenti, la pagina non &egrave; in memoria.</div>
+        <div class="algo-step"><span class="algo-step-n">3</span> Il SO individua un free frame nella RAM.</div>
+        <div class="algo-step"><span class="algo-step-n">4</span> Attiva un'operazione su disco (Swap) per leggere la pagina e caricarla nel nuovo frame. (Nel frattempo, la CPU viene ceduta a un altro processo).</div>
+        <div class="algo-step"><span class="algo-step-n">5</span> Aggiorna la page table, settando il bit a <code>v</code>.</div>
+        <div class="algo-step"><span class="algo-step-n">6</span> Riavvia esattamente l'istruzione che aveva causato il fault.</div>
+      </div>
+      
+      <div class="alert alert-tip">
+        <strong>Pure Demand Paging:</strong> Si pu&ograve; persino avviare un processo con ZERO pagine in RAM. Il primo riferimento provocher&agrave; un fault. Man mano verranno caricate le pagine. L'alternativa &egrave; il <strong>Prepaging</strong>, che carica in anticipo alcune pagine che si ipotizza verranno utilizzate (es. tutto il working-set precedente al risveglio del processo).
+      </div>
+      
+      <h3>Effective Access Time (EAT)</h3>
+      <p>Dato che leggere dal disco richiede molto tempo, il Demand Paging ha senso solo se il tasso di fault (<strong>p</strong>, <em>Page Fault Rate</em>) &egrave; molto basso. L'accesso medio (EAT) &egrave; calcolato come:</p>
+      <div class="shell-box">
+        EAT = (1 - p) &times; memory_access_time + p &times; (page_fault_overhead)
+      </div>
+      <p>Ad esempio, se memory_access = 200ns, e page_fault_overhead = 8ms (8,000,000ns), basta un <code>p = 0.0000025</code> (cio&egrave; 1 fault su 400.000 accessi) per rallentare l'intero sistema del 10%!</p>
+      
+      <h3>Free-frame list e Ottimizzazioni I/O</h3>
+      <p>Per soddisfare velocemente i page fault, l'OS mantiene sempre una <strong>free-frame list</strong> (un pool di frame liberi). Questi frame vengono allocati usando la tecnica <strong>zero-fill-on-demand</strong> (azzerati prima dell'uso per sicurezza, in modo che un processo non possa leggere i dati vecchi di un altro). Inoltre, anzich&eacute; aspettare che i frame scendano a zero, l'OS inizia a reclamare (<em>reclaiming</em>) pagine non appena la free-frame list scende sotto una certa soglia (threshold).</p>
+      <p>Poich&eacute; l'I/O sullo Swap Space &egrave; pi&ugrave; veloce del normale File System, i sistemi operativi ottimizzano il demand paging copiando l'intero processo nello swap space al load time (facendo paging da l&igrave;), oppure caricando le pagine di codice direttamente dall'eseguibile sul file system ma <em>scartandole</em> semplicemente (invece di scriverle su swap) se devono essere rimosse dalla RAM, visto che il file eseguibile &egrave; gi&agrave; sul disco (usato in Solaris e BSD).</p>
+    </div>
+
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Copy-on-Write (COW) e Memory-Mapped Files</h2>
+      <p>Il Demand Paging pu&ograve; ottimizzare la creazione di processi tramite la system call <code>fork()</code>. Piuttosto che copiare l'intero set di pagine del Padre nel Figlio, si utilizza <strong>Copy-on-Write (COW)</strong>.</p>
+      <p>Padre e figlio condividono inizialmente le stesse pagine fisiche. Solo quando uno dei due tenta di MODIFICARE (Write) una pagina condivisa, il sistema intercetta l'azione e crea una copia privata della pagina esclusivamente per quel processo. Questo velocizza enormemente il fork() e fa risparmiare preziosi frame in memoria.</p>
+
+      <h3>Memory-Mapped Files (mmap)</h3>
+      <p>La memoria virtuale permette anche di mappare blocchi di file su disco direttamente dentro lo spazio di indirizzamento (RAM) di un processo. Questo consente di manipolare i file usando le normali istruzioni di memoria, evitando le costose <code>read()</code> e <code>write()</code>, e permette a processi multipli di mappare lo stesso file per condividere memoria (Shared Memory).</p>
+    </div>
+
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Page Replacement Algorithms</h2>
+      <p>Quando non ci sono pi&ugrave; <em>free frames</em> disponibili in memoria, il SO deve scartare (evict) una pagina per far spazio alla nuova. Per ridurre i trasferimenti I/O, si introduce il <strong>Modify (Dirty) Bit</strong>: una pagina viene effettivamente ri-scritta su disco solo se &egrave; stata modificata durante la sua permanenza in RAM.</p>
+
+      <h3>1. FIFO (First-In-First-Out)</h3>
+      <p>Si sostituisce la pagina caricata da pi&ugrave; tempo in memoria. Molto semplice da implementare (coda), ma soffre dell'<strong>Anomalia di Belady</strong>: per certi pattern di accesso, aumentare il numero di frame fisici (aggiungere RAM) causa incredibilmente un AUMENTO dei Page Faults.</p>
+
+      <h3>2. Algoritmo Ottimo (OPT/MIN)</h3>
+      <p>Sostituisce la pagina che <em>non verr&agrave; usata per il periodo di tempo pi&ugrave; lungo nel futuro</em>. Non soffre dell'anomalia di Belady ma &egrave; impossibile da implementare poich&eacute; il SO non pu&ograve; predire il futuro. Funge solo da limite matematico inferiore per la valutazione di altri algoritmi.</p>
+
+      <h3>3. LRU (Least Recently Used)</h3>
+      <p>Rimpiazza la pagina inutilizzata da pi&ugrave; tempo nel passato. LRU e OPT appartengono alla famiglia degli <strong>Stack Algorithms</strong>: algoritmi in cui l'insieme delle pagine in memoria con $N$ frame &egrave; sempre un sottoinsieme stretto delle pagine in memoria con $N+1$ frame. Questa propriet&agrave; matematica garantisce che <strong>non possano mai soffrire dell'Anomalia di Belady</strong>. L'implementazione pratica di LRU richiede hardware di supporto:</p>
+      <ul>
+        <li><strong>Counter Implementation:</strong> Ogni voce della page table ha un counter. Quando si referenzia una pagina, si copia il clock attuale. Per sostituire, bisogna cercare nell'intera tabella la pagina col counter minore (ricerca costosa).</li>
+        <li><strong>Stack Implementation:</strong> Una pila doubly-linked di numeri di pagina. Ogni riferimento estrae la pagina e la sposta in cima. Il top &egrave; l'MRU (Most Recently Used), il bottom &egrave; l'LRU (la vittima). Nessuna ricerca &egrave; necessaria, ma l'aggiornamento dei puntatori hardware ad ogni singolo accesso alla memoria &egrave; molto oneroso.</li>
+      </ul>
+
+      <h3>4. Approssimazioni LRU (Reference Bit)</h3>
+      <p>Visto che l'LRU puro &egrave; troppo lento hardware-wise, si usano approssimazioni:</p>
+      <ul>
+        <li><strong>Reference Bit:</strong> Ogni pagina ha un bit iniziale a 0. Se referenziata, diventa 1. Periodicamente azzerati. Non si sa l'ordine temporale esatto.</li>
+        <li><strong>Second-chance (Clock) Algorithm:</strong> Basato su FIFO circolare. Quando si ispeziona la vittima, se il suo reference bit &egrave; 1, le viene data una "seconda chance": il bit viene resettato a 0, la pagina resta in RAM, e l'orologio (clock pointer) avanza alla successiva. Se si trovano tutti a 1, diventa una normale FIFO.</li>
+        <li><strong>Enhanced second-chance:</strong> Considera la combinazione (Reference, Modify). Il bersaglio migliore &egrave; la pagina (0,0) (mai usata recentemente e mai sporcata). L'ultima scelta &egrave; (1,1) (usata e sporcata).</li>
+      </ul>
+      
+      <!-- INIZIO SIMULATORE LRU -->
+      <div style="margin:2rem 0; padding:1.5rem; background:rgba(0,0,0,.2); border-radius:8px; border:1px solid rgba(255,255,255,.05)">
+        <h4 style="margin-top:0;color:var(--teal)"><i class="bi bi-cpu"></i> Simulazione Interattiva LRU</h4>
+        <p style="font-size:13px; color:rgba(255,255,255,.6)">Stringa di reference: <code>7, 0, 1, 2, 0, 3, 0, 4, 2, 3</code> (3 Frames fisici)</p>
+        <div style="overflow-x:auto">
+          <table class="lru-table" id="sim-lru-table">
+            <thead>
+              <tr id="sim-lru-head"><th>Ref</th></tr>
+            </thead>
+            <tbody id="sim-lru-body">
+              <tr id="sim-f1"><th>Frame 1</th></tr>
+              <tr id="sim-f2"><th>Frame 2</th></tr>
+              <tr id="sim-f3"><th>Frame 3</th></tr>
+              <tr id="sim-status"><th>Status</th></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:1rem">
+          <button class="btn btn-primary" onclick="simLRU_step()"><i class="bi bi-play-fill"></i> Esegui Step</button>
+          <button class="btn btn-ghost" onclick="simLRU_reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+      <!-- FINE SIMULATORE LRU -->
+    </div>
+
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Allocazione dei Frame e Thrashing</h2>
+      <p>Come distribuire i limitati frame fisici tra pi&ugrave; processi? </p>
+      <ul>
+        <li><strong>Equal Allocation:</strong> Es. 100 frame per 5 processi = 20 ciascuno.</li>
+        <li><strong>Proportional Allocation:</strong> Basato sulla size o sulla priorit&agrave; (un processo pi&ugrave; pesante ottiene pi&ugrave; memoria).</li>
+        <li><strong>Global vs Local Replacement:</strong> Sostituzione Globale permette a un processo di rubare frame a un altro (throughput maggiore), ma l'esecuzione non &egrave; predicibile. La Sostituzione Locale confina il processo alla sua pool, limitando le performance complessive.</li>
+      </ul>
+
+      <h3>Il Thrashing</h3>
+      <p>Se un processo non ha "abbastanza" frame per eseguire il suo flusso, genera in continuazione Page Faults, rubando frame, causando faults ad altri, spingendo al massimo l'utilizzo dell'I/O Disco. In questa spirale distruttiva, l'OS nota che la CPU non &egrave; usata (tutti aspettano il disco) e <strong>lancia altri processi per aumentare il grado di multiprogrammazione</strong>, peggiorando ulteriormente la situazione! <br>Il sistema collassa: &egrave; il <strong>Thrashing</strong> (si passa pi&ugrave; tempo a swappare pagine che a eseguire istruzioni).</p>
+      
+      <p>Per limitare in modo diretto il thrashing si pu&ograve; usare l'approccio <strong>Page-Fault Frequency (PFF)</strong>: si stabilisce un tasso "accettabile" (un limite minimo e massimo) di fault per ogni processo. Se il tasso reale &egrave; troppo basso, il SO sottrae un frame al processo; se &egrave; troppo alto (sintomo di thrashing in arrivo), il SO gli assegna nuovi frame.</p>
+
+      <h3>Locality of Reference e Working-Set Model</h3>
+      <p>Il demand paging funziona solo grazie al Principio di Localit&agrave; (il processo usa gruppi specifici di pagine contigue per un certo periodo).<br>
+      Per evitare il thrashing, il SO usa il <strong>Working-Set Model</strong>. Si definisce una finestra di tempo &Delta; (es. ultimi 10.000 memory references). Il set di pagine referenziate in quella finestra &egrave; il <em>Working Set Size (WSS)</em> del processo <code>i</code>.</p>
+      <div class="shell-box">
+        D = &Sigma; WSS_i <br>
+        (D = Domanda Totale di Pagine)
+      </div>
+      <p>Se <code>D &gt; m</code> (numero di frame fisici totali), il sistema &egrave; sovraccarico e andr&agrave; in thrashing. Il SO interviene sospendendo preventivamente (Swapping out) uno o pi&ugrave; processi.</p>
+
+      <!-- INIZIO SIMULATORE WORKING SET -->
+      <div style="margin:2rem 0; padding:1.5rem; background:rgba(0,0,0,.2); border-radius:8px; border:1px solid rgba(255,255,255,.05)">
+        <h4 style="margin-top:0;color:var(--teal)"><i class="bi bi-clock-history"></i> Working-Set Window (&Delta; = 4)</h4>
+        <p style="font-size:13px; color:rgba(255,255,255,.6)">Riferimenti nel tempo: <code>2, 6, 1, 5, 7, 7, 7, 7, 5, 1</code></p>
+        <div class="ws-window" id="ws-tape">
+        </div>
+        <div style="margin-top:1rem; font-family: 'JetBrains Mono', monospace; font-size:13px; color:var(--teal)" id="ws-result">
+          WSS: {}
+        </div>
+        <div style="margin-top:1rem">
+          <button class="btn btn-primary" onclick="simWS_step()"><i class="bi bi-arrow-right"></i> Avanza nel tempo</button>
+          <button class="btn btn-ghost" onclick="simWS_reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+      <!-- FINE SIMULATORE WORKING SET -->
+      
+      <h3>Altre Considerazioni: Page Size e TLB Reach</h3>
+      <p>Le performance della memoria dipendono anche dalla scelta della <strong>Page Size</strong> (che influenza la frammentazione interna, la dimensione della page table e l'I/O overhead) e dal <strong>TLB Reach</strong>, ovvero la quantit&agrave; di memoria accessibile rapidamente tramite i record memorizzati nel TLB.</p>
+      <div class="shell-box">
+        TLB Reach = (TLB Size) &times; (Page Size)
+      </div>
+      <p>Idealmente l'intero working-set di un processo dovrebbe stare nel TLB Reach per minimizzare le letture in Page Table. Per aumentarlo senza implementare TLB giganteschi e costosi, i processori moderni supportano <em>Multiple Page Sizes</em> (permettendo cos&igrave; alle applicazioni avide di memoria di usare "huge pages" da 2MB o 1GB).</p>
+    </div>
+
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> Allocazione della Memoria Kernel</h2>
+      <p>La memoria per le strutture del Kernel viene gestita in modo separato rispetto alla Virtual Memory utente. Molto spesso necessita di memoria <strong>contigua fisicamente</strong> (specialmente per l'interfacciamento coi dispositivi I/O). I due metodi classici Unix/Linux sono:</p>
+
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr">
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:var(--accent-soft);color:var(--accent)">1. Buddy System</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Divide la memoria fisica contigua in potenze di 2.</div>
+            <div class="compare-row">Se il kernel chiede 21KB, l'allocatore arrotonda alla potenza superiore (32KB).</div>
+            <div class="compare-row">Un pezzo enorme (es. 256KB) viene spaccato a met&agrave; in due "Buddies" da 128KB, poi 64, poi 32, finch&eacute; non si trova la taglia adatta.</div>
+            <div class="compare-row"><strong>Pro:</strong> Facilissimo riunire (coalesce) due buddies adiacenti liberi. <strong>Contro:</strong> Forte <em>Frammentazione Interna</em> (chiedi 33KB, ti danno 64KB!).</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:rgba(255,255,255,.05)">2. Slab Allocation</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Uno Slab &egrave; una collezione di pagine contigue. La Cache (un pool) gestisce strutture dati di grandezza specifica (es. un array esatto di strutture `task_struct`).</div>
+            <div class="compare-row">I pezzi di memoria allocati corrispondono esattamente alla dimensione della struttura kernel.</div>
+            <div class="compare-row"><strong>Pro:</strong> Nessuna frammentazione interna, le richeste di memoria vengono soddisfatte quasi istantaneamente instanziando gli oggetti pronti.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="back-btn-wrap">
+      <a href="07-main-memory.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 07 &middot; Main Memory</a>
+      <a href="../index.html" class="btn btn-amber">&uarr; Indice SO</a>
+      <a href="09-io-systems.html" class="btn btn-ghost">09 &middot; I/O Systems <i class="bi bi-arrow-right"></i></a>
+    </div>
+
   </div>
 
-  <div class="section-block" id="section-2">
-    <h2><span class="dot"></span> Page Fault</h2>
-    <p>Quando il processore accede a una pagina con valid bit = 0, genera una <span class="keyword">page fault</span>: una trap che trasferisce il controllo al gestore di page fault del kernel. La sequenza di gestione è: il SO verifica che l'accesso sia legittimo (la pagina appartiene allo spazio virtuale del processo — altrimenti è un segfault). Il SO trova un frame libero in RAM. Il SO carica la pagina dal disco (area di swap o file ELF). Il SO aggiorna la page table (valid bit = 1, numero frame). Il SO riprende l'istruzione che aveva causato il fault.</p>
-    <p>Il costo è enorme: un accesso in RAM richiede ~100 ns, un page fault con accesso a SSD richiede ~100 µs, su HDD ~10 ms. Per questo il tasso di page fault deve essere bassissimo: anche un solo page fault ogni 1000 accessi fa crollare le prestazioni del 99%.</p>
-  </div>
-
-  <div class="section-block" id="section-3">
-    <h2><span class="dot"></span> Sostituzione delle Pagine</h2>
-    <p>Quando tutti i frame sono occupati e serve caricarne una nuova, il SO deve scegliere una <span class="keyword">pagina vittima</span> da espellere su disco. Se la pagina è stata modificata (dirty bit = 1), va scritta su disco prima di liberare il frame. Se è clean, il frame si libera direttamente.</p>
-    <p>Gli algoritmi di sostituzione si valutano per tasso di page fault (minore = migliore). <span class="keyword">FIFO</span>: si espelle la pagina in RAM da più tempo. Semplice ma pessimo: espelle spesso pagine molto usate. Soffre dell'anomalia di Belady (aggiungere frame può aumentare i page fault). <span class="keyword">OPT</span> (Ottimale): si espelle la pagina che non verrà usata per più tempo in futuro. Impossibile da implementare (richiede di vedere il futuro), ma serve come benchmark teorico. <span class="keyword">LRU</span> (Least Recently Used): si espelle la pagina non usata da più tempo. Ottima approssimazione dell'OPT, ma costosa da implementare esattamente (richiede hardware o lista ordinata aggiornata a ogni accesso). <span class="keyword">Clock</span> (Second-Chance): approssimazione LRU pratica usata da Linux. Le pagine sono in un buffer circolare con un bit di riferimento. L'algoritmo gira come un orologio: se trova una pagina con bit = 0 la espelle; se trova bit = 1 lo azzera e passa avanti.</p>
-  </div>
-
-  <div class="section-block" id="section-4">
-    <h2><span class="dot"></span> Allocazione dei Frame</h2>
-    <p>Quanti frame assegnare a ogni processo? Con troppo pochi frame il processo genera page fault continui. Con troppi, si toglie RAM agli altri processi. Le strategie principali sono tre.</p>
-    <p><span class="keyword">Equal allocation</span>: dividere i frame equamente tra tutti i processi. Semplice ma ingiusto: un processo piccolo non ha bisogno degli stessi frame di uno grande. <span class="keyword">Proportional allocation</span>: ogni processo riceve un numero di frame proporzionale alla sua dimensione. <span class="keyword">Priority allocation</span>: i processi con priorità più alta ricevono più frame, a scapito di quelli con priorità bassa. In tutti i casi esiste un <span class="keyword">numero minimo di frame</span> (dipende dall'architettura ISA): deve essere sufficiente per completare almeno un'istruzione anche nel caso peggiore di page fault.</p>
-  </div>
-
-  <div class="section-block" id="section-5">
-    <h2><span class="dot"></span> Thrashing</h2>
-    <p>Il <span class="keyword">thrashing</span> è una condizione patologica in cui il sistema passa più tempo a gestire page fault che a eseguire codice utile. Si verifica quando un processo ha meno frame di quanti ne servono per il suo <em>working set</em> attuale: espelle una pagina che sarà richiesta quasi subito, generando un page fault quasi immediato.</p>
-    <p>Se il sistema ha molti processi in thrashing, la CPU utilization crolla nonostante ci siano processi "in esecuzione". Lo scheduler vede processi ready e ne aggiunge altri, peggiorando la situazione. Il SO deve rilevare il thrashing (monitorando il tasso di page fault o la CPU utilization) e reagire riducendo il grado di multiprogramming: sospendere alcuni processi su disco (swap out) per liberare frame per gli altri.</p>
-  </div>
-
-  <div class="section-block" id="section-6">
-    <h2><span class="dot"></span> Working Set Model</h2>
-    <p>Il <span class="keyword">working set</span> di un processo è l'insieme delle pagine accedute nelle ultime Δ referenze di memoria (Δ è la finestra temporale, un parametro configurabile). Rappresenta la <em>località di riferimento</em> attuale del processo: le pagine che usa intensivamente in questo momento.</p>
-    <p>Il principio del working set: se un processo riceve abbastanza frame da contenere il suo working set, il tasso di page fault sarà basso. Se riceve meno frame del working set <i class="bi bi-arrow-right"></i> thrashing. Il SO può monitorare la somma dei working set di tutti i processi: se supera i frame totali disponibili, il sistema è in pericolo di thrashing e va ridotto il grado di multiprogramming.</p>
-  </div>
-
-  <div class="section-block" id="section-7">
-    <h2><span class="dot"></span> Memory-Mapped Files</h2>
-    <p>Invece di leggere un file con <code class="inline">read()</code> in un buffer separato, <code class="inline">mmap()</code> mappa il file direttamente nello spazio di indirizzi virtuale del processo. Accedere ai dati del file è come accedere a un array in memoria: un semplice pointer dereference. Il kernel gestisce il caricamento delle pagine del file tramite demand paging.</p>
-    <p>I vantaggi sono notevoli: eliminazione delle copie kernel<i class="bi bi-arrow-right"></i>user (zero-copy in certi scenari), condivisione efficiente tra processi dello stesso file (la stessa pagina fisica), e semplicità di codice. È la base di molte librerie condivise (mappate in read-only da tutti i processi che le usano) e di database che gestiscono la propria cache (come PostgreSQL con shared_buffers).</p>
-  </div>
-
-  <div class="back-btn-wrap">
-    <a href="07-main-memory.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 07 · Main Memory</a>
-    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-    <a href="09-io-systems.html" class="btn btn-ghost">09 · I/O Systems <i class="bi bi-arrow-right"></i></a>
-  </div>
-</div>
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 08 · Virtual Memory</p>
-  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
-</footer>
-
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> &middot; SO &middot; 08 &middot; Virtual Memory</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">argomentoStyle.css</span></p>
+  </footer>
 
   <script src="/shared/katchkit.js"></script>
+  <script>
+    // --- SIMULATORE LRU ---
+    const refString = [7, 0, 1, 2, 0, 3, 0, 4, 2, 3];
+    let lruStep = 0;
+    let frames = [null, null, null];
+    let recent = []; 
+
+    function initLRU() {
+      document.getElementById('sim-lru-head').innerHTML = '<th>Ref</th>' + refString.map(r => `<th>${r}</th>`).join('');
+      document.getElementById('sim-f1').innerHTML = '<th>Frame 1</th>' + refString.map(() => '<td></td>').join('');
+      document.getElementById('sim-f2').innerHTML = '<th>Frame 2</th>' + refString.map(() => '<td></td>').join('');
+      document.getElementById('sim-f3').innerHTML = '<th>Frame 3</th>' + refString.map(() => '<td></td>').join('');
+      document.getElementById('sim-status').innerHTML = '<th>Status</th>' + refString.map(() => '<td></td>').join('');
+    }
+
+    function simLRU_step() {
+      if (lruStep >= refString.length) return;
+      
+      const page = refString[lruStep];
+      let status = '';
+      
+      let hitIndex = frames.indexOf(page);
+      if (hitIndex !== -1) {
+        status = '<span class="hit">HIT</span>';
+        recent = recent.filter(p => p !== page);
+        recent.push(page);
+      } else {
+        let emptyIndex = frames.indexOf(null);
+        if (emptyIndex !== -1) {
+          frames[emptyIndex] = page;
+          recent.push(page);
+          status = '<span class="fault">FAULT</span>';
+        } else {
+          let victim = recent.shift();
+          let victimIndex = frames.indexOf(victim);
+          frames[victimIndex] = page;
+          recent.push(page);
+          status = '<span class="evict">FAULT (Evict ' + victim + ')</span>';
+        }
+      }
+      
+      let col = lruStep + 1;
+      document.getElementById('sim-f1').cells[col].innerText = frames[0] !== null ? frames[0] : '';
+      document.getElementById('sim-f2').cells[col].innerText = frames[1] !== null ? frames[1] : '';
+      document.getElementById('sim-f3').cells[col].innerText = frames[2] !== null ? frames[2] : '';
+      document.getElementById('sim-status').cells[col].innerHTML = status;
+      
+      lruStep++;
+    }
+
+    function simLRU_reset() {
+      lruStep = 0;
+      frames = [null, null, null];
+      recent = [];
+      initLRU();
+    }
+
+    // --- SIMULATORE WORKING SET ---
+    const wsRefs = [2, 6, 1, 5, 7, 7, 7, 7, 5, 1];
+    const delta = 4;
+    let wsStep = 0;
+
+    function initWS() {
+      const tape = document.getElementById('ws-tape');
+      tape.innerHTML = '';
+      for(let i=0; i<wsRefs.length; i++){
+        tape.innerHTML += `<div class="ws-cell" id="ws-c${i}">${wsRefs[i]}</div>`;
+      }
+    }
+
+    function simWS_step() {
+      if (wsStep > wsRefs.length) return;
+      
+      // reset styles
+      for(let i=0; i<wsRefs.length; i++){
+        let el = document.getElementById('ws-c'+i);
+        el.className = 'ws-cell';
+      }
+      
+      let start = Math.max(0, wsStep - delta);
+      let end = wsStep;
+      let currentSet = new Set();
+      
+      for(let i=start; i<end; i++){
+        document.getElementById('ws-c'+i).classList.add('active');
+        currentSet.add(wsRefs[i]);
+      }
+      
+      if (wsStep < wsRefs.length) {
+        document.getElementById('ws-c'+wsStep).classList.add('cursor');
+      }
+      
+      document.getElementById('ws-result').innerHTML = 
+        `Al tempo t=${wsStep}, WSS = { ${Array.from(currentSet).join(', ')} } (Size: ${currentSet.size})`;
+        
+      wsStep++;
+    }
+
+    function simWS_reset() {
+      wsStep = 0;
+      document.getElementById('ws-result').innerHTML = 'WSS: {}';
+      initWS();
+    }
+
+    // Inizializza tutto
+    window.addEventListener('DOMContentLoaded', () => {
+      initLRU();
+      initWS();
+    });
+  </script>
 </body>
 </html>

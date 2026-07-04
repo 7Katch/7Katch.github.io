@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -27,6 +27,7 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections">
@@ -156,8 +157,13 @@
           class="keyword">Max</span> (massimo dichiarato per processo), <span class="keyword">Allocation</span> (risorse
         attualmente assegnate), <span class="keyword">Need</span> (= Max − Allocation). La verifica di sicurezza ha
         complessità $O(n^2\cdot m)$ dove n è il numero di processi e m il numero di tipi di risorse. In pratica è poco
-        usato
-        perché richiede informazioni sui massimi che raramente sono note in anticipo.</p>
+        usato perché richiede informazioni sui massimi che raramente sono note in anticipo.</p>
+
+      <p>L'algoritmo si compone di due parti fondamentali:</p>
+      <ul>
+        <li><strong>Safety Check Algorithm</strong>: Simula il completamento dei processi usando vettori temporanei <code>Work = Available</code> e <code>Finish[i] = false</code>. Finché trova un processo con <code>Finish[i] == false</code> e <code>Need_i &le; Work</code>, simula il suo completamento liberando le risorse (<code>Work = Work + Allocation_i</code> e <code>Finish[i] = true</code>). Se alla fine tutti i <code>Finish[i] == true</code>, lo stato è <strong>SAFE</strong>.</li>
+        <li><strong>Resource-Request Algorithm</strong>: Quando un processo richiede risorse (vettore <code>Request_i</code>), prima controlla se <code>Request_i &le; Need_i</code> e se <code>Request_i &le; Available</code>. In caso positivo, il SO <em>finge</em> di allocare le risorse modificando lo stato (<code>Available -= Request_i</code>, <code>Allocation_i += Request_i</code>, <code>Need_i -= Request_i</code>) ed esegue il Safety Check. Se lo stato risultante è SAFE l'allocazione diventa definitiva, altrimenti la simulazione viene annullata e il processo deve attendere.</li>
+      </ul>
 
       <div class="theme-box" style="overflow-x: auto; text-align: center; margin: 1.5rem 0;">
         

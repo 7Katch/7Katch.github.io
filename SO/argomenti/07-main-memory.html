@@ -30,6 +30,7 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
@@ -52,8 +53,7 @@
     <div class="topic-num">07 / 13</div>
     <h1 class="topic-hero-title">Main Memory</h1>
     <p class="hero-sub" style="max-width:680px">
-      Spazio di indirizzamento, memoria fisica vs logica vs virtuale, frammentazione, paginazione, page table, demand
-      paging, page fault, algoritmi di sostituzione LRU e seconda chance, frequenza dei page fault e working set model.
+      Spazio di indirizzamento, allocazione contigua (First-fit, Best-fit), frammentazione, paginazione con TLB, struttura delle Page Tables (Gerarchiche, Hashed, Inverted), Swapping e Segmentazione in architetture Intel x86.
     </p>
   </div>
   <hr class="divider">
@@ -68,8 +68,8 @@
     </div>
 
     <div class="theme-box">
-      Questa pagina copre i <strong style="color:var(--teal)">10 sottoargomenti</strong> core della gestione della
-      memoria principale, con illustrazioni, esempi numerici e algoritmi.
+      Questa pagina copre gli <strong style="color:var(--teal)">8 sottoargomenti</strong> core della gestione della
+      memoria principale (pre-memoria virtuale), con illustrazioni e algoritmi.
     </div>
 
     <!-- INDEX GRID -->
@@ -77,22 +77,68 @@
       <ul>
         <li>Spazio di indirizzamento</li>
         <li>Fisica / Logica / Virtuale</li>
-        <li>Frammentazione interna</li>
-        <li>Frammentazione esterna</li>
-        <li>Paginazione &amp; Page Table</li>
-        <li>Demand Paging &amp; Page Fault</li>
-        <li>Page Replacement</li>
-        <li>LRU &amp; Seconda Chance</li>
-        <li>Frequenza Page Fault</li>
-        <li>Working Set Model</li>
+        <li>Allocazione Contigua (Fit)</li>
+        <li>Frammentazione Esterna/Interna</li>
+        <li>Paginazione &amp; TLB</li>
+        <li>Strutture Page Table</li>
+        <li>Swapping</li>
+        <li>Segmentazione &amp; Intel x86</li>
       </ul>
     </div>
 
     <!-- ══════════════════════════════════════════════════
-       07.01 — SPAZIO DI INDIRIZZAMENTO
+       07.01/02 — BACKGROUND E PROTEZIONE
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-1">
-      <h2><span class="dot"></span> Spazio di Indirizzamento <span class="sub-tag">fondamento</span></h2>
+      <h2><span class="dot"></span> Address Protection e Binding <span class="sub-tag">background</span></h2>
+      <p>Prima di poter essere eseguito, un programma deve essere portato dal disco alla memoria principale (RAM). Per proteggere lo spazio di memoria di ciascun processo ed evitare che un processo legga o scriva nella memoria del sistema operativo o di un altro utente, si utilizzano storicamente due registri hardware: il <strong>Base register</strong> (indirizzo fisico di partenza) e il <strong>Limit register</strong> (dimensione dello spazio). Ad ogni accesso, l'hardware verifica che l'indirizzo richiesto sia compreso nei limiti consentiti; le istruzioni per modificare questi registri sono privilegiate (eseguibili solo in kernel mode).</p>
+      
+      <p>L'<span class="keyword">Address Binding</span> (associazione degli indirizzi) è il processo che mappa le variabili e le funzioni del codice sorgente su indirizzi fisici. Può avvenire in tre fasi:</p>
+      <ul>
+        <li><span class="keyword">Compile-time</span>: se si sa a priori dove il processo sarà caricato in memoria, si genera <em>absolute code</em>. Se la posizione cambia, bisogna ricompilare.</li>
+        <li><span class="keyword">Load-time</span>: il compilatore genera <em>relocatable code</em> (es. "14 byte dall'inizio del modulo"); il linker/loader calcola l'indirizzo assoluto al momento del caricamento in RAM.</li>
+        <li><span class="keyword">Execution-time</span>: il processo può essere spostato in memoria durante l'esecuzione. Richiede supporto hardware (la MMU).</li>
+      </ul>
+      <p>Per ottimizzare l'uso della RAM si usa anche il <span class="keyword">Dynamic Loading</span>: le singole routine (o moduli) non vengono caricate in memoria finché non vengono effettivamente chiamate durante l'esecuzione. Questo è utilissimo per blocchi di codice usati raramente (es. gestione degli errori).</p>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       07.03 — ALLOCAZIONE CONTIGUA
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Allocazione Contigua <span class="sub-tag">algoritmi di fit</span></h2>
+      <p>Nelle prime architetture, ogni processo doveva essere caricato in un singolo blocco di memoria contiguo. Con l'<strong>allocazione a partizioni variabili</strong>, il sistema operativo mantiene una lista di <em>buchi (holes)</em> liberi sparsi per la RAM.</p>
+      <p>Come soddisfare una richiesta di dimensione <em>n</em> da un elenco di buchi liberi?</p>
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="compare-col">
+          <div class="compare-col-head coral">First-Fit</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Alloca il primo buco abbastanza grande.</div>
+            <div class="compare-row">Molto veloce. Spesso concentra i piccoli buchi all'inizio della memoria.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head green">Best-Fit</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Alloca il buco più piccolo tra quelli sufficientemente grandi.</div>
+            <div class="compare-row">Richiede di cercare in tutta la lista. Produce il buco rimanente più piccolo (spesso inutilizzabile).</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head amber">Worst-Fit</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Alloca il buco più grande in assoluto.</div>
+            <div class="compare-row">Produce il buco rimanente più grande, che potrebbe essere utile per processi successivi, ma si dimostra il peggiore dei tre.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- ══════════════════════════════════════════════════
+       07.04 — FRAMMENTAZIONE
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-4">
+
+    <h2><span class="dot"></span> Frammentazione Interna <span class="sub-tag">paginazione/fixed</span></h2>
       <p>
         Lo <span class="keyword">spazio di indirizzamento</span> è l'insieme di tutti gli indirizzi di memoria che un
         processo può generare. Su un sistema a 32 bit è 2³² = 4 GB; su un sistema a 64 bit è teoricamente 2⁶⁴, ma in
@@ -102,7 +148,7 @@
 
       <div class="stat-row">
         <div class="stat-pill"><span class="stat-pill-val">2³²</span><span class="stat-pill-label">indirizzi a 32 bit =
-            4 GB</span></div>
+            4 GB</span>
         <div class="stat-pill"><span class="stat-pill-val">2⁴⁸</span><span class="stat-pill-label">indirizzi virtuali a
             48 bit (usati in pratica)</span></div>
         <div class="stat-pill"><span class="stat-pill-val">4 KB</span><span class="stat-pill-label">dimensione tipica di
@@ -173,13 +219,20 @@
         di indirizzamento virtuale di un processo Linux a 64 bit.</p>
     </div>
 
-    <!-- ══════════════════════════════════════════════════
-       07.02 — FISICA vs LOGICA vs VIRTUALE
-  ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="section-2">
-      <h2><span class="dot"></span> Memoria Fisica, Logica e Virtuale <span class="sub-tag">concetti chiave</span></h2>
+    <div class="section-block" id="section-4-ext">
+      <h2><span class="dot"></span> Frammentazione Esterna <span class="sub-tag">allocazione contigua</span></h2>
+      <p>La <span class="keyword">frammentazione esterna</span> si verifica nell'allocazione contigua a partizioni variabili. A furia di caricare e scaricare processi, la memoria si riempie di tanti piccoli "buchi" liberi non contigui. Anche se la somma totale della memoria libera sarebbe sufficiente per ospitare un nuovo processo, questa non è contigua e la richiesta fallisce.</p>
+      
+      <div class="callout warn">
+        <span class="callout-icon">📉</span>
+        <strong>La regola del 50%:</strong> Analisi statistiche sul <em>First-Fit</em> rivelano che per ogni $N$ blocchi allocati, altri $0.5 N$ blocchi andranno persi a causa della frammentazione. Questo significa che fino a <strong>1/3 della memoria</strong> può diventare inutilizzabile!
+      </div>
 
-      <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
+      <p>L'unica soluzione software è la <span class="keyword">Compattazione (Compaction)</span>: spostare i processi in memoria per "spingere" tutti i buchi vuoti da una parte e creare un unico grande blocco libero. Questo è un processo molto costoso in termini di I/O e CPU, ed è possibile <em>solo se</em> l'address binding è di tipo <strong>Execution-time</strong> (ovvero se i processi possono essere rilocati dinamicamente mentre sono in esecuzione).</p>
+    </div>
+
+    <div class="section-block" id="section-4-mem">
+      <h2><span class="dot"></span> Tipologie di Memoria <span class="sub-tag">riepilogo</span></h2>      <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
         <div class="compare-col">
           <div class="compare-col-head teal">Memoria Fisica</div>
           <div class="compare-col-body">
@@ -241,10 +294,24 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════
-       07.03 — FRAMMENTAZIONE INTERNA
+        </div>
+<!-- ══════════════════════════════════════════════════
+       07.05 — PAGINAZIONE & TLB
   ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="section-3">
+
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> TLB e Memory Protection <span class="sub-tag">hardware</span></h2>
+      <p>Nella paginazione, l'indirizzo logico è diviso in <strong>Page number (p)</strong> (usato come indice nella page table) e <strong>Page offset (d)</strong>. Siccome la Page Table risiede in memoria principale (puntata dal registro PTBR - <em>Page-Table Base Register</em>), ogni accesso logico richiederebbe in realtà <strong>due accessi alla RAM</strong>: uno per leggere la Page Table e trovare il frame, e un secondo per accedere al dato reale.</p>
+      
+      <p>Per evitare questo enorme rallentamento, la MMU include una cache hardware associativa piccolissima e superveloce chiamata <span class="keyword">TLB (Translation Look-aside Buffer)</span>. Quando la CPU cerca una pagina, la cerca in parallelo nel TLB. Se la trova (<span class="keyword">TLB hit</span>), si accede subito alla RAM. Se non c'è (<span class="keyword">TLB miss</span>), si consulta la Page Table in RAM, si accede al dato, e si salva la voce nel TLB per il futuro. Le prestazioni sono misurate dall'<span class="keyword">Effective Access Time (EAT)</span>: con un hit ratio del 99%, un accesso di 10ns e un miss di 20ns, l'EAT = 0.99 × 10 + 0.01 × 20 = 10.1 ns (solo l'1% di rallentamento).</p>
+
+      <div class="callout">
+        <span class="callout-icon">⚡</span>
+        Alcuni TLB moderni memorizzano in ogni voce l'<strong style="color:var(--teal)">ASID (Address-Space ID)</strong>. Questo identifica univocamente a quale processo appartiene la traduzione, evitando di dover fare il "flush" (svuotamento) del TLB ad ogni context switch!
+      </div>
+
+      <p>Ogni voce della page table ha dei bit di protezione. Fondamentale è il <span class="keyword">Valid-Invalid bit</span>: se settato a <em>valid</em>, significa che la pagina appartiene allo spazio logico del processo. Se è <em>invalid</em>, l'accesso scatena una trap al SO. Altri bit controllano permessi come <em>read-only</em>, consentendo il concetto di <span class="keyword">Shared Pages</span>: lo stesso codice (es. librerie o editor di testo reentrant) può essere mappato nello spazio di più processi contemporaneamente in sola lettura, risparmiando molta memoria fisica.</p>
+
       <h2><span class="dot"></span> Frammentazione Interna <span class="sub-tag">paginazione</span></h2>
       <p>
         La <span class="keyword">frammentazione interna</span> si verifica quando la memoria assegnata a un processo è
@@ -343,711 +410,36 @@
     </div>
 
     <!-- ══════════════════════════════════════════════════
-       07.04 — FRAMMENTAZIONE ESTERNA
-  ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="section-4">
-      <h2><span class="dot"></span> Frammentazione Esterna <span class="sub-tag">allocazione contigua</span></h2>
-      <p>
-        La <span class="keyword">frammentazione esterna</span> è il problema opposto: la memoria libera totale è
-        sufficiente per soddisfare una richiesta, ma non è fisicamente contigua. Esistono molti piccoli buchi sparsi tra
-        i processi allocati, nessuno dei quali abbastanza grande da solo.
-      </p>
-      <p>
-        È il problema principale dell'<span class="keyword">allocazione contigua</span> (dove ogni processo deve
-        occupare un blocco unico di RAM consecutiva). Dopo molti cicli di allocazione/deallocazione, la RAM si riduce in
-        frammenti inutilizzabili.
-      </p>
-
-      <!-- Illustrazione frammentazione esterna -->
-      <div class="diag-wrap">
-        <svg width="480" height="220" viewBox="0 0 480 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <text x="10" y="14" font-family="JetBrains Mono" font-size="10" fill="rgba(34,211,238,.7)"
-            letter-spacing="1">MEMORIA FISICA — dopo molte allocazioni/deallocazioni</text>
-          <!-- RAM bar verticale -->
-          <!-- blocco 0: Proc A -->
-          <rect x="30" y="24" width="100" height="34" rx="4" fill="rgba(34,211,238,.15)" stroke="rgba(34,211,238,.3)"
-            stroke-width="1.2" />
-          <text x="80" y="45" font-family="JetBrains Mono" font-size="10" fill="#22d3ee" text-anchor="middle">Processo A
-            20 KB</text>
-          <!-- buco 1 -->
-          <rect x="30" y="60" width="100" height="16" rx="3" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.3)"
-            stroke-width="1" stroke-dasharray="4,3" />
-          <text x="80" y="72" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">buco 8
-            KB</text>
-          <!-- blocco: Proc B -->
-          <rect x="30" y="78" width="100" height="50" rx="4" fill="rgba(124,92,252,.12)" stroke="rgba(124,92,252,.3)"
-            stroke-width="1.2" />
-          <text x="80" y="107" font-family="JetBrains Mono" font-size="10" fill="#a78bfa" text-anchor="middle">Processo
-            B 25 KB</text>
-          <!-- buco 2 -->
-          <rect x="30" y="130" width="100" height="10" rx="3" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.3)"
-            stroke-width="1" stroke-dasharray="4,3" />
-          <text x="80" y="139" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">buco 5
-            KB</text>
-          <!-- blocco: Proc C -->
-          <rect x="30" y="142" width="100" height="30" rx="4" fill="rgba(52,211,153,.12)" stroke="rgba(52,211,153,.3)"
-            stroke-width="1.2" />
-          <text x="80" y="161" font-family="JetBrains Mono" font-size="10" fill="#34d399" text-anchor="middle">Processo
-            C 15 KB</text>
-          <!-- buco 3 -->
-          <rect x="30" y="174" width="100" height="12" rx="3" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.3)"
-            stroke-width="1" stroke-dasharray="4,3" />
-          <text x="80" y="184" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">buco 6
-            KB</text>
-          <!-- end -->
-          <rect x="30" y="188" width="100" height="24" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.1)"
-            stroke-width="1" />
-          <text x="80" y="204" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.4)"
-            text-anchor="middle">fine RAM</text>
-
-          <!-- freccia richiesta processo D -->
-          <text x="160" y="130" font-family="Inter" font-size="12" fill="rgba(248,113,113,.9)" font-weight="600">← Vuole
-            entrare:</text>
-          <text x="160" y="148" font-family="JetBrains Mono" font-size="11" fill="#f87171">Processo D 18 KB</text>
-          <text x="160" y="165" font-family="Inter" font-size="11" fill="rgba(200,211,224,.5)">Totale buchi: 8+5+6 = 19
-            KB ✓</text>
-          <text x="160" y="182" font-family="Inter" font-size="11" fill="#f87171">Nessun buco ≥ 18 KB contiguo ✗</text>
-
-          <!-- simbolo X grande -->
-          <circle cx="390" cy="145" r="28" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.35)"
-            stroke-width="2" />
-          <text x="390" y="152" font-family="JetBrains Mono" font-size="28" fill="#f87171" text-anchor="middle"
-            font-weight="700">✗</text>
-
-          <!-- legenda in basso -->
-          <rect x="10" y="207" width="10" height="8" rx="2" fill="rgba(248,113,113,.12)" stroke="rgba(248,113,113,.3)"
-            stroke-width="1" stroke-dasharray="3,2" />
-          <text x="24" y="215" font-family="Inter" font-size="10" fill="rgba(200,211,224,.5)">buco libero (non
-            contiguo)</text>
-        </svg>
-      </div>
-
-      <p>
-        La soluzione tradizionale è la <span class="keyword">compattazione</span>: spostare tutti i processi verso
-        un'estremità della RAM per unire tutti i buchi in uno solo. È efficace ma costosa — richiede di copiare
-        potenzialmente gigabyte di dati e di aggiornare tutti i puntatori. La soluzione moderna è la <span
-          class="keyword">paginazione</span>, che elimina il requisito di contiguità fisica.
-      </p>
-      <div class="card-warning">
-        <div class="header">Attezione</div>
-        <div class="content">
-          <p>
-            La <span class="keyword">regola del 50%</span>: con strategia First-fit, statisticamente circa un
-            terzo dei blocchi va sprecato per frammentazione esterna. Per ogni 2 blocchi allocati, ce n'è circa 1 di
-            frammento libero inutilizzabile.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════
-       07.05 — PAGINAZIONE & PAGE TABLE
-  ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="section-5">
-      <h2><span class="dot"></span> Paginazione &amp; Page Table <span class="sub-tag">soluzione chiave</span></h2>
-      <p>
-        La <span class="keyword">paginazione</span> divide sia la memoria fisica che lo spazio logico in blocchi di
-        dimensione fissa. La RAM fisica è suddivisa in <span class="keyword">frame</span>; lo spazio logico di ogni
-        processo in <span class="keyword">pagine</span> della stessa dimensione. Una <span class="keyword">page
-          table</span> (una per processo) mappa ogni numero di pagina al frame fisico corrispondente. La paginazione
-        elimina completamente la frammentazione esterna — le pagine possono stare in frame qualsiasi, sparsi per la RAM.
-      </p>
-
-      <!-- Split card: schema traduzione -->
-      <div class="split-card">
-        <div class="split-card-text">
-          <p
-            style="font-size:13px;font-weight:600;color:var(--teal);margin-bottom:.75rem;font-family:'JetBrains Mono',monospace;">
-            Struttura dell'indirizzo logico</p>
-          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1rem">Un indirizzo logico a 32 bit con page
-            size 4 KB (2¹²) si divide:</p>
-          <div class="formula-card" style="margin:0 0 1rem">
-            <span class="formula-label">bit 31..12</span>
-            <span class="formula-expr">Page Number (p)</span>
-          </div>
-          <div class="formula-card" style="margin:0">
-            <span class="formula-label">bit 11..0</span>
-            <span class="formula-expr">Offset (d) — 12 bit = 4096 byte</span>
-          </div>
-          <p style="font-size:13px;color:var(--text-secondary);margin-top:1rem">
-            La MMU legge la page table[p] <i class="bi bi-arrow-right"></i> ottiene il frame fisico <code class="inline">f</code>.<br>
-            Indirizzo fisico = <code class="inline">f × 4096 + d</code>
-          </p>
-        </div>
-        <div class="split-card-visual">
-          <svg width="220" height="200" viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- indirizzo logico -->
-            <text x="110" y="14" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)"
-              text-anchor="middle">INDIRIZZO LOGICO</text>
-            <rect x="10" y="20" width="90" height="24" rx="3" fill="rgba(34,211,238,.1)" stroke="rgba(34,211,238,.3)"
-              stroke-width="1" />
-            <text x="55" y="36" font-family="JetBrains Mono" font-size="10" fill="#22d3ee" text-anchor="middle">p (20
-              bit)</text>
-            <rect x="103" y="20" width="50" height="24" rx="3" fill="rgba(251,191,36,.1)" stroke="rgba(251,191,36,.3)"
-              stroke-width="1" />
-            <text x="128" y="36" font-family="JetBrains Mono" font-size="10" fill="#fbbf24"
-              text-anchor="middle">d</text>
-            <rect x="156" y="20" width="54" height="24" rx="3" fill="rgba(251,191,36,.1)" stroke="rgba(251,191,36,.3)"
-              stroke-width="1" />
-            <text x="183" y="36" font-family="JetBrains Mono" font-size="9" fill="#fbbf24" text-anchor="middle">(12
-              bit)</text>
-            <!-- freccia verso page table -->
-            <line x1="55" y1="44" x2="55" y2="70" stroke="rgba(34,211,238,.4)" stroke-width="1.5" />
-            <polygon points="50,68 55,78 60,68" fill="rgba(34,211,238,.4)" />
-            <!-- page table -->
-            <text x="55" y="92" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)"
-              text-anchor="middle">PAGE TABLE</text>
-            <rect x="15" y="98" width="80" height="16" rx="2" fill="rgba(8,8,16,.6)" stroke="rgba(34,211,238,.15)"
-              stroke-width="1" />
-            <text x="55" y="110" font-family="JetBrains Mono" font-size="8" fill="rgba(200,211,224,.4)"
-              text-anchor="middle">p=0 → f=3</text>
-            <rect x="15" y="116" width="80" height="16" rx="2" fill="rgba(34,211,238,.1)" stroke="rgba(34,211,238,.3)"
-              stroke-width="1" />
-            <text x="55" y="128" font-family="JetBrains Mono" font-size="8" fill="#22d3ee" text-anchor="middle">p=1 →
-              f=7 ←</text>
-            <rect x="15" y="134" width="80" height="16" rx="2" fill="rgba(8,8,16,.6)" stroke="rgba(34,211,238,.15)"
-              stroke-width="1" />
-            <text x="55" y="146" font-family="JetBrains Mono" font-size="8" fill="rgba(200,211,224,.4)"
-              text-anchor="middle">p=2 → f=1</text>
-            <!-- freccia verso indirizzo fisico -->
-            <line x1="95" y1="124" x2="130" y2="124" stroke="rgba(52,211,153,.5)" stroke-width="1.5" />
-            <polygon points="128,119 138,124 128,129" fill="rgba(52,211,153,.5)" />
-            <!-- frame + offset -->
-            <text x="175" y="114" font-family="JetBrains Mono" font-size="9" fill="rgba(52,211,153,.7)"
-              text-anchor="middle">FISICO</text>
-            <rect x="140" y="118" width="34" height="20" rx="3" fill="rgba(52,211,153,.1)" stroke="rgba(52,211,153,.3)"
-              stroke-width="1" />
-            <text x="157" y="132" font-family="JetBrains Mono" font-size="10" fill="#34d399"
-              text-anchor="middle">f=7</text>
-            <rect x="177" y="118" width="34" height="20" rx="3" fill="rgba(251,191,36,.08)"
-              stroke="rgba(251,191,36,.25)" stroke-width="1" />
-            <text x="194" y="132" font-family="JetBrains Mono" font-size="10" fill="#fbbf24"
-              text-anchor="middle">d</text>
-            <!-- etichetta finale -->
-            <text x="175" y="158" font-family="JetBrains Mono" font-size="8" fill="rgba(52,211,153,.6)"
-              text-anchor="middle">= 0x7000 + d</text>
-            <!-- TLB hint -->
-            <rect x="10" y="170" width="200" height="22" rx="4" fill="rgba(34,211,238,.05)"
-              stroke="rgba(34,211,238,.15)" stroke-width="1" />
-            <text x="110" y="185" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
-              text-anchor="middle">TLB: cache per traduzioni frequenti</text>
-          </svg>
-        </div>
-      </div>
-
-      <p>
-        La <span class="keyword">page table</span> è una struttura dati che il kernel mantiene in RAM per ogni processo.
-        Con pagine da 4 KB su 32 bit, una page table ha 2²⁰ = 1M entry. Con entry da 4 byte ciascuna, la page table
-        occupa 4 MB per processo — troppo. Per questo i SO moderni usano <span class="keyword">page table
-          multilivello</span> (2 o 4 livelli su x86-64), allocando solo le parti della page table effettivamente usate.
-      </p>
-
-      <div class="algo-card">
-        <div class="algo-card-header">⚡ TLB — Translation Lookaside Buffer</div>
-        <div class="algo-steps">
-          <div class="algo-step"><span class="algo-step-n">1.</span> La CPU genera un indirizzo logico con numero di
-            pagina <code class="inline">p</code>.</div>
-          <div class="algo-step"><span class="algo-step-n">2.</span> La MMU cerca <code class="inline">p</code> nel TLB
-            (cache hardware, ~1 ciclo di clock). Se trovato <i class="bi bi-arrow-right"></i> <strong style="color:#34d399">TLB hit</strong>: frame
-            fisico disponibile immediatamente.</div>
-          <div class="algo-step"><span class="algo-step-n">3.</span> Se non trovato <i class="bi bi-arrow-right"></i> <strong style="color:#f87171">TLB
-              miss</strong>: accesso alla page table in RAM (~100 cicli). Il risultato viene inserito nel TLB.</div>
-          <div class="algo-step"><span class="algo-step-n">4.</span> Con hit rate tipico >99%, l'overhead medio è
-            &lt;1%.</div>
-          <div class="algo-step"><span class="algo-step-n">5.</span> Al context switch: TLB flush (o uso di ASID su ARM
-            per evitare il flush).</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════
-       07.06 — DEMAND PAGING & PAGE FAULT
+       07.06 — STRUTTURA PAGE TABLE
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-6">
-      <h2><span class="dot"></span> Demand Paging &amp; Page Fault <span class="sub-tag">memoria virtuale</span></h2>
-      <p>
-        Il <span class="keyword">demand paging</span> è la tecnica che permette di caricare in RAM solo le pagine di un
-        processo che sono effettivamente richieste, invece di caricare l'intero programma all'avvio. Le pagine non
-        ancora caricate risiedono su disco (nella <em>swap area</em> o nel file eseguibile) e vengono portate in RAM
-        solo al primo accesso.
-      </p>
-
-      <div class="callout ok">
-        <span class="callout-icon">✅</span>
-        Il demand paging permette di eseguire processi più grandi della RAM disponibile, e di avviare i programmi più
-        velocemente (solo le pagine necessarie vengono caricate subito).
-      </div>
-
-      <p>
-        Ogni entry della page table ha un <span class="keyword">valid/invalid bit</span>. Se il processo accede a una
-        pagina con bit = invalid, la MMU genera un'eccezione hardware: il <span class="keyword">page fault</span>.
-      </p>
-
-      <div class="algo-card">
-        <div class="algo-card-header">🔄 Sequenza gestione Page Fault</div>
-        <div class="algo-steps">
-          <div class="algo-step"><span class="algo-step-n">1.</span> Il processo accede a un indirizzo logico <i class="bi bi-arrow-right"></i> la
-            pagina ha valid bit = 0.</div>
-          <div class="algo-step"><span class="algo-step-n">2.</span> La MMU genera un'eccezione di <strong
-              style="color:#f87171">page fault</strong>. Il controllo passa al kernel.</div>
-          <div class="algo-step"><span class="algo-step-n">3.</span> Il kernel verifica: è un accesso valido (la pagina
-            appartiene al processo)? Se no <i class="bi bi-arrow-right"></i> segmentation fault, il processo viene terminato.</div>
-          <div class="algo-step"><span class="algo-step-n">4.</span> Il kernel cerca un <strong
-              style="color:#22d3ee">frame libero</strong> in RAM. Se non c'è <i class="bi bi-arrow-right"></i> page replacement (scegli una pagina
-            vittima da rimuovere).</div>
-          <div class="algo-step"><span class="algo-step-n">5.</span> Il kernel carica la pagina mancante da disco nel
-            frame trovato.</div>
-          <div class="algo-step"><span class="algo-step-n">6.</span> Aggiorna la page table: imposta il frame number e
-            valid bit = 1.</div>
-          <div class="algo-step"><span class="algo-step-n">7.</span> Riprende l'esecuzione del processo dall'istruzione
-            che aveva causato il fault.</div>
-        </div>
-      </div>
-
-      <!-- Terminal: esempio page fault log -->
-      <div class="terminal-card">
-        <div class="terminal-header">
-          <span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span>
-          <span>kernel: page fault handler</span>
-        </div>
-        <div class="terminal-body">
-          <span class="t-comment">// processo 1234 accede a 0x00C04000</span><br>
-          <span class="t-key">page_fault</span>(<span class="t-val">pid</span>=1234, <span
-            class="t-val">addr</span>=<span class="t-addr">0x00C04000</span>)<br>
-          &nbsp;&nbsp;<span class="t-comment">// check VMA: indirizzo appartiene al processo?</span><br>
-          &nbsp;&nbsp;vma lookup <i class="bi bi-arrow-right"></i> <span class="t-ok">OK</span> <span class="t-comment">(heap region)</span><br>
-          &nbsp;&nbsp;<span class="t-comment">// cerca frame libero</span><br>
-          &nbsp;&nbsp;free_frame <i class="bi bi-arrow-right"></i> <span class="t-ok">frame #42</span><br>
-          &nbsp;&nbsp;<span class="t-comment">// carica pagina da swap</span><br>
-          &nbsp;&nbsp;swap_in <i class="bi bi-arrow-right"></i> <span class="t-ok">disk block 0x1F2 <i class="bi bi-arrow-right"></i> frame #42</span> <span
-            class="t-dim">[~5ms]</span><br>
-          &nbsp;&nbsp;<span class="t-comment">// aggiorna page table</span><br>
-          &nbsp;&nbsp;pte[0xC04] = <span class="t-ok">{ frame:42, valid:1, dirty:0 }</span><br>
-          &nbsp;&nbsp;<span class="t-comment">// riprende il processo</span><br>
-          <span class="t-ok">resume</span> pid=1234 @ <span class="t-addr">0x00C04000</span>
-        </div>
-      </div>
-
-      <div class="callout warn">
-        <span class="callout-icon">⚠️</span>
-        Il page fault richiede un accesso al disco (~5-10 ms), mentre un normale accesso RAM è ~100 ns — un fattore
-        50.000x più lento. Minimizzare i page fault è critico per le prestazioni.
-      </div>
+      <h2><span class="dot"></span> Strutture della Page Table <span class="sub-tag">gestire lo spazio</span></h2>
+      <p>Poiché le page table per i processi a 32 o 64 bit diventerebbero giganti se memorizzate in un array continuo (es. 4MB a processo per 32 bit con page size 4KB), si usano 3 approcci per strutturarle:</p>
+      <ul>
+        <li><span class="keyword">Hierarchical Paging</span>: L'indirizzo logico è diviso in più livelli. Ad esempio su un sistema a 32 bit, i primi 10 bit indicano l'indice nella <em>outer page table</em>, i successivi 10 bit indicano l'indice nella <em>inner page table</em>, e i restanti 12 bit l'offset. Si allocano solo le inner page table effettivamente usate, risparmiando moltissima RAM.</li>
+        <li><span class="keyword">Hashed Page Tables</span>: Ideale per indirizzi > 32 bit. Il page number viene processato da un hash che punta a una catena di elementi. Si confronta il page number con quello memorizzato nella entry della catena per trovare il frame corrispondente.</li>
+        <li><span class="keyword">Inverted Page Tables (IPT)</span>: C'è <em>una singola tabella</em> per l'intera memoria fisica, con una entry per ogni <strong>frame</strong>. L'entry contiene l'ID del processo (ASID o PID) e il page number logico. Riduce drasticamente la RAM usata per le tabelle (dimensione fissa dipendente dalla RAM fisica), ma aumenta il tempo di ricerca (mitigato con l'hashing).</li>
+      </ul>
     </div>
-
-    <!-- ══════════════════════════════════════════════════
-       07.07 — PAGE REPLACEMENT
+<!-- ══════════════════════════════════════════════════
+       07.07 — SWAPPING
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-7">
-      <h2><span class="dot"></span> Page Replacement <span class="sub-tag">quando la RAM è piena</span></h2>
-      <p>
-        Quando la RAM è piena e occorre caricare una nuova pagina, il kernel deve scegliere una pagina <span
-          class="keyword">vittima</span> da rimuovere. Se la pagina vittima è stata modificata (il suo <span
-          class="keyword">dirty bit</span> è 1), deve essere scritta su disco prima di essere sovrascritta. Se non è
-        stata modificata, può essere scartata direttamente.
-      </p>
-
-      <div class="compare-grid">
-        <div class="compare-col">
-          <div class="compare-col-head coral">Obiettivo: minimizzare page fault</div>
-          <div class="compare-col-body">
-            <div class="compare-row">L'algoritmo ottimale (OPT) rimpiazza la pagina che non verrà usata per il tempo più
-              lungo. Non implementabile in tempo reale (richiede conoscenza del futuro).</div>
-            <div class="compare-row">Usato come benchmark teorico per confrontare algoritmi reali.</div>
-            <div class="compare-row">Un buon algoritmo di replacement si avvicina il più possibile a OPT.</div>
-          </div>
-        </div>
-        <div class="compare-col">
-          <div class="compare-col-head green">Dirty bit &amp; costo</div>
-          <div class="compare-col-body">
-            <div class="compare-row">Se dirty=0: la pagina è identica alla copia su disco <i class="bi bi-arrow-right"></i> basta marcarla libera (0
-              I/O).</div>
-            <div class="compare-row">Se dirty=1: la pagina è stata modificata <i class="bi bi-arrow-right"></i> va scritta su disco prima di liberarla
-              (~5 ms).</div>
-            <div class="compare-row">Un buon algoritmo preferisce vittime con dirty=0 per ridurre gli I/O.</div>
-          </div>
-        </div>
-      </div>  
-
-      <p>
-        Esistono due tipi di page replacement: <span class="keyword">locale</span> (la pagina vittima appartiene allo
-        stesso processo che ha causato il fault) e <span class="keyword">globale</span> (la vittima può appartenere a
-        qualsiasi processo). Il replacement globale è usato da Linux e Windows perché permette di adattare dinamicamente
-        la quantità di frame per processo.
-      </p>
+      <h2><span class="dot"></span> Swapping <span class="sub-tag">backing store</span></h2>
+      <p>Quando la RAM fisica non è sufficiente per contenere tutti i processi attivi, il SO sfrutta uno spazio su disco (chiamato <span class="keyword">backing store</span> o area di swap). Un processo (o una porzione di esso) viene temporaneamente <strong>swapped out</strong> dalla RAM al disco, e poi <strong>swapped in</strong> quando deve essere nuovamente eseguito.</p>
+      <p>Nello <em>standard swapping</em> viene mosso l'intero processo. Questo è costosissimo per il context switch (trasferire decine di MB da disco richiede tempo). I SO moderni implementano perciò lo <strong>swapping with paging</strong>: vengono scambiate solo le singole pagine necessarie in modo granulare, un approccio che fa da base per il <em>Demand Paging</em> (approfondito nel prossimo capitolo sulla Virtual Memory).</p>
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        Il context-switch time con lo swapping tradizionale è elevatissimo. Se si sposta su disco l'intero processo, la coda del ready queue è limitata alla velocità dell'Hard Disk / SSD.
+      </div>
     </div>
-
-    <!-- ══════════════════════════════════════════════════
-       07.08 — LRU & SECONDA CHANCE
+<!-- ══════════════════════════════════════════════════
+       07.08 — SEGMENTAZIONE & INTEL X86
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-8">
-      <h2><span class="dot"></span> Algoritmi: LRU &amp; Seconda Chance <span class="sub-tag">implementazione</span> <span class="sub-tag">fondamentale</span>
-      </h2>
-
-      <p>
-        L'algoritmo <span class="keyword">LRU (Least Recently Used)</span> rimpiazza la pagina che non è stata usata da
-        più tempo. Si basa sul principio di <em>locality of reference</em>: le pagine usate di recente hanno più
-        probabilità di essere usate ancora a breve. LRU approssima bene l'algoritmo OPT.
-      </p>
-
-      <!-- Esempio LRU numerico -->
-      <p style="font-size:13px;color:var(--text-muted);margin-bottom:.5rem">
-        Esempio: 3 frame disponibili, sequenza di accessi: 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3
-      </p>
-      <div style="overflow-x:auto">
-        <table class="lru-table">
-          <thead>
-            <tr>
-              <th>Accesso</th>
-              <th>Frame 0</th>
-              <th>Frame 1</th>
-              <th>Frame 2</th>
-              <th>Evento</th>
-              <th>Vittima</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>7</td>
-              <td>7</td>
-              <td>—</td>
-              <td>—</td>
-              <td class="fault">FAULT</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>0</td>
-              <td>7</td>
-              <td>0</td>
-              <td>—</td>
-              <td class="fault">FAULT</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>7</td>
-              <td>0</td>
-              <td>1</td>
-              <td class="fault">FAULT</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>2</td>
-              <td>0</td>
-              <td>1</td>
-              <td class="fault">FAULT</td>
-              <td class="evict">evict 7</td>
-            </tr>
-            <tr>
-              <td>0</td>
-              <td>2</td>
-              <td>0</td>
-              <td>1</td>
-              <td class="hit">HIT</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>2</td>
-              <td>0</td>
-              <td>3</td>
-              <td class="fault">FAULT</td>
-              <td class="evict">evict 1</td>
-            </tr>
-            <tr>
-              <td>0</td>
-              <td>2</td>
-              <td>0</td>
-              <td>3</td>
-              <td class="hit">HIT</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>4</td>
-              <td>0</td>
-              <td>3</td>
-              <td class="fault">FAULT</td>
-              <td class="evict">evict 2</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>4</td>
-              <td>2</td>
-              <td>3</td>
-              <td class="fault">FAULT</td>
-              <td class="evict">evict 0</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>4</td>
-              <td>2</td>
-              <td>3</td>
-              <td class="hit">HIT</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>0</td>
-              <td>0</td>
-              <td>2</td>
-              <td>3</td>
-              <td class="fault">FAULT</td>
-              <td class="evict">evict 4</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>0</td>
-              <td>2</td>
-              <td>3</td>
-              <td class="hit">HIT</td>
-              <td>—</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p style="font-size:12px;color:var(--text-muted);margin-top:.5rem">Totale: 8 page fault su 12 accessi. HIT rate =
-        33%.</p>
-
-      <p style="margin-top:1.5rem">
-        LRU puro richiede di marcare ogni accesso a ogni pagina con un timestamp — impossibile implementarlo
-        efficientemente in hardware. Si usano due approssimazioni pratiche:
-      </p>
-
-      <div class="algo-card" style="margin-top:1rem">
-        <div class="algo-card-header">🔄 Algoritmo Seconda Chance (Clock Algorithm)</div>
-        <div class="algo-steps">
-          <div class="algo-step"><span class="algo-step-n">1.</span> I frame sono organizzati in un buffer circolare
-            (come un orologio). Ogni frame ha un <strong style="color:#22d3ee">reference bit (R)</strong>, settato a 1
-            dall'hardware ogni volta che la pagina viene acceduta.</div>
-          <div class="algo-step"><span class="algo-step-n">2.</span> Quando serve una vittima, la lancetta dell'orologio
-            avanza.</div>
-          <div class="algo-step"><span class="algo-step-n">3.</span> Se la pagina puntata ha R=1: <em>seconda
-              chance</em> — azzera R a 0, avanza la lancetta senza rimpiazzare. La pagina ottiene un'altra opportunità.
-          </div>
-          <div class="algo-step"><span class="algo-step-n">4.</span> Se la pagina puntata ha R=0: è la vittima — viene
-            rimpiazzata.</div>
-          <div class="algo-step"><span class="algo-step-n">5.</span> Nel caso peggiore (tutti R=1), la lancetta fa un
-            giro completo e rimpiazza la prima pagina (ora R=0).</div>
-        </div>
-      </div>
-
-      <!-- Clock algorithm SVG -->
-      <div class="diag-wrap">
-        <svg width="320" height="200" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <text x="160" y="14" font-family="JetBrains Mono" font-size="10" fill="rgba(34,211,238,.6)"
-            text-anchor="middle">CLOCK ALGORITHM — 8 frame</text>
-          <!-- cerchio -->
-          <circle cx="160" cy="108" r="72" fill="none" stroke="rgba(34,211,238,.15)" stroke-width="1.5" />
-          <!-- 8 frame sul cerchio -->
-          <!-- calcoliamo le posizioni: angoli 0°,45°,90°,... -->
-          <!-- frame 0: top (270°) -->
-          <rect x="140" y="30" width="40" height="22" rx="4" fill="rgba(34,211,238,.1)" stroke="rgba(34,211,238,.3)"
-            stroke-width="1.2" />
-          <text x="160" y="45" font-family="JetBrains Mono" font-size="9" fill="#22d3ee" text-anchor="middle">p5
-            R=1</text>
-          <!-- frame 1: top-right (315°) -->
-          <rect x="195" y="43" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
-            stroke-width="1" />
-          <text x="215" y="58" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
-            text-anchor="middle">p2 R=1</text>
-          <!-- frame 2: right (0°) -->
-          <rect x="215" y="97" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
-            stroke-width="1" />
-          <text x="235" y="112" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
-            text-anchor="middle">p8 R=1</text>
-          <!-- frame 3: bottom-right (45°) -->
-          <rect x="195" y="150" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
-            stroke-width="1" />
-          <text x="215" y="165" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
-            text-anchor="middle">p3 R=0</text>
-          <!-- frame 4: bottom (90°) -->
-          <rect x="140" y="170" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
-            stroke-width="1" />
-          <text x="160" y="185" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
-            text-anchor="middle">p7 R=1</text>
-          <!-- frame 5: bottom-left -->
-          <rect x="85" y="150" width="40" height="22" rx="4" fill="rgba(34,211,238,.06)" stroke="rgba(34,211,238,.15)"
-            stroke-width="1" />
-          <text x="105" y="165" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
-            text-anchor="middle">p1 R=1</text>
-          <!-- frame 6: left -->
-          <rect x="65" y="97" width="40" height="22" rx="4" fill="rgba(248,113,113,.12)" stroke="rgba(248,113,113,.35)"
-            stroke-width="1.5" />
-          <text x="85" y="112" font-family="JetBrains Mono" font-size="9" fill="#f87171" text-anchor="middle">p4
-            R=0</text>
-          <!-- frame 7: top-left -->
-          <rect x="85" y="43" width="40" height="22" rx="4" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.25)"
-            stroke-width="1" />
-          <text x="105" y="58" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)"
-            text-anchor="middle">p6 R=1</text>
-          <!-- lancetta orologio -->
-          <line x1="160" y1="108" x2="79" y2="110" stroke="rgba(251,191,36,.8)" stroke-width="2.5"
-            stroke-linecap="round" />
-          <circle cx="160" cy="108" r="4" fill="rgba(251,191,36,.9)" />
-          <!-- etichetta lancetta -->
-          <text x="56" y="128" font-family="JetBrains Mono" font-size="8" fill="#fbbf24"><i class="bi bi-arrow-left"></i> lancetta</text>
-          <!-- etichetta vittima -->
-          <text x="4" y="80" font-family="JetBrains Mono" font-size="8" fill="#f87171">vittima!</text>
-          <text x="4" y="91" font-family="JetBrains Mono" font-size="8" fill="#f87171">R=0</text>
-        </svg>
-      </div>
-      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:-.5rem">La lancetta punta a p4
-        (R=0): è la vittima. Le pagine con R=1 ricevono seconda chance (R<i class="bi bi-arrow-right"></i>0) e la lancetta avanza.</p>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════
-       07.09 — FREQUENZA DEI PAGE FAULT
-  ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="section-9">
-      <h2><span class="dot"></span> Frequenza dei Page Fault <span class="sub-tag">controllo del thrashing</span></h2>
-      <p>
-        La <span class="keyword">frequenza dei page fault (PFF)</span> misura quanti page fault per unità di tempo
-        genera un processo. È l'indicatore principale per decidere se un processo ha troppa poca o troppa RAM.
-      </p>
-
-      <!-- SVG: curva PFF vs frame -->
-      <div class="diag-wrap">
-        <svg width="480" height="200" viewBox="0 0 480 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- assi -->
-          <line x1="50" y1="160" x2="450" y2="160" stroke="rgba(34,211,238,.2)" stroke-width="1.5" />
-          <line x1="50" y1="20" x2="50" y2="162" stroke="rgba(34,211,238,.2)" stroke-width="1.5" />
-          <!-- label assi -->
-          <text x="240" y="182" font-family="Inter" font-size="11" fill="rgba(200,211,224,.5)"
-            text-anchor="middle">Numero di frame assegnati</text>
-          <text x="14" y="90" font-family="Inter" font-size="10" fill="rgba(200,211,224,.5)" text-anchor="middle"
-            transform="rotate(-90,14,90)">Page Fault Rate</text>
-          <!-- curva iperbolica approssimata -->
-          <path d="M 60 25 C 80 25, 100 40, 120 65 C 150 100, 180 128, 220 142 C 270 155, 330 158, 440 160"
-            stroke="rgba(34,211,238,.7)" stroke-width="2.5" fill="none" stroke-linecap="round" />
-          <!-- soglia alta (troppo pochi frame <i class="bi bi-arrow-right"></i> thrashing) -->
-          <line x1="50" y1="55" x2="450" y2="55" stroke="rgba(248,113,113,.35)" stroke-width="1"
-            stroke-dasharray="6,4" />
-          <text x="455" y="58" font-family="JetBrains Mono" font-size="9" fill="#f87171">limite alto</text>
-          <!-- soglia bassa (troppi frame <i class="bi bi-arrow-right"></i> spreco) -->
-          <line x1="50" y1="140" x2="450" y2="140" stroke="rgba(52,211,153,.35)" stroke-width="1"
-            stroke-dasharray="6,4" />
-          <text x="455" y="143" font-family="JetBrains Mono" font-size="9" fill="#34d399">limite basso</text>
-          <!-- zona ottimale -->
-          <rect x="50" y="55" width="400" height="85" fill="rgba(34,211,238,.04)" stroke="none" />
-          <text x="240" y="100" font-family="Inter" font-size="11" fill="rgba(34,211,238,.6)" text-anchor="middle">zona
-            ottimale — PFF controllata</text>
-          <!-- zona thrashing -->
-          <rect x="50" y="20" width="100" height="35" fill="rgba(248,113,113,.06)" stroke="none" />
-          <text x="100" y="42" font-family="JetBrains Mono" font-size="9" fill="#f87171"
-            text-anchor="middle">THRASHING</text>
-          <!-- tick x -->
-          <line x1="150" y1="158" x2="150" y2="162" stroke="rgba(34,211,238,.3)" stroke-width="1" />
-          <text x="150" y="172" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)"
-            text-anchor="middle">pochi</text>
-          <line x1="300" y1="158" x2="300" y2="162" stroke="rgba(34,211,238,.3)" stroke-width="1" />
-          <text x="300" y="172" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)"
-            text-anchor="middle">molti</text>
-        </svg>
-      </div>
-
-      <p>
-        Il kernel usa la PFF per il <span class="keyword">frame allocation control</span>:
-      </p>
-
-      <div class="compare-grid">
-        <div class="compare-col">
-          <div class="compare-col-head coral">PFF troppo alta <i class="bi bi-arrow-right"></i> thrashing</div>
-          <div class="compare-col-body">
-            <div class="compare-row">Il processo genera page fault così frequentemente che passa più tempo ad aspettare
-              I/O che ad eseguire.</div>
-            <div class="compare-row">Il kernel alloca più frame al processo, o sospende altri processi per liberare RAM.
-            </div>
-            <div class="compare-row">Se tutto il sistema è in thrashing <i class="bi bi-arrow-right"></i> swap storm: la CPU è quasi inattiva mentre il
-              disco è al 100%.</div>
-          </div>
-        </div>
-        <div class="compare-col">
-          <div class="compare-col-head green">PFF troppo bassa <i class="bi bi-arrow-right"></i> spreco</div>
-          <div class="compare-col-body">
-            <div class="compare-row">Il processo ha più frame di quanti ne usa il suo working set.</div>
-            <div class="compare-row">Il kernel può riallocare frame a processi che ne hanno più bisogno.</div>
-            <div class="compare-row">Indica potenziale per caricare più processi in RAM simultaneamente (aumento del
-              grado di multiprogrammazione).</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-formula">
-        <div class="header">Formula</div>
-        <div class="content">
-          <div class="formula-text">$EAT = (1−p)·t_{mem} + p·t_{fault}$</div>
-          <!-- <div class="formula-desc">Tempo effettivo di accesso, dove $p=P(page fault), t_mem≈100ns, t_fault≈10ms$ -->
-          <div class="formula-desc">Tempo effettivo di accesso, dove $p=\mathbb{P}(page fault), t_{mem}\approx 100ns, t_{fault}\approx 10ms$
-          </div>
-          <div class="formula-desc"><span class="badge">anche 0.1% di fault <i class="bi bi-arrow-right"></i> EAT 100× peggiore</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════
-       07.10 — WORKING SET MODEL
-  ══════════════════════════════════════════════════ -->
-    <div class="section-block" id="section-10">
-      <h2><span class="dot"></span> Working Set Model <span class="sub-tag">locality</span></h2>
-      <p>
-        Il <span class="keyword">working set model</span> si basa sul principio di <span class="keyword">locality of
-          reference</span>: durante qualsiasi finestra temporale, un processo usa solo un piccolo sottoinsieme delle sue
-        pagine. Il <span class="keyword">working set $W(t, \Delta)$</span> è l'insieme delle pagine usate nelle ultime Δ unità
-        di tempo (la <em>finestra temporale</em>).
-      </p>
-      <p>
-        La dimensione del working set <span class="keyword">$|W(t, \Delta)|$</span> indica quanti frame il processo ha bisogno
-        in questo momento per girare senza thrashing. Se la somma dei working set di tutti i processi supera il numero
-        di frame disponibili $\rightarrow$ thrashing inevitabile.
-      </p>
-
-      <!-- Illustrazione working set -->
-      <p style="font-size:13px;color:var(--text-muted);margin-bottom:.75rem">
-        Sequenza di riferimenti a pagine: <strong style="color:#22d3ee">1, 2, 1, 5, 7, 7, 1, 3, 4, 3, 4, 4, 3, 4, 5, 4,
-          1, 6, 3, 7</strong><br>
-        Finestra temporale $\Delta$ = 5 accessi. La finestra scorre sull'accesso corrente (cursore giallo):
-      </p>
-
-      <div class="ws-window" id="ws-demo">
-        <!-- generato da JS -->
-      </div>
-      <div id="ws-info"
-        style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);margin:.5rem 0 1rem"></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button id="ws-prev"
-          style="padding:5px 14px;font-size:12px;font-family:'JetBrains Mono',monospace;border-radius:6px;border:1px solid rgba(34,211,238,.3);background:rgba(34,211,238,.07);color:#22d3ee;cursor:pointer"><i class="bi bi-arrow-left"></i>
-          prev</button>
-        <button id="ws-next"
-          style="padding:5px 14px;font-size:12px;font-family:'JetBrains Mono',monospace;border-radius:6px;border:1px solid rgba(34,211,238,.3);background:rgba(34,211,238,.07);color:#22d3ee;cursor:pointer">next
-          <i class="bi bi-arrow-right"></i></button>
-        <span id="ws-pos"
-          style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(34,211,238,.5);align-self:center"></span>
-      </div>
-
-      <div class="algo-card" style="margin-top:1.75rem">
-        <div class="algo-card-header">📐 Working Set <i class="bi bi-arrow-right"></i> Frame Allocation</div>
-        <div class="algo-steps">
-          <div class="algo-step"><span class="algo-step-n">1.</span> Il kernel stima periodicamente <code
-              class="inline">|W(t, Δ)|</code> per ogni processo tramite i reference bit (approssimazione con interrupt
-            periodici).</div>
-          <div class="algo-step"><span class="algo-step-n">2.</span> Calcola D = Σ|Wi| (somma dei working set di tutti i
-            processi).</div>
-          <div class="algo-step"><span class="algo-step-n">3.</span> Se D > numero frame totali <i class="bi bi-arrow-right"></i> thrashing. Sospendi un
-            processo per liberare i suoi frame.</div>
-          <div class="algo-step"><span class="algo-step-n">4.</span> Se D &lt;&lt; frame totali <i class="bi bi-arrow-right"></i> carica un nuovo
-            processo per aumentare l'utilizzo della CPU.</div>
-          <div class="algo-step"><span class="algo-step-n">5.</span> Linux implementa questo con la <strong
-              style="color:#22d3ee">swap tendency</strong> e il <strong style="color:#22d3ee">kswapd daemon</strong> che
-            agisce in base alla memoria libera disponibile.</div>
-        </div>
-      </div>
-
-      <div class="callout">
-        <span class="callout-icon">🎯</span>
-        Il working set cambia nel tempo man mano che il programma entra in fasi diverse (es. inizializzazione <i class="bi bi-arrow-right"></i> loop
-        principale <i class="bi bi-arrow-right"></i> I/O <i class="bi bi-arrow-right"></i> cleanup). Il kernel deve tracciarlo dinamicamente e riallocare i frame di conseguenza.
-      </div>
+      <h2><span class="dot"></span> Segmentazione e Intel x86 <span class="sub-tag">hardware</span></h2>
+      <p>La <span class="keyword">Segmentazione</span> organizza la memoria in segmenti di dimensione variabile (es. un segmento per il codice, uno per i dati globali, uno per lo stack). L'indirizzo logico è formato da <code class="inline">&lt;segment-number, offset&gt;</code>. Ogni voce nella segment table ha una <em>base</em> e un <em>limit</em> per protezione. Questo modello è intuitivo per il programmatore, ma soffre di frammentazione esterna.</p>
+      <p>L'architettura <strong>Intel x86 (IA-32)</strong> risolve i problemi unendo Segmentazione e Paginazione. La segmentazione è obbligatoria per hardware (Local/Global Descriptor Table LDT/GDT), producendo un indirizzo lineare. L'indirizzo lineare attraversa poi un paging gerarchico a due livelli (page directory e page table) per generare l'indirizzo fisico in RAM, eliminando la frammentazione esterna. Nelle moderne architetture x86-64, la segmentazione è stata sostanzialmente disabilitata (flat memory model), usando solo paging a 4 livelli (e 5 livelli nei sistemi più recenti).</p>
     </div>
 
     <!-- NAVIGATION -->
@@ -1065,53 +457,6 @@
   </footer>
 
   <!-- ═══════ SCRIPTS ═══════ -->
-  <script src="/shared/katchkit.js"></script>
-  <script>
-    (function(){
-      // I dati specifici per il tuo esempio
-      var refs = [1,2,1,5,7,7,1,3,4,3,4,4,3,4,5,4,1,6,3,7];
-      var delta = 5;
-      var cursor = delta - 1; // parte dalla posizione 4
-
-      function update() {
-        var wrap = document.getElementById('ws-demo');
-        var info = document.getElementById('ws-info');
-        var pos  = document.getElementById('ws-pos');
-        if (!wrap) return;
-
-        // Costruisce le celle visive
-        var html = '';
-        var windowStart = Math.max(0, cursor - delta + 1);
-        for (var i = 0; i < refs.length; i++) {
-          var cls = 'ws-cell';
-          if (i === cursor) cls += ' cursor';
-          else if (i >= windowStart && i < cursor) cls += ' active';
-          html += '<div class="' + cls + '">' + refs[i] + '</div>';
-        }6
-        wrap.innerHTML = html;
-
-        // Calcola il working set corrente (rimuove i duplicati)
-        var ws = {};
-        for (var j = windowStart; j <= cursor; j++) ws[refs[j]] = true;
-        var wsArr = Object.keys(ws).sort(function(a,b){return a-b;});
-
-        // Aggiorna il testo informativo
-        info.textContent = 'Finestra [t-' + (delta-1) + '..t] $\\rightarrow$ W = { ' + wsArr.join(', ') + ' }  $\\rightarrow$  |W| = ' + wsArr.length + ' frame necessari';
-        pos.textContent = 'accesso ' + (cursor+1) + '/' + refs.length;
-      }
-
-      // Event Listeners per i pulsanti Prev e Next
-      document.getElementById('ws-next').addEventListener('click', function(){
-        if (cursor < refs.length - 1) { cursor++; update(); }
-      });
-      document.getElementById('ws-prev').addEventListener('click', function(){
-        if (cursor > delta - 1) { cursor--; update(); }
-      });
-      
-      // Inizializza la demo all'apertura della pagina
-      update();
-    }());
-  </script>
   <script src="/shared/katchkit.js"></script>
 </body>
 

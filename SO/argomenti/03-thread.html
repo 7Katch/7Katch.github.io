@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -27,6 +27,7 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
@@ -239,33 +240,58 @@
 
 
     <div class="section-block" id="section-10">
-      <h2><span class="dot"></span> Librerie Thread</h2>
+      <h2><span class="dot"></span> Librerie Thread (Pthreads)</h2>
       <p>
-        Esistono delle librerie che prevedono al programmatore un API per accedere e gestire i thread
-        Un esempio è la libreria <code class="inline">PThreads</code> a.k.a. <code class="inline">POSIX Threads</code>
+        I thread a livello utente sono gestiti tramite API fornite da specifiche librerie. La più nota in ambiente UNIX (Linux, macOS) è <code class="inline">Pthreads</code> (POSIX Threads, IEEE 1003.1c). È importante notare che Pthreads <strong>è solo una specifica</strong>, non un'implementazione (che è demandata al creatore della libreria o del SO). In ambiente Microsoft esiste invece la Windows Thread API.
       </p>
+      <p>
+        Nel mondo reale e nei laboratori, Pthreads si usa per creare programmi multithreading in C. Di seguito l'idioma tipico:
+      </p>
+      <pre><code>#include &lt;pthread.h&gt;
+#include &lt;stdio.h&gt;
+
+int sum = 0; // Dato condiviso tra i thread
+
+void *runner(void *param) {
+    /* Il thread esegue questo codice */
+    sum += 1;
+    pthread_exit(0);
+}
+
+int main(int argc, char *argv[]) {
+    pthread_t tid; // Identificatore del thread
+    pthread_attr_t attr; // Attributi del thread
+
+    pthread_attr_init(&attr);
+    // Creazione del thread, esecuzione della funzione runner
+    pthread_create(&tid, &attr, runner, argv[1]);
+    
+    // Il processo aspetta la terminazione del thread
+    pthread_join(tid, NULL);
+    printf("Sum = %d\n", sum);
+}</code></pre>
+      <p>Nel codice sopra, il problema critico è che <code class="inline">sum</code> è una risorsa condivisa. Senza adeguate protezioni, se più thread accedono e modificano contemporaneamente la variabile, si verifica una <span class="keyword">race condition</span>.</p>
     </div>
 
     <div class="section-block" id="section-11">
       <h2><span class="dot"></span> Implicit Threading</h2>
-      <p>I programmatori potrebbero creare e terminare i threads in modo implicito e a lungo andare potrebbe risultare
-        difficile effettuare i debugging</p>
+      <p>Creare e gestire esplicitamente centinaia di thread in applicazioni complesse diventa impraticabile e propenso ad errori (bug, race conditions sfuggenti). La soluzione è l'<span class="keyword">Implicit Threading</span>: il programmatore identifica i task parallelizzabili, ma lascia la creazione e la gestione dei thread al compilatore e alle librerie di runtime.</p>
       <div class="card-def">
-        <div class="header">soluzione</div>
+        <div class="header">Soluzioni Principali</div>
         <div class="content">
-          <p>Si possono optare per le seguenti soluzioni</p>
           <ol>
-            <li>Fork-join</li>
-            <li>Thread-pools</li>
-            <li>OpenMP</li>
+            <li><strong>Fork-Join:</strong> il thread principale si biforca e poi attende.</li>
+            <li><strong>Thread-pools:</strong> riutilizzo di thread preesistenti.</li>
+            <li><strong>OpenMP:</strong> direttive del compilatore C/C++ (<code class="inline">#pragma omp parallel</code>) che parallelizzano automaticamente i blocchi di codice in base ai core disponibili.</li>
+            <li><strong>Apple GCD (Grand Central Dispatch):</strong> tecnologia per macOS/iOS che accoda task in dispatch queue gestite da un thread pool del sistema operativo.</li>
+            <li><strong>Intel TBB:</strong> template library per programmazione parallela in C++.</li>
           </ol>
         </div>
       </div>
     </div>
     <div class="section-block" id="section-12">
       <h2><span class="dot"></span> Modello Fork-join</h2>
-      <p>Al thread viene chiamato il <code class="inline">fork()</code> e successivamente il <code
-          class="inline">join()</code></p>
+      <p>Il thread principale (parent) "biforca" (fork) uno o più thread figli per eseguire task concorrenti, per poi chiamare una <code class="inline">join()</code> e attendere la loro terminazione prima di proseguire. È un modello sincrono ed è l'equivalente per i thread del <em>fork-wait</em> usato per i processi.</p>
       <div class="kk-flex-media">
         <img src="../risorse/img9.png" alt="" srcset="">
       </div>
@@ -285,19 +311,14 @@
     </div>
     <div class="section-block" id="section-14">
       <h2><span class="dot"></span> Problemi con il Threading</h2>
-      <p>
-        1.	Semantica e comportamento delle system calls fork() e exec()
-          a.	I fork creano una copia di tutti threads, o solo del thread chiamante?
-          2.	Segnali
-          a.	I software interrupt per comunicare gli eventi tra i processi
-          3.	Cancellazione Thread
-          a.	Un thread può terminare immediatamente oppure controllare periodicamente se deve essere cancellato
-          4.	Thread-local-storage (TLS)
-          a.	Storage unico per ogni thread
-          5.	Attivazioni scheduler
-          a.	Comunicazione tra il kernel thread e lo user-threads
-
-      </p>
+      <p>Lo sviluppo di applicazioni multithread comporta diverse sfide architetturali:</p>
+      <ol>
+        <li><strong>Semantica di fork() e exec():</strong> Se un thread chiama <code class="inline">fork()</code>, il nuovo processo duplica tutti i thread o solo quello chiamante? Spesso UNIX offre due versioni della system call per gestire entrambi gli scenari.</li>
+        <li><strong>Gestione dei segnali:</strong> In un processo a singolo thread i segnali (software interrupt) vengono gestiti in modo diretto. Con più thread, bisogna decidere a <em>quale</em> thread recapitare il segnale (es. a chi l'ha generato, a tutti, o a uno dedicato).</li>
+        <li><strong>Cancellazione Thread:</strong> (Target thread cancellation) Un thread può essere terminato asincronamente in modo immediato (pericoloso per i dati condivisi) o in modalità differita (Deferred), dove il thread controlla periodicamente un flag per capire se deve autoterminarsi in modo sicuro.</li>
+        <li><strong>Thread-local-storage (TLS):</strong> Memoria visibile a livello globale tra le funzioni dello stesso thread, ma <em>invisibile</em> e separata rispetto agli altri thread. Serve quando i thread non devono condividere specifiche variabili (es. seed di un generatore casuale).</li>
+        <li><strong>Attivazioni scheduler:</strong> Modelli come il Many-to-Many richiedono una comunicazione tra user thread e kernel thread per evitare stalli. Questo si ottiene spesso tramite <em>upcalls</em> dal kernel alla libreria thread utente.</li>
+      </ol>
     </div>
     <div class="section-block" id="section-15">
       <h2><span class="dot"></span> Semantica di fork() e exec()</h2>
@@ -355,13 +376,23 @@
       </p>
     </div>
     <div class="section-block" id="section-18">
-    <h2><span class="dot"></span> Thread-Local Storage (TLS)</h2>
-  <p>Il <span class="keyword">Thread-Local Storage (TLS)</span> è uno spazio di archiviazione che permette ad ogni thread di avere la propria copia unica e privata dei dati.</p>
-  <ul>
-    <li>Risulta molto utile quando non abbiamo pieno controllo della creazione del thread (come ad esempio può verificarsi nella creazione di un <em>thread implicito</em> o nei Thread Pool).</li>
-    <li><strong>Differenza dalle variabili locali:</strong> Le variabili locali sono visibili solo nella funzione chiamante in cui sono dichiarate; i dati TLS, invece, sono visibili attraverso tutte le chiamate a funzione all'interno di quello specifico thread.</li>
-    <li>Sono molto simili ai dati <code class="inline">static</code> globali, ma con la differenza che sono <em>unici per ogni thread</em> creato.</li>
-  </ul>
+      <h2><span class="dot"></span> Thread-Local Storage (TLS)</h2>
+      <p>Il <span class="keyword">Thread-Local Storage (TLS)</span> è uno spazio di archiviazione che permette ad ogni thread di avere la propria copia unica e privata dei dati.</p>
+      <ul>
+        <li>Risulta molto utile quando non abbiamo pieno controllo della creazione del thread (come ad esempio può verificarsi nella creazione di un <em>thread implicito</em> o nei Thread Pool).</li>
+        <li><strong>Differenza dalle variabili locali:</strong> Le variabili locali sono visibili solo nella funzione chiamante in cui sono dichiarate; i dati TLS, invece, sono visibili attraverso tutte le chiamate a funzione all'interno di quello specifico thread.</li>
+        <li>Sono molto simili ai dati <code class="inline">static</code> globali, ma con la differenza che sono <em>unici per ogni thread</em> creato.</li>
+      </ul>
+    </div>
+    
+    <div class="section-block" id="section-19">
+      <h2><span class="dot"></span> Implementazioni OS: Linux e Windows</h2>
+      <p>
+        <strong>Linux</strong> non fa alcuna distinzione architetturale tra processi e thread: entrambi sono visti come <span class="keyword">Task</span>. La creazione avviene tramite la potente system call <code class="inline">clone()</code>. Il programmatore passa dei flag a <code class="inline">clone()</code> per decidere cosa condividere con il "figlio": se si condividono memoria, file e segnali, il task risultante è di fatto un thread; se non si condivide nulla, il comportamento è equivalente a una <code class="inline">fork()</code> tradizionale.
+      </p>
+      <p>
+        <strong>Windows</strong> implementa nativamente il mapping One-to-One. La Windows API definisce i thread a livello kernel: ognuno contiene un Thread ID, i registri (context), uno stack per lo User Mode, uno per il Kernel Mode e il Thread-Local Storage per i dati privati.
+      </p>
     </div>
 
     <div class="back-btn-wrap">

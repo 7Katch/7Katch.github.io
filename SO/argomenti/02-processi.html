@@ -30,6 +30,7 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
@@ -126,6 +127,19 @@
         spazio di indirizzamento virtuale, i propri file aperti e il proprio stato di esecuzione. Il SO garantisce che i
         processi siano isolati tra loro: uno non può leggere o scrivere la memoria di un altro senza meccanismi IPC
         espliciti.</p>
+        
+      <div class="card-def" style="margin-top:2rem">
+        <div class="header">Memory Layout di un Programma C</div>
+        <div class="content">
+          <p>La memoria di un processo (il suo spazio di indirizzamento) è divisa in segmenti:</p>
+          <ul>
+            <li><span class="keyword">Text section:</span> contiene il codice macchina eseguibile.</li>
+            <li><span class="keyword">Data section:</span> contiene le variabili globali e statiche.</li>
+            <li><span class="keyword">Heap:</span> memoria allocata dinamicamente a runtime (es. tramite <code class="inline">malloc</code> in C).</li>
+            <li><span class="keyword">Stack:</span> contiene dati temporanei come parametri di funzione, indirizzi di ritorno e variabili locali. Cresce in direzione opposta all'Heap.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <div class="section-block" id="section-2">
@@ -169,6 +183,8 @@
           il processo è bloccato in attesa di un evento (I/O completato, segnale, timer).</li>
         <li><span class="keyword">Terminated</span>: il processo ha concluso la sua esecuzione.</li>
       </ol>
+      
+      <p>Un processo che spende la maggior parte del tempo eseguendo operazioni di I/O è detto <span class="keyword">I/O-bound</span>, mentre uno che usa intensamente il processore per i calcoli è <span class="keyword">CPU-bound</span>. Lo scheduler gestisce le transizioni spostando i PCB tra varie code: la <span class="keyword">Ready Queue</span> per i processi in memoria pronti all'esecuzione, e diverse <span class="keyword">Wait Queues</span> (una per ogni dispositivo) per chi è bloccato in attesa.</p>
 
       <div id="p5-process-container"></div>
       
@@ -203,13 +219,27 @@
         esatta del processo chiamante (il <em>figlio</em> è identico al <em>padre</em>): stesso codice, stessi dati,
         stessi file aperti. I due processi si distinguono per il valore di ritorno di <code
           class="inline">fork()</code>: nel padre vale il PID del figlio, nel figlio vale 0.</p>
-      <p>Tipicamente il figlio chiama subito <code class="inline">exec()</code> per sostituire la propria immagine con
+      
+      <pre><code>pid_t pid = fork();
+if (pid &lt; 0) { 
+    /* Errore nella creazione */ 
+} else if (pid == 0) {
+    /* Codice eseguito solo dal processo figlio */
+    execlp("/bin/ls", "ls", NULL);
+} else {
+    /* Codice eseguito solo dal processo padre */
+    wait(NULL); // Aspetta che il figlio termini
+    printf("Child Complete\n");
+}</code></pre>
+
+      <p>Come si vede dall'esempio, tipicamente il figlio chiama subito <code class="inline">exec()</code> (o una sua variante come <code class="inline">execlp</code>) per sostituire la propria immagine con
         un nuovo programma. Il padre usa <code class="inline">wait()</code> per aspettare la terminazione del figlio e
         raccogliere il suo valore di uscita. Questo schema <em>fork-exec-wait</em> è il meccanismo con cui la shell
         avvia ogni comando.</p>
       <p>La <code class="inline">fork()</code> usa il <span class="keyword">Copy-on-Write</span>: le pagine di memoria
         vengono realmente duplicate solo quando uno dei due processi le modifica. Se il figlio chiama subito <code
           class="inline">exec()</code>, la copia non avviene quasi mai, rendendo la fork molto efficiente.</p>
+      <p><strong>Perché usare più processi?</strong> Un'architettura multiprocesso garantisce stabilità e sicurezza. Google Chrome, ad esempio, usa processi separati per la UI (Browser process), per il rendering di ogni singola tab (Renderer process) e per i plugin. Il crash di una pagina web termina solo il suo processo renderer, lasciando intatto il resto del browser.</p>
     </div>
 
     <div class="section-block" id="section-6">
@@ -250,8 +280,7 @@
         immediatamente visibile all'altro, senza alcuna copia nel kernel.</p>
       <p>In POSIX si usa <code class="inline">shm_open()</code> + <code class="inline">mmap()</code>; in System V si
         usano <code class="inline">shmget()</code>/<code class="inline">shmat()</code>. Lo svantaggio è che la
-        sincronizzazione tra i processi è interamente a carico del programmatore: senza mutex o semafori, si rischiano
-        race condition gravi.</p>
+        sincronizzazione tra i processi è interamente a carico del programmatore: nel classico <strong>problema del produttore-consumatore</strong>, si può usare un <em>buffer illimitato</em> (il produttore non aspetta mai, il consumatore aspetta se vuoto) o un <em>buffer limitato</em> (il produttore si blocca se pieno). Senza un'adeguata sincronizzazione (es. semafori), si rischiano race condition gravi.</p>
     </div>
 
     <div class="section-block" id="section-9">

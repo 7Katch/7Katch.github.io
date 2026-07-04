@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
@@ -27,6 +27,7 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
@@ -67,7 +68,7 @@
     </div>
 
     <div class="theme-box">
-      Questa pagina copre i <strong>12 sottoargomenti</strong> del macroargomento 1, tratti
+      Questa pagina copre i <strong>15 sottoargomenti</strong> del macroargomento 1, tratti
       dai capitoli 1 e 2 del corso.
     </div>
     <!--INDEX GRID -->
@@ -85,6 +86,9 @@
         <li>Struttura OS</li>
         <li>Microkernels</li>
         <li>Moduli</li>
+        <li>Dual-Mode & Interrupts</li>
+        <li>Linkers e Loaders</li>
+        <li>Sistemi Ibridi</li>
       </ul>
     </div>
     <!-- 01.01 -->
@@ -245,7 +249,7 @@
           syscall</span> nel registro <code class="inline">rax</code> e i parametri negli altri registri, poi esegue
         l'istruzione <code class="inline">syscall</code>. La CPU salva il contesto, passa in kernel mode, e il kernel
         legge il numero in <code class="inline">rax</code> per chiamare l'handler corretto dalla <span
-          class="keyword">syscall table</span>.
+          class="keyword">syscall table</span>. Oltre ai registri (il metodo più veloce), i parametri possono essere passati tramite lo <strong>stack</strong> (con push e pop da parte del SO) oppure tramite una <strong>tabella in memoria</strong>, passando l'indirizzo del blocco come parametro in un registro.
       </p>
       <p>
         Su Linux, ogni syscall è identificata da un numero intero definito in <code class="inline">asm/unistd.h</code>.
@@ -341,6 +345,39 @@
       <p>
         Le differenze con il microkernel sono che operano a livello kernel anziché a livello user e possono comunicare
         l'un l'altro direttamente
+      </p>
+    </div>
+
+    <!-- 01.13 -->
+    <div class="section-block" id="section-13">
+      <h2><span class="dot"></span> Dual-Mode Operation e Interrupts</h2>
+      <p>
+        I sistemi operativi sono <strong>interrupt driven</strong>. Un <span class="keyword">interrupt</span> è un segnale che ferma la CPU per soddisfare una richiesta. Può essere hardware o software. Un interrupt software, causato da un errore o da una richiesta (syscall), è detto <strong>trap</strong> o exception.
+      </p>
+      <p>
+        Per proteggere il sistema, il SO sfrutta il <span class="keyword">Dual-mode operation</span>, distinguendo tra <strong>user mode</strong> e <strong>kernel mode</strong> (o modalità supervisore). L'hardware supporta questa distinzione tramite un <em>mode bit</em>. Certe istruzioni, dette <em>privilegiate</em>, possono essere eseguite solo in kernel mode. Una system call commuta il bit a kernel, esegue l'operazione sicura, e lo resetta a user prima del ritorno.
+      </p>
+    </div>
+
+    <!-- 01.14 -->
+    <div class="section-block" id="section-14">
+      <h2><span class="dot"></span> Linkers, Loaders e ABI</h2>
+      <p>
+        I file sorgenti sono compilati in <strong>file oggetto rilocabili</strong>. Il <span class="keyword">Linker</span> li combina in un eseguibile binario, assegnando indirizzi relativi e librerie. Il <span class="keyword">Loader</span> si occupa infine di caricare il programma in RAM per l'esecuzione.
+      </p>
+      <p>
+        I programmi sono nativi per un SO perché l'interfaccia a livello binario, l'<span class="keyword">ABI (Application Binary Interface)</span>, e le syscall offerte differiscono.
+      </p>
+    </div>
+
+    <!-- 01.15 -->
+    <div class="section-block" id="section-15">
+      <h2><span class="dot"></span> Sistemi Ibridi (Darwin & Android)</h2>
+      <p>
+        Oggi molti SO non usano un singolo modello puro, ma un approccio <span class="keyword">Ibrido</span>. Ad esempio <strong>Darwin</strong> (macOS/iOS) combina un microkernel <em>Mach</em> (per IPC, memoria e CPU scheduling) con un kernel <em>BSD UNIX</em> (che offre API POSIX). 
+      </p>
+      <p>
+        <strong>Android</strong> poggia invece su un kernel Linux (ottimizzato per il power management) ed usa un ambiente di runtime nativo in cui le app (precedentemente compilate) vengono mandate in esecuzione su una macchina virtuale apposita (ART) appoggiandosi a una libreria C minimale chiamata <em>Bionic</em>.
       </p>
     </div>
 

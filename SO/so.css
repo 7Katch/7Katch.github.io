@@ -1024,3 +1024,210 @@ footer a:hover { text-decoration: underline; }
   .page-hero { padding: 7rem 1.25rem 2rem; }
   .section-wrap { padding: var(--sp-xl) 1.25rem; }
 }
+/* ==================== INDEX SPECIFIC ==================== */
+
+  /* ── Page-specific overrides ── */
+  .nav-logo { color: var(--amber); }
+  .nav-back:hover { color: var(--amber); border-color: rgba(251,191,36,0.4); }
+
+  .hero-glow {
+    background: radial-gradient(ellipse, rgba(251,191,36,0.07) 0%, transparent 65%);
+  }
+
+  /* Hero gradient amber */
+  .hero-title-so {
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #f0eeff 0%, #fbbf24 55%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+
+  /* Tags intro */
+  .tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2rem;
+  }
+
+  /* Intro paragraph section */
+  .intro-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem 0;
+  }
+
+  /* Topic overview grid */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .overview-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.25rem 1.5rem;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+  .overview-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+    opacity: 0.7;
+  }
+  .overview-card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+
+  .ov-amber::before  { background: var(--amber); }
+  .ov-teal::before   { background: var(--teal); }
+  .ov-green::before  { background: var(--green); }
+  .ov-coral::before  { background: var(--coral); }
+  .ov-purple::before { background: var(--accent-soft); }
+
+  .ov-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .ov-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+  }
+  .ov-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.6;
+  }
+
+  /* Accordions section */
+  .acc-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  /* Accordion color variants */
+  .acc-item.amber-theme { border-color: rgba(251,191,36,0.12); }
+  .acc-item.amber-theme.open { border-color: rgba(251,191,36,0.35); }
+  .acc-item.amber-theme .acc-header:hover { background: rgba(251,191,36,0.04); }
+  .acc-item.amber-theme.open .acc-chevron { color: var(--amber); }
+  .acc-item.amber-theme .acc-title { color: var(--text-primary); }
+
+  .acc-item.teal-theme { border-color: rgba(34,211,238,0.12); }
+  .acc-item.teal-theme.open { border-color: rgba(34,211,238,0.3); }
+  .acc-item.teal-theme .acc-header:hover { background: rgba(34,211,238,0.04); }
+  .acc-item.teal-theme.open .acc-chevron { color: var(--teal); }
+
+  .acc-item.green-theme { border-color: rgba(52,211,153,0.12); }
+  .acc-item.green-theme.open { border-color: rgba(52,211,153,0.3); }
+  .acc-item.green-theme .acc-header:hover { background: rgba(52,211,153,0.03); }
+  .acc-item.green-theme.open .acc-chevron { color: var(--green); }
+
+  .acc-item.coral-theme { border-color: rgba(248,113,113,0.12); }
+  .acc-item.coral-theme.open { border-color: rgba(248,113,113,0.3); }
+  .acc-item.coral-theme .acc-header:hover { background: rgba(248,113,113,0.03); }
+  .acc-item.coral-theme.open .acc-chevron { color: var(--coral); }
+
+  .acc-item.purple-theme { border-color: rgba(124,92,252,0.12); }
+  .acc-item.purple-theme.open { border-color: rgba(124,92,252,0.35); }
+  .acc-item.purple-theme .acc-header:hover { background: rgba(124,92,252,0.04); }
+  .acc-item.purple-theme.open .acc-chevron { color: var(--accent-soft); }
+
+  /* Badge colour inside accordion */
+  .acc-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .ab-amber  { background: rgba(251,191,36,0.12);  color: var(--amber);       border: 1px solid rgba(251,191,36,0.3); }
+  .ab-teal   { background: rgba(34,211,238,0.1);   color: var(--teal);        border: 1px solid rgba(34,211,238,0.3); }
+  .ab-green  { background: rgba(52,211,153,0.1);   color: var(--green);       border: 1px solid rgba(52,211,153,0.3); }
+  .ab-coral  { background: rgba(248,113,113,0.1);  color: var(--coral);       border: 1px solid rgba(248,113,113,0.3); }
+  .ab-purple { background: rgba(124,92,252,0.12);  color: var(--accent-soft); border: 1px solid rgba(124,92,252,0.3); }
+
+  /* Sub-item tag inline */
+  .sub-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 1px 7px;
+    border-radius: var(--r-pill);
+    background: rgba(90,80,128,0.2);
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* Scroll hint */
+  .scroll-hint { animation: fadeInUp 1.5s ease 0.5s both; }
+  @keyframes fadeInUp {
+    from { opacity:0; transform: translateX(-50%) translateY(10px); }
+    to   { opacity:1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* Stats bar amber */
+  .stat-number.amber { color: var(--amber); }
+
+  /* Section divider label */
+  .divider-label {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .divider-label span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .divider-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Teal section eyebrow override */
+  .eyebrow-amber {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+  .eyebrow-amber::before { content:''; display:inline-block; width:20px; height:1px; background:var(--amber); }

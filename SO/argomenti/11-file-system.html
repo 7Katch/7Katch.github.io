@@ -1,121 +1,438 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>11 · File System — SO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11 &middot; File System &mdash; SO</title>
+
   <link rel="stylesheet" href="/shared/katchkit.css">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+  </script>
 </head>
-<body class="dot-grid theme-green">
-<aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-    <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-    <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-    <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-    <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-    <li><div class="sb-cur"><span class="sb-pdot"></span>11 · File System</div></li>
-    <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-    <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
-</aside>
+
+<body class="dot-grid theme-teal">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 &middot; Sistemi Operativi</a></li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 &middot; Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 &middot; Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 &middot; CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 &middot; Sincronizzazione</a></li>
+      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 &middot; Deadlocks</a></li>
+      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 &middot; Main Memory</a></li>
+      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 &middot; Virtual Memory</a></li>
+      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 &middot; I/O Systems</a></li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 &middot; Mass-Storage</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>11 &middot; File System</div>
+      </li>
+      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 &middot; Embedded Systems</a></li>
+      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 &middot; Sicurezza</a></li>
+      <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 &middot; Laboratori (Teoria)</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
 
   <!-- ═══════ NAV ═══════ -->
   <site-navbar 
-    logo-text="// SO · Sistemi Operativi" 
+    logo-text="// SO &middot; Sistemi Operativi" 
     back-url="../" 
     back-text="Indice SO">
   </site-navbar>
-<div class="hero" style="min-height:55vh">
-  <div class="hero-glow"></div>
-  <span class="hero-eyebrow" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3);color:var(--green)">Macroargomento 11 · File</span>
-  <div class="topic-num">11 / 13</div>
-  <h1 class="topic-hero-title">File System</h1>
-  <p class="hero-sub" style="max-width:640px">Concetti base, allocazione su disco, inode Unix, FAT, journaling, VFS, mounting e hard/soft link.</p>
-</div>
-<hr class="divider">
-<div class="content-wrap">
-  <div class="nav-breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
-    <a href="../index.html">SO</a><span>/</span>
-    <span>11 · File System</span>
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow">
+      Macroargomento 11 &middot; Gestione dei Dati
+    </span>
+    <div class="topic-num">11 / 14</div>
+    <h1 class="topic-hero-title">File System</h1>
+    <p class="hero-sub" style="max-width:680px">
+      Astrazione dei dati su disco, Struttura delle Directory, metodi di Allocazione dei blocchi (Contigua, Concatenata, Indicizzata), gestione dello spazio libero e il livello VFS (Virtual File System).
+    </p>
   </div>
-  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(52,211,153,.25)">Questa pagina copre i <strong style="color:var(--green)">7 sottoargomenti</strong> del macroargomento 11: l'implementazione del file system.</div>
-  <div class="index-grid" data-prefix="11">
+  <hr class="divider">
+
+  <!-- ═══════ CONTENT ═══════ -->
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">SO</a><span>/</span>
+      <span>11 &middot; File System</span>
+    </div>
+
+    <!-- INDEX GRID -->
+    <div class="index-grid" data-prefix="11">
       <ul>
-        <li>File e Directory</li>
-        <li>Allocazione su disco</li>
-        <li>inode Unix</li>
-        <li>FAT</li>
-        <li>Journaling</li>
-        <li>VFS</li>
-        <li>Mounting & Link</li>
+        <li>Il concetto di File e i Lock</li>
+        <li>Metodi di Accesso e Strutture delle Directory (Link hard/simbolici)</li>
+        <li>Livelli Architetturali del File System</li>
+        <li>Metodi di Allocazione (Contiguous, Linked, Indexed) e Unix Inode</li>
+        <li>Free-Space Management</li>
+        <li>Virtual File System (VFS) e NFS</li>
       </ul>
     </div>
 
-  <div class="section-block" id="section-1">
-    <h2><span class="dot"></span> Concetti Base: File e Directory <span class="sub-tag">fondamento</span></h2>
-    <p>Un <span class="keyword">file</span> è la più piccola unità di storage logico: una sequenza di byte con un nome, dei metadati (permessi, proprietario, dimensione, timestamp) e un contenuto. Il SO astrae i dettagli fisici del disco e presenta i file tramite operazioni uniformi: <code class="inline">open()</code>, <code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">close()</code>.</p>
-    <p>Una <span class="keyword">directory</span> è una struttura speciale che mappa nomi a file (o ad altre directory). In Unix, una directory è anch'essa un file, il cui contenuto è una tabella di coppie (nome <i class="bi bi-arrow-right"></i> inode number). Le strutture di directory possono essere: a singolo livello (tutti i file in un'unica directory — primitivo), a due livelli (una directory per utente), ad <span class="keyword">albero</span> (la struttura gerarchica usata da tutti i SO moderni), o con link (grafo aciclico o generale, che permette a un file di apparire in più directory).</p>
-  </div>
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Il Concetto di File</h2>
+      <p>Un <strong>File</strong> &egrave; un'astrazione dell'OS che definisce uno spazio di indirizzamento logico contiguo, mappato su settori fisici di un disco. L'estensione spesso identifica il tipo, ma in Unix non &egrave; obbligatoria (si usa un "magic number" interno).
+      I file possiedono un <strong>Identifier</strong> (tag univoco interno), Location, Size, Date, e diritti di <strong>Protection</strong>.</p>
 
-  <div class="section-block" id="section-2">
-    <h2><span class="dot"></span> Allocazione dei File su Disco</h2>
-    <p>Esistono tre strategie per allocare i blocchi fisici di un file. <span class="keyword">Allocazione contigua</span>: i blocchi di ogni file sono fisicamente consecutivi. L'accesso sequenziale e casuale è velocissimo (l'HDD può fare prefetch), ma soffre di frammentazione esterna e richiede di conoscere la dimensione del file alla creazione. Usata su CD-ROM e alcuni filesystem ottimizzati per streaming.</p>
-    <p><span class="keyword">Allocazione linked</span> (concatenata): ogni blocco contiene un puntatore al blocco successivo. Nessuna frammentazione esterna, facilmente espandibile, ma l'accesso casuale richiede di attraversare la catena dal blocco. La FAT è un'ottimizzazione di questa strategia che porta i puntatori fuori dai blocchi dati in una tabella separata.</p>
-    <p><span class="keyword">Allocazione indexed</span> (inode su Unix): un blocco indice contiene i puntatori a tutti i blocchi dati del file. Accesso diretto efficiente per file di qualunque dimensione. Il costo è lo spazio del blocco indice, ma i puntatori indiretti (singolo, doppio, triplo) permettono di gestire file enormi con strutture a taglia variabile.</p>
-  </div>
+      <h3>Record Logici e Fisici</h3>
+      <p>L'OS legge/scrive usando unit&agrave; base minime dette <em>Record Logici</em>, ma l'Hardware legge interi <em>Record Fisici</em> (settori). Quasi mai combaciano perfettamente: ad esempio su 512 byte di settore fisico, se un file usa solo 10 byte, i restanti 502 byte del blocco vanno sprecati. Questo causa <strong>Frammentazione Interna</strong>.</p>
+      
+      <h3>Open-File Table e Lock</h3>
+      <p>La system call <code>open()</code> carica le informazioni del file in memoria per non dover accedere al disco ogni volta che si invoca una read/write. Il kernel mantiene una <em>System-wide Open-File Table</em> e una tabella <em>Per-Process</em> (con il current file pointer, open count e diritti di accesso).</p>
+      <p>Se pi&ugrave; processi aprono lo stesso file, si possono richiedere dei <strong>Locks</strong>:</p>
+      <ul>
+        <li><strong>Shared Lock:</strong> Molti lettori concorrenti.</li>
+        <li><strong>Exclusive Lock:</strong> Un solo scrittore per volta.</li>
+        <li><em>Mandatory:</em> l'OS impedisce fisicamente ad altri di accedere. <em>Advisory (Unix):</em> l'OS dice ai processi che il file &egrave; lockato, ma sta a loro decidere di fermarsi o meno.</li>
+      </ul>
+    </div>
 
-  <div class="section-block" id="section-3">
-    <h2><span class="dot"></span> inode (Unix/Linux)</h2>
-    <p>L'<span class="keyword">inode</span> è la struttura dati centrale del filesystem Unix/Linux. Ogni file ha esattamente un inode, identificato da un numero univoco nel filesystem. L'inode contiene: permessi (rwx per owner/group/other), UID e GID del proprietario, dimensione del file, timestamp (accesso, modifica, cambio metadati), numero di hard link, e i puntatori ai blocchi dati.</p>
-    <p>I puntatori sono organizzati in tre livelli: <span class="keyword">12 puntatori diretti</span> (puntano direttamente ai primi 12 blocchi dati — coprono file fino a 48 KB con blocchi da 4 KB), un <span class="keyword">puntatore indiretto singolo</span> (punta a un blocco che contiene altri puntatori — aggiunge fino a 4 MB), un <span class="keyword">puntatore indiretto doppio</span> (~4 GB aggiuntivi) e un <span class="keyword">puntatore indiretto triplo</span> (~4 TB). Il <span class="keyword">nome</span> del file non è nell'inode: è nella directory che lo contiene. Più nomi (hard link) possono puntare allo stesso inode.</p>
-  </div>
-
-  <div class="section-block" id="section-4">
-    <h2><span class="dot"></span> FAT — File Allocation Table</h2>
-    <p>La <span class="keyword">FAT</span> è un filesystem semplice che risolve il problema dell'allocazione linked portando i puntatori fuori dai blocchi dati. Esiste una tabella (la FAT) con una entry per ogni cluster del disco. Ogni entry contiene il numero del cluster successivo nella catena del file, oppure un marcatore di fine file (EOF) o di cluster libero.</p>
-    <p>Esistono tre varianti: <span class="keyword">FAT12</span> (floppy, partizioni piccole), <span class="keyword">FAT16</span> (partizioni fino a 2-4 GB), <span class="keyword">FAT32</span> (fino a 2 TB). La FAT è universale (supportata da praticamente tutti i SO), semplice da implementare, ma non ha journaling, permessi avanzati né supporto per file oltre 4 GB (FAT32). Ancora oggi è il filesystem standard per chiavette USB, schede SD e partizioni di boot EFI.</p>
-  </div>
-
-  <div class="section-block" id="section-5">
-    <h2><span class="dot"></span> Journaling</h2>
-    <p>Il problema del filesystem senza journaling: se il sistema si spegne improvvisamente durante un'operazione di scrittura (es. creazione di un file che richiede l'aggiornamento dell'inode, della directory e del bitmap dei blocchi liberi), il filesystem può restare in uno stato inconsistente. Il tool <code class="inline">fsck</code> può ripararlo, ma richiede una scansione completa del disco — lenta e non garantita.</p>
-    <p>Il <span class="keyword">journaling</span> registra le modifiche imminenti in un'area dedicata (il <em>journal</em> o <em>log</em>) prima di applicarle al filesystem. Se il sistema crasha, al riavvio basta ripercorrere il journal e rieseguire le operazioni incomplete: il recovery è veloce e garantisce la consistenza. Il prezzo è un overhead di scrittura (ogni operazione viene scritta due volte). Usato da <span class="keyword">ext4</span> (Linux), <span class="keyword">NTFS</span> (Windows), <span class="keyword">APFS</span> (macOS), <span class="keyword">XFS</span> e quasi tutti i filesystem moderni.</p>
-  </div>
-
-  <div class="section-block" id="section-6">
-    <h2><span class="dot"></span> VFS — Virtual File System</h2>
-    <p>Il <span class="keyword">Virtual File System</span> è uno strato di astrazione nel kernel che fornisce un'interfaccia uniforme sopra filesystem diversi. Un'applicazione che chiama <code class="inline">open("/mnt/usb/file.txt")</code> usa la stessa syscall indipendentemente dal fatto che <code class="inline">/mnt/usb</code> sia FAT32, ext4, NTFS, NFS o procfs.</p>
-    <p>Il VFS definisce strutture dati astratte — <span class="keyword">inode</span>, <span class="keyword">dentry</span> (directory entry), <span class="keyword">file</span>, <span class="keyword">superblock</span> — e un insieme di operazioni virtuali (<code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">lookup()</code>). Ogni filesystem registra le proprie implementazioni di queste operazioni. Quando il kernel deve leggere un file, invoca la funzione <code class="inline">read()</code> del filesystem corretto tramite un puntatore a funzione. I filesystem speciali come <code class="inline">procfs</code> (che espone informazioni sui processi come file in <code class="inline">/proc</code>) e <code class="inline">sysfs</code> utilizzano lo stesso meccanismo VFS.</p>
-  </div>
-
-  <div class="section-block" id="section-7">
-    <h2><span class="dot"></span> Mounting e Link</h2>
-    <p>Il <span class="keyword">mounting</span> è l'operazione con cui un filesystem viene agganciato all'albero delle directory del SO in un <em>mount point</em>. Con <code class="inline">mount /dev/sdb1 /mnt/dati</code>, il contenuto del disco <code class="inline">sdb1</code> diventa accessibile sotto <code class="inline">/mnt/dati</code> come se fosse parte del filesystem principale. Più filesystem (con tipi diversi) coesistono nell'unico albero delle directory.</p>
-    <p>I <span class="keyword">hard link</span> (<code class="inline">ln src dst</code>) creano un secondo nome nella directory che punta allo stesso inode. Non c'è copia dei dati; il file esiste finché almeno un hard link punta all'inode (link count > 0). I hard link non possono attraversare filesystem diversi e non possono puntare a directory. I <span class="keyword">soft link</span> (symlink, <code class="inline">ln -s src dst</code>) sono file speciali che contengono un percorso. Possono attraversare filesystem, puntare a directory e puntare a target inesistenti — ma se il target viene cancellato il link diventa <em>dangling</em>.</p>
-  </div>
-
-  <div class="back-btn-wrap">
-    <a href="10-mass-storage.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 10 · Mass-Storage</a>
-    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-    <a href="12-embedded-systems.html" class="btn btn-ghost">12 · Embedded Systems <i class="bi bi-arrow-right"></i></a>
-  </div>
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Accesso e Directory</h2>
+      <p>L'accesso ai dati pu&ograve; essere: <strong>Sequenziale</strong> (letto dall'inizio alla fine, tipico dei nastri) o <strong>Diretto (Random)</strong> (si salta a un record specifico tramite un indice). I file sono organizzati in <strong>Directory</strong>.</p>
+      
+      <h3>Struttura delle Directory</h3>
+      <p>Per nominare ed esplorare le directory in modo intelligente (senza conflitti di nome tra utenti) si usa un albero logico:</p>
+      <ul>
+        <li><strong>Tree-structured:</strong> Permette path <em>Assoluti</em> (da `/`) e <em>Relativi</em> (da `.`).</li>
+        <li><strong>Acyclic-Graph:</strong> La struttura ad albero classica in realt&agrave; in Linux pu&ograve; avere sotto-alberi condivisi tramite <em>Aliasing</em>, diventando un grafo aciclico.</li>
+        <li><strong>General Graph:</strong> Ammette cicli. Serve un Garbage Collector che periodiciamente cerchi e ripulisca le sezioni disco irraggiungibili.</li>
+      </ul>
+      
+      <div class="mermaid-container" style="background:rgba(0,0,0,0.2); padding:1.5rem; border-radius:8px; margin: 1.5rem 0;">
+        <h4 style="text-align:center; margin:0 0 1rem 0; color:var(--text-muted)">Esempio di Grafo Aciclico (Aliasing)</h4>
+<div class="mermaid">
+flowchart TD
+    root[/Root /] --> bin[/bin/]
+    root --> dict[/dict/]
+    root --> spell[/spell/]
+    dict --> list[list]
+    spell --> words[words]
+    words -.->|Hard Link| list
 </div>
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 11 · File System</p>
-  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
-</footer>
+        <p style="font-size:12px;color:rgba(255,255,255,0.5);text-align:center;margin-top:1rem;">Il file "list" è condiviso. Due percorsi diversi portano allo stesso identico file fisico.</p>
+      </div>
 
+      <h3>Implementazione (Linear vs Hash)</h3>
+      <p>Sotto il cofano, le directory sono implementate come: <strong>Liste Lineari</strong> (semplici da programmare ma con tempi lineari lunghissimi di ricerca <code>O(n)</code>) o come <strong>Hash Tables</strong> (ricerca quasi istantanea, ma bisogna gestire le collisioni con un chain overflow).</p>
+      
+      <div class="alert alert-tip">
+        <strong>Links in Unix (ln vs ln -s):</strong> <br>
+        <strong>Hard Link:</strong> Crea un vero puntatore parallelo al file fisico (FCB/inode). Se elimini l'originale, il file vive finch&eacute; il contatore di hard links non va a 0.<br>
+        <strong>Symbolic Link:</strong> &Egrave; un "puntatore a un puntatore" (una stringa che contiene il path originale). Se cancelli l'originale, il symlink resta "orfano" (dangling pointer) e si rompe.
+      </div>
+    </div>
 
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Strati del File System</h2>
+      <p>Per garantire modularit&agrave;, il sistema operativo divide il modulo File System in strati (Layers):</p>
+      <ol>
+        <li><strong>Application Program</strong></li>
+        <li><strong>Logical File System:</strong> Gestisce i metadati e la struttura a directory. Traduce i nomi in file ID / Inode Number (File Control Blocks - FCB). Non tocca i dati veri.</li>
+        <li><strong>File-organization Module:</strong> Converte il blocco logico (chiesto dall'utente) nel blocco fisico (settore del disco). Gestisce l'allocazione dello spazio.</li>
+        <li><strong>Basic File System:</strong> Interroga il controller HW: "leggi blocco fisico 123", gestendo RAM buffers e cache.</li>
+        <li><strong>I/O Control / Device Drivers:</strong> Invia bit e correnti elettriche all'hardware.</li>
+      </ol>
+    </div>
+
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Metodi di Allocazione</h2>
+      <p>Il File System deve mappare un file logico in blocchi di byte sparpagliati (o meno) sul disco fisico.</p>
+
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:var(--accent-soft);color:var(--accent)">1. Contiguous</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Ogni file occupa una serie ininterrotta di blocchi fisici continui.</div>
+            <div class="compare-row"><strong>Performance immense</strong> (lettura con seek=0).</div>
+            <div class="compare-row">Problema grave: impossibile trovare facilmente lunghi spazi vuoti (<em>Frammentazione Esterna</em>). Un file in crescita va per forza spostato e riallocato (Extents aiutano ma non risolvono).</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:rgba(255,255,255,.05)">2. Linked</div>
+          <div class="compare-col-body">
+            <div class="compare-row">I blocchi sono sparsi a caso ovunque. Ogni blocco contiene un puntatore (link) al blocco successivo.</div>
+            <div class="compare-row">Nessuna frammentazione esterna. Si spreca lo spazio del puntatore (Framm. Interna).</div>
+            <div class="compare-row"><strong>Pessimo per accesso diretto:</strong> per leggere l'n-esimo blocco, devi scorrere dall'inizio! Un'evoluzione &egrave; la FAT (File Allocation Table), che tiene i link in una tabella RAM velocissima.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:rgba(255,255,255,.05)">3. Indexed</div>
+          <div class="compare-col-body">
+            <div class="compare-row">I blocchi sono sparsi, ma i loro puntatori sono radunati in un <strong>Unico Blocco Indice</strong>.</div>
+            <div class="compare-row">Accesso diretto istantaneo! Ma per i file grossi un solo blocco indice non basta, servono indici di indici (multilevel).</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Combined Scheme (L'Inode Unix/Linux)</h3>
+      <p>Unix unisce i vantaggi dell'allocazione Indexed risolvendo il problema della taglia limite. <br>L'<strong>Inode (Index Node)</strong> &egrave; l'FCB di Linux. Al suo interno ha, per esempio, 15 slot di puntamento:</p>
+      <ul>
+        <li><strong>Slot 1..12 (Direct):</strong> Puntano direttamente ai primi 12 blocchi dati (ideale per i 90% di micro-file).</li>
+        <li><strong>Slot 13 (Single Indirect):</strong> Punta a un intero blocco che contiene solo altri puntatori a dati.</li>
+        <li><strong>Slot 14 (Double Indirect):</strong> Punta a un blocco che punta a blocchi indice, che puntano a dati (enorme).</li>
+        <li><strong>Slot 15 (Triple Indirect):</strong> Tre salti. Pu&ograve; mappare TeraBytes!</li>
+      </ul>
+
+      <!-- INIZIO SIMULATORE ALLOCAZIONE -->
+      <div style="margin:2.5rem 0; padding:1.5rem; background:rgba(0,0,0,.2); border-radius:8px; border:1px solid rgba(255,255,255,.05)">
+        <h4 style="margin-top:0;color:var(--teal)"><i class="bi bi-grid-3x3"></i> Simulazione Interattiva: Allocation Methods</h4>
+        <p style="font-size:13px; color:rgba(255,255,255,.6)">Osserva come i file vengono disposti sui blocchi logici del disco a seconda del metodo scelto.</p>
+        
+        <div id="p5-alloc-sim" style="width:100%; display:flex; justify-content:center; margin:1rem 0; border-radius:8px; overflow:hidden;"></div>
+        
+        <div class="sim-controls" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="simAlloc_playContiguous()">Contiguous</button>
+          <button class="btn btn-primary" onclick="simAlloc_playLinked()">Linked List</button>
+          <button class="btn btn-amber" onclick="simAlloc_playIndexed()">Indexed (1-level)</button>
+          <button class="btn btn-ghost" onclick="simAlloc_reset()">Reset Disco</button>
+        </div>
+      </div>
+      <!-- FINE SIMULATORE ALLOCAZIONE -->
+    </div>
+
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Free-Space Management</h2>
+      <p>Per allocare nuovi blocchi, il sistema deve sapere cosa &egrave; vuoto. Per tracciare lo spazio libero, il SO pu&ograve; usare:</p>
+      <ul>
+        <li><strong>Bit Vector (Bitmap):</strong> 1 bit per ogni singolo blocco fisico del disco (0=occupato, 1=libero). Facilissimo e veloce se sta tutto in RAM. Su dischi immensi (1TB con 4KB block = bitmap da 32MB!) la RAM inizia a riempirsi troppo, si usano raggruppamenti.</li>
+        <li><strong>Linked List (Free List):</strong> Ogni blocco vuoto punta al successivo blocco vuoto. Non si spreca memoria per la mappa, si prende in O(1) la "testa" della lista per allocare. Lentissimo per cercare spazi contigui.</li>
+        <li><strong>Grouping & Counting:</strong> In un blocco vuoto salvo gli indirizzi di N altri blocchi vuoti. Oppure memorizzo `(indirizzo_inizio, conteggio_blocchi_liberi_contigui)`. Ottimo per extents e allocazione contigua.</li>
+      </ul>
+    </div>
+
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> VFS e Sistemi Distribuiti (NFS)</h2>
+      <p>In un computer possono coesistere dozzine di partizioni logiche (volumi) e file system diversi (NTFS per Windows, ext4 per Linux, ISO 9660 per un DVD, chiavetta USB fat32). Vengono uniti al <code>/</code> logico in fase di <strong>Mounting</strong>.</p>
+      
+      <p>Come fa Linux a lanciare <code>read()</code> o <code>open()</code> senza impazzire su formati incompatibili? Usa il <strong>Virtual File System (VFS)</strong>.</p>
+      <p>Il VFS &egrave; un'interfaccia Orientata agli Oggetti fornita dal Kernel Linux. Le app chiamano la API del VFS. Il VFS guarda le sue tabelle dinamiche (struct <code>file</code>, <code>inode</code>, <code>dentry</code>, <code>superblock</code>) e inoltra la richiesta al driver specifico (ext4, FAT) che realizza concretamente la funzione.</p>
+
+      <h3>Network File System (NFS)</h3>
+      <p>Creata da Sun, NFS sfrutta proprio il livello VFS per montare (mount) una directory di un altro PC remoto come se fosse una cartella locale. Il VFS smista le operazioni di lettura "locali" all'hard disk, e le chiamate di lettura "NFS" allo stack di rete, inviando le richieste al server remoto tramite <strong>RPC (Remote Procedure Call)</strong> su protocolli XDR.</p>
+
+      <h3>Consistency Semantics</h3>
+      <p>Condividere file porta il problema della coerenza (quando gli altri utenti vedono i dati che io modifico?):</p>
+      <ul>
+        <li><strong>UFS (Unix File System):</strong> I dati modificati e scritti su un file aperto diventano <em>immediatamente visibili</em> a tutti gli altri utenti connessi. I puntatori I/O possono essere condivisi.</li>
+        <li><strong>AFS (Andrew File System):</strong> Le modifiche ai dati rimangono private. Diventano visibili agli altri solo *dopo che la sessione &egrave; stata chiusa*.</li>
+      </ul>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="back-btn-wrap">
+      <a href="10-mass-storage.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 10 &middot; Mass-Storage</a>
+      <a href="../index.html" class="btn btn-amber">&uarr; Indice SO</a>
+      <a href="12-embedded-systems.html" class="btn btn-ghost">12 &middot; Embedded Systems <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> &middot; SO &middot; 11 &middot; File System</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">argomentoStyle.css</span></p>
+  </footer>
+
+  <!-- Script Dipendenze -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: { primaryColor: '#0f172a', primaryTextColor: '#cbd5e1', primaryBorderColor: '#334155', lineColor: '#2dd4bf', secondaryColor: '#1e293b', tertiaryColor: '#020617' }
+    });
+  </script>
+
+  <script src="/shared/animation.js"></script>
   <script src="/shared/katchkit.js"></script>
+
+  <script>
+    // P5.js Instance Mode: File Allocation Simulator
+    const allocSketch = (p) => {
+      let state = {
+        blocks: [], // 16 blocks (0-15)
+        lines: []   // array di oggetti {x1, y1, x2, y2, progress}
+      };
+
+      const COLS = 8;
+      const ROWS = 2;
+      const B_SIZE = 50;
+      const SPACING = 15;
+      const OFFSET_X = 50;
+      const OFFSET_Y = 50;
+
+      p.setup = () => {
+        p.createCanvas(600, 180).parent('p5-alloc-sim');
+        p.textAlign(p.CENTER, p.CENTER);
+        
+        // Inizializza blocchi (colore Slate)
+        for(let i=0; i<16; i++) {
+          state.blocks.push({
+            id: i,
+            c: [51, 65, 85], // Slate-700
+            label: ""
+          });
+        }
+      };
+
+      p.draw = () => {
+        p.background(15, 23, 42);
+
+        // Disegna linee di collegamento (sotto i blocchi)
+        p.stroke(251, 191, 36); // Amber
+        p.strokeWeight(3);
+        p.noFill();
+        for(let l of state.lines) {
+          // Disegna segmento animato
+          let curX = p.lerp(l.x1, l.x2, l.progress);
+          let curY = p.lerp(l.y1, l.y2, l.progress);
+          p.line(l.x1, l.y1, curX, curY);
+          
+          // Se completata, disegna una freccetta alla fine
+          if (l.progress >= 0.99) {
+            p.push();
+            p.translate(l.x2, l.y2);
+            let angle = p.atan2(l.y2 - l.y1, l.x2 - l.x1);
+            p.rotate(angle);
+            p.fill(251, 191, 36);
+            p.noStroke();
+            p.triangle(0, 0, -10, -5, -10, 5);
+            p.pop();
+          }
+        }
+
+        // Disegna griglia blocchi
+        for(let i=0; i<16; i++) {
+          let col = i % COLS;
+          let row = Math.floor(i / COLS);
+          let bx = OFFSET_X + col * (B_SIZE + SPACING) + B_SIZE/2;
+          let by = OFFSET_Y + row * (B_SIZE + SPACING) + B_SIZE/2;
+          
+          p.rectMode(p.CENTER);
+          p.fill(state.blocks[i].c[0], state.blocks[i].c[1], state.blocks[i].c[2]);
+          p.stroke(255, 255, 255, 30);
+          p.strokeWeight(1);
+          p.rect(bx, by, B_SIZE, B_SIZE, 6);
+          
+          p.fill(255, 255, 255, 150);
+          p.noStroke();
+          p.textSize(10);
+          p.text(i, bx - B_SIZE/2 + 8, by - B_SIZE/2 + 8);
+          
+          p.fill(255);
+          p.textSize(14);
+          p.text(state.blocks[i].label, bx, by);
+        }
+      };
+
+      function getCoords(id) {
+        let col = id % COLS;
+        let row = Math.floor(id / COLS);
+        return {
+          x: OFFSET_X + col * (B_SIZE + SPACING) + B_SIZE/2,
+          y: OFFSET_Y + row * (B_SIZE + SPACING) + B_SIZE/2
+        };
+      }
+
+      window.simAlloc_reset = () => {
+        gsap.killTweensOf(state);
+        state.lines = [];
+        for(let b of state.blocks) {
+          gsap.killTweensOf(b.c);
+          gsap.to(b.c, {0: 51, 1: 65, 2: 85, duration: 0.3});
+          b.label = "";
+        }
+      };
+
+      window.simAlloc_playContiguous = () => {
+        window.simAlloc_reset();
+        let tl = gsap.timeline({delay: 0.3});
+        let targetBlocks = [2, 3, 4, 5]; // Contigui
+        
+        for(let i=0; i<targetBlocks.length; i++) {
+          let b = state.blocks[targetBlocks[i]];
+          tl.to(b.c, {0: 16, 1: 185, 2: 129, duration: 0.2}); // Green
+          tl.call(() => b.label = "D" + i);
+        }
+      };
+
+      window.simAlloc_playLinked = () => {
+        window.simAlloc_reset();
+        let tl = gsap.timeline({delay: 0.3});
+        // Ordine: 1 -> 9 -> 4 -> 14
+        const chain = [1, 9, 4, 14];
+        
+        for(let i=0; i<chain.length; i++) {
+          let b = state.blocks[chain[i]];
+          tl.to(b.c, {0: 34, 1: 211, 2: 238, duration: 0.3}); // Teal
+          tl.call(() => b.label = "D" + i);
+          
+          if(i < chain.length - 1) {
+            let nextB = chain[i+1];
+            let c1 = getCoords(chain[i]);
+            let c2 = getCoords(nextB);
+            tl.call(() => {
+              let lineObj = {x1: c1.x, y1: c1.y, x2: c2.x, y2: c2.y, progress: 0};
+              state.lines.push(lineObj);
+              gsap.to(lineObj, {progress: 1, duration: 0.4, ease: "power1.inOut"});
+            });
+            tl.to({}, {duration: 0.4}); // aspetta che la linea finisca
+          }
+        }
+      };
+
+      window.simAlloc_playIndexed = () => {
+        window.simAlloc_reset();
+        let tl = gsap.timeline({delay: 0.3});
+        
+        let indexBlock = 11;
+        let dataBlocks = [0, 6, 12, 15];
+        
+        // Colora l'Indice
+        let bIdx = state.blocks[indexBlock];
+        tl.to(bIdx.c, {0: 251, 1: 191, 2: 36, duration: 0.3}); // Amber
+        tl.call(() => bIdx.label = "IDX");
+        
+        // Spara raggi radiali verso i dati
+        tl.call(() => {
+          let c1 = getCoords(indexBlock);
+          for(let i=0; i<dataBlocks.length; i++) {
+            let target = dataBlocks[i];
+            let c2 = getCoords(target);
+            let lineObj = {x1: c1.x, y1: c1.y, x2: c2.x, y2: c2.y, progress: 0};
+            state.lines.push(lineObj);
+            gsap.to(lineObj, {progress: 1, duration: 0.4, ease: "power1.inOut"});
+          }
+        });
+        
+        tl.to({}, {duration: 0.4});
+        
+        // Colora i blocchi dati contemporaneamente
+        for(let i=0; i<dataBlocks.length; i++) {
+          let b = state.blocks[dataBlocks[i]];
+          tl.to(b.c, {0: 167, 1: 139, 2: 250, duration: 0.3}, "<"); // Purple
+          tl.call(() => b.label = "D" + i);
+        }
+      };
+    };
+
+    new p5(allocSketch);
+  </script>
 </body>
 </html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>14 · Laboratori (Teoria) — SO</title>
+
+  <link rel="stylesheet" href="/shared/katchkit.css">
+  <style>
+    /* Aggiunta di qualche stile specifico se necessario */
+    .lab-box {
+      background: rgba(45, 212, 191, 0.05);
+      border-left: 4px solid var(--teal);
+      padding: 1.5rem;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+
+<body class="dot-grid theme-teal">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
+      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
+      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
+      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
+      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
+      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
+      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
+      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</div>
+      </li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
+
+  <!-- ═══════ NAV ═══════ -->
+  <site-navbar 
+    logo-text="// SO · Sistemi Operativi" 
+    back-url="../" 
+    back-text="Indice SO">
+  </site-navbar>
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:var(--teal)">
+      Macroargomento 14 · Laboratori
+    </span>
+    <div class="topic-num">14 / 14</div>
+    <h1 class="topic-hero-title">Laboratori (Teoria)</h1>
+    <p class="hero-sub" style="max-width:680px">
+      Una sintesi dei concetti teorici fondamentali estratti dalle sessioni di laboratorio (C su Linux e RIOT OS).
+    </p>
+  </div>
+  <hr class="divider">
+
+  <!-- ═══════ CONTENT ═══════ -->
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">SO</a><span>/</span>
+      <span class="curr">14 · Laboratori</span>
+    </div>
+    
+    <!-- ══════════════════════════════════════════════════
+       14.01 — KERNEL MODULES
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Kernel Modules e Privilegi</h2>
+      <p>I programmi standard (eseguibili scritti in C) girano in <strong>User Mode</strong>. Tuttavia, in Linux è possibile scrivere programmi che si interfacciano direttamente con il Kernel tramite i <em>Kernel Modules</em>, eseguiti in <strong>Kernel Mode</strong>. Questo implica il massimo livello di privilegio (e il rischio di causare un crash dell'intero sistema, <em>Kernel Panic</em>, se il codice contiene bug).</p>
+      
+      <ul>
+        <li><strong>Entry & Exit Points:</strong> Un modulo kernel non ha il classico <code>main()</code>. Utilizza funzioni specifiche (es. <code>simple_init()</code> e <code>simple_exit()</code>) che vengono invocate quando il modulo viene caricato in memoria o scaricato. Tali funzioni vengono registrate usando le macro <code>module_init()</code> e <code>module_exit()</code>.</li>
+        <li><strong>Stampa di sistema:</strong> Poiché la libreria standard C (come <code>stdio.h</code> e la funzione <code>printf</code>) è spazio utente, in Kernel mode si utilizza <code>printk()</code> (Kernel Print). L'output non finisce sul terminale corrente, ma nel <em>Kernel Log Buffer</em>, che può essere letto con il comando <code>dmesg</code>.</li>
+      </ul>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       14.02 — PROCESSI E THREAD (POSIX)
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Processi, Thread e Contention Scope</h2>
+      
+      <h3>Processi Orfani (Orphan Processes)</h3>
+      <p>Quando un processo crea un figlio (tramite la syscall <code>fork()</code>), se il processo <em>Padre</em> termina l'esecuzione prima del processo <em>Figlio</em>, quest'ultimo diventa un processo <strong>Orfano</strong>. In Linux, i processi orfani vengono automaticamente adottati da <strong>systemd</strong> (il primissimo processo inizializzato dal sistema operativo, con PID = 1).</p>
+      
+      <h3>Libreria Pthread e Tipi di Parallelismo</h3>
+      <p>La creazione di thread in Linux usa lo standard <strong>POSIX Threads (pthreads)</strong>. Condividendo i dati, i thread pongono problemi di Race Condition, ma aprono le porte al calcolo parallelo:</p>
+      <ul>
+        <li><strong>Data Parallelism:</strong> Molteplici thread eseguono la <em>stessa identica operazione</em> ma su partizioni di <em>dati diversi</em> (es. un array diviso in chunk da elaborare simultaneamente).</li>
+        <li><strong>Task Parallelism:</strong> Molteplici thread eseguono <em>operazioni distinte</em> e uniche.</li>
+      </ul>
+
+      <h3>Contention Scope (SCS vs PCS)</h3>
+      <p>Lo scheduling dei thread può avvenire a due livelli (<em>Scope</em>):</p>
+      <div class="lab-box">
+        <p><strong>System-Contention Scope (SCS):</strong> I thread competono per l'utilizzo della CPU <em>a livello dell'intero sistema</em>. Il Kernel schedula direttamente i kernel thread sulla CPU fisica disponibile. È il modello standard (e unico permesso) in Linux e macOS.</p>
+        <p><strong>Process-Contention Scope (PCS):</strong> (Modelli many-to-many o many-to-one). I thread utente vengono schedulati dalla thread library locale del processo per girare su un <em>Lightweight Process (LWP)</em>. La competizione avviene solo <em>tra i thread di quello specifico processo</em>.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       14.03 — SINCRONIZZAZIONE
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Strumenti di Sincronizzazione in C</h2>
+      <p>Oltre alle basi teoriche di <em>Peterson's Solution</em> e dell'algoritmo del banchiere per evitare i Deadlock (gestiti analiticamente), il codice POSIX offre costrutti chiave:</p>
+      
+      <ul>
+        <li><strong>POSIX Mutex:</strong> <code>pthread_mutex_t</code> fornisce la mutua esclusione. Le funzioni <code>pthread_mutex_lock()</code> e <code>unlock()</code> proteggono le sezioni critiche. Rispetto a uno spinlock (che spreca cicli di CPU in busy-waiting), un thread bloccato su un mutex bloccato da un altro thread viene <em>sospeso</em> finché non si libera.</li>
+        <li><strong>Named vs Unnamed Semaphores:</strong> I semafori POSIX possono essere:
+          <ul>
+            <li><em>Unnamed (Memory-based):</em> Nessun nome, allocati direttamente nella memoria condivisa tra i thread (es. variabile globale) o processi (es. shared memory object POSIX).</li>
+            <li><em>Named Semaphores:</em> Hanno un identificatore a stringa (es. <code>/miosenaforo</code>). Questo permette a processi indipendenti di operare sullo stesso semaforo chiamando <code>sem_open()</code>. Bisogna ricordarsi di usare <code>sem_close()</code> e soprattutto <code>sem_unlink()</code> per distruggerli a livello di sistema, altrimenti (se il processo crascia) manterranno valori corrotti persistenti nel file system (in <code>/dev/shm</code>).</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       14.04 — MEMORIA E FILE SYSTEM
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Accesso in Memoria, MMIO e Link</h2>
+
+      <h3>Struttura dei Programmi e Performance Memory-based</h3>
+      <p>Il modo in cui i dati vengono letti incide drasticamente sul numero di Page Fault e di miss nella cache o nella TLB. In C gli array sono allocati <strong>Row-major order</strong> (per riga). Se un programma legge i dati scorrendoli per colonna (Col-major), salterà in continuazione da una pagina di memoria a un'altra, annullando l'efficacia del fetch anticipato e aumentando enormemente le TLB/Cache miss e i page faults.</p>
+
+      <h3>Memory-Mapped I/O (mmap)</h3>
+      <p>La system call <code>mmap()</code> in Linux mappa un file direttamente nello spazio di indirizzamento (memoria virtuale) del processo. Questo permette al codice di trattare il file come un array in memoria:</p>
+      <ul>
+        <li><strong>Lazy Loading:</strong> Le pagine del file vengono caricate in memoria fisica (Demand Paging) <em>solo</em> quando il codice cerca effettivamente di accedervi.</li>
+        <li><strong>No Syscall Overhead:</strong> Si elimina il costo delle system calls ripetitive (<code>read()</code> / <code>write()</code>) e il passaggio continuo tra kernel space e user space (eliminando l'overhead di copia nei buffer intermedi).</li>
+      </ul>
+
+      <h3>File System (ext4 e Link)</h3>
+      <p>A differenza di vecchi File System ext2/ext3 che usavano puntatori indiretti combinati, l'attuale <strong>ext4</strong> usa un <em>Extent-based system</em>: range di blocchi fisici contigui (fino a 128 MB di spazio per singolo extent), riducendo la complessità per file giganti.</p>
+      <div class="lab-box">
+        <p><strong>Fast Symlinks:</strong> Riguarda la distinzione tra <em>Hard Link</em> (puntatori diretti allo stesso Inode di un file su disco) e <em>Symbolic Link</em> (puntatori che indicano un percorso). In ext4, se il percorso del symbolic link è molto corto (sotto i 60 caratteri), viene salvato <em>direttamente dentro il blocco dell'Inode</em> del symlink stesso, evitando l'allocazione di un blocco dati (azzerando così la frammentazione e i tempi di lettura su disco). Questo prende il nome di <strong>Fast Symlink</strong>.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       14.05 — REAL-TIME OS (RIOT)
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> RIOT: Real-Time OS per IoT</h2>
+      <p>I laboratori affrontano la programmazione di dispositivi <em>Constrained</em> (come i microcontrollori 8-bit Arduino Mega 2560) utilizzando <strong>RIOT OS</strong>. È un sistema basato su <strong>microkernel</strong> progettato esplicitamente per dispositivi di rete a bassa potenza.</p>
+      
+      <ul>
+        <li><strong>Shell e Moduli:</strong> RIOT permette di compilare e agganciare moduli specifici a un'applicazione (es. <code>USEMODULE += shell</code>) per interagire con l'hardware e monitorare i thread in tempo reale con comandi come <code>ps</code>.</li>
+        <li><strong>Gestione Thread:</strong> Per tenere un thread in background e farlo sopravvivere al thread principale che lancia la shell, occorre che possieda una priorità <em>più bassa</em> (valore numerico più alto) e che esegua un loop infinito, altrimenti terminerebbe immediatamente (e non apparirebbe in <code>ps</code>).</li>
+        <li><strong>Timers Hardware (ztimer):</strong> Utilizza moduli aggiuntivi per temporizzare le operazioni (<code>ztimer_sleep</code>) al fine di sincronizzare le operazioni cicliche (es. lettura hardware) millisecondo per millisecondo, simulando esecuzioni concorrenti protette dai Mutex nativi del sistema real-time.</li>
+      </ul>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="back-btn-wrap">
+      <a href="13-sicurezza.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 13 · Sicurezza</a>
+      <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+    </div>
+
+  </div><!-- /content-wrap -->
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 14 · Laboratori (Teoria)</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">argomentoStyle.css</span></p>
+  </footer>
+
+  <!-- ═══════ SCRIPTS ═══════ -->
+  <script src="/shared/katchkit.js"></script>
+</body>
+</html>

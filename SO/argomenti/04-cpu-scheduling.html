@@ -29,6 +29,7 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
@@ -68,26 +69,23 @@
         <li>Priority Scheduling</li>
         <li>Multilevel Queue</li>
         <li>Multilevel Feedback Queue</li>
-        <li>CFS — Linux</li>
+        <li>Real-Time Scheduling</li>
+        <li>Multiprocessor Scheduling</li>
+        <li>Linux CFS ed EEVDF</li>
       </ul>
     </div>
 
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Concetti Base e Criteri di Scheduling <span class="sub-tag">fondamentale</span></h2>
-      <p>Lo <span class="keyword">scheduler della CPU</span> è il componente del SO che decide quale processo (o thread)
-        occupare la CPU nel prossimo time slot. Opera sulla <span class="keyword">ready queue</span>: la coda dei
-        processi pronti all'esecuzione. Lo scheduling può essere <span class="keyword">non preemptive</span> (il
-        processo tiene la CPU finché non la rilascia volontariamente) o <span class="keyword">preemptive</span> (il SO
-        può sottrarre la CPU al processo in esecuzione).</p>
+      <p>L'esecuzione di un processo (o thread) consiste in un ciclo alternato di esecuzioni sulla CPU (<span class="keyword">CPU burst</span>) e attese per operazioni di I/O (<span class="keyword">I/O burst</span>). Nei sistemi time-sharing la maggior parte dei burst dura pochissimi millisecondi. Lo scopo della multiprogrammazione è massimizzare l'uso della CPU assegnandola rapidamente ai processi pronti all'esecuzione.</p>
+      
+      <p>Lo <span class="keyword">scheduler della CPU</span> seleziona un processo dalla <em>ready queue</em>, mentre il <span class="keyword">Dispatcher</span> effettua fisicamente il cambio di contesto (context switch), passa in user mode e salta all'indirizzo dell'istruzione da eseguire. Il tempo impiegato per questa operazione è detto <span class="keyword">Dispatch Latency</span> (e deve essere inferiore a 10µs).</p>
+      
+      <p>Lo scheduling può essere <span class="keyword">non preemptive</span> (il processo rilascia volontariamente la CPU terminando o bloccandosi) o <span class="keyword">preemptive</span> (il SO lo interrompe forzatamente). Il preemption moderno aumenta la reattività ma introduce il rischio di gravi <strong>race condition</strong> nell'accesso a dati condivisi (es. memoria condivisa tra produttore e consumatore).</p>
       <div class="card-def">
-        <div class="header">definizione</div>
+        <div class="header">Criteri di Valutazione</div>
         <div class="content">
-          <p>I criteri di valutazione sono: <span class="keyword">CPU utilization</span> (massimizzare l'uso della CPU,
-            idealmente 100%), <span class="keyword">Throughput</span> (processi completati per unità di tempo), <span
-              class="keyword">Turnaround time</span> (tempo totale dalla sottomissione al completamento), <span
-              class="keyword">Waiting time</span> (tempo passato in ready queue), <span class="keyword">Response
-              time</span>
-            (tempo dalla richiesta alla prima risposta, cruciale per sistemi interattivi).</p>
+          <p><span class="keyword">CPU utilization</span> (uso della CPU, da massimizzare), <span class="keyword">Throughput</span> (processi completati per unità di tempo, da massimizzare), <span class="keyword">Turnaround time</span> (tempo dalla sottomissione al completamento, da minimizzare), <span class="keyword">Waiting time</span> (tempo totale passato in ready queue, da minimizzare), <span class="keyword">Response time</span> (tempo dalla richiesta alla prima esecuzione, vitale per sistemi interattivi).</p>
         </div>
       </div>
     </div>
@@ -115,7 +113,7 @@
       <p>Esegue sempre il processo con il <span class="keyword">CPU burst più breve</span>. Garantisce il waiting time
         medio minimo teorico tra tutti gli algoritmi non preemptive, ma ha un difetto fondamentale: il SO non conosce in
         anticipo la durata del prossimo CPU burst.</p>
-      <h2><span class="dot"></span>Previsione seponenziale</h2>
+      <h2><span class="dot"></span>Previsione Esponenziale</h2>
       <p>La soluzione è la <span class="keyword">previsione esponenziale</span>:
         <div class="card-formula">
           <div class="header">Formula previsione</div>
@@ -218,16 +216,36 @@
         usava una variante di questo schema.</p>
     </div>
 
+    <div class="section-block" id="section-rt">
+      <h2><span class="dot"></span> Real-Time CPU Scheduling</h2>
+      <p>I sistemi real-time (es. ABS, robotica, pacemaker) richiedono risposte entro scadenze ferree. L'<span class="keyword">event latency</span> è il tempo tra l'occorrenza di un evento e la sua risposta (composto da interrupt latency + dispatch latency).</p>
+      <ul>
+        <li><span class="keyword">Soft real-time:</span> i task critici hanno priorità massima, ma senza garanzie assolute (usato nei sistemi multimediali).</li>
+        <li><span class="keyword">Hard real-time:</span> i task <em>devono</em> rigorosamente rispettare la loro <strong>deadline</strong>, altrimenti il sistema fallisce.</li>
+      </ul>
+      <p>Per i processi periodici (con tempo di elaborazione, deadline e un periodo costante), gli algoritmi più usati sono:</p>
+      <ul>
+        <li><strong>Rate Monotonic Scheduling (RMS):</strong> Priorità statiche inversamente proporzionali al periodo (periodo più breve = priorità più alta). È ottimale, ma non garantisce il rispetto delle deadline se l'utilizzo CPU totale è alto.</li>
+        <li><strong>Earliest Deadline First (EDF):</strong> Priorità dinamiche assegnate in base a chi ha la scadenza più imminente. Garantisce il rispetto di tutte le deadline finché l'uso della CPU è < 100%.</li>
+        <li><strong>Proportional Share:</strong> Assegna un numero garantito di "quote" (shares) del tempo CPU a ogni processo per garantire esecuzioni regolari.</li>
+      </ul>
+    </div>
+
+    <div class="section-block" id="section-mp">
+      <h2><span class="dot"></span> Multiprocessor Scheduling</h2>
+      <p>Nei moderni sistemi simmetrici (<span class="keyword">SMP - Symmetric Multiprocessing</span>) o multithreaded (es. hyperthreading), bisogna decidere su quale core allocare il processo. Il <span class="keyword">Load Balancing</span> bilancia il carico tramite Push migration (sposta un thread da un core sovraccarico a uno vuoto) o Pull migration (un core vuoto "ruba" un thread).</p>
+      <p>Le migrazioni eccessive svuotano i dati pre-caricati nella cache del processore originale. Questo spinge all'uso della <span class="keyword">Processor Affinity</span>:</p>
+      <ul>
+        <li><strong>Soft Affinity:</strong> Il SO cerca spontaneamente di mantenere il thread sullo stesso core.</li>
+        <li><strong>Hard Affinity:</strong> Il processo forza l'uso di un set specifico di core, non migrando mai altrove.</li>
+      </ul>
+      <p>Infine, lo scheduler è <span class="keyword">NUMA-aware</span>: tenta sempre di allocare l'esecuzione di un thread nel core fisico il cui banco di memoria associato contiene effettivamente i dati del thread (accesso veloce locale vs remoto).</p>
+    </div>
+
     <div class="section-block" id="section-8">
-      <h2><span class="dot"></span> CFS — Completely Fair Scheduler (Linux)</h2>
-      <p>Lo scheduler di Linux moderno, introdotto nel kernel 2.6.23. Il principio è semplice: ogni processo deve
-        ricevere una quota <span class="keyword">equa</span> del tempo CPU. CFS traccia per ogni processo il <span
-          class="keyword">virtual runtime</span> (vruntime): il tempo CPU consumato, pesato per la priorità (nice
-        value).</p>
-      <p>I processi sono ordinati per vruntime in un <span class="keyword">albero rosso-nero</span> (una BST
-        bilanciata). Lo scheduler esegue sempre il processo con il vruntime più basso (il nodo più a sinistra
-        dell'albero), garantendo equità. Non c'è un quantum fisso: il time slice è proporzionale alla priorità relativa
-        dei processi in coda. CFS offre latenza eccellente per i processi interattivi e alto throughput per i batch.</p>
+      <h2><span class="dot"></span> Scheduling in Linux</h2>
+      <p>Per molto tempo Linux ha usato il <span class="keyword">CFS (Completely Fair Scheduler)</span>: assegna a ogni processo una quota di tempo bilanciata. Registra per ogni task il <strong>virtual runtime (vruntime)</strong>: tempo CPU pesato in base alla priorità (il nice level). Il CFS seleziona sempre il processo col vruntime più basso prelevandolo da un albero Red-Black.</p>
+      <p>Attualmente Linux sta sostituendo il CFS con <span class="keyword">EEVDF (Earliest Eligible Virtual Deadline First)</span> per ottimizzare sia l'equità sia la garanzia dei tempi di latenza per processi real-time soft. Lo scheduler Linux usa nativamente raggruppamenti logici dei core (Scheduling Domains) per fare load balancing tenendo traccia dell'hardware topology e dei limiti NUMA.</p>
     </div>
 
     <div class="back-btn-wrap">

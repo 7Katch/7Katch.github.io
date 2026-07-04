@@ -131,3 +131,11 @@
     - Buffer overflow attacks
     - Compile-time defenses (Safe coding, StackGuard) e Runtime defenses (NX bit, ASLR, Guard pages)
     - Cryptography e Fault tolerance
+
+- [14-laboratori-teoria.html](./argomenti/14-laboratori-teoria.html)
+  - **Laboratori (Teoria)**
+    - Kernel Modules vs User Mode (printk, insmod, privileges)
+    - Processi e Thread (Fork, Orfani, Data vs Task Parallelism, Contention Scope)
+    - Sincronizzazione in C (POSIX Mutex, Named/Unnamed Semaphores, Peterson)
+    - Memoria e File System (mmap lazy loading, ext4 extent e fast symlinks)
+    - Real-Time OS per IoT (RIOT microkernel, thread handling, ztimer)

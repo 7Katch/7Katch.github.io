@@ -1,32 +1,89 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>13 · Sicurezza — SO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>13 · Sicurezza e Fault Tolerance — SO</title>
+
   <link rel="stylesheet" href="/shared/katchkit.css">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+  </script>
+  
+  <style>
+    /* Stili Custom per visualizzazione Buffer Overflow Defenses */
+    .bof-defenses {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .bof-defense-card {
+      background: #0d0f12;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .bof-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(248,113,113,.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #f87171;
+      flex-shrink: 0;
+    }
+    .bof-info h4 {
+      margin: 0 0 0.25rem 0;
+      color: var(--text-bright);
+      font-size: 1.1rem;
+    }
+    .bof-info p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    .bof-icon.nx { color: #60a5fa; background: rgba(96,165,250,.1); }
+    .bof-icon.aslr { color: #fbbf24; background: rgba(251,191,36,.1); }
+    .bof-icon.guard { color: #34d399; background: rgba(52,211,153,.1); }
+  </style>
 </head>
-<body class="dot-grid theme-coral">
-<aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-    <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-    <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-    <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-    <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-    <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-    <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-    <li><div class="sb-cur"><span class="sb-pdot"></span>13 · Sicurezza</div></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
-</aside>
+
+<body class="dot-grid theme-red">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
+      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
+      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
+      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
+      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
+      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
+      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>13 · Sicurezza</div>
+      </li>
+          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
 
   <!-- ═══════ NAV ═══════ -->
   <site-navbar 
@@ -34,79 +91,404 @@
     back-url="../" 
     back-text="Indice SO">
   </site-navbar>
-<div class="hero" style="min-height:55vh">
-  <div class="hero-glow"></div>
-  <span class="hero-eyebrow" style="background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--coral)">Macroargomento 13 · Protezione</span>
-  <div class="topic-num">13 / 13</div>
-  <h1 class="topic-hero-title">Sicurezza</h1>
-  <p class="hero-sub" style="max-width:640px">Triada CIA, autenticazione, access control, buffer overflow, malware e protezione del kernel tramite privilege rings e sandbox.</p>
-</div>
-<hr class="divider">
-<div class="content-wrap">
-  <div class="nav-breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
-    <a href="../index.html">SO</a><span>/</span>
-    <span>13 · Sicurezza</span>
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--red)">
+      Macroargomento 13 · Sicurezza
+    </span>
+    <div class="topic-num">13 / 13</div>
+    <h1 class="topic-hero-title">Sicurezza & Fault Tolerance</h1>
+    <p class="hero-sub" style="max-width:680px">
+      Minacce di sistema (Buffer Overflow) e di rete (Sniffing/Spoofing). Crittografia (Simmetrica/Asimmetrica) e gestione della Tolleranza ai Guasti (Redundancy).
+    </p>
   </div>
-  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(248,113,113,.25)">Questa pagina copre i <strong style="color:var(--coral)">6 sottoargomenti</strong> del macroargomento 13, l'ultimo del corso: sicurezza e protezione del SO.</div>
-  <div class="index-grid" data-prefix="13">
+  <hr class="divider">
+
+  <!-- ═══════ CONTENT ═══════ -->
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">SO</a><span>/</span>
+      <span>13 · Sicurezza & Fault Tolerance</span>
+    </div>
+
+    <!-- INDEX GRID -->
+    <div class="index-grid" data-prefix="13">
       <ul>
-        <li>Obiettivi CIA</li>
-        <li>Autenticazione</li>
-        <li>Access Control</li>
-        <li>Buffer Overflow</li>
-        <li>Malware & Virus</li>
-        <li>Rings & Sandbox</li>
+        <li>Software Vulnerability: Buffer Overflow</li>
+        <li>Network Attacks (Sniffing, Spoofing)</li>
+        <li>Crittografia & Man-in-the-Middle</li>
+        <li>Faults & Fault Tolerance</li>
       </ul>
     </div>
 
-  <div class="section-block" id="section-1">
-    <h2><span class="dot"></span> Obiettivi di Sicurezza — Triada CIA <span class="sub-tag">fondamento</span></h2>
-    <p>La sicurezza informatica si costruisce intorno a tre obiettivi fondamentali, noti come la <span class="keyword">triada CIA</span>. <span class="keyword">Confidenzialità</span> (Confidentiality): le informazioni devono essere accessibili solo a chi è autorizzato. Un file con i dati degli utenti non deve essere leggibile da processi non autorizzati. <span class="keyword">Integrità</span> (Integrity): i dati non devono essere alterati in modo non autorizzato. Un file di sistema non deve poter essere modificato da un processo utente. <span class="keyword">Disponibilità</span> (Availability): le risorse devono essere accessibili agli utenti legittimi quando ne hanno bisogno. Un attacco DoS viola la disponibilità.</p>
-    <p>Un sistema operativo contribuisce alla triada a tutti i livelli: protezione della memoria (confidenzialità e integrità tra processi), permessi sui file (confidenzialità), journaling e RAID (integrità e disponibilità), scheduling equo (disponibilità).</p>
-  </div>
+    <!-- ══════════════════════════════════════════════════
+       13.01 — BUFFER OVERFLOW E DIFESE
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Buffer Overflow <span class="sub-tag">minacce software</span></h2>
+      <p>L'attacco informatico per eccellenza. Si verifica quando un programma (che usa funzioni insicure in C come <code>gets()</code>) tenta di memorizzare in un buffer più dati di quanti ne possa contenere. I dati in eccesso <span class="keyword">sovrascrivono la memoria adiacente</span>. Poiché le variabili locali si trovano sullo <em>Stack</em>, l'attaccante può scrivere oltre il buffer e sovrascrivere l'<strong>indirizzo di ritorno</strong> (Return Address) dello stack frame, dirottando l'esecuzione del programma verso codice malevolo (shellcode) inserito dall'attaccante stesso (<em>Code Injection</em>).</p>
 
-  <div class="section-block" id="section-2">
-    <h2><span class="dot"></span> Autenticazione</h2>
-    <p>L'<span class="keyword">autenticazione</span> è la verifica dell'identità dichiarata da un utente o processo. Si basa su tre categorie di fattori, spesso combinati (Multi-Factor Authentication): <span class="keyword">qualcosa che sai</span> (password, PIN, risposta a domande segrete), <span class="keyword">qualcosa che hai</span> (token hardware, smartphone per OTP, smart card), <span class="keyword">qualcosa che sei</span> (biometria: impronta digitale, riconoscimento facciale, iride).</p>
-    <p>Le password non vengono mai memorizzate in chiaro. Il SO salva l'hash della password: quando l'utente si autentica, l'hash della password inserita viene confrontato con quello memorizzato. Gli algoritmi moderni usano funzioni di hashing lente e con <span class="keyword">salt</span>: <span class="keyword">bcrypt</span>, <span class="keyword">Argon2</span> o <span class="keyword">scrypt</span>. Il salt è un valore casuale aggiunto alla password prima dell'hash, che impedisce l'uso di <em>rainbow table</em> (tabelle precalcolate di hash). Su Linux le password sono in <code class="inline">/etc/shadow</code>, leggibile solo da root.</p>
-  </div>
+      <!-- SIMULATORE P5 BUFFER OVERFLOW -->
+      <div style="margin:2.5rem 0; padding:1.5rem; background:rgba(0,0,0,.2); border-radius:8px; border:1px solid rgba(255,255,255,.05)">
+        <h4 style="margin-top:0;color:var(--red)"><i class="bi bi-bug-fill"></i> Simulazione Interattiva: Stack-based Buffer Overflow</h4>
+        <p style="font-size:13px; color:rgba(255,255,255,.6)">Osserva cosa succede allo Stack Frame quando la stringa inserita supera la dimensione allocata per il Buffer.</p>
+        
+        <div id="p5-bof-sim" style="width:100%; display:flex; justify-content:center; margin:1rem 0; border-radius:8px; overflow:hidden;"></div>
+        
+        <div class="sim-controls" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="simBof_safe()">Safe Input (4 byte)</button>
+          <button class="btn btn-red" onclick="simBof_attack()">Malicious Input (12 byte)</button>
+          <button class="btn btn-ghost" onclick="simBof_reset()">Reset Stack</button>
+        </div>
+      </div>
+      <!-- FINE SIMULATORE -->
 
-  <div class="section-block" id="section-3">
-    <h2><span class="dot"></span> Access Control</h2>
-    <p>Il controllo degli accessi decide chi può fare cosa su quali risorse. Le due implementazioni principali sono complementari. Una <span class="keyword">ACL (Access Control List)</span> è associata a ogni risorsa e lista le entità autorizzate con i relativi permessi. Esempio: il file <code class="inline">report.pdf</code> può essere letto da Alice e Bob, scritto solo da Alice, eseguito da nessuno. I permessi Unix rwx per owner/group/other sono una ACL semplificata (solo tre soggetti).</p>
-    <p>Una <span class="keyword">Capability List</span> (o Capability Set) è associata a ogni processo o utente e lista le risorse a cui può accedere con i permessi corrispondenti. È come un "biglietto di accesso" che il processo presenta quando richiede una risorsa. Linux usa le <span class="keyword">capabilities</span> per suddividere i privilegi root in unità più granulari: <code class="inline">CAP_NET_BIND_SERVICE</code> (bind a porte < 1024), <code class="inline">CAP_SYS_ADMIN</code> (operazioni di sistema), <code class="inline">CAP_KILL</code> (inviare segnali a qualsiasi processo), ecc.</p>
-  </div>
+      <h3 style="margin-top:2rem; margin-bottom:1rem">Difese a Runtime (OS e Hardware)</h3>
+      
+      <!-- Schema Visivo -->
+      <div class="bof-defenses">
+        <div class="bof-defense-card">
+          <div class="bof-icon nx"><i class="bi bi-shield-lock-fill"></i></div>
+          <div class="bof-info">
+            <h4>No-Execute Bit (NX bit)</h4>
+            <p>Il processore marca specifiche aree di memoria (come lo Stack e l'Heap) come "non eseguibili". Se l'attaccante inietta del codice nello stack e prova a saltarci, la CPU genera una <em>Memory Fault</em> e fa crashare il processo invece di eseguire il codice.</p>
+          </div>
+        </div>
+        
+        <div class="bof-defense-card">
+          <div class="bof-icon aslr"><i class="bi bi-shuffle"></i></div>
+          <div class="bof-info">
+            <h4>ASLR (Address Space Layout Randomization)</h4>
+            <p>Il kernel randomizza ad ogni avvio la posizione di Stack, Heap e librerie (come la libc) nella memoria virtuale. Rende quasi impossibile per l'attaccante prevedere (hardcodare) gli indirizzi di salto verso le proprie funzioni malevole (es. <em>Return-to-libc attack</em>).</p>
+          </div>
+        </div>
+        
+        <div class="bof-defense-card">
+          <div class="bof-icon guard"><i class="bi bi-bricks"></i></div>
+          <div class="bof-info">
+            <h4>Guard Pages</h4>
+            <p>La MMU posiziona delle pagine "trappola" (non allocate) tra le varie aree critiche di memoria. Se il buffer overflow continua a scriversi fino a toccare una guard page, il kernel intercetta l'accesso illegale e abortisce il processo istantaneamente.</p>
+          </div>
+        </div>
+      </div>
 
-  <div class="section-block" id="section-4">
-    <h2><span class="dot"></span> Buffer Overflow</h2>
-    <p>Il <span class="keyword">buffer overflow</span> è una delle vulnerabilità più sfruttate nella storia della sicurezza informatica. Si verifica quando un programma scrive dati in un buffer superando la dimensione allocata, sovrascrivendo aree di memoria adiacenti. In C, operazioni come <code class="inline">strcpy(dst, src)</code> non verificano la dimensione del buffer destinazione: se <code class="inline">src</code> è più lungo di <code class="inline">dst</code>, i byte in eccesso sovrascrivono variabili locali, il frame pointer e l'indirizzo di ritorno sullo stack. L'attaccante può così redirigere l'esecuzione a codice arbitrario (shellcode).</p>
-    <p>Le contromisure hardware/OS sono quattro: <span class="keyword">Stack Canary</span> — il compilatore inserisce un valore casuale (canary) tra le variabili locali e l'indirizzo di ritorno; prima di ritornare la funzione verifica che il canary sia intatto. <span class="keyword">ASLR</span> (Address Space Layout Randomization) — le aree di codice, stack e heap sono posizionate a indirizzi casuali ad ogni esecuzione, rendendo imprevedibile dove inserire il codice malevolo. <span class="keyword">NX bit</span> (No-Execute) — le pagine di stack e heap sono marcate come non eseguibili; tentare di eseguire codice in quelle aree genera una trap. <span class="keyword">Linguaggi sicuri</span> — Go, Rust, Java verificano i limiti degli array a runtime, eliminando la classe di vulnerabilità alla radice.</p>
-  </div>
+      <!-- Tabella Comparativa -->
+      <table class="so-table">
+        <thead>
+          <tr>
+            <th>Difesa</th>
+            <th>Scopo Principale</th>
+            <th>Cosa impedisce?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>NX bit</strong></td>
+            <td>Negare l'esecuzione dei dati</td>
+            <td>Impedisce l'esecuzione di shellcode malevolo iniettato dall'esterno.</td>
+          </tr>
+          <tr>
+            <td><strong>ASLR</strong></td>
+            <td>Rendere gli indirizzi imprevedibili</td>
+            <td>Ostacola attacchi basati su salti a indirizzi assoluti noti (es. codice di librerie).</td>
+          </tr>
+          <tr>
+            <td><strong>Guard Pages</strong></td>
+            <td>Creare zone cuscinetto invalide</td>
+            <td>Ferma l'overflow prima che raggiunga strutture dati adiacenti vitali.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <div class="section-block" id="section-5">
-    <h2><span class="dot"></span> Malware & Virus</h2>
-    <p>Il termine <span class="keyword">malware</span> (malicious software) raggruppa diverse categorie di software malevolo. Un <span class="keyword">Virus</span> è codice che si replica allegando copie di sé stesso a programmi legittimi; si diffonde quando l'utente esegue il programma infetto. Un <span class="keyword">Worm</span> si propaga autonomamente sfruttando vulnerabilità di rete, senza intervento umano (es. WannaCry, Slammer). Un <span class="keyword">Trojan</span> si maschera da software legittimo e utile, ma esegue azioni malevole in background (installare backdoor, esfiltrare dati). Un <span class="keyword">Ransomware</span> cifra i file dell'utente con chiave nota solo all'attaccante e richiede un riscatto per la decifratura (es. CryptoLocker, Ryuk). Un <span class="keyword">Rootkit</span> modifica il kernel o i tool di sistema per nascondere la propria presenza (file, processi, connessioni di rete).</p>
-    <p>La difesa a livello SO include: verifica delle firme digitali dei moduli kernel, Secure Boot (verifica dell'intera catena di avvio), sandboxing dei processi, e aggiornamenti tempestivi delle patch di sicurezza.</p>
-  </div>
+    <!-- ══════════════════════════════════════════════════
+       13.02 — AUTENTICAZIONE E IDS
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> IDS & Autenticazione <span class="sub-tag">difese perimetrali</span></h2>
+      <p>Oltre a prevenire attacchi software, l'OS deve monitorare gli accessi. L'<strong>Autenticazione</strong> si basa su un'identificazione (username) e su una verifica (password) basata su tre fattori fondamentali:</p>
+      <ul>
+        <li><strong>Something you know:</strong> Qualcosa che l'utente sa (Password, PIN).</li>
+        <li><strong>Something you possess:</strong> Qualcosa che ha (Smart card, Token hardware).</li>
+        <li><strong>Something you are / do:</strong> Biometria statica (Impronta, iride) o dinamica (pattern vocale).</li>
+      </ul>
 
-  <div class="section-block" id="section-6">
-    <h2><span class="dot"></span> Protezione del Kernel: Rings & Sandbox</h2>
-    <p>I processori x86 implementano quattro <span class="keyword">livelli di privilegio</span> (ring 0–3), anche se i SO moderni ne usano solo due. Il <span class="keyword">ring 0</span> (kernel mode) ha accesso illimitato all'hardware: può eseguire qualsiasi istruzione, accedere a qualsiasi indirizzo fisico, configurare il TLB e gli interrupt. Il <span class="keyword">ring 3</span> (user mode) è fortemente limitato: non può accedere direttamente all'hardware, modificare le page table, né eseguire istruzioni privilegiate. Qualsiasi tentativo genera una trap gestita dal kernel.</p>
-    <p>La <span class="keyword">sandbox</span> estende il principio del least privilege ai processi. In Linux, i meccanismi principali sono: <span class="keyword">namespaces</span> (isolamento di PID, filesystem, rete, utenti tra processi), <span class="keyword">seccomp</span> (Security Computing Mode: filtra le syscall che un processo può chiamare, usato da Docker e Chrome), <span class="keyword">cgroups</span> (Control Groups: limitano le risorse CPU/RAM/I/O di un gruppo di processi), <span class="keyword">SELinux</span> e <span class="keyword">AppArmor</span> (MAC — Mandatory Access Control: policy di accesso definite dall'amministratore che il kernel applica indipendentemente dai permessi DAC). Questi meccanismi sono la base tecnologica dei container Docker e Kubernetes.</p>
-  </div>
+      <h3>Intrusion Detection Systems (IDS)</h3>
+      <p>Un IDS analizza il sistema per rilevare accessi non autorizzati. Può essere <em>Host-based</em> (monitora i log locali e system calls del singolo PC) o <em>Network-based</em> (analizza i pacchetti di rete in transito). È composto da tre parti:</p>
+      <div class="algo-steps">
+        <div class="algo-step"><span class="algo-step-n">1.</span> <strong>Sensors:</strong> Raccolgono i dati grezzi (traffico rete, log files).</div>
+        <div class="algo-step"><span class="algo-step-n">2.</span> <strong>Analyzers:</strong> Determinano se c'è un'intrusione confrontando i dati con pattern noti (Signatures) o comportamenti anomali (Heuristics).</div>
+        <div class="algo-step"><span class="algo-step-n">3.</span> <strong>User Interface:</strong> Segnalano l'allarme all'amministratore e suggeriscono azioni.</div>
+      </div>
+    </div>
 
-  <div class="back-btn-wrap">
-    <a href="12-embedded-systems.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 12 · Embedded Systems</a>
-    <a href="../index.html" class="btn btn-amber">↑ Indice SO — Fine corso</a>
-  </div>
-</div>
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 13 · Sicurezza</p>
-  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
-</footer>
+    <!-- ══════════════════════════════════════════════════
+       13.03 — NETWORK ATTACKS
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Network Attacks <span class="sub-tag">minacce di rete</span></h2>
+      <p>Sulla rete, l'indirizzo IP non è sufficiente per identificare in modo univoco una fonte fidata. Gli attacchi si dividono principalmente in:</p>
+      <div class="algo-steps">
+        <div class="algo-step"><span class="algo-step-n">1.</span> <strong>Sniffing (Attacco Passivo):</strong> L'attaccante ascolta e intercetta il traffico di rete senza modificarlo, rubando informazioni preziose inviate in chiaro (es. password).</div>
+        <div class="algo-step"><span class="algo-step-n">2.</span> <strong>Spoofing (Attacco Attivo):</strong> L'attaccante falsifica la propria identità (masquerading), modificando pacchetti in transito, diventando spesso un <em>Man-in-the-Middle</em>.</div>
+      </div>
+    </div>
 
+    <!-- ══════════════════════════════════════════════════
+       13.04 — CRITTOGRAFIA & MAN-IN-THE-MIDDLE
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Crittografia <span class="sub-tag">protezione dati</span></h2>
+      <p>La crittografia restringe il pool di potenziali mittenti/destinatari in grado di leggere il messaggio.</p>
 
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr">
+        <div class="compare-col">
+          <div class="compare-col-head amber">Simmetrica</div>
+          <div class="compare-col-body">
+            <div class="compare-row">La stessa identica chiave (K) decripta e cripta.</div>
+            <div class="compare-row">Veloce, ideale per scambi di grandi moli di dati.</div>
+            <div class="compare-row">Problema: Come mi scambio in sicurezza questa chiave iniziale K con lo sconosciuto?</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head green">Asimmetrica (Public-Key)</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Usa 2 chiavi: la <strong>Pubblica</strong> (nota a tutti) cifra, la <strong>Privata</strong> (segreta) decifra.</div>
+            <div class="compare-row">Lenta, basata su complessi calcoli con numeri primi (RSA).</div>
+            <div class="compare-row">Ideale per scambiarsi in sicurezza la chiave simmetrica all'inizio della sessione.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2.5rem">Man-in-the-Middle Attack (Sulla crittografia Asimmetrica)</h3>
+      <p>Persino l'asimmetrica può fallire se non si usa un'infrastruttura a chiavi pubbliche (PKI / Certificati) per certificare l'identità del possessore della chiave pubblica.</p>
+      
+      <!-- Diagramma Mermaid MITM -->
+      <div class="mermaid" style="margin-top:1rem; margin-bottom:1rem">
+        sequenceDiagram
+            participant Alice as Alice
+            participant Eve as 😈 Attaccante
+            participant Bob as Bob
+
+            Alice->>Eve: Invia PubKey(Alice) [Intercettata]
+            Note right of Alice: Crede di parlare con Bob
+            Eve->>Bob: Invia PubKey(Attaccante) spacciandosi per Alice
+            
+            Bob->>Eve: Invia messaggio criptato con PubKey(Attaccante)
+            Note right of Bob: Crede che solo Alice possa decriptarlo
+            
+            Eve->>Eve: 😈 Decripta col proprio PrivKey e legge/modifica il msg!
+            Eve->>Alice: Ri-cripta con PubKey(Alice) e inoltra.
+            
+            Note left of Alice: Alice decripta e non si accorge di nulla!
+      </div>
+      <p class="caption" style="text-align:center;color:var(--text-muted);font-size:12px;margin-bottom:2rem">L'attaccante si intromette nella fase iniziale scambiando le proprie chiavi.</p>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+       13.05 — FAULT TOLERANCE E AFFIDABILITÀ
+  ══════════════════════════════════════════════════ -->
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Fault Tolerance <span class="sub-tag">affidabilità di sistema</span></h2>
+      <p>I <strong>Faults</strong> (Guasti) sono stati erronei (Hardware o Software). Possono essere:</p>
+      <ul>
+        <li><strong>Permanent:</strong> Una volta che accadono, persistono (es. disco bruciato). Si risolve solo sostituendo il pezzo.</li>
+        <li><strong>Temporary:</strong> Spesso inspiegabili, si dividono in:
+          <ul>
+            <li><em>Transient:</em> Succedono una volta sola e basta (es. raggio cosmico che flippa un bit in RAM).</li>
+            <li><em>Intermittent:</em> Succedono a intervalli irregolari e imprevedibili (es. falso contatto).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <p>Per combatterli si usa la <strong>Ridondanza</strong> (aumento dell'affidabilità al costo di prestazioni o soldi):</p>
+      
+      <table class="so-table">
+        <thead>
+          <tr>
+            <th>Tipologia</th>
+            <th>Come funziona?</th>
+            <th>Caso d'uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:#f87171">Spatial (Physical)</strong></td>
+            <td>Usa molteplici componenti uguali che lavorano insieme o in backup.</td>
+            <td>Dischi in RAID 1, alimentatori doppi nei server.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#60a5fa">Temporal</strong></td>
+            <td>Ripete la stessa operazione/funzione se rileva un errore.</td>
+            <td>Efficace per guasti <em>Transient</em> (es. ritrasmissione pacchetti).</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#34d399">Information</strong></td>
+            <td>Replica o codifica i dati usando bit extra per correggere l'errore.</td>
+            <td>Codici ECC sulle RAM, Parità sul RAID 5.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top:2.5rem">Metriche di Reliability (Affidabilità)</h3>
+      <p>L'affidabilità <code>R(t)</code> è misurata nel tempo usando le seguenti grandezze fondamentali:</p>
+      <ul>
+        <li><strong>MTTF (Mean Time To Failure):</strong> Tempo medio in cui il sistema opera correttamente prima di rompersi.</li>
+        <li><strong>MTTR (Mean Time To Repair):</strong> Tempo medio necessario per riparare il guasto e tornare operativi.</li>
+      </ul>
+      
+      <div class="amber-box" style="margin-top:1.5rem;text-align:center">
+        <strong style="color:var(--amber);font-size:1.1rem">$Availability = \frac{MTTF}{MTTF + MTTR}$</strong>
+        <p style="margin-top:0.5rem;font-size:0.9rem;color:rgba(255,255,255,0.7)">Indica la frazione di tempo in cui il sistema è effettivamente disponibile agli utenti. Esistono classi di Availability commerciali dette "I nove" (es. "Quattro Nove" significa un'uptime garantita del 99.99%).</p>
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="back-btn-wrap">
+      <a href="12-embedded-systems.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 12 · Embedded Systems</a>
+      <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
+      <a href="14-laboratori-teoria.html" class="btn btn-ghost">14 · Laboratori (Teoria) <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+  </div><!-- /content-wrap -->
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 13 · Sicurezza</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">argomentoStyle.css</span></p>
+  </footer>
+
+  <!-- ═══════ SCRIPTS ═══════ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="/shared/animation.js"></script>
   <script src="/shared/katchkit.js"></script>
+
+  <script>
+    // P5.js Simulator: Buffer Overflow
+    const bofSketch = (p) => {
+      // Dimensioni blocco e stack
+      const W = 200;
+      const H = 40;
+      let chars = [];
+      let state = {
+        bufCol: [51, 65, 85],       // Slate-700
+        retCol: [51, 65, 85],       // Slate-700
+        retText: "0x0804834A (Normal)"
+      };
+
+      p.setup = () => {
+        p.createCanvas(500, 260).parent('p5-bof-sim');
+        p.textAlign(p.CENTER, p.CENTER);
+      };
+
+      p.draw = () => {
+        p.background(15, 23, 42); // slate-900
+
+        let cx = p.width / 2;
+        let cy = 50;
+
+        // Disegna Local Buffer
+        p.fill(state.bufCol[0], state.bufCol[1], state.bufCol[2]);
+        p.stroke(255, 255, 255, 50);
+        p.rectMode(p.CENTER);
+        p.rect(cx, cy, W, H, 4);
+        p.fill(255); p.textSize(12);
+        p.text("char buffer[4]", cx, cy);
+
+        // Disegna Extra padding / altri dati
+        p.fill(30, 41, 59);
+        p.rect(cx, cy + H, W, H, 4);
+        p.fill(255, 255, 255, 100);
+        p.text("Other Locals / Padding", cx, cy + H);
+
+        // Disegna Saved EBP
+        p.rect(cx, cy + H*2, W, H, 4);
+        p.text("Saved EBP", cx, cy + H*2);
+
+        // Disegna Return Address (Bersaglio!)
+        p.fill(state.retCol[0], state.retCol[1], state.retCol[2]);
+        p.rect(cx, cy + H*3, W, H, 4);
+        p.fill(255);
+        p.text("Return Addr: " + state.retText, cx, cy + H*3);
+
+        // Disegna freccia dello stack
+        p.stroke(255, 255, 255, 30);
+        p.line(cx + W/2 + 30, cy - 20, cx + W/2 + 30, cy + H*3 + 20);
+        p.noStroke(); p.fill(255, 255, 255, 80);
+        p.triangle(cx + W/2 + 25, cy + H*3 + 20, cx + W/2 + 35, cy + H*3 + 20, cx + W/2 + 30, cy + H*3 + 30);
+        p.text("High\nMem", cx + W/2 + 60, cy + H*3 + 20);
+        p.text("Low\nMem", cx + W/2 + 60, cy - 20);
+
+        // Disegna i caratteri iniettati
+        for (let c of chars) {
+          p.fill(248, 113, 113, c.alpha); // Red text for bytes
+          p.textSize(16);
+          p.text(c.char, c.x, c.y);
+        }
+      };
+
+      window.simBof_reset = () => {
+        gsap.killTweensOf(state);
+        gsap.killTweensOf(chars);
+        chars = [];
+        state.bufCol = [51, 65, 85];
+        state.retCol = [51, 65, 85];
+        state.retText = "0x0804834A (Normal)";
+      };
+
+      window.simBof_safe = () => {
+        window.simBof_reset();
+        let str = "SAFE";
+        let tl = gsap.timeline();
+        
+        tl.to(state.bufCol, {0: 16, 1: 185, 2: 129, duration: 0.3}); // Green
+
+        for (let i = 0; i < str.length; i++) {
+          let cx = p.width/2 - W/2 + 25 + (i*45);
+          let cy = 50;
+          let charObj = { char: str[i], x: cx, y: -20, alpha: 0 };
+          chars.push(charObj);
+          
+          tl.to(charObj, { y: cy, alpha: 255, duration: 0.3, ease: "bounce.out" }, "-=0.2");
+        }
+      };
+
+      window.simBof_attack = () => {
+        window.simBof_reset();
+        let str = "MALICIOUS!!x"; // 12 bytes
+        let tl = gsap.timeline();
+        
+        tl.to(state.bufCol, {0: 248, 1: 113, 2: 113, duration: 0.2}); // Red
+        
+        for (let i = 0; i < str.length; i++) {
+          // Wrap logic per farli scendere nei blocchi successivi
+          let row = Math.floor(i / 4);
+          let col = i % 4;
+          
+          let cx = p.width/2 - W/2 + 25 + (col*45);
+          let cy = 50 + (row * H);
+          
+          let charObj = { char: str[i], x: cx, y: -20, alpha: 0 };
+          chars.push(charObj);
+          
+          tl.to(charObj, { y: cy, alpha: 255, duration: 0.15 }, "-=0.1");
+          
+          // Se tocca il Return Address, diventiamo rossi!
+          if (row === 3 && col === 0) {
+             tl.to(state.retCol, {0: 248, 1: 113, 2: 113, duration: 0.2});
+             tl.call(() => state.retText = "0xDEADBEEF (Hacked)");
+          }
+        }
+      };
+    };
+
+    new p5(bofSketch);
+  </script>
 </body>
+
 </html>

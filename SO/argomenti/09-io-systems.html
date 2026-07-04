@@ -1,119 +1,405 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>09 · I/O Systems — SO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09 &middot; I/O Systems &mdash; SO</title>
+  
   <link rel="stylesheet" href="/shared/katchkit.css">
 </head>
-<body class="dot-grid theme-green">
-<aside class="so-sidebar">
-  <div class="sb-label">Macroargomenti</div>
-  <ul class="sb-pages">
-    <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-    <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-    <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-    <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-    <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-    <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-    <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-    <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-    <li><div class="sb-cur"><span class="sb-pdot"></span>09 · I/O Systems</div></li>
-    <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-    <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-    <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-    <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-  </ul>
-  <div class="sb-label">In questa pagina</div>
-  <ul class="sb-sections"></ul>
-</aside>
+
+<body class="dot-grid theme-teal">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages">
+      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 &middot; Sistemi Operativi</a></li>
+      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 &middot; Processi</a></li>
+      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 &middot; Thread</a></li>
+      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 &middot; CPU Scheduling</a></li>
+      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 &middot; Sincronizzazione</a></li>
+      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 &middot; Deadlocks</a></li>
+      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 &middot; Main Memory</a></li>
+      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 &middot; Virtual Memory</a></li>
+      <li>
+        <div class="sb-cur"><span class="sb-pdot"></span>09 &middot; I/O Systems</div>
+      </li>
+      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 &middot; Mass-Storage</a></li>
+      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 &middot; File System</a></li>
+      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 &middot; Embedded Systems</a></li>
+      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 &middot; Sicurezza</a></li>
+      <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 &middot; Laboratori (Teoria)</a></li>
+    </ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
 
   <!-- ═══════ NAV ═══════ -->
   <site-navbar 
-    logo-text="// SO · Sistemi Operativi" 
+    logo-text="// SO &middot; Sistemi Operativi" 
     back-url="../" 
     back-text="Indice SO">
   </site-navbar>
-<div class="hero" style="min-height:55vh">
-  <div class="hero-glow"></div>
-  <span class="hero-eyebrow" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3);color:var(--green)">Macroargomento 09 · Hardware I/O</span>
-  <div class="topic-num">09 / 13</div>
-  <h1 class="topic-hero-title">I/O Systems</h1>
-  <p class="hero-sub" style="max-width:640px">Polling, interrupt, DMA, kernel I/O subsystem, buffering, caching, spooling e driver di dispositivo. Come il SO gestisce la comunicazione con l'hardware.</p>
-</div>
-<hr class="divider">
-<div class="content-wrap">
-  <div class="nav-breadcrumb">
-    <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
-    <a href="../index.html">SO</a><span>/</span>
-    <span>09 · I/O Systems</span>
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow">
+      Macroargomento 09 &middot; Periferiche e Hardware
+    </span>
+    <div class="topic-num">09 / 14</div>
+    <h1 class="topic-hero-title">I/O Systems</h1>
+    <p class="hero-sub" style="max-width:680px">
+      Comunicazione tra CPU e dispositivi hardware: porte, bus, controller, Polling, Interrupts Vettoriali e trasferimento diretto di memoria (DMA).
+    </p>
   </div>
-  <div class="amber-box" style="margin-bottom:2rem;border-color:rgba(52,211,153,.25)">Questa pagina copre i <strong style="color:var(--green)">7 sottoargomenti</strong> del macroargomento 9: i sistemi di Input/Output.</div>
-  <div class="index-grid" data-prefix="09">
+  <hr class="divider">
+
+  <!-- ═══════ CONTENT ═══════ -->
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">SO</a><span>/</span>
+      <span>09 &middot; I/O Systems</span>
+    </div>
+
+    <!-- INDEX GRID -->
+    <div class="index-grid" data-prefix="09">
       <ul>
-        <li>Hardware I/O</li>
-        <li>Polling vs Interrupt</li>
-        <li>DMA</li>
-        <li>Kernel I/O Subsystem</li>
-        <li>Buffering I/O</li>
-        <li>Driver di dispositivo</li>
-        <li>I/O sincrono vs asincrono</li>
+        <li>Categorie di Dispositivi I/O</li>
+        <li>Componenti I/O Hardware</li>
+        <li>Comunicazione CPU-Dispositivo (Polling vs Interrupts)</li>
+        <li>Direct Memory Access (DMA)</li>
+        <li>Tipi di Comunicazione (Blocking, Non-blocking, Async)</li>
+        <li>Error Handling e Sicurezza I/O</li>
+        <li>Lifecycle di una Richiesta I/O</li>
       </ul>
     </div>
 
-  <div class="section-block" id="section-1">
-    <h2><span class="dot"></span> Hardware I/O <span class="sub-tag">fondamento</span></h2>
-    <p>Ogni dispositivo I/O — disco, tastiera, scheda di rete — ha un <span class="keyword">controller</span>: un piccolo chip dedicato che gestisce il dispositivo fisico. Il SO comunica con il controller tramite i suoi <span class="keyword">registri</span>: registri di stato (lo stato corrente del dispositivo), di controllo (comandi da inviare) e di dati (dati da trasferire).</p>
-    <p>Ci sono due modalità di accesso ai registri del controller. Nel <span class="keyword">port-mapped I/O</span> (usato in x86 legacy) i registri occupano uno spazio di indirizzi separato dalla RAM e si accede con istruzioni speciali (<code class="inline">IN</code>/<code class="inline">OUT</code>). Nel <span class="keyword">memory-mapped I/O</span> (dominante oggi) i registri del controller sono mappati in un intervallo di indirizzi RAM; la CPU li legge e scrive con normali istruzioni load/store, rendendo l'accesso più efficiente.</p>
-  </div>
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Categorie di Dispositivi I/O</h2>
+      <p>L'incredibile variet&agrave; di periferiche hardware obbliga il SO a usare i <strong>Device Drivers</strong> per incapsulare i dettagli tecnici in interfacce uniformi chiamate System Calls. I dispositivi si suddividono principalmente in:</p>
+      
+      <ul>
+        <li><strong>Block Devices:</strong> Es. Hard Disk. I comandi base sono <code>read</code>, <code>write</code>, <code>seek</code> su blocchi di byte definiti. Usano ampiamente il DMA.</li>
+        <li><strong>Character (Stream) Devices:</strong> Es. Tastiere, Mouse, Porte Seriali. I comandi base sono <code>get()</code>, <code>put()</code>. Leggono/scrivono un carattere alla volta, in un flusso.</li>
+        <li><strong>Network Devices:</strong> Es. Schede di rete. Hanno un'interfaccia a s&eacute; stante (i Socket), che separa il protocollo di rete dall'operazione in s&eacute;.</li>
+        <li><strong>Clocks & Timers:</strong> Forniscono l'orario corrente, timer per interrompere ciclicamente la CPU, corretti spesso dal protocollo di rete NTP (Network Time Protocol).</li>
+      </ul>
+      <p>In UNIX/Linux, tutti questi dispositivi sono presentati e astratti all'utente come file speciali dentro la directory <code>/dev</code>.</p>
+    </div>
 
-  <div class="section-block" id="section-2">
-    <h2><span class="dot"></span> Polling vs Interrupt-Driven I/O</h2>
-    <p>Il <span class="keyword">polling</span> (o busy-wait) è l'approccio più semplice: dopo aver inviato un comando al controller, la CPU controlla ciclicamente il registro di stato fino a che il bit "done" non si attiva. È efficiente solo se l'operazione è rapidissima (microsecondi), altrimenti spreca cicli CPU in un loop inutile.</p>
-    <p>Con l'<span class="keyword">I/O guidato da interrupt</span>, dopo aver avviato l'operazione il controller lavora autonomamente. Quando ha finito, invia un segnale di interrupt alla CPU tramite l'interrupt controller (APIC). La CPU sospende il codice corrente, salta all'<span class="keyword">Interrupt Service Routine (ISR)</span> del driver corrispondente, gestisce il completamento e riprende l'esecuzione precedente. La CPU può fare altro lavoro utile nell'intervallo.</p>
-  </div>
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Componenti I/O Hardware</h2>
+      <p>Un dispositivo I/O si interfaccia col computer tramite tre componenti hardware principali:</p>
+      <div class="algo-steps">
+        <div class="algo-step"><span class="algo-step-n">A</span> <strong>Porta:</strong> il punto di connessione fisica per il dispositivo (es. USB, porta seriale).</div>
+        <div class="algo-step"><span class="algo-step-n">B</span> <strong>Bus:</strong> il gruppo di fili condivisi (es. PCI/PCIe) che collega pi&ugrave; dispositivi instradando i dati alla CPU.</div>
+        <div class="algo-step"><span class="algo-step-n">C</span> <strong>Controller:</strong> L'elettronica (chipset dedicato) che gestisce la porta e il bus.</div>
+      </div>
+      
+      <h3>I Registri del Controller</h3>
+      <p>Il Device Driver interagisce con il Controller scrivendo/leggendo bit nei suoi <strong>Registri Interni</strong>, mappati spesso nello spazio di indirizzamento della memoria (Memory-mapped I/O). Questi registri sono tipicamente 4:</p>
+      <ol>
+        <li><strong>Data-in Register:</strong> Dati letti dall'host (il computer).</li>
+        <li><strong>Data-out Register:</strong> Dati scritti dall'host.</li>
+        <li><strong>Status Register:</strong> Bit che indicano lo stato attuale (es. dispositivo occupato/libero, errore occorso).</li>
+        <li><strong>Control Register:</strong> L'host vi scrive comandi per modificare la modalit&agrave; operativa.</li>
+      </ol>
+    </div>
 
-  <div class="section-block" id="section-3">
-    <h2><span class="dot"></span> DMA — Direct Memory Access</h2>
-    <p>Per trasferimenti di grandi blocchi di dati (lettura da disco, ricezione da rete), l'interrupt-driven I/O richiederebbe un interrupt per ogni byte: troppo overhead. Il <span class="keyword">DMA controller</span> risolve il problema: la CPU gli fornisce indirizzo sorgente, indirizzo destinazione e dimensione del blocco, poi si occupa di altro. Il DMA trasferisce il blocco autonomamente dalla periferica alla RAM (o viceversa), poi invia un singolo interrupt alla CPU per segnalare il completamento.</p>
-    <p>Il DMA libera la CPU dal lavoro di copia e aumenta drasticamente il throughput I/O. È essenziale per dischi, schede di rete ad alta velocità (NIC), schede audio e GPU. Il DMA ha accesso diretto al bus di memoria, quindi il kernel deve garantire che i buffer DMA siano in memoria fisica continua e non vengano swappati.</p>
-  </div>
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Comunicazione: Polling vs Interrupts</h2>
+      <p>Come fa il SO a capire che un dispositivo ha finito un'operazione?</p>
+      
+      <h3>Polling (Busy-Wait)</h3>
+      <p>Il protocollo pi&ugrave; elementare. L'host (CPU) interroga continuamente il bit di stato (<code>busy bit</code>) del dispositivo in un ciclo chiuso (while loop).</p>
+      <div class="shell-box">
+        1. Host legge il busy_bit continuamente finch&eacute; &egrave; 0. <br>
+        2. L'host imposta il comando (read/write) nel command_register. <br>
+        3. L'host imposta il bit di <code>command-ready</code>. <br>
+        4. Il controller alza il busy_bit a 1 e inizia a lavorare. <br>
+        5. Finito il lavoro, il controller riabbassa il busy_bit a 0.
+      </div>
+      <p><strong>Contro:</strong> Spreca enormi quantit&agrave; di cicli CPU (inefficiente) se il dispositivo &egrave; molto pi&ugrave; lento della CPU, perch&eacute; costringe il processore ad aspettare girando a vuoto.</p>
+      
+      <h3>Interrupts (Interrupt Request Line)</h3>
+      <p>Per risolvere l'inefficienza del Polling, la CPU delega il lavoro e torna a fare altro (controllando un'apposita linea elettrica hardware al termine di ogni singola istruzione). Quando il dispositivo I/O finisce, manda un segnale elettrico. La CPU si ferma, fa un <em>context switch</em> e chiama l'<strong>Interrupt Handler</strong> corretto basandosi sulla sua posizione nella <strong>Interrupt Vector Table</strong>.</p>
+      <p>Esistono <strong>Maskable Interrupts</strong> (disattivabili dalla CPU prima di eseguire istruzioni critiche) e <strong>Non-maskable</strong> (non ignorabili, es. memorie guaste e system faults vitali).</p>
+    </div>
 
-  <div class="section-block" id="section-4">
-    <h2><span class="dot"></span> Kernel I/O Subsystem</h2>
-    <p>Il <span class="keyword">Kernel I/O Subsystem</span> è lo strato del kernel che astrae i dispositivi fisici e fornisce servizi uniformi alle applicazioni. Le sue responsabilità principali sono: <span class="keyword">scheduling I/O</span> (ordinare le richieste per ottimizzare le prestazioni), <span class="keyword">buffering</span> (mantenere dati in memoria durante i trasferimenti), <span class="keyword">caching</span> (tenere copie in RAM di dati letti di recente), <span class="keyword">spooling</span> (per dispositivi che accettano un job alla volta, come le stampanti: i job vengono accodati su disco) e <span class="keyword">gestione degli errori</span> (retry, segnalazione agli utenti).</p>
-  </div>
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Direct Memory Access (DMA)</h2>
+      <p>Le periferiche veloci o i dischi che muovono blocchi immensi di dati (Block Devices) intaserebbero rapidamente il sistema se la CPU dovesse farsi carico di ogni singolo byte (<strong>Programmed I/O</strong>).</p>
+      <p>La soluzione &egrave; il <strong>DMA Controller (DMAC)</strong>, un chip dedicato che bypassa la CPU.</p>
+      
+      <ol>
+        <li>Il SO prepara in memoria (RAM) un "DMA command block", contenente: <br><em>Indirizzo sorgente, Indirizzo destinazione, Read/Write, e il Numero di Byte (count).</em></li>
+        <li>Il SO dice al controller I/O di avviare il DMA fornendogli il puntatore a questo blocco.</li>
+        <li>Il DMAC <strong>ruba il bus (Bus Stealing)</strong> alla CPU e trasferisce autonomamente l'intero mucchio di byte dal dispositivo hardware direttamente alla RAM (o viceversa).</li>
+        <li>Terminato il trasferimento di tutto il blocco, il DMA invia <strong>un singolo Interrupt</strong> alla CPU per notificare il successo.</li>
+      </ol>
+      
+      <div class="alert alert-note">
+        <strong>Differenza Critica:</strong> Con l'I/O Programmato c'&egrave; un interrupt <em>per ogni singolo byte</em> letto. Col DMA, c'&egrave; un solo interrupt <em>per l'intero blocco di dati</em>!
+      </div>
+      
+      <!-- INIZIO SIMULATORE DMA -->
+      <div style="margin:2rem 0; padding:1.5rem; background:rgba(0,0,0,.2); border-radius:8px; border:1px solid rgba(255,255,255,.05)">
+        <h4 style="margin-top:0;color:var(--teal)"><i class="bi bi-cpu"></i> Simulazione Interattiva: Polling vs DMA</h4>
+        <p style="font-size:13px; color:rgba(255,255,255,.6)">Osserva la differenza nel carico della CPU e nel routing del BUS dati.</p>
+        
+        <div id="p5-dma-sim" style="width:100%; display:flex; justify-content:center; margin:1rem 0; border-radius:8px; overflow:hidden;"></div>
+        
+        <div class="sim-controls" style="display:flex; gap:1rem; justify-content:center;">
+          <button class="btn btn-ghost" onclick="simDMA_playPolling()">Avvia Polling (CPU Occupata)</button>
+          <button class="btn btn-primary" onclick="simDMA_playDMA()">Avvia DMA (CPU Libera)</button>
+          <button class="btn btn-ghost" onclick="simDMA_reset()">Reset</button>
+        </div>
+      </div>
+      <!-- FINE SIMULATORE DMA -->
+    </div>
 
-  <div class="section-block" id="section-5">
-    <h2><span class="dot"></span> Buffering I/O</h2>
-    <p>Un <span class="keyword">buffer I/O</span> è una regione di memoria usata per mantenere temporaneamente dati durante il trasferimento. Ha tre scopi principali. Primo, adattare le <span class="keyword">velocità diverse</span> tra dispositivo (lento) e applicazione (veloce): senza buffer, l'applicazione si bloccherebbe ad ogni byte. Secondo, adattare le <span class="keyword">dimensioni di trasferimento</span>: un'applicazione che scrive un byte alla volta viene raggruppata in blocchi di 4KB prima di scrivere su disco. Terzo, supportare la <span class="keyword">semantica copy-on-write</span>: dopo una chiamata <code class="inline">write()</code>, il dato nel buffer appartiene al kernel, e l'applicazione può modificare il suo buffer senza corrompere il dato in transito.</p>
-    <p>Esistono tre varianti: <span class="keyword">single buffer</span> (semplice), <span class="keyword">double buffer</span> (un buffer si riempie mentre l'altro si svuota, eliminando le pause), <span class="keyword">circular buffer</span> (N buffer in un anello, per stream continui come audio e video).</p>
-  </div>
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Modelli di Comunicazione</h2>
+      <p>A livello di codice utente/applicazione, esistono 3 grandi modelli di I/O gestiti dal Kernel:</p>
+      
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr">
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:var(--accent-soft);color:var(--accent)">Blocking I/O (Sincrono)</div>
+          <div class="compare-col-body">
+            <div class="compare-row">Il processo viene sospeso/bloccato dall'OS finch&eacute; l'intera operazione I/O hardware non &egrave; giunta al termine.</div>
+            <div class="compare-row">Molto facile e logico da programmare, ma impedisce al programma di fare altre computazioni nell'attesa.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:rgba(255,255,255,.05)">Non-blocking & Async</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><strong>Non-blocking:</strong> La chiamata di sistema ritorna ISTANTANEAMENTE con i byte effettivamente pronti (anche 0), ad es. mouse o tastiera (se non si preme niente, l'app non si congela).</div>
+            <div class="compare-row"><strong>Asynchronous:</strong> Il processo esegue l'I/O (su disco o rete) che lavorer&agrave; in background. Il processo continua l'esecuzione. L'OS mander&agrave; un segnale al processo, *nel futuro*, quando l'operazione in backgound sar&agrave; completata con successo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="section-block" id="section-6">
-    <h2><span class="dot"></span> Driver di Dispositivo</h2>
-    <p>Un <span class="keyword">device driver</span> è un modulo del kernel che conosce i dettagli specifici di un particolare controller hardware e li nasconde al resto del sistema. Il Kernel I/O Subsystem usa un'interfaccia astratta uniforme — <code class="inline">open()</code>, <code class="inline">read()</code>, <code class="inline">write()</code>, <code class="inline">ioctl()</code> — e il driver implementa queste operazioni in termini dei registri e dei comandi specifici del controller.</p>
-    <p>Questo schema di <span class="keyword">astrazione</span> è fondamentale: la stessa applicazione che legge da un file funziona identicamente su un HDD SATA, un SSD NVMe o un disco di rete NFS, perché ognuno ha il proprio driver che presenta la stessa interfaccia. In Linux i driver si implementano come moduli LKM e registrano le loro funzioni nelle strutture <code class="inline">file_operations</code>.</p>
-  </div>
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> Error Handling e I/O Protection <span class="sub-tag">sicurezza</span></h2>
+      <p>Essendo i dispositivi di I/O estremamente eterogenei e inclini al fallimento fisico, il SO &egrave; programmato per gestire <strong>errori transitori</strong> (es. lettura temporaneamente fallita da un disco di rete) ritentando automaticamente, oppure riportando un codice d'errore all'applicazione e salvando il report in un system log.</p>
+      
+      <div class="callout warn">
+        <span class="callout-icon"><i class="bi bi-shield-lock-fill"></i></span>
+        <strong>I/O = Istruzioni Privilegiate:</strong> Poich&eacute; un programma utente potrebbe accidentalmente o volutamente distruggere dati usando istruzioni I/O malevole, TUTTE le istruzioni I/O hardware sono definite come <strong>privilegiate</strong>. Un processo utente NON PU&Ograve; interagire mai direttamente con i dispositivi, ma deve sempre passare attraverso l'OS invocando una <strong>System Call</strong> (che effettua la transizione sicura da User Mode a Kernel Mode).
+      </div>
+    </div>
 
-  <div class="section-block" id="section-7">
-    <h2><span class="dot"></span> I/O Sincrono vs Asincrono</h2>
-    <p>Con l'<span class="keyword">I/O sincrono</span>, il processo si blocca finché l'operazione I/O non è completata. È il comportamento di default per la maggior parte delle syscall: <code class="inline">read(fd, buf, n)</code> ritorna solo quando i dati sono disponibili nel buffer. Semplice da programmare, ma il processo non può fare altro nel frattempo.</p>
-    <p>Con l'<span class="keyword">I/O asincrono</span>, il processo avvia l'operazione e continua immediatamente l'esecuzione. Viene notificato del completamento tramite callback, segnale o meccanismi come <code class="inline">io_uring</code> (Linux) o IOCP (Windows). Fondamentale per server ad alto throughput (un webserver che gestisce migliaia di connessioni non può bloccarsi su ogni read). Il costo è la complessità del codice asincrono.</p>
-  </div>
-
-  <div class="back-btn-wrap">
-    <a href="08-virtual-memory.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 08 · Virtual Memory</a>
-    <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
-    <a href="10-mass-storage.html" class="btn btn-ghost">10 · Mass-Storage <i class="bi bi-arrow-right"></i></a>
-  </div>
+    <div class="section-block" id="section-7">
+      <h2><span class="dot"></span> Lifecycle di una richiesta I/O</h2>
+      <p>Cosa succede, passo dopo passo, quando un'applicazione richiede di leggere un file? L'operazione attraversa 5 fasi fondamentali scendendo lungo lo stack del SO fino all'hardware.</p>
+      
+      <div class="mermaid-container" style="text-align: center; margin-top: 1.5rem;">
+<div class="mermaid">
+flowchart TD
+    A([1. Applicazione richiede I/O]) --> B[2. Kernel I/O Subsystem]
+    B -->|Determine Device & Translate Name| C[3. Device Driver]
+    C -->|Read/Write Registers| D[4. Device Controller Hardware]
+    D -->|Physically Read Data| D
+    D -->|Interrupt| C
+    C -->|Make data available to Kernel| B
+    B -->|Return Control| A
 </div>
-<footer>
-  <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · SO · 09 · I/O Systems</p>
-  <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">/shared/so.css</span></p>
-</footer>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);text-align:center;">Dall'I/O request all'operazione hardware.</p>
+    </div>
 
+    <!-- NAVIGATION -->
+    <div class="back-btn-wrap">
+      <a href="08-virtual-memory.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 08 &middot; Virtual Memory</a>
+      <a href="../index.html" class="btn btn-amber">&uarr; Indice SO</a>
+      <a href="10-mass-storage.html" class="btn btn-ghost">10 &middot; Mass-Storage <i class="bi bi-arrow-right"></i></a>
+    </div>
 
+  </div>
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> &middot; SO &middot; 09 &middot; I/O Systems</p>
+    <p style="margin-top:6px">CSS condiviso: <span style="color:var(--accent-soft)">argomentoStyle.css</span></p>
+  </footer>
+
+  <!-- Script Dipendenze -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  
+  <script>
+    // Init Mermaid con tema dark personalizzato
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#0f172a',
+        primaryTextColor: '#cbd5e1',
+        primaryBorderColor: '#334155',
+        lineColor: '#2dd4bf',
+        secondaryColor: '#1e293b',
+        tertiaryColor: '#020617'
+      }
+    });
+  </script>
+
+  <script src="/shared/animation.js"></script>
   <script src="/shared/katchkit.js"></script>
+
+  <script>
+    // P5.js Instance Mode per la simulazione GSAP del DMA
+    const dmaSketch = (p) => {
+      // Stato animabile
+      let state = {
+        cpuColor: [148, 163, 184], 
+        dmaColor: [148, 163, 184], 
+        diskColor: [148, 163, 184], 
+        ramColor: [148, 163, 184], 
+        packets: [], 
+        interruptAlpha: 0,
+        cpuLabel: "IDLE"
+      };
+
+      p.setup = () => {
+        p.createCanvas(600, 250).parent('p5-dma-sim');
+        p.textAlign(p.CENTER, p.CENTER);
+        p.textFont('monospace');
+      };
+
+      p.draw = () => {
+        p.background(15, 23, 42); // slate-900
+
+        // Disegno connessioni (BUS)
+        p.stroke(51, 65, 85);
+        p.strokeWeight(2);
+        p.line(100, 70, 500, 70); // CPU-RAM
+        p.line(100, 70, 100, 180); // CPU-DISK-BUS
+        p.line(100, 180, 500, 180); 
+        p.line(300, 180, 300, 70); // DMA-RAM-BUS
+
+        // Nodi
+        drawNode(p, 100, 70, "CPU\n" + state.cpuLabel, state.cpuColor);
+        drawNode(p, 500, 70, "RAM", state.ramColor);
+        drawNode(p, 500, 180, "DISK", state.diskColor);
+        drawNode(p, 300, 180, "DMAC", state.dmaColor);
+
+        // Pacchetti in volo
+        p.noStroke();
+        for (let pkt of state.packets) {
+          p.fill(34, 211, 238, pkt.alpha * 255);
+          p.circle(pkt.x, pkt.y, 10);
+        }
+
+        // Interrupt visivo
+        if (state.interruptAlpha > 0) {
+          p.stroke(248, 113, 113, state.interruptAlpha * 255);
+          p.strokeWeight(4);
+          p.line(300, 180, 100, 70);
+          p.noStroke();
+          p.fill(248, 113, 113, state.interruptAlpha * 255);
+          p.text("INTERRUPT!", 200, 115);
+        }
+      };
+
+      function drawNode(p, x, y, label, colorArr) {
+        p.fill(colorArr[0], colorArr[1], colorArr[2]);
+        p.stroke(255, 255, 255, 50);
+        p.strokeWeight(2);
+        p.rectMode(p.CENTER);
+        p.rect(x, y, 70, 50, 8);
+        p.fill(255);
+        p.noStroke();
+        p.text(label, x, y);
+      }
+
+      window.simDMA_reset = () => {
+        gsap.killTweensOf(state);
+        gsap.killTweensOf(state.cpuColor);
+        gsap.killTweensOf(state.dmaColor);
+        gsap.killTweensOf(state.diskColor);
+        gsap.killTweensOf(state.ramColor);
+        state.packets = [];
+        state.interruptAlpha = 0;
+        gsap.to(state.cpuColor, {0: 148, 1: 163, 2: 184, duration: 0.3});
+        gsap.to(state.dmaColor, {0: 148, 1: 163, 2: 184, duration: 0.3});
+        gsap.to(state.diskColor, {0: 148, 1: 163, 2: 184, duration: 0.3});
+        gsap.to(state.ramColor, {0: 148, 1: 163, 2: 184, duration: 0.3});
+        state.cpuLabel = "IDLE";
+      };
+
+      window.simDMA_playPolling = () => {
+        window.simDMA_reset();
+        let tl = gsap.timeline();
+        
+        tl.to(state.cpuColor, {0: 251, 1: 191, 2: 36, duration: 0.2}); // Amber
+        tl.to(state.diskColor, {0: 34, 1: 211, 2: 238, duration: 0.2}, "<"); // Teal
+        tl.call(() => state.cpuLabel = "BUSY\nWAIT");
+
+        for(let i=0; i<3; i++) {
+          tl.call(() => {
+            let pkt = {x: 500, y: 180, alpha: 1};
+            state.packets.push(pkt);
+            let innerTl = gsap.timeline();
+            innerTl.to(pkt, {x: 100, y: 180, duration: 0.6, ease: "none"});
+            innerTl.to(pkt, {x: 100, y: 70, duration: 0.2, ease: "none"});
+            innerTl.to(pkt, {x: 500, y: 70, duration: 0.6, ease: "none"});
+            innerTl.to(pkt, {alpha: 0, duration: 0.1});
+          });
+          tl.to({}, {duration: 1.5});
+        }
+        tl.to(state.cpuColor, {0: 148, 1: 163, 2: 184, duration: 0.5});
+        tl.to(state.diskColor, {0: 148, 1: 163, 2: 184, duration: 0.5}, "<");
+        tl.call(() => state.cpuLabel = "IDLE");
+      };
+
+      window.simDMA_playDMA = () => {
+        window.simDMA_reset();
+        let tl = gsap.timeline();
+        
+        tl.to(state.cpuColor, {0: 251, 1: 191, 2: 36, duration: 0.2}); // Amber
+        tl.call(() => state.cpuLabel = "SETUP\nDMA");
+        tl.to({}, {duration: 0.5});
+
+        tl.to(state.dmaColor, {0: 167, 1: 139, 2: 250, duration: 0.2}); // Purple
+        tl.to(state.diskColor, {0: 34, 1: 211, 2: 238, duration: 0.2}, "<"); 
+        tl.to(state.cpuColor, {0: 16, 1: 185, 2: 129, duration: 0.2}); // Green
+        tl.call(() => state.cpuLabel = "FREE\n(OTHER)");
+
+        for(let i=0; i<8; i++) {
+          tl.call(() => {
+            let pkt = {x: 500, y: 180, alpha: 1};
+            state.packets.push(pkt);
+            let innerTl = gsap.timeline();
+            innerTl.to(pkt, {x: 300, y: 180, duration: 0.3, ease: "none"});
+            innerTl.to(pkt, {x: 300, y: 70, duration: 0.2, ease: "none"});
+            innerTl.to(pkt, {x: 500, y: 70, duration: 0.3, ease: "none"});
+            innerTl.to(pkt, {alpha: 0, duration: 0.1});
+          });
+          tl.to({}, {duration: 0.15});
+        }
+        
+        tl.to({}, {duration: 0.8});
+        
+        // Interrupt!
+        tl.to(state.dmaColor, {0: 148, 1: 163, 2: 184, duration: 0.2});
+        tl.to(state.diskColor, {0: 148, 1: 163, 2: 184, duration: 0.2}, "<"); 
+        tl.to(state, {interruptAlpha: 1, duration: 0.1, yoyo: true, repeat: 3});
+        tl.to(state.cpuColor, {0: 248, 1: 113, 2: 113, duration: 0.2}, "<"); // Coral
+        tl.call(() => state.cpuLabel = "INT\nHANDLED");
+        
+        tl.to({}, {duration: 1.0});
+        tl.to(state.cpuColor, {0: 148, 1: 163, 2: 184, duration: 0.5});
+        tl.call(() => state.cpuLabel = "IDLE");
+      };
+    };
+
+    new p5(dmaSketch);
+  </script>
 </body>
 </html>

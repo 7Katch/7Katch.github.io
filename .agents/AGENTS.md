@@ -7,3 +7,9 @@ Queste regole si applicano a tutto il workspace e hanno la prioritÃ  su qualsias
 - Il progetto utilizza esclusivamente le **Bootstrap Icons (`bi`)**.
 - Quando ti viene richiesto di aggiungere un'icona (ad esempio "freccia", "play", "pausa", "info"), inserisci sempre l'elemento `<i>` corrispondente.
   - Esempi corretti: `<i class="bi bi-play-fill"></i>`, `<i class="bi bi-arrow-right"></i>`, `<i class="bi bi-arrow-counterclockwise"></i>`.
+
+## 2. Completezza e Approfondimento
+- **Mai tralasciare contenuti**: Quando viene richiesto di riassumere o estrarre teoria da un PDF/documento sorgente (come .Lezioni.md), è assolutamente vietato omettere concetti. Ogni argomento affrontato nel documento sorgente deve essere riportato, spiegato e approfondito, senza scorciatoie.
+
+## 3. Rappresentazioni Visive e Interattive
+- **Uso proattivo di diagrammi e animazioni**: Ogni volta che un concetto complesso (algoritmi, flussi di dati, architetture) può essere spiegato meglio visivamente, DEVI integrare esempi interattivi o grafici. Utilizza **Mermaid.js** per diagrammi statici/schemi architetturali e **P5.js + GSAP** (seguendo l'apposita skill) per simulazioni interattive e animazioni fluide. L'obiettivo è stupire l'utente e rendere l'apprendimento più intuitivo possibile.
