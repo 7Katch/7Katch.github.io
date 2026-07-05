@@ -92,52 +92,23 @@
           <p>Un <span class="keyword">processo</span> è un programma in esecuzione. </p>
         </div>
       </div>
-      <p>Non è semplicemente il file binario su
-        disco: include
-      </p>
-      <div class="section-block" id="section-2">
-        <h2><span class="dot"></span> Struttura del Computer System</h2>
+      <p>Un processo non è semplicemente il file binario su disco: include anche lo stato corrente e la memoria associata all'esecuzione.</p>
 
-        <div class="kk-flex-row">
-
-          <div class="kk-flex-text">
-            <p>L'architettura è composta in questo modo:</p>
-            <ol>
-              <li><span class="keyword">User</span></li>
-              <li><span class="keyword">Application programs</span><br>
-                Definisce come le risorse del computer devono essere usate per risolvere un problema dell’utente: video
-                games, web browsers.
-              </li>
-              <li><span class="keyword">Operating systems</span><br>
-                Controlla e coordina l’uso di hardware tra le varie applicazioni e utenti.
-              </li>
-              <li><span class="keyword">Hardware</span><br>
-                Prevede i componenti del computer come dispositivi I/O e CPU, memoria.
-              </li>
-            </ol>
-          </div>
-
-          <div class="kk-flex-media" style="width: 30%;"> <img src="../risorse/img2.png"
-              alt="Struttura del Computer System">
-          </div>
-
-        </div>
-      </div>
-      <p>Due esecuzioni distinte dello stesso programma danno luogo a due processi separati, ognuno con il proprio
-        spazio di indirizzamento virtuale, i propri file aperti e il proprio stato di esecuzione. Il SO garantisce che i
-        processi siano isolati tra loro: uno non può leggere o scrivere la memoria di un altro senza meccanismi IPC
-        espliciti.</p>
-        
-      <div class="card-def" style="margin-top:2rem">
-        <div class="header">Memory Layout di un Programma C</div>
-        <div class="content">
-          <p>La memoria di un processo (il suo spazio di indirizzamento) è divisa in segmenti:</p>
+      <div class="kk-flex-row" style="margin-top: 2rem;">
+        <div class="kk-flex-text">
+          <p>La memoria di un processo (il suo spazio di indirizzamento) è divisa in segmenti formanti il <strong>Memory Layout</strong>:</p>
           <ul>
-            <li><span class="keyword">Text section:</span> contiene il codice macchina eseguibile.</li>
+            <li><span class="keyword">Stack:</span> contiene dati temporanei come parametri di funzione, indirizzi di ritorno e variabili locali. Cresce verso il basso.</li>
+            <li><span class="keyword">Heap:</span> memoria allocata dinamicamente a runtime (es. tramite <code class="inline">malloc</code> in C). Cresce verso l'alto.</li>
             <li><span class="keyword">Data section:</span> contiene le variabili globali e statiche.</li>
-            <li><span class="keyword">Heap:</span> memoria allocata dinamicamente a runtime (es. tramite <code class="inline">malloc</code> in C).</li>
-            <li><span class="keyword">Stack:</span> contiene dati temporanei come parametri di funzione, indirizzi di ritorno e variabili locali. Cresce in direzione opposta all'Heap.</li>
+            <li><span class="keyword">Text section:</span> contiene il codice macchina eseguibile.</li>
           </ul>
+          <br>
+          <p>Due esecuzioni distinte dello stesso programma danno luogo a due processi separati, ognuno con il proprio spazio di indirizzamento virtuale, i propri file aperti e il proprio stato di esecuzione. Il SO garantisce che i processi siano isolati tra loro: uno non può leggere o scrivere la memoria di un altro senza meccanismi IPC espliciti.</p>
+        </div>
+
+        <div class="kk-flex-media" style="width: 30%;"> 
+          <img src="../risorse/img2.png" alt="Memory Layout del Processo">
         </div>
       </div>
     </div>
@@ -220,7 +191,7 @@
         stessi file aperti. I due processi si distinguono per il valore di ritorno di <code
           class="inline">fork()</code>: nel padre vale il PID del figlio, nel figlio vale 0.</p>
       
-      <pre><code>pid_t pid = fork();
+      <pre><code class="language-c">pid_t pid = fork();
 if (pid &lt; 0) { 
     /* Errore nella creazione */ 
 } else if (pid == 0) {
@@ -531,6 +502,8 @@ if (pid &lt; 0) {
         duration: 1.2, ease: "power2.inOut"
       }).to(processDot, { visible: 0, duration: 0.5 }, "+=0.5");
     }
+  </script>
+  <script src="/shared/prism-loader.js">
   </script>
 </body>
 
