@@ -6,6 +6,7 @@
 <title>Sistemi Operativi — SO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="./so.css">
 <!-- Dati ed engine dinamico -->
 <script src="so-data.js"></script>
@@ -13,12 +14,13 @@
 </head>
 <body class="dot-grid">
 
-<!-- NAV -->
-<site-navbar 
-    logo-text="// SO · Sistemi Operativi" 
-    back-url="../index.html" 
-    back-text="Home">
-</site-navbar>
+<div style="height:60px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 2rem;justify-content:space-between;background:rgba(8,8,16,0.8);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;">
+  <div style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--amber);">// SO · Sistemi Operativi</div>
+  <a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:6px;transition:0.2s;">
+    <i class="bi bi-house"></i>
+    Home
+  </a>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -45,7 +47,7 @@
       <div class="stat-label">Sotto-argomenti</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number" style="color:var(--green)">&infin;</div>
+      <div class="stat-number" style="color:var(--green)"><i class="bi bi-infinity"></i></div>
       <div class="stat-label">Applicazioni reali</div>
     </div>
   </div>
@@ -93,7 +95,7 @@
   <div class="overview-grid" id="overview-grid-container"></div>
 
   <div class="amber-box">
-    💡 Ogni accordion qui sotto corrisponde a un macro-argomento. Al suo interno trovi tutte le microcategorie con una breve descrizione — il punto di partenza prima di approfondire ciascun argomento.
+    <i class="bi bi-lightbulb"></i> Ogni accordion qui sotto corrisponde a un macro-argomento. Al suo interno trovi tutte le microcategorie con una breve descrizione — il punto di partenza prima di approfondire ciascun argomento.
   </div>
 </div>
 
