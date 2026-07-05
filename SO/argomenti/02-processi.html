@@ -223,6 +223,20 @@ if (pid &lt; 0) {
         comando <code class="inline">kill</code> invia segnali ai processi per comunicare con loro o per terminarli. Se
         un padre termina prima del figlio, il figlio viene "adottato" da <code class="inline">systemd</code>
         (reparenting).</p>
+        
+      <div class="card-def" style="margin-top: 1.5rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.2);">
+        <div class="content">
+          <pre style="background: transparent; margin: 0; padding: 0.5rem; color: var(--text-primary); font-size: 0.95em;"><code>systemd (PID 1)
+ ├── sshd (PID 1024)
+ │    └── bash (PID 2048)
+ │         ├── ps auxf (PID 2050)
+ │         └── htop (PID 2055)
+ ├── cron (PID 1100)
+ └── login (PID 1200)
+      └── bash (PID 2100)
+           └── vim (PID 2110)</code></pre>
+        </div>
+      </div>
     </div>
 
     <div class="section-block" id="section-7">
@@ -504,6 +518,10 @@ if (pid &lt; 0) {
     }
   </script>
   <script src="/shared/prism-loader.js">
+  </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
   </script>
 </body>
 
