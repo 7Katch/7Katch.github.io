@@ -30,16 +30,13 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
+      <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
   </aside>
 
-  <site-navbar 
-    logo-text="// SO · Sistemi Operativi" 
-    back-url="../" 
-    back-text="Indice SO">
+  <site-navbar logo-text="// SO · Sistemi Operativi" back-url="../" back-text="Indice SO">
   </site-navbar>
 
 
@@ -92,22 +89,29 @@
           <p>Un <span class="keyword">processo</span> è un programma in esecuzione. </p>
         </div>
       </div>
-      <p>Un processo non è semplicemente il file binario su disco: include anche lo stato corrente e la memoria associata all'esecuzione.</p>
+      <p>Un processo non è semplicemente il file binario su disco: include anche lo stato corrente e la memoria
+        associata all'esecuzione.</p>
 
       <div class="kk-flex-row" style="margin-top: 2rem;">
         <div class="kk-flex-text">
-          <p>La memoria di un processo (il suo spazio di indirizzamento) è divisa in segmenti formanti il <strong>Memory Layout</strong>:</p>
+          <p>La memoria di un processo (il suo spazio di indirizzamento) è divisa in segmenti formanti il <strong>Memory
+              Layout</strong>:</p>
           <ul>
-            <li><span class="keyword">Stack:</span> contiene dati temporanei come parametri di funzione, indirizzi di ritorno e variabili locali. Cresce verso il basso.</li>
-            <li><span class="keyword">Heap:</span> memoria allocata dinamicamente a runtime (es. tramite <code class="inline">malloc</code> in C). Cresce verso l'alto.</li>
+            <li><span class="keyword">Stack:</span> contiene dati temporanei come parametri di funzione, indirizzi di
+              ritorno e variabili locali. Cresce verso il basso.</li>
+            <li><span class="keyword">Heap:</span> memoria allocata dinamicamente a runtime (es. tramite <code
+                class="inline">malloc</code> in C). Cresce verso l'alto.</li>
             <li><span class="keyword">Data section:</span> contiene le variabili globali e statiche.</li>
             <li><span class="keyword">Text section:</span> contiene il codice macchina eseguibile.</li>
           </ul>
           <br>
-          <p>Due esecuzioni distinte dello stesso programma danno luogo a due processi separati, ognuno con il proprio spazio di indirizzamento virtuale, i propri file aperti e il proprio stato di esecuzione. Il SO garantisce che i processi siano isolati tra loro: uno non può leggere o scrivere la memoria di un altro senza meccanismi IPC espliciti.</p>
+          <p>Due esecuzioni distinte dello stesso programma danno luogo a due processi separati, ognuno con il proprio
+            spazio di indirizzamento virtuale, i propri file aperti e il proprio stato di esecuzione. Il SO garantisce
+            che i processi siano isolati tra loro: uno non può leggere o scrivere la memoria di un altro senza
+            meccanismi IPC espliciti.</p>
         </div>
 
-        <div class="kk-flex-media" style="width: 30%;"> 
+        <div class="kk-flex-media" style="width: 30%;">
           <img src="../risorse/img2.png" alt="Memory Layout del Processo">
         </div>
       </div>
@@ -154,11 +158,15 @@
           il processo è bloccato in attesa di un evento (I/O completato, segnale, timer).</li>
         <li><span class="keyword">Terminated</span>: il processo ha concluso la sua esecuzione.</li>
       </ol>
-      
-      <p>Un processo che spende la maggior parte del tempo eseguendo operazioni di I/O è detto <span class="keyword">I/O-bound</span>, mentre uno che usa intensamente il processore per i calcoli è <span class="keyword">CPU-bound</span>. Lo scheduler gestisce le transizioni spostando i PCB tra varie code: la <span class="keyword">Ready Queue</span> per i processi in memoria pronti all'esecuzione, e diverse <span class="keyword">Wait Queues</span> (una per ogni dispositivo) per chi è bloccato in attesa.</p>
+
+      <p>Un processo che spende la maggior parte del tempo eseguendo operazioni di I/O è detto <span
+          class="keyword">I/O-bound</span>, mentre uno che usa intensamente il processore per i calcoli è <span
+          class="keyword">CPU-bound</span>. Lo scheduler gestisce le transizioni spostando i PCB tra varie code: la
+        <span class="keyword">Ready Queue</span> per i processi in memoria pronti all'esecuzione, e diverse <span
+          class="keyword">Wait Queues</span> (una per ogni dispositivo) per chi è bloccato in attesa.</p>
 
       <div id="p5-process-container"></div>
-      
+
       <div class="process-controls">
         <button class="btn btn-primary" onclick="animNew()">1. Crea Processo (New)</button>
         <button class="btn btn-ghost" onclick="animDispatch()">2. CPU (Run)</button>
@@ -168,8 +176,10 @@
         <button class="btn btn-ghost" onclick="animTerminate()">Termina</button>
       </div>
       <br>
-      <p>Le transizioni sono gestite dallo scheduler (Ready <i class="bi bi-arrow-right"></i> Running, Running <i class="bi bi-arrow-right"></i> Ready per preemption) e dagli eventi di
-        I/O (Running <i class="bi bi-arrow-right"></i> Waiting, Waiting <i class="bi bi-arrow-right"></i> Ready quando l'evento si verifica).</p>
+      <p>Le transizioni sono gestite dallo scheduler (Ready <i class="bi bi-arrow-right"></i> Running, Running <i
+          class="bi bi-arrow-right"></i> Ready per preemption) e dagli eventi di
+        I/O (Running <i class="bi bi-arrow-right"></i> Waiting, Waiting <i class="bi bi-arrow-right"></i> Ready quando
+        l'evento si verifica).</p>
     </div>
 
     <div class="section-block" id="section-4">
@@ -190,7 +200,7 @@
         esatta del processo chiamante (il <em>figlio</em> è identico al <em>padre</em>): stesso codice, stessi dati,
         stessi file aperti. I due processi si distinguono per il valore di ritorno di <code
           class="inline">fork()</code>: nel padre vale il PID del figlio, nel figlio vale 0.</p>
-      
+
       <pre><code class="language-c">pid_t pid = fork();
 if (pid &lt; 0) { 
     /* Errore nella creazione */ 
@@ -203,14 +213,18 @@ if (pid &lt; 0) {
     printf("Child Complete\n");
 }</code></pre>
 
-      <p>Come si vede dall'esempio, tipicamente il figlio chiama subito <code class="inline">exec()</code> (o una sua variante come <code class="inline">execlp</code>) per sostituire la propria immagine con
+      <p>Come si vede dall'esempio, tipicamente il figlio chiama subito <code class="inline">exec()</code> (o una sua
+        variante come <code class="inline">execlp</code>) per sostituire la propria immagine con
         un nuovo programma. Il padre usa <code class="inline">wait()</code> per aspettare la terminazione del figlio e
         raccogliere il suo valore di uscita. Questo schema <em>fork-exec-wait</em> è il meccanismo con cui la shell
         avvia ogni comando.</p>
       <p>La <code class="inline">fork()</code> usa il <span class="keyword">Copy-on-Write</span>: le pagine di memoria
         vengono realmente duplicate solo quando uno dei due processi le modifica. Se il figlio chiama subito <code
           class="inline">exec()</code>, la copia non avviene quasi mai, rendendo la fork molto efficiente.</p>
-      <p><strong>Perché usare più processi?</strong> Un'architettura multiprocesso garantisce stabilità e sicurezza. Google Chrome, ad esempio, usa processi separati per la UI (Browser process), per il rendering di ogni singola tab (Renderer process) e per i plugin. Il crash di una pagina web termina solo il suo processo renderer, lasciando intatto il resto del browser.</p>
+      <p><strong>Perché usare più processi?</strong> Un'architettura multiprocesso garantisce stabilità e sicurezza.
+        Google Chrome, ad esempio, usa processi separati per la UI (Browser process), per il rendering di ogni singola
+        tab (Renderer process) e per i plugin. Il crash di una pagina web termina solo il suo processo renderer,
+        lasciando intatto il resto del browser.</p>
     </div>
 
     <div class="section-block" id="section-6">
@@ -223,10 +237,11 @@ if (pid &lt; 0) {
         comando <code class="inline">kill</code> invia segnali ai processi per comunicare con loro o per terminarli. Se
         un padre termina prima del figlio, il figlio viene "adottato" da <code class="inline">systemd</code>
         (reparenting).</p>
-        
+
       <div class="card-def" style="margin-top: 1.5rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.2);">
         <div class="content">
-          <pre style="background: transparent; margin: 0; padding: 0.5rem; color: var(--text-primary); font-size: 0.95em;"><code>systemd (PID 1)
+          <pre
+            style="background: transparent; margin: 0; padding: 0.5rem; color: var(--text-primary); font-size: 0.95em;"><code>systemd (PID 1)
  ├── sshd (PID 1024)
  │    └── bash (PID 2048)
  │         ├── ps auxf (PID 2050)
@@ -265,7 +280,6 @@ if (pid &lt; 0) {
         immediatamente visibile all'altro, senza alcuna copia nel kernel.</p>
       <p>In POSIX si usa <code class="inline">shm_open()</code> + <code class="inline">mmap()</code>; in System V si
         usano <code class="inline">shmget()</code>/<code class="inline">shmat()</code>. Lo svantaggio è che la
-        sincronizzazione tra i processi è interamente a carico del programmatore: nel classico <strong>problema del produttore-consumatore</strong>, si può usare un <em>buffer illimitato</em> (il produttore non aspetta mai, il consumatore aspetta se vuoto) o un <em>buffer limitato</em> (il produttore si blocca se pieno). Senza un'adeguata sincronizzazione (es. semafori), si rischiano race condition gravi.</p>
     </div>
 
     <div class="section-block" id="section-9">
@@ -320,7 +334,8 @@ if (pid &lt; 0) {
     </div>
 
     <div class="back-btn-wrap">
-      <a href="01-sistemi-operativi.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 01 · Sistemi Operativi</a>
+      <a href="01-sistemi-operativi.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 01 · Sistemi
+        Operativi</a>
       <a href="../index.html" class="btn btn-amber">↑ Indice SO</a>
       <a href="03-thread.html" class="btn btn-ghost">03 · Thread <i class="bi bi-arrow-right"></i></a>
     </div>
@@ -334,10 +349,10 @@ if (pid &lt; 0) {
   <!-- ANIMAZIONE STATI DEL PROCESSO -->
   <script>
     const nodes = {
-      NEW:        { x: 150, y: 100, label: "NEW", color: [148, 163, 184] },
-      READY:      { x: 350, y: 220, label: "READY", color: [52, 211, 153] },
-      RUNNING:    { x: 650, y: 220, label: "RUNNING", color: [251, 191, 36] },
-      WAITING:    { x: 500, y: 380, label: "WAITING", color: [34, 211, 238] },
+      NEW: { x: 150, y: 100, label: "NEW", color: [148, 163, 184] },
+      READY: { x: 350, y: 220, label: "READY", color: [52, 211, 153] },
+      RUNNING: { x: 650, y: 220, label: "RUNNING", color: [251, 191, 36] },
+      WAITING: { x: 500, y: 380, label: "WAITING", color: [34, 211, 238] },
       TERMINATED: { x: 800, y: 100, label: "TERMINATED", color: [248, 113, 113] }
     };
 
@@ -352,7 +367,7 @@ if (pid &lt; 0) {
     function draw() {
       background(10, 10, 20);
       drawGrid();
-      
+
       // Disegna i percorsi fissi (frecce deboli)
       drawConnection(nodes.NEW, nodes.READY, "admit");
       drawConnection(nodes.READY, nodes.RUNNING, "dispatch");
@@ -360,16 +375,16 @@ if (pid &lt; 0) {
       drawConnection(nodes.RUNNING, nodes.WAITING, "I/O or event wait");
       drawConnection(nodes.WAITING, nodes.READY, "I/O or event completion");
       drawConnection(nodes.RUNNING, nodes.TERMINATED, "exit");
-      
+
       // Disegna le stazioni (nodi)
-      for(let key in nodes) {
+      for (let key in nodes) {
         let n = nodes[key];
         fill(20, 20, 30);
         stroke(n.color[0], n.color[1], n.color[2]);
         strokeWeight(2);
         rectMode(CENTER);
         rect(n.x, n.y, 120, 50, 8);
-        
+
         noStroke();
         fill(255);
         textAlign(CENTER, CENTER);
@@ -377,20 +392,20 @@ if (pid &lt; 0) {
         textSize(14);
         text(n.label, n.x, n.y);
       }
-      
+
       // Disegna il processo animato se esiste
-      if(processDot.visible > 0) {
+      if (processDot.visible > 0) {
         drawingContext.shadowBlur = 25;
         let c = color(processDot.r, processDot.g, processDot.b);
         drawingContext.shadowColor = c;
-        
+
         fill(c);
         noStroke();
         circle(processDot.x, processDot.y, 22 * processDot.visible);
-        
+
         // Simbolo del processo
         drawingContext.shadowBlur = 0;
-        fill(10,10,20);
+        fill(10, 10, 20);
         textSize(10);
         text("P1", processDot.x, processDot.y);
       }
@@ -399,25 +414,25 @@ if (pid &lt; 0) {
     function drawGrid() {
       stroke(255, 255, 255, 5);
       strokeWeight(1);
-      for(let x=0; x<width; x+=30) line(x, 0, x, height);
-      for(let y=0; y<height; y+=30) line(0, y, width, y);
+      for (let x = 0; x < width; x += 30) line(x, 0, x, height);
+      for (let y = 0; y < height; y += 30) line(0, y, width, y);
     }
-    
-    function drawConnection(n1, n2, label, curveUp=false) {
+
+    function drawConnection(n1, n2, label, curveUp = false) {
       stroke(255, 255, 255, 30);
       strokeWeight(2);
       noFill();
-      
+
       let midX = (n1.x + n2.x) / 2;
       let midY = (n1.y + n2.y) / 2;
-      
-      if(curveUp) {
+
+      if (curveUp) {
         bezier(n1.x, n1.y - 25, midX, n1.y - 80, midX, n2.y - 80, n2.x, n2.y - 25);
         midY -= 60;
       } else {
         line(n1.x, n1.y, n2.x, n2.y);
       }
-      
+
       noStroke();
       fill(255, 255, 255, 100);
       textSize(11);
@@ -430,85 +445,85 @@ if (pid &lt; 0) {
     function animNew() {
       gsap.killTweensOf(processDot);
       pState = "READY"; // Sarà ready alla fine
-      
+
       processDot.x = 20;
       processDot.y = 100;
       processDot.r = 255; processDot.g = 255; processDot.b = 255;
       processDot.visible = 0;
-      
+
       let tl = gsap.timeline();
       tl.to(processDot, { visible: 1, duration: 0.5 })
-        .to(processDot, { 
-           x: nodes.NEW.x, y: nodes.NEW.y, 
-           r: nodes.NEW.color[0], g: nodes.NEW.color[1], b: nodes.NEW.color[2],
-           duration: 1 
+        .to(processDot, {
+          x: nodes.NEW.x, y: nodes.NEW.y,
+          r: nodes.NEW.color[0], g: nodes.NEW.color[1], b: nodes.NEW.color[2],
+          duration: 1
         })
-        .to(processDot, { 
-           x: nodes.READY.x, y: nodes.READY.y, 
-           r: nodes.READY.color[0], g: nodes.READY.color[1], b: nodes.READY.color[2],
-           duration: 1.5, ease: "power2.inOut"
+        .to(processDot, {
+          x: nodes.READY.x, y: nodes.READY.y,
+          r: nodes.READY.color[0], g: nodes.READY.color[1], b: nodes.READY.color[2],
+          duration: 1.5, ease: "power2.inOut"
         }, "+=0.5");
     }
-    
+
     function animDispatch() {
-      if(pState !== "READY") return;
+      if (pState !== "READY") return;
       gsap.killTweensOf(processDot);
       pState = "RUNNING";
-      
+
       gsap.to(processDot, {
         x: nodes.RUNNING.x, y: nodes.RUNNING.y,
         r: nodes.RUNNING.color[0], g: nodes.RUNNING.color[1], b: nodes.RUNNING.color[2],
         duration: 1.2, ease: "power2.inOut"
       });
     }
-    
+
     function animWait() {
-      if(pState !== "RUNNING") return;
+      if (pState !== "RUNNING") return;
       gsap.killTweensOf(processDot);
       pState = "WAITING";
-      
+
       gsap.to(processDot, {
         x: nodes.WAITING.x, y: nodes.WAITING.y,
         r: nodes.WAITING.color[0], g: nodes.WAITING.color[1], b: nodes.WAITING.color[2],
         duration: 1.2, ease: "power2.inOut"
       });
     }
-    
+
     function animIoEnd() {
-      if(pState !== "WAITING") return;
+      if (pState !== "WAITING") return;
       gsap.killTweensOf(processDot);
       pState = "READY";
-      
+
       gsap.to(processDot, {
         x: nodes.READY.x, y: nodes.READY.y,
         r: nodes.READY.color[0], g: nodes.READY.color[1], b: nodes.READY.color[2],
         duration: 1.2, ease: "power2.inOut"
       });
     }
-    
+
     function animInterrupt() {
-      if(pState !== "RUNNING") return;
+      if (pState !== "RUNNING") return;
       gsap.killTweensOf(processDot);
       pState = "READY";
-      
+
       let tl = gsap.timeline();
-      let midX = (nodes.RUNNING.x + nodes.READY.x)/2;
+      let midX = (nodes.RUNNING.x + nodes.READY.x) / 2;
       let midY = nodes.RUNNING.y - 80;
-      
+
       // Anima seguendo la curva verso l'alto
       tl.to(processDot, { x: midX, y: midY, duration: 0.6, ease: "power1.out" })
-        .to(processDot, { 
-            x: nodes.READY.x, y: nodes.READY.y, 
-            r: nodes.READY.color[0], g: nodes.READY.color[1], b: nodes.READY.color[2],
-            duration: 0.6, ease: "power1.in" 
-         });
+        .to(processDot, {
+          x: nodes.READY.x, y: nodes.READY.y,
+          r: nodes.READY.color[0], g: nodes.READY.color[1], b: nodes.READY.color[2],
+          duration: 0.6, ease: "power1.in"
+        });
     }
-    
+
     function animTerminate() {
-      if(pState !== "RUNNING") return;
+      if (pState !== "RUNNING") return;
       gsap.killTweensOf(processDot);
       pState = "TERMINATED";
-      
+
       let tl = gsap.timeline();
       tl.to(processDot, {
         x: nodes.TERMINATED.x, y: nodes.TERMINATED.y,
