@@ -21,6 +21,7 @@ Quando il programmatore (USER) ti chiede di creare una nuova animazione didattic
 ## 2. Architettura Javascript (Il Pattern Passivo)
 - **NON USARE `lerp()`** per le animazioni matematiche.
 - La funzione `draw()` di P5.js deve essere **esclusivamente un renderizzatore passivo**. Disegna solo gli oggetti Javascript leggendo le loro coordinate (`x`, `y`, `r`, `g`, `b`) senza mai alterarle.
+- **RISPARMIO RISORSE CPU:** Per evitare drain di CPU e batteria da loop inutili, in `p.setup()` devi **sempre** inserire `p.noLoop();` seguito da `gsap.ticker.add(() => p.redraw());`. Questo fa sì che `draw()` venga eseguita solo ed esclusivamente quando GSAP sta interpolando valori.
 
 ## 3. Gestione delle Transizioni (GSAP)
 Tutta la logica di movimento deve essere delegata a GSAP (GreenSock):

@@ -12,3 +12,7 @@ media/**/*
 
 # Ignora anche la cache di python
 __pycache__/
+
+# --- Motion Canvas ---
+animazioni/playground/*
+!animazioni/playground/dist/
