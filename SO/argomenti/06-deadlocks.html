@@ -256,12 +256,14 @@
         (<span class="keyword">rollback</span> a un checkpoint). Problemi: scegliere la vittima minimizzando il costo,
         evitare la starvation (la stessa vittima non deve essere sempre scelta).
       </p>
-      <div class="callout warn">
-        <span class="callout-icon">⚠️</span>
-        <strong>Preemption e Starvation:</strong> Con la preemption delle risorse, il SO sottrae risorse a un processo
-        vittima e fa un <em>rollback</em> a uno stato safe. Alcuni thread potrebbero però venire scelti <em>sempre</em>
-        come vittime (Starvation). Per evitare ciò, si deve includere il <strong>numero di rollback</strong> subiti dal
-        thread all'interno del calcolo dei fattori di costo.
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-exclamation-triangle-fill"></i> Preemption e Starvation</div>
+        <div class="content">
+          <p>Con la preemption delle risorse, il SO sottrae risorse a un processo
+          vittima e fa un <em>rollback</em> a uno stato safe. Alcuni thread potrebbero però venire scelti <em>sempre</em>
+          come vittime (Starvation). Per evitare ciò, si deve includere il <strong>numero di rollback</strong> subiti dal
+          thread all'interno del calcolo dei fattori di costo.</p>
+        </div>
       </div>
     </div>
 
@@ -317,33 +319,28 @@
             
             const scanRow = (rowIndex, pass, allocArr) => {
               let yPos = 100 + rowIndex * 30;
-              // muovi scanner
-              tl.to(p.scanner, { alpha: 255, y: yPos, duration: 0.5, ease: "power2.inOut" });
+              
+              // 1. Muovi scanner
+              factory.animScannerMove(tl, p.scanner, yPos);
+              
               if (pass) {
-                // diventa verde
-                tl.to(p.scanner, { r: KatchColors.teal[0], g: KatchColors.teal[1], b: KatchColors.teal[2], duration: 0.3 });
+                // 2. Scanner diventa verde
+                factory.animScannerColor(tl, p.scanner, KatchColors.teal);
                 
-                // Evidenzia i valori in Allocation che stiamo per sommare
-                for(let j=0; j<3; j++) {
-                  let cell = p.mAlloc.getCell(rowIndex, j);
-                  tl.to(cell, { r: KatchColors.teal[0], g: KatchColors.teal[1], b: KatchColors.teal[2], scale: 1.5, duration: 0.3 }, "<");
-                }
+                // 3. Evidenzia i valori in Allocation che stiamo per sommare
+                factory.animMatrixRowStyle(tl, p.mAlloc, rowIndex, { color: KatchColors.teal, scale: 1.5 }, 0.3, "<");
 
-                // aggiorna avail
-                for(let j=0; j<3; j++) {
-                  let pos = (j === 0) ? "+=0.2" : "<";
-                  tl.to(p.mAvail.getCell(0, j), { val: "+=" + allocArr[j], roundProps: "val", duration: 0.5 }, pos);
-                }
+                // 4. Aggiorna vettore Available sommandoci Allocation
+                factory.animMatrixRowAdd(tl, allocArr, p.mAvail, 0, 0.5, "+=0.2");
                 
-                // sbarra riga Need e ripristina Allocation
-                for(let j=0; j<3; j++) {
-                   tl.to(p.mNeed.getCell(rowIndex, j), { alpha: 50, duration: 0.2 }, "<");
-                   tl.to(p.mAlloc.getCell(rowIndex, j), { scale: 1, r: 255, g: 255, b: 255, alpha: 50, duration: 0.2 }, "<");
-                }
+                // 5. Sbarra riga Need e ripristina Allocation dimmendola
+                factory.animMatrixRowStyle(tl, p.mNeed, rowIndex, { alpha: 50 }, 0.2, "<");
+                factory.animMatrixRowStyle(tl, p.mAlloc, rowIndex, { scale: 1, color: [255, 255, 255], alpha: 50 }, 0.2, "<");
+                
               } else {
-                // diventa rosso e poi torna ambra
-                tl.to(p.scanner, { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: 0.3 })
-                  .to(p.scanner, { r: 251, g: 191, b: 36, duration: 0.3 }, "+=0.2");
+                // Se fallisce, diventa rosso e poi torna ambra per proseguire
+                factory.animScannerColor(tl, p.scanner, KatchColors.red, 0.3);
+                factory.animScannerColor(tl, p.scanner, [251, 191, 36], 0.3, "+=0.2"); // amber
               }
             };
 

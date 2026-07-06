@@ -293,6 +293,42 @@ class AnimFactory {
     p.pop();
   }
 
+  // --- Animazioni GSAP per Matrici e Scanner ---
+
+  /**
+   * Cambia stile (colore, scala, opacità) a un'intera riga di una KatchMatrix.
+   */
+  animMatrixRowStyle(tl, matrix, rowIndex, { color = null, scale = null, alpha = null }, duration = 0.3, position = "<") {
+    for (let j = 0; j < matrix.colHeaders.length; j++) {
+      let cell = matrix.getCell(rowIndex, j);
+      let props = { duration: duration };
+      if (color) { props.r = color[0]; props.g = color[1]; props.b = color[2]; }
+      if (scale !== null) props.scale = scale;
+      if (alpha !== null) props.alpha = alpha;
+      tl.to(cell, props, position);
+    }
+  }
+
+  /**
+   * Anima la somma vettoriale in tempo reale di un array dentro una specifica riga di KatchMatrix.
+   */
+  animMatrixRowAdd(tl, sourceArr, targetMatrix, targetRowIndex, duration = 0.5, position = "+=0.2") {
+    for (let j = 0; j < targetMatrix.colHeaders.length; j++) {
+      let pos = (j === 0) ? position : "<";
+      tl.to(targetMatrix.getCell(targetRowIndex, j), { val: "+=" + sourceArr[j], roundProps: "val", duration: duration }, pos);
+    }
+  }
+
+  animScannerMove(tl, scanner, targetY, duration = 0.5, position = ">") {
+    tl.to(scanner, { alpha: 255, y: targetY, duration: duration, ease: "power2.inOut" }, position);
+  }
+
+  animScannerColor(tl, scanner, color, duration = 0.3, position = ">") {
+    tl.to(scanner, { r: color[0], g: color[1], b: color[2], duration: duration }, position);
+  }
+
+  // --- Animazioni Varie ---
+
   drawMagicText(msgObj, color = KatchColors.teal) {
     const p = this.p;
     if (msgObj.alpha > 0) {

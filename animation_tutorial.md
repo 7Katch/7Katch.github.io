@@ -101,6 +101,22 @@ Disegna un riquadro (scanner vuoto) tipicamente usato negli algoritmi per mostra
 - `scannerObj.strokeWeight` (spessore, def. 2)
 - `scannerObj.center` (boolean, se true disegna col rectMode CENTER invece che CORNER).
 
+### `factory.createMatrix(id, x, y, title, colHeaders, rowHeaders, data, cellW, cellH)`
+Crea e restituisce un'istanza di `KatchMatrix`, convertendo una normale array 2D di numeri (es. `[[1,2], [3,4]]`) in oggetti GSAP-animable. Restituisce la matrice che poi puoi conservare (es. in `p.matrix`).
+```javascript
+p.myMatrix = factory.createMatrix('Mat1', 100, 100, 'Allocation', ['A','B','C'], ['P0','P1'], [[0,1,0], [2,0,0]]);
+```
+
+### `factory.drawMatrix(mat)`
+Disegna l'istanza `KatchMatrix` (testi, headers, griglia leggera) a schermo. Tutti i colori e dimensioni delle singole celle sono renderizzati reattivamente in base alle loro attuali proprietà.
+
+### Helper per Animazioni Matrici e Scanner
+Per evitare lunghi e complessi loop `for` nei tuoi script di simulazione (es. Algoritmo del Banchiere), usa i metodi nativi della factory per accodare animazioni alla Timeline GSAP:
+- `factory.animMatrixRowStyle(tl, matrix, rowIndex, { color, scale, alpha }, duration, position)`: Cambia visivamente lo stile di tutti gli elementi in una singola riga.
+- `factory.animMatrixRowAdd(tl, sourceArr, targetMatrix, targetRowIndex, duration, position)`: Aggiorna dinamicamente in stile "contatore" (tramite `roundProps: "val"`) i numeri in una riga bersaglio sommandovi un array sorgente.
+- `factory.animScannerMove(tl, scanner, targetY, duration, position)`: Muove fluidamente un oggetto scanner.
+- `factory.animScannerColor(tl, scanner, color, duration, position)`: Cambia il colore dello scanner in un flash (es. rosso/verde).
+
 ---
 
 ## 5. Esempio Base Completo
