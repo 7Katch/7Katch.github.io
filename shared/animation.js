@@ -19,6 +19,11 @@
 
 
 // --- KATCH ANIMATION FRAMEWORK ---
+const KatchScannerMode = {
+  BOX: 'box',
+  GLOW: 'glow'
+};
+
 const KatchColors = {
   slate: [148, 163, 184],
   teal: [34, 211, 238],
@@ -74,11 +79,29 @@ class AnimFactory {
     p.textAlign(p.CENTER, p.CENTER);
     p.textSize(14);
     // Testo ID al centro
+    p.push();
+    if (pr.textGlowAlpha > 0) {
+      p.fill(KatchColors.teal[0], KatchColors.teal[1], KatchColors.teal[2], pr.textGlowAlpha);
+      p.drawingContext.shadowBlur = 15;
+      p.drawingContext.shadowColor = `rgba(${KatchColors.teal[0]}, ${KatchColors.teal[1]}, ${KatchColors.teal[2]}, ${pr.textGlowAlpha / 255})`;
+    } else {
+      p.fill(10, 10, 20, pr.alpha);
+    }
     p.text(pr.id, pr.x, pr.y - (pr.labelOffset || 0));
+    p.pop();
     
     // Testo tempo sotto
+    p.push();
     p.textSize(10);
+    if (pr.timeGlowAlpha > 0) {
+      p.fill(KatchColors.teal[0], KatchColors.teal[1], KatchColors.teal[2], pr.timeGlowAlpha);
+      p.drawingContext.shadowBlur = 15;
+      p.drawingContext.shadowColor = `rgba(${KatchColors.teal[0]}, ${KatchColors.teal[1]}, ${KatchColors.teal[2]}, ${pr.timeGlowAlpha / 255})`;
+    } else {
+      p.fill(10, 10, 20, pr.alpha);
+    }
     p.text(pr.timeLeft.toFixed(1) + "s", pr.x, pr.y + (pr.timeOffset || 20));
+    p.pop();
     
     if (drawExtra) drawExtra(p, pr);
   }
@@ -98,13 +121,30 @@ class AnimFactory {
   drawScanner(scanner, color = KatchColors.teal) {
     if (scanner.alpha <= 0) return;
     const p = this.p;
-    p.stroke(color[0], color[1], color[2], scanner.alpha);
-    p.strokeWeight(scanner.strokeWeight || 2);
-    p.noFill();
-    p.rectMode(p.CORNER);
-    if (scanner.center) p.rectMode(p.CENTER);
-    p.rect(scanner.x, scanner.y, scanner.w, scanner.h, 6);
-    p.noStroke();
+    p.push(); // Salva lo stato grafico per non sporcare il resto
+
+    if (scanner.mode === KatchScannerMode.GLOW && scanner.text) {
+      // Modalità: Evidenziazione Scritta (Luminosa)
+      p.fill(color[0], color[1], color[2], scanner.alpha);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.textSize(scanner.textSize || 16);
+      
+      // Effetto Glow (bagliore) nativo del canvas
+      p.drawingContext.shadowBlur = 15;
+      p.drawingContext.shadowColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${scanner.alpha / 255})`;
+      
+      p.text(scanner.text, scanner.x, scanner.y);
+    } else {
+      // Modalità Default: Box Evidenziatore
+      p.stroke(color[0], color[1], color[2], scanner.alpha);
+      p.strokeWeight(scanner.strokeWeight || 2);
+      p.noFill();
+      p.rectMode(p.CORNER);
+      if (scanner.center) p.rectMode(p.CENTER);
+      p.rect(scanner.x, scanner.y, scanner.w, scanner.h, 6);
+    }
+    
+    p.pop(); // Ripristina lo stato grafico
   }
 }
 

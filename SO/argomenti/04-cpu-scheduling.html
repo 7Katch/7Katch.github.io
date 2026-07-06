@@ -29,16 +29,13 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
+      <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
   </aside>
 
-  <site-navbar 
-    logo-text="// SO · Sistemi Operativi" 
-    back-url="../" 
-    back-text="Indice SO">
+  <site-navbar logo-text="// SO · Sistemi Operativi" back-url="../" back-text="Indice SO">
   </site-navbar>
   <div class="hero" style="min-height:55vh">
     <div class="hero-glow"></div>
@@ -77,15 +74,29 @@
 
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Concetti Base e Criteri di Scheduling <span class="sub-tag">fondamentale</span></h2>
-      <p>L'esecuzione di un processo (o thread) consiste in un ciclo alternato di esecuzioni sulla CPU (<span class="keyword">CPU burst</span>) e attese per operazioni di I/O (<span class="keyword">I/O burst</span>). Nei sistemi time-sharing la maggior parte dei burst dura pochissimi millisecondi. Lo scopo della multiprogrammazione è massimizzare l'uso della CPU assegnandola rapidamente ai processi pronti all'esecuzione.</p>
-      
-      <p>Lo <span class="keyword">scheduler della CPU</span> seleziona un processo dalla <em>ready queue</em>, mentre il <span class="keyword">Dispatcher</span> effettua fisicamente il cambio di contesto (context switch), passa in user mode e salta all'indirizzo dell'istruzione da eseguire. Il tempo impiegato per questa operazione è detto <span class="keyword">Dispatch Latency</span> (e deve essere inferiore a 10µs).</p>
-      
-      <p>Lo scheduling può essere <span class="keyword">non preemptive</span> (il processo rilascia volontariamente la CPU terminando o bloccandosi) o <span class="keyword">preemptive</span> (il SO lo interrompe forzatamente). Il preemption moderno aumenta la reattività ma introduce il rischio di gravi <strong>race condition</strong> nell'accesso a dati condivisi (es. memoria condivisa tra produttore e consumatore).</p>
+      <p>L'esecuzione di un processo (o thread) consiste in un ciclo alternato di esecuzioni sulla CPU (<span
+          class="keyword">CPU burst</span>) e attese per operazioni di I/O (<span class="keyword">I/O burst</span>). Nei
+        sistemi time-sharing la maggior parte dei burst dura pochissimi millisecondi. Lo scopo della multiprogrammazione
+        è massimizzare l'uso della CPU assegnandola rapidamente ai processi pronti all'esecuzione.</p>
+
+      <p>Lo <span class="keyword">scheduler della CPU</span> seleziona un processo dalla <em>ready queue</em>, mentre il
+        <span class="keyword">Dispatcher</span> effettua fisicamente il cambio di contesto (context switch), passa in
+        user mode e salta all'indirizzo dell'istruzione da eseguire. Il tempo impiegato per questa operazione è detto
+        <span class="keyword">Dispatch Latency</span> (e deve essere inferiore a 10µs).</p>
+
+      <p>Lo scheduling può essere <span class="keyword">non preemptive</span> (il processo rilascia volontariamente la
+        CPU terminando o bloccandosi) o <span class="keyword">preemptive</span> (il SO lo interrompe forzatamente). Il
+        preemption moderno aumenta la reattività ma introduce il rischio di gravi <strong>race condition</strong>
+        nell'accesso a dati condivisi (es. memoria condivisa tra produttore e consumatore).</p>
       <div class="card-def">
         <div class="header">Criteri di Valutazione</div>
         <div class="content">
-          <p><span class="keyword">CPU utilization</span> (uso della CPU, da massimizzare), <span class="keyword">Throughput</span> (processi completati per unità di tempo, da massimizzare), <span class="keyword">Turnaround time</span> (tempo dalla sottomissione al completamento, da minimizzare), <span class="keyword">Waiting time</span> (tempo totale passato in ready queue, da minimizzare), <span class="keyword">Response time</span> (tempo dalla richiesta alla prima esecuzione, vitale per sistemi interattivi).</p>
+          <p><span class="keyword">CPU utilization</span> (uso della CPU, da massimizzare), <span
+              class="keyword">Throughput</span> (processi completati per unità di tempo, da massimizzare), <span
+              class="keyword">Turnaround time</span> (tempo dalla sottomissione al completamento, da minimizzare), <span
+              class="keyword">Waiting time</span> (tempo totale passato in ready queue, da minimizzare), <span
+              class="keyword">Response time</span> (tempo dalla richiesta alla prima esecuzione, vitale per sistemi
+            interattivi).</p>
         </div>
       </div>
     </div>
@@ -102,8 +113,10 @@
       <!-- FCFS SIMULATION -->
       <div id="FCFS-example-animation"></div>
       <div class="sim-controls">
-        <button class="btn btn-primary" onclick="animStart()"><i class="bi bi-play-fill"></i> Inizia Simulazione</button>
-        <button class="btn btn-ghost" onclick="animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset Coda</button>
+        <button class="btn btn-primary" onclick="animStart()"><i class="bi bi-play-fill"></i> Inizia
+          Simulazione</button>
+        <button class="btn btn-ghost" onclick="animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset
+          Coda</button>
       </div>
 
     </div>
@@ -115,12 +128,12 @@
         anticipo la durata del prossimo CPU burst.</p>
       <h2><span class="dot"></span>Previsione Esponenziale</h2>
       <p>La soluzione è la <span class="keyword">previsione esponenziale</span>:
-        <div class="card-formula">
-          <div class="header">Formula previsione</div>
-          <div class="content">
-            $\mathbf{\tau(n+1)} = \alpha\tau(n) + (1-\alpha)\tau(n)$
-          </div>
+      <div class="card-formula">
+        <div class="header">Formula previsione</div>
+        <div class="content">
+          $\mathbf{\tau(n+1)} = \alpha\tau(n) + (1-\alpha)\tau(n)$
         </div>
+      </div>
       <p>
         dove $\tau(n)$ è la durata misurata del burst <span class="keyword">${n}$</span> e <span
           class="keyword">$\alpha$</span> è un parametro(tipicamente 0.5) controlla il peso dei burst recenti vs
@@ -136,8 +149,10 @@
       <!-- SJF SIMULATION -->
       <div id="SJF-example-animation"></div>
       <div class="sim-controls">
-        <button class="btn btn-primary" onclick="animStartSJF()"><i class="bi bi-play-fill"></i> Inizia Simulazione SJF</button>
-        <button class="btn btn-ghost" onclick="animResetSJF()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        <button class="btn btn-primary" onclick="animStartSJF()"><i class="bi bi-play-fill"></i> Inizia Simulazione
+          SJF</button>
+        <button class="btn btn-ghost" onclick="animResetSJF()"><i class="bi bi-arrow-counterclockwise"></i>
+          Reset</button>
       </div>
 
     </div>
@@ -155,8 +170,10 @@
       <!-- RR SIMULATION -->
       <div id="RR-example-animation"></div>
       <div class="sim-controls">
-        <button class="btn btn-primary" onclick="animStartRR()"><i class="bi bi-play-fill"></i> Inizia Simulazione RR (Quantum: 2.0s)</button>
-        <button class="btn btn-ghost" onclick="animResetRR()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        <button class="btn btn-primary" onclick="animStartRR()"><i class="bi bi-play-fill"></i> Inizia Simulazione RR
+          (Quantum: 2.0s)</button>
+        <button class="btn btn-ghost" onclick="animResetRR()"><i class="bi bi-arrow-counterclockwise"></i>
+          Reset</button>
       </div>
 
     </div>
@@ -174,8 +191,10 @@
       <!-- PRIORITY SIMULATION -->
       <div id="PRIORITY-example-animation"></div>
       <div class="sim-controls">
-        <button class="btn btn-primary" onclick="animStartPriority()"><i class="bi bi-play-fill"></i> Inizia Simulazione Priority</button>
-        <button class="btn btn-ghost" onclick="animResetPriority()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        <button class="btn btn-primary" onclick="animStartPriority()"><i class="bi bi-play-fill"></i> Inizia Simulazione
+          Priority</button>
+        <button class="btn btn-ghost" onclick="animResetPriority()"><i class="bi bi-arrow-counterclockwise"></i>
+          Reset</button>
       </div>
 
     </div>
@@ -199,8 +218,10 @@
       <!-- MLQ SIMULATION -->
       <div id="MLQ-example-animation" style="margin-top: 30px;"></div>
       <div class="sim-controls">
-        <button class="btn btn-primary" onclick="animStartMLQ()"><i class="bi bi-play-fill"></i> Inizia Simulazione MLQ</button>
-        <button class="btn btn-ghost" onclick="animResetMLQ()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        <button class="btn btn-primary" onclick="animStartMLQ()"><i class="bi bi-play-fill"></i> Inizia Simulazione
+          MLQ</button>
+        <button class="btn btn-ghost" onclick="animResetMLQ()"><i class="bi bi-arrow-counterclockwise"></i>
+          Reset</button>
       </div>
 
     </div>
@@ -218,34 +239,56 @@
 
     <div class="section-block" id="section-8">
       <h2><span class="dot"></span> Real-Time CPU Scheduling</h2>
-      <p>I sistemi real-time (es. ABS, robotica, pacemaker) richiedono risposte entro scadenze ferree. L'<span class="keyword">event latency</span> è il tempo tra l'occorrenza di un evento e la sua risposta (composto da interrupt latency + dispatch latency).</p>
+      <p>I sistemi real-time (es. ABS, robotica, pacemaker) richiedono risposte entro scadenze ferree. L'<span
+          class="keyword">event latency</span> è il tempo tra l'occorrenza di un evento e la sua risposta (composto da
+        interrupt latency + dispatch latency).</p>
       <ul>
-        <li><span class="keyword">Soft real-time:</span> i task critici hanno priorità massima, ma senza garanzie assolute (usato nei sistemi multimediali).</li>
-        <li><span class="keyword">Hard real-time:</span> i task <em>devono</em> rigorosamente rispettare la loro <strong>deadline</strong>, altrimenti il sistema fallisce.</li>
+        <li><span class="keyword">Soft real-time:</span> i task critici hanno priorità massima, ma senza garanzie
+          assolute (usato nei sistemi multimediali).</li>
+        <li><span class="keyword">Hard real-time:</span> i task <em>devono</em> rigorosamente rispettare la loro
+          <strong>deadline</strong>, altrimenti il sistema fallisce.</li>
       </ul>
-      <p>Per i processi periodici (con tempo di elaborazione, deadline e un periodo costante), gli algoritmi più usati sono:</p>
+      <p>Per i processi periodici (con tempo di elaborazione, deadline e un periodo costante), gli algoritmi più usati
+        sono:</p>
       <ul>
-        <li><strong>Rate Monotonic Scheduling (RMS):</strong> Priorità statiche inversamente proporzionali al periodo (periodo più breve = priorità più alta). È ottimale, ma non garantisce il rispetto delle deadline se l'utilizzo CPU totale è alto.</li>
-        <li><strong>Earliest Deadline First (EDF):</strong> Priorità dinamiche assegnate in base a chi ha la scadenza più imminente. Garantisce il rispetto di tutte le deadline finché l'uso della CPU è < 100%.</li>
-        <li><strong>Proportional Share:</strong> Assegna un numero garantito di "quote" (shares) del tempo CPU a ogni processo per garantire esecuzioni regolari.</li>
+        <li><strong>Rate Monotonic Scheduling (RMS):</strong> Priorità statiche inversamente proporzionali al periodo
+          (periodo più breve = priorità più alta). È ottimale, ma non garantisce il rispetto delle deadline se
+          l'utilizzo CPU totale è alto.</li>
+        <li><strong>Earliest Deadline First (EDF):</strong> Priorità dinamiche assegnate in base a chi ha la scadenza
+          più imminente. Garantisce il rispetto di tutte le deadline finché l'uso della CPU è < 100%.</li>
+        <li><strong>Proportional Share:</strong> Assegna un numero garantito di "quote" (shares) del tempo CPU a ogni
+          processo per garantire esecuzioni regolari.</li>
       </ul>
     </div>
 
     <div class="section-block" id="section-9">
       <h2><span class="dot"></span> Multiprocessor Scheduling</h2>
-      <p>Nei moderni sistemi simmetrici (<span class="keyword">SMP - Symmetric Multiprocessing</span>) o multithreaded (es. hyperthreading), bisogna decidere su quale core allocare il processo. Il <span class="keyword">Load Balancing</span> bilancia il carico tramite Push migration (sposta un thread da un core sovraccarico a uno vuoto) o Pull migration (un core vuoto "ruba" un thread).</p>
-      <p>Le migrazioni eccessive svuotano i dati pre-caricati nella cache del processore originale. Questo spinge all'uso della <span class="keyword">Processor Affinity</span>:</p>
+      <p>Nei moderni sistemi simmetrici (<span class="keyword">SMP - Symmetric Multiprocessing</span>) o multithreaded
+        (es. hyperthreading), bisogna decidere su quale core allocare il processo. Il <span class="keyword">Load
+          Balancing</span> bilancia il carico tramite Push migration (sposta un thread da un core sovraccarico a uno
+        vuoto) o Pull migration (un core vuoto "ruba" un thread).</p>
+      <p>Le migrazioni eccessive svuotano i dati pre-caricati nella cache del processore originale. Questo spinge
+        all'uso della <span class="keyword">Processor Affinity</span>:</p>
       <ul>
         <li><strong>Soft Affinity:</strong> Il SO cerca spontaneamente di mantenere il thread sullo stesso core.</li>
-        <li><strong>Hard Affinity:</strong> Il processo forza l'uso di un set specifico di core, non migrando mai altrove.</li>
+        <li><strong>Hard Affinity:</strong> Il processo forza l'uso di un set specifico di core, non migrando mai
+          altrove.</li>
       </ul>
-      <p>Infine, lo scheduler è <span class="keyword">NUMA-aware</span>: tenta sempre di allocare l'esecuzione di un thread nel core fisico il cui banco di memoria associato contiene effettivamente i dati del thread (accesso veloce locale vs remoto).</p>
+      <p>Infine, lo scheduler è <span class="keyword">NUMA-aware</span>: tenta sempre di allocare l'esecuzione di un
+        thread nel core fisico il cui banco di memoria associato contiene effettivamente i dati del thread (accesso
+        veloce locale vs remoto).</p>
     </div>
 
     <div class="section-block" id="section-10">
       <h2><span class="dot"></span> Scheduling in Linux</h2>
-      <p>Per molto tempo Linux ha usato il <span class="keyword">CFS (Completely Fair Scheduler)</span>: assegna a ogni processo una quota di tempo bilanciata. Registra per ogni task il <strong>virtual runtime (vruntime)</strong>: tempo CPU pesato in base alla priorità (il nice level). Il CFS seleziona sempre il processo col vruntime più basso prelevandolo da un albero Red-Black.</p>
-      <p>Attualmente Linux sta sostituendo il CFS con <span class="keyword">EEVDF (Earliest Eligible Virtual Deadline First)</span> per ottimizzare sia l'equità sia la garanzia dei tempi di latenza per processi real-time soft. Lo scheduler Linux usa nativamente raggruppamenti logici dei core (Scheduling Domains) per fare load balancing tenendo traccia dell'hardware topology e dei limiti NUMA.</p>
+      <p>Per molto tempo Linux ha usato il <span class="keyword">CFS (Completely Fair Scheduler)</span>: assegna a ogni
+        processo una quota di tempo bilanciata. Registra per ogni task il <strong>virtual runtime (vruntime)</strong>:
+        tempo CPU pesato in base alla priorità (il nice level). Il CFS seleziona sempre il processo col vruntime più
+        basso prelevandolo da un albero Red-Black.</p>
+      <p>Attualmente Linux sta sostituendo il CFS con <span class="keyword">EEVDF (Earliest Eligible Virtual Deadline
+          First)</span> per ottimizzare sia l'equità sia la garanzia dei tempi di latenza per processi real-time soft.
+        Lo scheduler Linux usa nativamente raggruppamenti logici dei core (Scheduling Domains) per fare load balancing
+        tenendo traccia dell'hardware topology e dei limiti NUMA.</p>
     </div>
 
     <div class="back-btn-wrap">
@@ -267,11 +310,11 @@
     // =========================================================================
     // 1. FCFS - FIRST COME FIRST SERVED
     // =========================================================================
-    let instFCFS = new KatchSimulation('FCFS-example-animation', 850, 300, 
+    let instFCFS = new KatchSimulation('FCFS-example-animation', 850, 300,
       (p, factory) => {
         p.cpu = { x: 650, y: 175, label: "CPU" };
         p.readyQueue = { x: 350, y: 175, label: "READY QUEUE" };
-        
+
         p.resetProcesses = () => {
           p.p1 = { id: "P1", timeLeft: 5.0, w: 120, x: 410, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
           p.p2 = { id: "P2", timeLeft: 0.1, w: 40, x: 310, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
@@ -318,16 +361,16 @@
     // =========================================================================
     // 2. SJF - SHORTEST JOB FIRST
     // =========================================================================
-    let instSJF = new KatchSimulation('SJF-example-animation', 850, 300, 
+    let instSJF = new KatchSimulation('SJF-example-animation', 850, 300,
       (p, factory) => {
         p.cpu = { x: 650, y: 175, label: "CPU" };
         p.readyQueue = { x: 350, y: 175, label: "READY QUEUE" };
-        p.scanner = { x: 0, y: 0, w: 0, h: 0, alpha: 0 };
-        
+        p.scanner = { x: 0, y: 0, w: 0, h: 0, alpha: 0, mode: KatchScannerMode.BOX, text: "", textSize: 12 };
+
         p.resetProcesses = () => {
-          p.p1 = { id: "P1", timeLeft: 5.0, w: 90, x: 265, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
-          p.p2 = { id: "P2", timeLeft: 1.0, w: 50, x: 425, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
-          p.p3 = { id: "P3", timeLeft: 0.5, w: 40, x: 350, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
+          p.p1 = { id: "P1", timeLeft: 5.0, w: 90, x: 265, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255, timeGlowAlpha: 0 };
+          p.p2 = { id: "P2", timeLeft: 1.0, w: 50, x: 425, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255, timeGlowAlpha: 0 };
+          p.p3 = { id: "P3", timeLeft: 0.5, w: 40, x: 350, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255, timeGlowAlpha: 0 };
           p.scanner.alpha = 0;
         };
         p.resetProcesses();
@@ -336,9 +379,9 @@
         factory.drawCPU(p.cpu.x, p.cpu.y, p.cpu.label);
         factory.drawQueue(p.readyQueue.x, p.readyQueue.y, 300, 100, p.readyQueue.label, -65);
         factory.drawArrow(510, 175, 560, 175);
+        [p.p3, p.p2, p.p1].forEach(pr => factory.drawProcess(pr));
         p.scanner.center = true;
         factory.drawScanner(p.scanner, KatchColors.teal);
-        [p.p3, p.p2, p.p1].forEach(pr => factory.drawProcess(pr));
       }
     );
 
@@ -353,9 +396,8 @@
       const calcDur = (t) => Math.max(0.4, t / 5.0);
 
       const scanProcess = (pr) => {
-          tl.set(p.scanner, { x: pr.x, y: pr.y, w: pr.w + 10, h: 70 })
-            .to(p.scanner, { alpha: 255, duration: 0.3 })
-            .to(p.scanner, { alpha: 0, duration: 0.3 }, "+=0.3");
+        tl.to(pr, { timeGlowAlpha: 255, duration: 0.3 })
+          .to(pr, { timeGlowAlpha: 0, duration: 0.3 }, "+=0.3");
       };
 
       // 1. P3 (0.5s)
@@ -383,12 +425,12 @@
     // =========================================================================
     // 3. RR - ROUND ROBIN
     // =========================================================================
-    let instRR = new KatchSimulation('RR-example-animation', 850, 320, 
+    let instRR = new KatchSimulation('RR-example-animation', 850, 320,
       (p, factory) => {
         p.cpu = { x: 650, y: 175, label: "CPU" };
         p.readyQueue = { x: 350, y: 175, label: "READY QUEUE" };
         p.qSlots = [430, 350, 270];
-        
+
         p.resetProcesses = () => {
           p.p1 = { id: "P1", timeLeft: 5.0, w: 70, x: p.qSlots[0], y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
           p.p2 = { id: "P2", timeLeft: 3.0, w: 70, x: p.qSlots[1], y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
@@ -422,42 +464,42 @@
       ];
 
       let loopCount = 0;
-      while(q.length > 0 && loopCount < 20) {
-          loopCount++;
-          let current = q.shift();
-          
-          tl.to(current.p, { x: p.cpu.x, r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.6, ease: "power2.inOut" });
+      while (q.length > 0 && loopCount < 20) {
+        loopCount++;
+        let current = q.shift();
 
-          let runTime = Math.min(quantum, current.t);
-          let nextTime = current.t - runTime;
+        tl.to(current.p, { x: p.cpu.x, r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.6, ease: "power2.inOut" });
 
-          tl.to(current.p, { timeLeft: nextTime, duration: calcDur(runTime), ease: "linear" });
+        let runTime = Math.min(quantum, current.t);
+        let nextTime = current.t - runTime;
 
-          if(nextTime > 0.01) {
-              let backPos = p.qSlots[q.length]; 
-              
-              tl.to(current.p, { y: 265, duration: 0.4, ease: "power1.in" })
-                .to(current.p, { x: backPos, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], duration: 0.5, ease: "linear" })
-                .to(current.p, { y: 175, duration: 0.4, ease: "power1.out" });
+        tl.to(current.p, { timeLeft: nextTime, duration: calcDur(runTime), ease: "linear" });
 
-              let shiftLabel = "shift" + loopCount;
-              tl.add(shiftLabel, "-=0.9");
-              
-              q.forEach((item, index) => {
-                  tl.to(item.p, { x: p.qSlots[index], duration: 0.6, ease: "power2.inOut" }, shiftLabel);
-              });
+        if (nextTime > 0.01) {
+          let backPos = p.qSlots[q.length];
 
-              current.t = nextTime;
-              q.push(current);
-          } else {
-              tl.to(current.p, { alpha: 0, y: -50, duration: 0.5 });
-              
-              let shiftLabel = "shift" + loopCount;
-              tl.add(shiftLabel, "-=0.3");
-              q.forEach((item, index) => {
-                  tl.to(item.p, { x: p.qSlots[index], duration: 0.6, ease: "power2.inOut" }, shiftLabel);
-              });
-          }
+          tl.to(current.p, { y: 265, duration: 0.4, ease: "power1.in" })
+            .to(current.p, { x: backPos, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], duration: 0.5, ease: "linear" })
+            .to(current.p, { y: 175, duration: 0.4, ease: "power1.out" });
+
+          let shiftLabel = "shift" + loopCount;
+          tl.add(shiftLabel, "-=0.9");
+
+          q.forEach((item, index) => {
+            tl.to(item.p, { x: p.qSlots[index], duration: 0.6, ease: "power2.inOut" }, shiftLabel);
+          });
+
+          current.t = nextTime;
+          q.push(current);
+        } else {
+          tl.to(current.p, { alpha: 0, y: -50, duration: 0.5 });
+
+          let shiftLabel = "shift" + loopCount;
+          tl.add(shiftLabel, "-=0.3");
+          q.forEach((item, index) => {
+            tl.to(item.p, { x: p.qSlots[index], duration: 0.6, ease: "power2.inOut" }, shiftLabel);
+          });
+        }
       }
     };
 
@@ -467,7 +509,7 @@
     // =========================================================================
     // 4. PRIORITY - PRIORITY SCHEDULING
     // =========================================================================
-    let instPriority = new KatchSimulation('PRIORITY-example-animation', 850, 300, 
+    let instPriority = new KatchSimulation('PRIORITY-example-animation', 850, 300,
       (p, factory) => {
         p.cpu = { x: 650, y: 175, label: "CPU" };
         p.readyQueue = { x: 350, y: 175, label: "READY QUEUE" };
@@ -488,9 +530,9 @@
         factory.drawCPU(p.cpu.x, p.cpu.y, p.cpu.label);
         factory.drawQueue(p.readyQueue.x, p.readyQueue.y, 300, 100, p.readyQueue.label, -65);
         factory.drawArrow(510, 175, 560, 175);
-        
+
         p.scanner.strokeWeight = 4;
-        p.scanner.center = true; 
+        p.scanner.center = true;
         factory.drawScanner(p.scanner, KatchColors.pink);
 
         [p.p3, p.p2, p.p1].forEach(pr => {
@@ -517,19 +559,19 @@
       instPriority.onAnimReset(p);
       let tl = gsap.timeline();
       const calcDur = (t) => t / 4.0; // 1s = 4s simulati
-      
+
       let scanProcess = (target_p, nextLabel) => {
         tl.to(p.scanner, {
           x: target_p.x, y: target_p.y,
           w: target_p.w + 12, h: 77,
           alpha: 255, duration: 0.3, ease: "power2.out"
         }, nextLabel)
-        .to(p.scanner, { alpha: 0, duration: 0.3 }, "+=0.2");
+          .to(p.scanner, { alpha: 0, duration: 0.3 }, "+=0.2");
       };
 
       // ============ STEP 1: P2 ============
       scanProcess(p.p2, "start");
-      
+
       tl.to(p.p2, {
         x: p.cpu.x, r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2],
         duration: 0.8, ease: "power2.inOut"
@@ -570,13 +612,13 @@
     // =========================================================================
     // 5. MLQ - MULTILEVEL QUEUE
     // =========================================================================
-    let instMLQ = new KatchSimulation('MLQ-example-animation', 850, 420, 
+    let instMLQ = new KatchSimulation('MLQ-example-animation', 850, 420,
       (p, factory) => {
         p.cpu = { x: 650, y: 220, label: "CPU" };
         p.queue1 = { x: 350, y: 140, label: "Q1 - FOREGROUND (Round Robin)" };
         p.queue2 = { x: 350, y: 300, label: "Q2 - BACKGROUND (SJF)" };
         p.scanner = { x: 0, y: 0, w: 0, h: 0, alpha: 0 };
-        
+
         p.resetProcesses = () => {
           // Q1
           p.p1 = { id: "P1", timeLeft: 3.0, w: 70, x: 400, y: p.queue1.y, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
@@ -593,7 +635,7 @@
 
         let drawQueue = (q) => {
           factory.drawQueue(q.x, q.y, 300, 100, q.label, -65);
-          
+
           p.stroke(255, 255, 255, 50);
           p.strokeWeight(2);
           p.noFill();
@@ -603,10 +645,10 @@
           p.vertex(540, p.cpu.y);
           p.vertex(560, p.cpu.y);
           p.endShape();
-          
-          p.fill(255,255,255,50);
+
+          p.fill(255, 255, 255, 50);
           p.noStroke();
-          p.triangle(560, p.cpu.y, 550, p.cpu.y-5, 550, p.cpu.y+5);
+          p.triangle(560, p.cpu.y, 550, p.cpu.y - 5, 550, p.cpu.y + 5);
         };
 
         drawQueue(p.queue1);
@@ -629,14 +671,14 @@
       instMLQ.onAnimReset(p);
       let tl = gsap.timeline();
       const calcDur = (t) => t / 4.0;
-      
+
       let moveCPU = (pr) => {
-         tl.to(pr, { x: 450, duration: 0.3, ease: "power1.in" })
-           .to(pr, { y: p.cpu.y, duration: 0.2, ease: "linear" })
-           .to(pr, { x: p.cpu.x, r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.3, ease: "power1.out" });
+        tl.to(pr, { x: 450, duration: 0.3, ease: "power1.in" })
+          .to(pr, { y: p.cpu.y, duration: 0.2, ease: "linear" })
+          .to(pr, { x: p.cpu.x, r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.3, ease: "power1.out" });
       };
       let endP = (pr) => tl.to(pr, { alpha: 0, y: pr.y - 50, duration: 0.5 });
-      
+
       // Fase 1: Q1 (Round Robin, Q=2)
       moveCPU(p.p1);
       tl.to(p.p1, { timeLeft: 1.0, duration: calcDur(2.0), ease: "linear" });
@@ -644,7 +686,7 @@
         .to(p.p1, { x: 300, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], duration: 0.4, ease: "linear" })
         .to(p.p1, { y: p.queue1.y, duration: 0.3, ease: "power1.out" });
       tl.to(p.p2, { x: 400, duration: 0.5 }, "-=0.8");
-      
+
       moveCPU(p.p2);
       tl.to(p.p2, { timeLeft: 0.0, duration: calcDur(2.0), ease: "linear" });
       endP(p.p2);
@@ -661,7 +703,7 @@
           w: target_p.w + 12, h: 72,
           alpha: 255, duration: 0.3, ease: "power2.out"
         }, nextLabel)
-        .to(p.scanner, { alpha: 0, duration: 0.3 }, "+=0.2");
+          .to(p.scanner, { alpha: 0, duration: 0.3 }, "+=0.2");
       };
 
       scanProcess(p.p4, "+=0.2");
