@@ -475,7 +475,7 @@
       }
     );
 
-    instMutex.onAnimStart = (p) => {
+    instMutex.onAnimStart = (p, factory) => {
       gsap.killTweensOf([p.t1, p.t2, p.t1Msg, p.t2Msg, p.arrow1Head, p.arrow2Head]);
       p.resetAnim();
       let tl = gsap.timeline();
