@@ -91,6 +91,21 @@
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Address Protection e Binding <span class="sub-tag">background</span></h2>
+      <div class="mermaid-container">
+        <div class="mermaid">
+          flowchart LR
+              Disk[(Storage / Disco)] -.->|Caricamento| RAM[(Main Memory)]
+              RAM &lt;--&gt;|Cache Fill/Evict| Cache[Cache]
+              Cache &lt;--&gt;|Accesso Diretto| CPU[CPU / Registri]
+              
+              classDef default fill:#0f0f1a,stroke:#7c5cfc,stroke-width:1px,color:#f0eeff;
+              classDef storage fill:#0f0f1a,stroke:#a78bfa,stroke-width:2px,stroke-dasharray: 5 5;
+              classDef hardware fill:#111827,stroke:#34d399,stroke-width:2px;
+              
+              class Disk storage;
+              class RAM,Cache,CPU hardware;
+        </div>
+      </div>
       <p>Prima di poter essere eseguito, un programma deve essere portato dal disco alla memoria principale (RAM). Per proteggere lo spazio di memoria di ciascun processo ed evitare che un processo legga o scriva nella memoria del sistema operativo o di un altro utente, si utilizzano storicamente due registri hardware: il <strong>Base register</strong> (indirizzo fisico di partenza) e il <strong>Limit register</strong> (dimensione dello spazio). Ad ogni accesso, l'hardware verifica che l'indirizzo richiesto sia compreso nei limiti consentiti; le istruzioni per modificare questi registri sono privilegiate (eseguibili solo in kernel mode).</p>
       
       <p>L'<span class="keyword">Address Binding</span> (associazione degli indirizzi) è il processo che mappa le variabili e le funzioni del codice sorgente su indirizzi fisici. Può avvenire in tre fasi:</p>
@@ -138,7 +153,7 @@
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-4">
 
-    <h2><span class="dot"></span> Frammentazione Interna <span class="sub-tag">paginazione/fixed</span></h2>
+    <h2><span class="dot"></span> Spazio di Indirizzamento <span class="sub-tag">address space</span></h2>
       <p>
         Lo <span class="keyword">spazio di indirizzamento</span> è l'insieme di tutti gli indirizzi di memoria che un
         processo può generare. Su un sistema a 32 bit è 2³² = 4 GB; su un sistema a 64 bit è teoricamente 2⁶⁴, ma in
@@ -220,12 +235,23 @@
     </div>
 
     <div class="section-block" id="section-4-ext">
-      <h2><span class="dot"></span> Frammentazione Esterna <span class="sub-tag">allocazione contigua</span></h2>
-      <p>La <span class="keyword">frammentazione esterna</span> si verifica nell'allocazione contigua a partizioni variabili. A furia di caricare e scaricare processi, la memoria si riempie di tanti piccoli "buchi" liberi non contigui. Anche se la somma totale della memoria libera sarebbe sufficiente per ospitare un nuovo processo, questa non è contigua e la richiesta fallisce.</p>
+      <h2><span class="dot"></span> Frammentazione Interna ed Esterna <span class="sub-tag">memoria sprecata</span></h2>
       
-      <div class="callout warn">
-        <span class="callout-icon">📉</span>
-        <strong>La regola del 50%:</strong> Analisi statistiche sul <em>First-Fit</em> rivelano che per ogni $N$ blocchi allocati, altri $0.5 N$ blocchi andranno persi a causa della frammentazione. Questo significa che fino a <strong>1/3 della memoria</strong> può diventare inutilizzabile!
+      <p>L'allocazione della memoria soffre fisiologicamente del problema della <span class="keyword">Frammentazione</span>, ovvero memoria assegnata o libera che però risulta inutilizzabile. Esistono due varianti:</p>
+
+      <p><strong>1. Frammentazione Interna</strong><br>
+      Si verifica quando la memoria allocata a un processo è leggermente più grande di quella effettivamente richiesta (es. il processo chiede 6 KB, ma la memoria è divisa in blocchi o pagine fisse da 8 KB). Quella porzione extra è "interna" al blocco, ma inutilizzata dal processo e inaccessibile ad altri. È tipica dell'allocazione a <em>partizioni fisse</em> e della <em>paginazione</em>.</p>
+
+      <div id="frag-interna-anim" class="anim-container" style="height: 180px; margin: 1.5rem auto;"></div>
+
+      <p><strong>2. Frammentazione Esterna</strong><br>
+      Si verifica nell'allocazione contigua a <em>partizioni variabili</em>. A furia di caricare e scaricare processi, la memoria si riempie di tanti piccoli "buchi" liberi non contigui. Anche se la somma totale della memoria libera sarebbe sufficiente per ospitare un nuovo processo, questa non è contigua e la richiesta fallisce.</p>
+      
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-exclamation-triangle-fill"></i> Frammentazione Esterna</div>
+        <div class="content">
+          <p>La <span class="keyword">regola del 50%</span>: analisi statistiche sul <em>First-Fit</em> rivelano che per ogni $N$ blocchi allocati, altri $0.5 N$ blocchi andranno persi a causa della frammentazione. Questo significa che fino a <strong>1/3 della memoria</strong> può diventare inutilizzabile!</p>
+        </div>
       </div>
 
       <p>L'unica soluzione software è la <span class="keyword">Compattazione (Compaction)</span>: spostare i processi in memoria per "spingere" tutti i buchi vuoti da una parte e creare un unico grande blocco libero. Questo è un processo molto costoso in termini di I/O e CPU, ed è possibile <em>solo se</em> l'address binding è di tipo <strong>Execution-time</strong> (ovvero se i processi possono essere rilocati dinamicamente mentre sono in esecuzione).</p>
@@ -287,10 +313,12 @@
         </div>
       </div>
 
-      <div class="callout">
-        <span class="callout-icon">💡</span>
-        Il processo non sa mai dove i suoi dati risiedono fisicamente in RAM — conosce solo gli indirizzi logici. Questo
-        è il principio fondamentale dell'<strong style="color:var(--teal)">astrazione della memoria</strong>.
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-lightbulb-fill"></i> Astrazione della Memoria</div>
+        <div class="content">
+          <p>Il processo non sa mai dove i suoi dati risiedono fisicamente in RAM — conosce solo gli indirizzi logici. Questo
+          è il principio fondamentale dell'<strong class="text-amber">astrazione della memoria</strong>.</p>
+        </div>
       </div>
     </div>
 
@@ -458,6 +486,53 @@
 
   <!-- ═══════ SCRIPTS ═══════ -->
   <script src="/shared/katchkit.js"></script>
+  <script type="module" src="/shared/custom-diagrams.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="/shared/animation.js"></script>
+  <script type="text/javascript">
+    const sketchFrag = (p) => {
+      let factory = new AnimFactory(p);
+
+      p.setup = () => {
+        p.createCanvas(600, 160);
+        p.pixelDensity(2);
+        
+        // Matrice 1x4 (4 slot da 2KB ciascuno, cellW=80, cellH=50)
+        p.page = factory.createMatrix('frag', 140, 50, 'Pagina Allocata (8 KB totali)', ['','','',''], [''], [[1, 1, 1, 0]], 80, 50);
+        
+        // Colorazione e testo
+        p.page.data.forEach((row, i) => {
+          row.forEach((cell, j) => {
+            if (j < 3) {
+              cell.val = '2 KB';
+              cell.r = 52; cell.g = 211; cell.b = 153; // verde
+              cell.alpha = 255;
+            } else {
+              cell.val = 'Wasted';
+              cell.r = 248; cell.g = 113; cell.b = 113; // rosso
+              cell.alpha = 150;
+            }
+          });
+        });
+      };
+
+      p.draw = () => {
+        p.clear();
+        factory.drawMatrix(p.page);
+        
+        p.push();
+        p.fill(248, 113, 113);
+        p.noStroke();
+        p.textSize(12);
+        p.textAlign(p.CENTER, p.TOP);
+        p.text("Frammentazione Interna\n(2 KB sprecati nel blocco)", 140 + (3 * 80) + 40, 50 + 65);
+        p.pop();
+      };
+    };
+
+    new p5(sketchFrag, 'frag-interna-anim');
+  </script>
 </body>
 
 </html>

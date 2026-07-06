@@ -285,7 +285,8 @@ class AnimFactory {
         p.fill(cell.r, cell.g, cell.b, cell.alpha * (mat.alpha/255));
         p.textSize(14 * cell.scale);
         p.textAlign(p.CENTER, p.CENTER);
-        p.text(Math.round(cell.val), j*mat.cellW + mat.cellW/2, i*mat.cellH + mat.cellH/2);
+        let displayVal = (typeof cell.val === 'number') ? Math.round(cell.val) : cell.val;
+        p.text(displayVal, j*mat.cellW + mat.cellW/2, i*mat.cellH + mat.cellH/2);
         p.pop();
       }
     }
