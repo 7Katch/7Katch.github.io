@@ -82,7 +82,8 @@
       <p>Lo <span class="keyword">scheduler della CPU</span> seleziona un processo dalla <em>ready queue</em>, mentre il
         <span class="keyword">Dispatcher</span> effettua fisicamente il cambio di contesto (context switch), passa in
         user mode e salta all'indirizzo dell'istruzione da eseguire. Il tempo impiegato per questa operazione è detto
-        <span class="keyword">Dispatch Latency</span> (e deve essere inferiore a 10µs).</p>
+        <span class="keyword">Dispatch Latency</span> (e deve essere inferiore a 10µs).
+      </p>
 
       <p>Lo scheduling può essere <span class="keyword">non preemptive</span> (il processo rilascia volontariamente la
         CPU terminando o bloccandosi) o <span class="keyword">preemptive</span> (il SO lo interrompe forzatamente). Il
@@ -246,7 +247,8 @@
         <li><span class="keyword">Soft real-time:</span> i task critici hanno priorità massima, ma senza garanzie
           assolute (usato nei sistemi multimediali).</li>
         <li><span class="keyword">Hard real-time:</span> i task <em>devono</em> rigorosamente rispettare la loro
-          <strong>deadline</strong>, altrimenti il sistema fallisce.</li>
+          <strong>deadline</strong>, altrimenti il sistema fallisce.
+        </li>
       </ul>
       <p>Per i processi periodici (con tempo di elaborazione, deadline e un periodo costante), gli algoritmi più usati
         sono:</p>
@@ -513,15 +515,15 @@
       (p, factory) => {
         p.cpu = { x: 650, y: 175, label: "CPU" };
         p.readyQueue = { x: 350, y: 175, label: "READY QUEUE" };
-        p.scanner = { x: 0, y: 0, w: 0, h: 0, alpha: 0 };
+        p.scanner = { x: 0, y: 0, w: 0, h: 0, alpha: 0, mode: KatchScannerMode.BOX, text: "", textSize: 12 };
 
         p.resetProcesses = () => {
           // P1 priorità bassa (4) a sinistra
-          p.p1 = { id: "P1", timeLeft: 3.0, pri: 4, w: 70, x: 270, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
+          p.p1 = { id: "P1", timeLeft: 3.0, pri: 4, w: 70, x: 270, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255, priGlowAlpha: 0 };
           // P2 priorità altissima (1) a destra
-          p.p2 = { id: "P2", timeLeft: 2.0, pri: 1, w: 70, x: 430, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
+          p.p2 = { id: "P2", timeLeft: 2.0, pri: 1, w: 70, x: 430, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255, priGlowAlpha: 0 };
           // P3 priorità media (2) in mezzo
-          p.p3 = { id: "P3", timeLeft: 5.0, pri: 2, w: 70, x: 350, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255 };
+          p.p3 = { id: "P3", timeLeft: 5.0, pri: 2, w: 70, x: 350, y: 175, r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], alpha: 255, priGlowAlpha: 0 };
           p.scanner.alpha = 0;
         };
         p.resetProcesses();
@@ -541,10 +543,18 @@
           pr.timeOffset = 24;
           factory.drawProcess(pr, (p, pObj) => {
             // Testo Priorità
-            p.fill(10, 10, 20, pObj.alpha);
+            p.push();
+            if (pObj.priGlowAlpha > 0) {
+              p.fill(KatchColors.pink[0], KatchColors.pink[1], KatchColors.pink[2], pObj.priGlowAlpha);
+              p.drawingContext.shadowBlur = 15;
+              p.drawingContext.shadowColor = `rgba(${KatchColors.pink[0]}, ${KatchColors.pink[1]}, ${KatchColors.pink[2]}, ${pObj.priGlowAlpha / 255})`;
+            } else {
+              p.fill(10, 10, 20, pObj.alpha);
+            }
             p.textSize(10);
             p.textAlign(p.CENTER, p.CENTER);
             p.text("priority: " + Math.floor(pObj.pri), pObj.x, pObj.y + 4);
+            p.pop();
           });
         });
       }
@@ -566,7 +576,9 @@
           w: target_p.w + 12, h: 77,
           alpha: 255, duration: 0.3, ease: "power2.out"
         }, nextLabel)
-          .to(p.scanner, { alpha: 0, duration: 0.3 }, "+=0.2");
+          .to(target_p, { priGlowAlpha: 255, duration: 0.3, ease: "power2.out" }, "<")
+          .to(p.scanner, { alpha: 0, duration: 0.3 }, "+=0.2")
+          .to(target_p, { priGlowAlpha: 0, duration: 0.3 }, "<");
       };
 
       // ============ STEP 1: P2 ============
