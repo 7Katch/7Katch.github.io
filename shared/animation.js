@@ -32,6 +32,28 @@ const KatchColors = {
   bg: [10, 10, 20]
 };
 
+// Classe Entità (rettangolo) con punti di ancoraggio per le frecce
+class KatchEntity {
+  constructor(id, x, y, w = 100, h = 60, colors = KatchColors.slate) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.r = colors[0];
+    this.g = colors[1];
+    this.b = colors[2];
+    this.alpha = 255;
+  }
+
+  // Ancoraggi (calcolati in tempo reale durante l'animazione GSAP)
+  get dx() { return { x: this.x + this.w / 2, y: this.y }; }
+  get sx() { return { x: this.x - this.w / 2, y: this.y }; }
+  get top() { return { x: this.x, y: this.y - this.h / 2 }; }
+  get bottom() { return { x: this.x, y: this.y + this.h / 2 }; }
+  get cx() { return { x: this.x, y: this.y }; }
+}
+
 // Factory per i componenti visivi
 class AnimFactory {
   constructor(p) {
@@ -100,22 +122,50 @@ class AnimFactory {
     } else {
       p.fill(10, 10, 20, pr.alpha);
     }
-    p.text(pr.timeLeft.toFixed(1) + "s", pr.x, pr.y + (pr.timeOffset || 20));
+    if (pr.timeLeft !== undefined) {
+      p.text(pr.timeLeft.toFixed(1) + "s", pr.x, pr.y + (pr.timeOffset || 20));
+    }
     p.pop();
     
     if (drawExtra) drawExtra(p, pr);
   }
 
-  drawArrow(x1, y1, x2, y2, headSize = 5) {
+  drawArrow(x1, y1, x2, y2, headSize = 5, col = [255,255,255], alpha = 50) {
     const p = this.p;
-    p.stroke(255, 255, 255, 50);
-    p.strokeWeight(2);
+    p.push();
+    p.stroke(col[0], col[1], col[2], alpha);
+    p.strokeWeight(3);
     p.line(x1, y1, x2, y2);
-    p.fill(255, 255, 255, 50);
+    p.fill(col[0], col[1], col[2], alpha);
     p.noStroke();
     
-    // Draw triangle head pointing RIGHT (assuming x2 > x1)
-    p.triangle(x2, y2, x2 - Math.abs(headSize)*2, y2 - headSize, x2 - Math.abs(headSize)*2, y2 + headSize);
+    // Draw triangle head pointing in the direction of x2
+    let sign = Math.sign(x2 - x1);
+    if (sign === 0) sign = 1;
+    p.triangle(x2, y2, x2 - sign * Math.abs(headSize)*2, y2 - headSize, x2 - sign * Math.abs(headSize)*2, y2 + headSize);
+    p.pop();
+  }
+  
+  drawArrowBetween(anchor1, anchor2, headSize = 5, col = [255,255,255], alpha = 50) {
+    this.drawArrow(anchor1.x, anchor1.y, anchor2.x, anchor2.y, headSize, col, alpha);
+  }
+
+  createEntity(id, x, y, w = 100, h = 60, colors = KatchColors.slate) {
+    return new KatchEntity(id, x, y, w, h, colors);
+  }
+  
+  drawMagicText(msgObj, color = KatchColors.teal) {
+    const p = this.p;
+    if (msgObj.alpha > 0) {
+      p.push();
+      p.fill(color[0], color[1], color[2], msgObj.alpha);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.textSize(16 * (msgObj.scale || 1));
+      p.drawingContext.shadowBlur = 10;
+      p.drawingContext.shadowColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${msgObj.alpha / 255})`;
+      p.text(msgObj.text, msgObj.x, msgObj.y);
+      p.pop();
+    }
   }
   
   drawScanner(scanner, color = KatchColors.teal) {

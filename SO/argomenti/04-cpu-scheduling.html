@@ -545,7 +545,18 @@
             // Testo Priorità
             p.push();
             if (pObj.priGlowAlpha > 0) {
-              p.fill(KatchColors.pink[0], KatchColors.pink[1], KatchColors.pink[2], pObj.priGlowAlpha);
+              // Rettangolo pill rosa
+              p.push();
+              p.rectMode(p.CENTER);
+              p.fill(KatchColors.pink[0], KatchColors.pink[1], KatchColors.pink[2], pObj.priGlowAlpha * 0.15);
+              p.stroke(KatchColors.pink[0], KatchColors.pink[1], KatchColors.pink[2], pObj.priGlowAlpha);
+              p.strokeWeight(1);
+              p.drawingContext.shadowBlur = 10;
+              p.drawingContext.shadowColor = `rgba(${KatchColors.pink[0]}, ${KatchColors.pink[1]}, ${KatchColors.pink[2]}, ${pObj.priGlowAlpha / 255})`;
+              p.rect(pObj.x, pObj.y + 4, 64, 18, 6);
+              p.pop();
+              
+              p.fill(KatchColors.pink[0], KatchColors.pink[1], KatchColors.pink[2], 255);
               p.drawingContext.shadowBlur = 15;
               p.drawingContext.shadowColor = `rgba(${KatchColors.pink[0]}, ${KatchColors.pink[1]}, ${KatchColors.pink[2]}, ${pObj.priGlowAlpha / 255})`;
             } else {
