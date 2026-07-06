@@ -16,3 +16,8 @@ Queste regole si applicano a tutto il workspace e hanno la priorità su qualsias
 
 ## 4. Sincronizzazione Documentazione Animazioni
 - **Aggiornamento Tutorial**: Ogni volta che viene modificato o aggiornato il file `shared/animation.js`, DEVI obbligatoriamente aggiornare in parallelo il documento `animation_tutorial.md` (situato nella root del repository, allo stesso livello di `README.md`) per riflettere le nuove aggiunte, classi, metodi o modifiche al framework di animazione.
+
+## 5. Stile dei Diagrammi Mermaid
+- **Uso dei preset personalizzati**: Quando si costruiscono diagrammi lowchart con Mermaid.js, NON usare stili manuali inline (es. `style Nodo fill:...`).
+- Assicurati di includere sempre lo script `<script type="module" src="/shared/custom-diagrams.js"></script>` alla fine della pagina HTML.
+- Utilizza le classi CSS personalizzate gi pronte tramite la sintassi di stile: `style NomeNodo :::colore`. I colori disponibili sono: `bad` (rosso), `good` (verde), `blue`, `purple`, `yellow`, `grey`.
