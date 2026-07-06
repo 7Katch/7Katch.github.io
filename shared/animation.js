@@ -25,11 +25,25 @@ const KatchScannerMode = {
 };
 
 const KatchColors = {
+  // Colori base esistenti
   slate: [148, 163, 184],
   teal: [34, 211, 238],
   amber: [251, 191, 36],
   pink: [236, 72, 153],
-  bg: [10, 10, 20]
+  bg: [10, 10, 20],
+  
+  // Arcobaleno Cyberpunk Neon (Non troppo saturi ma luminosi)
+  red: [239, 68, 68],
+  orange: [249, 115, 22],
+  yellow: [250, 204, 21],
+  green: [16, 185, 129],
+  blue: [59, 130, 246],
+  indigo: [99, 102, 241],
+  violet: [139, 92, 246],
+  
+  // Altri colori cyberpunk utili
+  cyan: [6, 182, 212],
+  magenta: [217, 70, 239]
 };
 
 // Classe Entità (rettangolo) con punti di ancoraggio per le frecce
@@ -179,7 +193,18 @@ class AnimFactory {
     return tl;
   }
   // ----------------------------------
-
+  
+  /**
+   * Crea una nuova entità (blocco/processo) nel canvas dell'animazione.
+   * 
+   * @param {string} id - L'identificatore o etichetta testuale (es. "P0", "T1").
+   * @param {number} x - La coordinata X del centro geometrico del blocco.
+   * @param {number} y - La coordinata Y del centro geometrico del blocco.
+   * @param {number} [w=100] - La larghezza del blocco in pixel (opzionale).
+   * @param {number} [h=60] - L'altezza del blocco in pixel (opzionale).
+   * @param {number[]} [colors=KatchColors.slate] - Array RGB del colore, es. KatchColors.teal (opzionale).
+   * @returns {KatchEntity} L'istanza dell'entità con le coordinate e i punti di ancoraggio (sx, dx, cx, cy) calcolati.
+   */
   createEntity(id, x, y, w = 100, h = 60, colors = KatchColors.slate) {
     return new KatchEntity(id, x, y, w, h, colors);
   }
@@ -228,8 +253,23 @@ class AnimFactory {
   }
 }
 
-// Wrapper per eliminare il boilerplate
+/**
+ * @callback KatchSimCallback
+ * @param {any} p - L'istanza locale di p5.js (per accedere alle API p5, es. p.width, p.mouseY).
+ * @param {AnimFactory} factory - L'istanza della factory per creare i componenti visuali e lanciare animazioni GSAP.
+ */
+
+/**
+ * Wrapper per eliminare il boilerplate
+ */
 class KatchSimulation {
+  /**
+   * @param {string} containerId - L'ID del div HTML in cui iniettare il canvas.
+   * @param {number} width - Larghezza del canvas.
+   * @param {number} height - Altezza del canvas.
+   * @param {KatchSimCallback} setupFn - Funzione callback invocata durante il setup (viene eseguita una volta sola).
+   * @param {KatchSimCallback} drawFn - Funzione callback invocata ciclicamente nel draw (durante i frame renderizzati da GSAP).
+   */
   constructor(containerId, width, height, setupFn, drawFn) {
     this.containerId = containerId;
     this.width = width;

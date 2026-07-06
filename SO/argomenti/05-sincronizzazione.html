@@ -327,6 +327,10 @@
     function animStartMutex() { instMutex.animStart(); }
 
     let instPhilosophers = new KatchSimulation('philosophers-example-animation', 850, 480,
+      /**
+       * @param {any} p
+       * @param {AnimFactory} factory
+       */
       (p, factory) => {
         let cx = 425, cy = 240, rP = 160, rF = 75;
         p.resetAnim = () => {
@@ -334,16 +338,21 @@
           p.forks = [];
           p.arrows = []; // each object tracks left/right head positions
           
+          const EntityPrefix = Object.freeze({
+            PHILOSOPHER: "P",
+            FORK: "F"
+          });
+          
           for (let i = 0; i < 5; i++) {
             let angleP = -Math.PI / 2 + i * 2 * Math.PI / 5;
             let px = cx + rP * Math.cos(angleP);
             let py = cy + rP * Math.sin(angleP);
-            p.philosophers.push(factory.createEntity("P" + i, px, py, 50, 50));
+            p.philosophers.push(factory.createEntity(EntityPrefix.PHILOSOPHER + i, px, py, 50, 50));
             
             let angleF = -Math.PI / 2 + i * 2 * Math.PI / 5 + Math.PI / 5;
             let fx = cx + rF * Math.cos(angleF);
             let fy = cy + rF * Math.sin(angleF);
-            p.forks.push(factory.createEntity("F" + i, fx, fy, 40, 40, KatchColors.teal));
+            p.forks.push(factory.createEntity(EntityPrefix.FORK + i, fx, fy, 40, 40, KatchColors.teal));
           }
           
           // arrows state
@@ -355,6 +364,8 @@
                rightHead: { x: px, y: py, alpha: 0 }
              });
           }
+          
+          p.deadlockMsg = { text: "DEADLOCK", x: cx, y: cy, alpha: 0, scale: 0.1 };
         };
         p.resetAnim();
       },
@@ -375,6 +386,7 @@
         }
         
         p.philosophers.forEach(ph => factory.drawProcess(ph));
+        factory.drawMagicText(p.deadlockMsg, KatchColors.red);
       }
     );
 
@@ -383,6 +395,7 @@
       p.philosophers.forEach(e => allTweens.push(e));
       p.forks.forEach(e => allTweens.push(e));
       p.arrows.forEach(a => { allTweens.push(a.leftHead); allTweens.push(a.rightHead); });
+      allTweens.push(p.deadlockMsg);
       gsap.killTweensOf(allTweens);
       
       p.resetAnim();
@@ -417,6 +430,10 @@
          let phil = p.philosophers[i];
          deadlockTl.to(phil, { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: 0.5 }, 0);
       }
+      
+      deadlockTl.to(p.deadlockMsg, { alpha: 255, scale: 2.5, duration: 1.0, ease: "elastic.out(1, 0.5)" }, 0);
+      deadlockTl.to(p.deadlockMsg, { alpha: 0, scale: 1.5, duration: 1.0, ease: "power2.in" }, "+=1.5");
+      
       tl.add(deadlockTl);
     };
 
