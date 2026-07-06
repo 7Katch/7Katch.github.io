@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>05 · Sincronizzazione — SO</title>
   <link rel="stylesheet" href="/shared/katchkit.css">
+  <script src="/shared/animation.js"></script>
 </head>
 
 <body class="dot-grid theme-blue">
@@ -55,28 +56,43 @@
       <a href="../index.html">SO</a><span>/</span>
       <span>05 · Sincronizzazione</span>
     </div>
-    <div class="theme-box">8 sottoargomenti</strong> del macroargomento 5: i meccanismi per coordinare
+    <div class="theme-box">11 sottoargomenti</strong> del macroargomento 5: i meccanismi per coordinare
       processi e thread concorrenti.</div>
     <div class="index-grid" data-prefix="05">
       <ul>
-        <li>Race Condition e Sezione Critica</li>
-        <li>Soluzione di Peterson & Barrier</li>
-        <li>Supporto Hardware (TAS/CAS)</li>
-        <li>Mutex e Semafori (Waiting queue)</li>
+        <li>Race Condition</li>
+        <li>Sezione Critica e Mutual Exclusion</li>
+        <li>Soluzione di Peterson & Memory Barrier</li>
+        <li>Supporto Hardware alla Sincronizzazione</li>
+        <li>Mutex Lock</li>
+        <li>Semafori</li>
         <li>Monitor</li>
-        <li>Liveness (Deadlock, Starvation)</li>
-        <li>Problemi Classici</li>
+        <li>Liveness</li>
+        <li>Problema Produttore-Consumatore</li>
+        <li>Problema dei Lettori-Scrittori</li>
+        <li>Problema dei Cinque Filosofi</li>
       </ul>
     </div>
 
     <div class="section-block" id="section-1">
-      <h2><span class="dot"></span> Race Condition <span class="sub-tag">problema</span></h2>
+      <h2><span class="dot"></span> Race Condition <span class="sub-tag">fondamentale</span><span class="sub-tag">esame</span></h2>
       <p>Una <span class="keyword">race condition</span> si verifica quando il risultato di un'operazione dipende
         dall'ordine temporale di esecuzione di thread o processi concorrenti. L'esempio classico: due thread
         incrementano la stessa variabile condivisa con <code class="inline">count++</code>. A livello macchina questa è
         una sequenza di tre istruzioni (leggi, incrementa, scrivi). Se i thread si interleaving in modo sfortunato,
         entrambi leggono lo stesso valore, lo incrementano, e scrivono lo stesso risultato: l'incremento di un thread
         viene perso.</p>
+      <div class="mermaid-container" style="background:rgba(0,0,0,0.2); padding:1.5rem; text-align: center;">
+        <div class="mermaid">
+          flowchart LR
+              T1("Thread 1 (count++)") -->|Interleaving| R[["Risorsa Condivisa (count)"]]
+              T2("Thread 2 (count++)") -->|Interleaving| R
+              
+              style R :::blue
+              style T1 :::good
+              style T2 :::good
+        </div>
+      </div>
       <p>Le race condition sono notoriamente difficili da debuggare perché si manifestano in modo non deterministico: il
         comportamento corretto può presentarsi migliaia di volte prima che si verifichi quello errato. Strumenti come
         ThreadSanitizer (TSan) aiutano a rilevarle staticamente.</p>
@@ -101,7 +117,7 @@
       <p>Un approccio primitivo per risolvere il problema (valido unicamente per sistemi uniprocessore) &egrave; l'<span class="keyword">Interrupt-based solution</span>: si disabilitano semplicemente gli interrupt prima di entrare nella sezione critica. Purtroppo, questa tecnica non &egrave; scalabile sui sistemi multiprocessore e permette ad un processo malevolo o difettoso di paralizzare l'intero sistema bloccando il clock e il context switch.</p>
     </div>
 
-    <div class="section-block" id="section-peterson">
+    <div class="section-block" id="section-3">
       <h2><span class="dot"></span> Soluzione di Peterson & Memory Barrier</h2>
       <p>Prima di arrivare a Peterson, un <span class="keyword">primo tentativo software</span> utilizzava solo una variabile <code class="inline">turn</code> per indicare a chi toccasse. Tale soluzione falliva per&ograve; il requisito del <em>progress</em>: i processi erano obbligati ad un'alternanza rigorosa (se il processo 0 era molto lento nella sua sezione rimanente, il processo 1 doveva attenderlo inutilmente).</p>
       <p>La <span class="keyword">soluzione di Peterson</span> &egrave; un classico algoritmo per due processi. Usa due variabili condivise: <code class="inline">turn</code> (a chi tocca) e un array booleano <code class="inline">flag[2]</code> (chi è pronto). Sebbene dimostri perfettamente la correttezza teorica, non è garantito che funzioni sulle architetture moderne.</p>
@@ -109,7 +125,7 @@
       <p>La soluzione moderna è la <span class="keyword">Memory Barrier</span>: un'istruzione speciale che forza la propagazione (visibilità) di tutte le modifiche in memoria a tutti gli altri processori prima di eseguire qualsiasi successiva istruzione di <em>load</em> o <em>store</em>.</p>
     </div>
 
-    <div class="section-block" id="section-hw">
+    <div class="section-block" id="section-4">
       <h2><span class="dot"></span> Supporto Hardware alla Sincronizzazione</h2>
       <p>Per risolvere la sezione critica, l'hardware fornisce istruzioni speciali e ininterrompibili (<span class="keyword">atomiche</span>):</p>
       <ul>
@@ -119,7 +135,7 @@
       <p>Queste istruzioni sono alla base delle <span class="keyword">Variabili Atomiche</span>, strumenti che forniscono aggiornamenti atomici su tipi di base come interi e booleani (es. permettendo un <code class="inline">increment(&sequence)</code> totalmente sicuro).</p>
     </div>
 
-    <div class="section-block" id="section-3">
+    <div class="section-block" id="section-5">
       <h2><span class="dot"></span> Mutex Lock <span class="sub-tag">fondamentale</span></h2>
       <p>Il <span class="keyword">mutex</span> (mutual exclusion lock) è il meccanismo di sincronizzazione più semplice.
         Ha due stati (locked/unlocked) e due operazioni atomiche: <code class="inline">acquire()</code> prima della
@@ -131,9 +147,14 @@
         la primitiva è <code class="inline">pthread_mutex_t</code> con <code
           class="inline">pthread_mutex_lock()</code>/<code class="inline">pthread_mutex_unlock()</code>.
       </p>
+
+      <div id="mutex-example-animation"></div>
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartMutex()"><i class="bi bi-play-fill"></i> Riproduci Animazione Mutex</button>
+      </div>
     </div>
 
-    <div class="section-block" id="section-4">
+    <div class="section-block" id="section-6">
       <h2><span class="dot"></span> Semafori <span class="sub-tag">fondamentale</span></h2> 
       <p>Un <span class="keyword">semaforo</span> è una variabile intera speciale con due operazioni atomiche storiche: <code
           class="inline">wait(S)</code> e <code class="inline">signal(S)</code>.</p>
@@ -145,7 +166,7 @@
       </div>
     </div>
 
-    <div class="section-block" id="section-5">
+    <div class="section-block" id="section-7">
       <h2><span class="dot"></span> Monitor <span class="sub-tag">fondamentale</span></h2>
       <p>Il <span class="keyword">monitor</span> è un tipo di dato astratto di alto livello che garantisce che solo un processo alla volta possa essere attivo al suo interno, nascondendo la complessità di mutex e semafori (i quali sono suscettibili a gravi errori se messi nell'ordine sbagliato).</p>
       <p>I monitor usano <span class="keyword">condition variables</span> per la sincronizzazione interna: <code
@@ -153,7 +174,7 @@
           class="inline">x.signal()</code>. Nelle implementazioni più complesse, si può usare il costrutto <code class="inline">x.wait(c)</code> dove <em>c</em> è la priorità per risvegliare il thread giusto in coda.</p>
     </div>
 
-    <div class="section-block" id="section-liveness">
+    <div class="section-block" id="section-8">
       <h2><span class="dot"></span> Liveness <span class="sub-tag">problema</span></h2>
       <p>La <span class="keyword">Liveness</span> (vitalità) definisce un set di proprietà per assicurare che un sistema faccia progressi. Il fallimento della liveness si manifesta in tre forme principali:</p>
       <ul>
@@ -163,7 +184,7 @@
       </ul>
     </div>
 
-    <div class="section-block" id="section-6">
+    <div class="section-block" id="section-9">
       <h2><span class="dot"></span> Problema Produttore-Consumatore (Bounded-buffer)</h2>
       <p>Il <span class="keyword">problema del buffer limitato</span>: un produttore genera elementi e li inserisce in
         un buffer di capacità N; un consumatore li preleva. Il problema richiede sincronizzazione su tre fronti: il
@@ -180,7 +201,7 @@
       </div>
     </div>
 
-    <div class="section-block" id="section-7">
+    <div class="section-block" id="section-10">
       <h2><span class="dot"></span> Problema dei Lettori-Scrittori</h2>
       <p>Una risorsa (database, file) può essere letta contemporaneamente da più thread, ma la scrittura richiede
         accesso esclusivo. Il problema è bilanciare il parallelismo dei lettori con l'esclusività degli scrittori. L'implementazione originale utilizza tre variabili: un intero <code class="inline">read_count</code> per contare i lettori attivi, un semaforo <code class="inline">mutex</code> per proteggere l'aggiornamento del contatore, e un semaforo <code class="inline">rw_mutex</code> condiviso tra gli scrittori e il primo (o l'ultimo) lettore.</p>
@@ -191,7 +212,202 @@
           class="inline">pthread_rwlock_t</code> con politica configurabile.</p>
     </div>
 
+    <div class="section-block" id="section-11">
+      <h2><span class="dot"></span> Problema dei Cinque Filosofi</h2>
+      <p>Cinque filosofi siedono intorno a un tavolo con 5 bacchette condivise, una tra ogni coppia adiacente. Ogni
+        filosofo alterna fasi di pensiero e di mangiata; per mangiare ha bisogno di entrambe le bacchette ai suoi lati.
+        La soluzione naïve (prendi la bacchetta sinistra, poi la destra) porta al <span class="keyword">deadlock</span>:
+        se tutti i filosofi prendono la bacchetta sinistra simultaneamente, nessuno riesce a prendere la destra.</p>
+      <p>Le soluzioni classiche sono tre. <span class="keyword">Asimmetria</span>: i filosofi con numero pari prendono
+        prima la destra, quelli dispari prima la sinistra, rompendo la circolarità. <span class="keyword">Pickup
+          atomico</span>: le due bacchette si prendono insieme o nessuna (richiede un mutex globale). <span
+          class="keyword">Semaforo limite</span>: al massimo 4 filosofi alla volta possono sedersi a tavola, garantendo
+        che almeno uno riesca sempre a mangiare.</p>
+    </div>
+
+    <div class="back-btn-wrap">
+      <a href="04-cpu-scheduling.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 04 · CPU Scheduling</a>
+      <a href="../" class="btn btn-amber">↑ Indice SO</a>
+      <a href="06-deadlocks.html" class="btn btn-ghost">06 · Deadlocks <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+  <footer>
+    back-text="Indice SO">
+  </site-navbar>
+  <div class="hero" style="min-height:55vh">
+    <div class="hero-glow"></div>
+    <span class="hero-eyebrow"
+      style="background:rgba(124,92,252,.08);border-color:rgba(124,92,252,.3);color:var(--accent-soft)">Macroargomento
+      05 · Concorrenza</span>
+    <div class="topic-num">05 / 13</div>
+    <h1 class="topic-hero-title">Sincronizzazione</h1>
+    <p class="hero-sub" style="max-width:640px">Race condition, sezione critica, mutex, semafori, monitor e i problemi
+      classici: produttore-consumatore, lettori-scrittori e i cinque filosofi.</p>
+  </div>
+  <hr class="divider">
+  <div class="content-wrap">
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">SO</a><span>/</span>
+      <span>05 · Sincronizzazione</span>
+    </div>
+    <div class="theme-box">11 sottoargomenti</strong> del macroargomento 5: i meccanismi per coordinare
+      processi e thread concorrenti.</div>
+    <div class="index-grid" data-prefix="05">
+      <ul>
+        <li>Race Condition</li>
+        <li>Sezione Critica e Mutual Exclusion</li>
+        <li>Soluzione di Peterson & Memory Barrier</li>
+        <li>Supporto Hardware alla Sincronizzazione</li>
+        <li>Mutex Lock</li>
+        <li>Semafori</li>
+        <li>Monitor</li>
+        <li>Liveness</li>
+        <li>Problema Produttore-Consumatore</li>
+        <li>Problema dei Lettori-Scrittori</li>
+        <li>Problema dei Cinque Filosofi</li>
+      </ul>
+    </div>
+
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> Race Condition <span class="sub-tag">fondamentale</span><span class="sub-tag">esame</span></h2>
+      <p>Una <span class="keyword">race condition</span> si verifica quando il risultato di un'operazione dipende
+        dall'ordine temporale di esecuzione di thread o processi concorrenti. L'esempio classico: due thread
+        incrementano la stessa variabile condivisa con <code class="inline">count++</code>. A livello macchina questa è
+        una sequenza di tre istruzioni (leggi, incrementa, scrivi). Se i thread si interleaving in modo sfortunato,
+        entrambi leggono lo stesso valore, lo incrementano, e scrivono lo stesso risultato: l'incremento di un thread
+        viene perso.</p>
+      <div class="mermaid-container" style="background:rgba(0,0,0,0.2); padding:1.5rem; text-align: center;">
+        <div class="mermaid">
+          flowchart LR
+              T1("Thread 1 (count++)") -->|Interleaving| R[["Risorsa Condivisa (count)"]]
+              T2("Thread 2 (count++)") -->|Interleaving| R
+              
+              style R :::blue
+              style T1 :::good
+              style T2 :::good
+        </div>
+      </div>
+      <p>Le race condition sono notoriamente difficili da debuggare perché si manifestano in modo non deterministico: il
+        comportamento corretto può presentarsi migliaia di volte prima che si verifichi quello errato. Strumenti come
+        ThreadSanitizer (TSan) aiutano a rilevarle staticamente.</p>
+    </div>
+
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> Sezione Critica e Mutual Exclusion</h2>
+      <p>Una <span class="keyword">sezione critica</span> è un segmento di codice che accede a risorse condivise
+        (variabili, file, strutture dati) che non può essere eseguito da più di un processo/thread alla volta. Per
+        garantire la correttezza, ogni soluzione al problema della sezione critica deve soddisfare tre requisiti.</p>
+      <p><span class="keyword">Mutua esclusione</span>: al massimo un processo alla volta esegue la propria sezione
+        critica.</p>
+        <p>
+           <span class="keyword">Progress</span>: la decisione su chi entra nella sezione critica non può essere
+        rimandata indefinitamente; solo i processi che vogliono entrare partecipano alla decisione. 
+        </p>
+        <p>
+        <span
+          class="keyword">Bounded waiting</span>: esiste un limite al numero di volte che altri processi possono entrare
+        nella sezione critica dopo che un processo ha fatto richiesta e prima che quella richiesta venga soddisfatta
+        (nessuna starvation).</p>
+      <p>Un approccio primitivo per risolvere il problema (valido unicamente per sistemi uniprocessore) &egrave; l'<span class="keyword">Interrupt-based solution</span>: si disabilitano semplicemente gli interrupt prima di entrare nella sezione critica. Purtroppo, questa tecnica non &egrave; scalabile sui sistemi multiprocessore e permette ad un processo malevolo o difettoso di paralizzare l'intero sistema bloccando il clock e il context switch.</p>
+    </div>
+
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> Soluzione di Peterson & Memory Barrier</h2>
+      <p>Prima di arrivare a Peterson, un <span class="keyword">primo tentativo software</span> utilizzava solo una variabile <code class="inline">turn</code> per indicare a chi toccasse. Tale soluzione falliva per&ograve; il requisito del <em>progress</em>: i processi erano obbligati ad un'alternanza rigorosa (se il processo 0 era molto lento nella sua sezione rimanente, il processo 1 doveva attenderlo inutilmente).</p>
+      <p>La <span class="keyword">soluzione di Peterson</span> &egrave; un classico algoritmo per due processi. Usa due variabili condivise: <code class="inline">turn</code> (a chi tocca) e un array booleano <code class="inline">flag[2]</code> (chi è pronto). Sebbene dimostri perfettamente la correttezza teorica, non è garantito che funzioni sulle architetture moderne.</p>
+      <p>Questo perché i processori e compilatori odierni effettuano il <span class="keyword">reordering</span> (riordino delle istruzioni) per ottimizzare le prestazioni. Se due istruzioni indipendenti vengono eseguite in ordine diverso, la logica di Peterson si rompe e si verifica una race condition.</p>
+      <p>La soluzione moderna è la <span class="keyword">Memory Barrier</span>: un'istruzione speciale che forza la propagazione (visibilità) di tutte le modifiche in memoria a tutti gli altri processori prima di eseguire qualsiasi successiva istruzione di <em>load</em> o <em>store</em>.</p>
+    </div>
+
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> Supporto Hardware alla Sincronizzazione</h2>
+      <p>Per risolvere la sezione critica, l'hardware fornisce istruzioni speciali e ininterrompibili (<span class="keyword">atomiche</span>):</p>
+      <ul>
+        <li><span class="keyword">Test-and-Set:</span> modifica il contenuto di una parola e ritorna il valore originale in un'unica operazione indivisibile.</li>
+        <li><span class="keyword">Compare-and-Swap (CAS):</span> scambia un valore in memoria con uno nuovo solo se il valore attuale corrisponde a quello atteso. È il blocco costruttivo fondamentale.</li>
+      </ul>
+      <p>Queste istruzioni sono alla base delle <span class="keyword">Variabili Atomiche</span>, strumenti che forniscono aggiornamenti atomici su tipi di base come interi e booleani (es. permettendo un <code class="inline">increment(&sequence)</code> totalmente sicuro).</p>
+    </div>
+
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Mutex Lock <span class="sub-tag">fondamentale</span></h2>
+      <p>Il <span class="keyword">mutex</span> (mutual exclusion lock) è il meccanismo di sincronizzazione più semplice.
+        Ha due stati (locked/unlocked) e due operazioni atomiche: <code class="inline">acquire()</code> prima della
+        sezione critica e <code class="inline">release()</code> dopo. Se un thread chiama <code
+          class="inline">acquire()</code> su un mutex già locked, si blocca finché non viene rilasciato.</p>
+      <p>La versione <span class="keyword">spinlock</span> non sospende il thread ma lo tiene in un busy-wait attivo
+        (loop). Efficiente se l'attesa è breve (evita il context switch), ma spreca CPU se l'attesa è lunga. La versione
+        <span class="keyword">blocking mutex</span> sospende il thread in attesa in una coda, liberando la CPU. In Linux
+        la primitiva è <code class="inline">pthread_mutex_t</code> con <code
+          class="inline">pthread_mutex_lock()</code>/<code class="inline">pthread_mutex_unlock()</code>.
+      </p>
+
+      <div id="mutex-example-animation"></div>
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartMutex()"><i class="bi bi-play-fill"></i> Riproduci Animazione Mutex</button>
+      </div>
+    </div>
+
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> Semafori <span class="sub-tag">fondamentale</span></h2> 
+      <p>Un <span class="keyword">semaforo</span> è una variabile intera speciale con due operazioni atomiche storiche: <code
+          class="inline">wait(S)</code> e <code class="inline">signal(S)</code>.</p>
+      <p>Per evitare il dispendioso busy-waiting (spinlock), i semafori implementano una <span class="keyword">waiting queue</span> (coda di attesa). Se un processo chiama wait() su un semaforo <= 0, chiama internamente <code class="inline">sleep()</code> e viene sospeso. Quando un altro processo fa signal(), invoca <code class="inline">wakeup()</code> per rimuovere un processo dalla coda e metterlo nella ready queue.</p>
+      <p>Il <span class="keyword">semaforo binario</span> (valori 0/1) si comporta come un mutex. Il <span
+          class="keyword">semaforo contatore</span> (valori illimitati) controlla l'accesso a un pool di N risorse identiche. In Linux POSIX l'API offre semafori "named" e "unnamed" (es. <code class="inline">sem_init()</code>, <code class="inline">sem_wait()</code>, <code class="inline">sem_post()</code>).</p>
+      <div class="alert alert-warning" style="margin-top:1rem">
+        <strong>Problemi di utilizzo:</strong> I semafori sono un potente strumento, ma estremamente vulnerabili a errori del programmatore. Sbagliare l'ordine delle chiamate (es. una <code class="inline">signal(S)</code> seguita da <code class="inline">wait(S)</code>), chiamare due <code class="inline">wait(S)</code> consecutive, o dimenticarsi del tutto di rilasciare il semaforo pu&ograve; provocare deadlock o violazioni della mutua esclusione difficili da tracciare.
+      </div>
+    </div>
+
+    <div class="section-block" id="section-7">
+      <h2><span class="dot"></span> Monitor <span class="sub-tag">fondamentale</span></h2>
+      <p>Il <span class="keyword">monitor</span> è un tipo di dato astratto di alto livello che garantisce che solo un processo alla volta possa essere attivo al suo interno, nascondendo la complessità di mutex e semafori (i quali sono suscettibili a gravi errori se messi nell'ordine sbagliato).</p>
+      <p>I monitor usano <span class="keyword">condition variables</span> per la sincronizzazione interna: <code
+          class="inline">x.wait()</code> sospende il thread finché non arriva una <code
+          class="inline">x.signal()</code>. Nelle implementazioni più complesse, si può usare il costrutto <code class="inline">x.wait(c)</code> dove <em>c</em> è la priorità per risvegliare il thread giusto in coda.</p>
+    </div>
+
     <div class="section-block" id="section-8">
+      <h2><span class="dot"></span> Liveness <span class="sub-tag">problema</span></h2>
+      <p>La <span class="keyword">Liveness</span> (vitalità) definisce un set di proprietà per assicurare che un sistema faccia progressi. Il fallimento della liveness si manifesta in tre forme principali:</p>
+      <ul>
+        <li><span class="keyword">Deadlock</span> (stallo): due o più processi sono bloccati all'infinito, ognuno in attesa di una risorsa tenuta dall'altro.</li>
+        <li><span class="keyword">Starvation</span>: blocco indefinito (es. un processo non viene mai prelevato dalla coda LIFO di un semaforo).</li>
+        <li><span class="keyword">Priority Inversion</span>: un problema di scheduling in cui un processo a bassa priorità detiene un lock che serve a un processo ad alta priorità.</li>
+      </ul>
+    </div>
+
+    <div class="section-block" id="section-9">
+      <h2><span class="dot"></span> Problema Produttore-Consumatore (Bounded-buffer)</h2>
+      <p>Il <span class="keyword">problema del buffer limitato</span>: un produttore genera elementi e li inserisce in
+        un buffer di capacità N; un consumatore li preleva. Il problema richiede sincronizzazione su tre fronti: il
+        produttore non può inserire in un buffer pieno; il consumatore non può prelevare da un buffer vuoto; l'accesso
+        al buffer deve essere mutuamente esclusivo.</p>
+      <p>La soluzione classica con semafori usa tre semafori: <code class="inline">empty</code> (inizializzato a N,
+        conta gli slot liberi), <code class="inline">full</code> (inizializzato a 0, conta gli slot pieni) e <code
+          class="inline">mutex</code> (binario, per l'accesso esclusivo al buffer). Il produttore fa <code
+          class="inline">wait(empty)</code>, inserisce, <code class="inline">signal(full)</code>; il consumatore fa
+        <code class="inline">wait(full)</code>, preleva, <code class="inline">signal(empty)</code>.
+      </p>
+      <div class="kk-flex-media">
+        <img src="../risorse/img11.png" alt="">
+      </div>
+    </div>
+
+    <div class="section-block" id="section-10">
+      <h2><span class="dot"></span> Problema dei Lettori-Scrittori</h2>
+      <p>Una risorsa (database, file) può essere letta contemporaneamente da più thread, ma la scrittura richiede
+        accesso esclusivo. Il problema è bilanciare il parallelismo dei lettori con l'esclusività degli scrittori. L'implementazione originale utilizza tre variabili: un intero <code class="inline">read_count</code> per contare i lettori attivi, un semaforo <code class="inline">mutex</code> per proteggere l'aggiornamento del contatore, e un semaforo <code class="inline">rw_mutex</code> condiviso tra gli scrittori e il primo (o l'ultimo) lettore.</p>
+      <p><span class="keyword">Prima variante</span> (priorità ai lettori): nessun lettore aspetta a meno che uno
+        scrittore abbia già il lock <code class="inline">rw_mutex</code>. Rischio: starvation degli scrittori se i lettori arrivano continuamente. <span
+          class="keyword">Seconda variante</span> (priorità agli scrittori): quando uno scrittore è pronto, nessun nuovo
+        lettore può entrare. Rischio: starvation dei lettori. In pratica si usano primitive dedicate come <code
+          class="inline">pthread_rwlock_t</code> con politica configurabile.</p>
+    </div>
+
+    <div class="section-block" id="section-11">
       <h2><span class="dot"></span> Problema dei Cinque Filosofi</h2>
       <p>Cinque filosofi siedono intorno a un tavolo con 5 bacchette condivise, una tra ogni coppia adiacente. Ogni
         filosofo alterna fasi di pensiero e di mangiata; per mangiare ha bisogno di entrambe le bacchette ai suoi lati.
@@ -216,6 +432,90 @@
   </footer>
 
   <script src="/shared/katchkit.js"></script>
+  <script type="module" src="/shared/custom-diagrams.js"></script>
+  <script src="/shared/animation.js"></script>
+
+  <!-- ANIMATION LOGIC -->
+  <script>
+    let instMutex = new KatchSimulation('mutex-example-animation', 850, 300,
+      (p, factory) => {
+        p.res = { x: 425, y: 150, label: "Risorsa Condivisa", w: 160, h: 60 };
+        // Creiamo un'entità fantasma solo per avere i comodi punti di ancoraggio (.sx, .dx)
+        p.resAnchor = factory.createEntity("Res", p.res.x, p.res.y, p.res.w, p.res.h);
+        
+        p.resetAnim = () => {
+          // Threads
+          p.t1 = factory.createEntity("T1", 200, 150);
+          p.t2 = factory.createEntity("T2", 650, 150);
+          
+          // Testi magici
+          p.t1Msg = { text: "acquire()", x: 200, y: 100, alpha: 0, scale: 1 };
+          p.t2Msg = { text: "acquire()", x: 650, y: 100, alpha: 0, scale: 1 };
+          
+          // Teste mobili delle frecce (partono dagli ancoraggi dei thread)
+          p.arrow1Head = { x: p.t1.dx.x, y: p.t1.dx.y, alpha: 0 };
+          p.arrow2Head = { x: p.t2.sx.x, y: p.t2.sx.y, alpha: 0 };
+        };
+        p.resetAnim();
+      },
+      (p, factory) => {
+        factory.drawQueue(p.res.x, p.res.y, p.res.w, p.res.h, p.res.label, -40);
+        
+        [p.t1, p.t2].forEach(pr => factory.drawProcess(pr));
+        
+        if (p.arrow1Head.alpha > 0) {
+           factory.drawArrowBetween(p.t1.dx, p.arrow1Head, 8, KatchColors.amber, p.arrow1Head.alpha);
+        }
+        if (p.arrow2Head.alpha > 0) {
+           factory.drawArrowBetween(p.t2.sx, p.arrow2Head, 8, KatchColors.amber, p.arrow2Head.alpha);
+        }
+        
+        factory.drawMagicText(p.t1Msg);
+        factory.drawMagicText(p.t2Msg);
+      }
+    );
+
+    instMutex.onAnimStart = (p) => {
+      gsap.killTweensOf([p.t1, p.t2, p.t1Msg, p.t2Msg, p.arrow1Head, p.arrow2Head]);
+      p.resetAnim();
+      let tl = gsap.timeline();
+      
+      const animateThread = (thread, msgObj, arrowHeadObj, sourceAnchor, targetAnchor, delay = 0) => {
+        let localTl = gsap.timeline({ delay: delay });
+        
+        // 1. acquire() text
+        factory.animMagicText(localTl, msgObj, "acquire()");
+        
+        // 2. Freccia si allunga verso targetAnchor
+        factory.animArrowExtend(localTl, arrowHeadObj, targetAnchor, "-=0.3");
+          
+        // 3. Possesso risorsa (diventa amber)
+        localTl.to(thread, { r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.4 }, "-=0.2");
+        
+        // 4. Hold
+        localTl.to({}, { duration: 1.2 });
+        
+        // 5. release() text
+        factory.animMagicText(localTl, msgObj, "release()");
+          
+        // 6. Scolorisce thread
+        localTl.to(thread, { r: KatchColors.slate[0], g: KatchColors.slate[1], b: KatchColors.slate[2], duration: 0.4 }, "-=0.4");
+        
+        // 7. Freccia si accorcia verso sourceAnchor e svanisce
+        factory.animArrowRetract(localTl, arrowHeadObj, sourceAnchor, "-=0.2");
+               
+        return localTl;
+      };
+
+      // T1 (punta dal suo lato .dx al lato .sx della risorsa)
+      tl.add(animateThread(p.t1, p.t1Msg, p.arrow1Head, p.t1.dx, p.resAnchor.sx, 0.2));
+      
+      // T2 (punta dal suo lato .sx al lato .dx della risorsa)
+      tl.add(animateThread(p.t2, p.t2Msg, p.arrow2Head, p.t2.sx, p.resAnchor.dx, 0.5));
+    };
+
+    function animStartMutex() { instMutex.animStart(); }
+  </script>
 </body>
 
 </html>
