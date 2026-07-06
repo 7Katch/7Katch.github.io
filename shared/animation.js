@@ -150,6 +150,27 @@ class AnimFactory {
     this.drawArrow(anchor1.x, anchor1.y, anchor2.x, anchor2.y, headSize, col, alpha);
   }
 
+  // --- HELPER GSAP STANDARDIZZATI ---
+  animArrowExtend(tl, arrowHeadObj, targetAnchor, position = "+=0", duration = 0.8) {
+    tl.set(arrowHeadObj, { alpha: 255 }, position)
+      .to(arrowHeadObj, { x: targetAnchor.x, y: targetAnchor.y, duration: duration, ease: "power3.inOut" }, position);
+    return tl;
+  }
+
+  animArrowRetract(tl, arrowHeadObj, sourceAnchor, position = "+=0", duration = 0.8) {
+    tl.to(arrowHeadObj, { x: sourceAnchor.x, y: sourceAnchor.y, duration: duration, ease: "power3.inOut" }, position)
+      .set(arrowHeadObj, { alpha: 0 });
+    return tl;
+  }
+
+  animMagicText(tl, msgObj, text, position = "+=0") {
+    tl.set(msgObj, { text: text, y: msgObj.y || 100, alpha: 0, scale: 1 }, position)
+      .to(msgObj, { alpha: 255, y: (msgObj.y || 100) - 30, scale: 1.2, duration: 0.6, ease: "power2.out" }, position)
+      .to(msgObj, { alpha: 0, y: (msgObj.y || 100) - 50, duration: 0.4 }, ">");
+    return tl;
+  }
+  // ----------------------------------
+
   createEntity(id, x, y, w = 100, h = 60, colors = KatchColors.slate) {
     return new KatchEntity(id, x, y, w, h, colors);
   }
