@@ -218,6 +218,11 @@
         filosofo alterna fasi di pensiero e di mangiata; per mangiare ha bisogno di entrambe le bacchette ai suoi lati.
         La soluzione naïve (prendi la bacchetta sinistra, poi la destra) porta al <span class="keyword">deadlock</span>:
         se tutti i filosofi prendono la bacchetta sinistra simultaneamente, nessuno riesce a prendere la destra.</p>
+        
+      <div id="philosophers-example-animation"></div>
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartPhilosophers()"><i class="bi bi-play-fill"></i> Simula Deadlock</button>
+      </div>
       <p>Le soluzioni classiche sono tre. <span class="keyword">Asimmetria</span>: i filosofi con numero pari prendono
         prima la destra, quelli dispari prima la sinistra, rompendo la circolarità. <span class="keyword">Pickup
           atomico</span>: le due bacchette si prendono insieme o nessuna (richiede un mutex globale). <span
@@ -266,14 +271,14 @@
       (p, factory) => {
         factory.drawQueue(p.res.x, p.res.y, p.res.w, p.res.h, p.res.label, -40);
         
-        [p.t1, p.t2].forEach(pr => factory.drawProcess(pr));
-        
         if (p.arrow1Head.alpha > 0) {
            factory.drawArrowBetween(p.t1.dx, p.arrow1Head, 8, KatchColors.amber, p.arrow1Head.alpha);
         }
         if (p.arrow2Head.alpha > 0) {
            factory.drawArrowBetween(p.t2.sx, p.arrow2Head, 8, KatchColors.amber, p.arrow2Head.alpha);
         }
+
+        [p.t1, p.t2].forEach(pr => factory.drawProcess(pr));
         
         factory.drawMagicText(p.t1Msg);
         factory.drawMagicText(p.t2Msg);
@@ -320,6 +325,102 @@
     };
 
     function animStartMutex() { instMutex.animStart(); }
+
+    let instPhilosophers = new KatchSimulation('philosophers-example-animation', 850, 480,
+      (p, factory) => {
+        let cx = 425, cy = 240, rP = 160, rF = 75;
+        p.resetAnim = () => {
+          p.philosophers = [];
+          p.forks = [];
+          p.arrows = []; // each object tracks left/right head positions
+          
+          for (let i = 0; i < 5; i++) {
+            let angleP = -Math.PI / 2 + i * 2 * Math.PI / 5;
+            let px = cx + rP * Math.cos(angleP);
+            let py = cy + rP * Math.sin(angleP);
+            p.philosophers.push(factory.createEntity("P" + i, px, py, 50, 50));
+            
+            let angleF = -Math.PI / 2 + i * 2 * Math.PI / 5 + Math.PI / 5;
+            let fx = cx + rF * Math.cos(angleF);
+            let fy = cy + rF * Math.sin(angleF);
+            p.forks.push(factory.createEntity("F" + i, fx, fy, 40, 40, KatchColors.teal));
+          }
+          
+          // arrows state
+          for (let i = 0; i < 5; i++) {
+             let px = p.philosophers[i].x;
+             let py = p.philosophers[i].y;
+             p.arrows.push({
+               leftHead: { x: px, y: py, alpha: 0 },
+               rightHead: { x: px, y: py, alpha: 0 }
+             });
+          }
+        };
+        p.resetAnim();
+      },
+      (p, factory) => {
+        p.forks.forEach(f => factory.drawProcess(f));
+        
+        for (let i = 0; i < 5; i++) {
+           let phil = p.philosophers[i];
+           let leftArr = p.arrows[i].leftHead;
+           let rightArr = p.arrows[i].rightHead;
+           
+           if (leftArr.alpha > 0) {
+              factory.drawArrowBetween(phil, leftArr, 6, KatchColors.amber, leftArr.alpha);
+           }
+           if (rightArr.alpha > 0) {
+              factory.drawArrowBetween(phil, rightArr, 6, KatchColors.red, rightArr.alpha);
+           }
+        }
+        
+        p.philosophers.forEach(ph => factory.drawProcess(ph));
+      }
+    );
+
+    instPhilosophers.onAnimStart = (p, factory) => {
+      let allTweens = [];
+      p.philosophers.forEach(e => allTweens.push(e));
+      p.forks.forEach(e => allTweens.push(e));
+      p.arrows.forEach(a => { allTweens.push(a.leftHead); allTweens.push(a.rightHead); });
+      gsap.killTweensOf(allTweens);
+      
+      p.resetAnim();
+      let tl = gsap.timeline();
+      
+      // 1. All pick left fork
+      let leftPickTl = gsap.timeline();
+      for (let i = 0; i < 5; i++) {
+         let phil = p.philosophers[i];
+         let leftFork = p.forks[i];
+         let leftArr = p.arrows[i].leftHead;
+         factory.animArrowExtend(leftPickTl, leftArr, leftFork, 0, 1);
+         leftPickTl.to(phil, { r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.3 }, 0.8);
+      }
+      tl.add(leftPickTl);
+      
+      // 2. Wait
+      tl.to({}, { duration: 1.0 });
+      
+      // 3. Try right fork
+      let rightPickTl = gsap.timeline();
+      for (let i = 0; i < 5; i++) {
+         let rightFork = p.forks[(i+4)%5];
+         let rightArr = p.arrows[i].rightHead;
+         factory.animArrowExtend(rightPickTl, rightArr, rightFork, 0, 1);
+      }
+      tl.add(rightPickTl);
+      
+      // 4. Deadlock (red)
+      let deadlockTl = gsap.timeline();
+      for (let i = 0; i < 5; i++) {
+         let phil = p.philosophers[i];
+         deadlockTl.to(phil, { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: 0.5 }, 0);
+      }
+      tl.add(deadlockTl);
+    };
+
+    function animStartPhilosophers() { instPhilosophers.animStart(); }
   </script>
 </body>
 

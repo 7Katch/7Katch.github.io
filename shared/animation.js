@@ -133,16 +133,25 @@ class AnimFactory {
   drawArrow(x1, y1, x2, y2, headSize = 5, col = [255,255,255], alpha = 50) {
     const p = this.p;
     p.push();
-    p.stroke(col[0], col[1], col[2], alpha);
-    p.strokeWeight(3);
-    p.line(x1, y1, x2, y2);
-    p.fill(col[0], col[1], col[2], alpha);
-    p.noStroke();
     
-    // Draw triangle head pointing in the direction of x2
-    let sign = Math.sign(x2 - x1);
-    if (sign === 0) sign = 1;
-    p.triangle(x2, y2, x2 - sign * Math.abs(headSize)*2, y2 - headSize, x2 - sign * Math.abs(headSize)*2, y2 + headSize);
+    let angle = p.atan2(y2 - y1, x2 - x1);
+    let dist = p.dist(x1, y1, x2, y2);
+    
+    if (dist > 1) {
+      p.stroke(col[0], col[1], col[2], alpha);
+      p.strokeWeight(3);
+      // Riduciamo la lunghezza della linea per non sbucare fuori dalla punta del triangolo
+      let lineLen = Math.max(0, dist - headSize * 1.5);
+      let endX = x1 + p.cos(angle) * lineLen;
+      let endY = y1 + p.sin(angle) * lineLen;
+      p.line(x1, y1, endX, endY);
+      
+      p.fill(col[0], col[1], col[2], alpha);
+      p.noStroke();
+      p.translate(x2, y2);
+      p.rotate(angle);
+      p.triangle(0, 0, -headSize * 2, -headSize, -headSize * 2, headSize);
+    }
     p.pop();
   }
   
