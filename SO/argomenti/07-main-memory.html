@@ -30,17 +30,14 @@
       <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
       <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
       <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
+      <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
     </ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
   </aside>
 
   <!-- ═══════ NAV ═══════ -->
-  <site-navbar 
-    logo-text="// SO · Sistemi Operativi" 
-    back-url="../" 
-    back-text="Indice SO">
+  <site-navbar logo-text="// SO · Sistemi Operativi" back-url="../" back-text="Indice SO">
   </site-navbar>
 
   <!-- ═══════ HERO ═══════ -->
@@ -53,7 +50,8 @@
     <div class="topic-num">07 / 13</div>
     <h1 class="topic-hero-title">Main Memory</h1>
     <p class="hero-sub" style="max-width:680px">
-      Spazio di indirizzamento, allocazione contigua (First-fit, Best-fit), frammentazione, paginazione con TLB, struttura delle Page Tables (Gerarchiche, Hashed, Inverted), Swapping e Segmentazione in architetture Intel x86.
+      Spazio di indirizzamento, allocazione contigua (First-fit, Best-fit), frammentazione, paginazione con TLB,
+      struttura delle Page Tables (Gerarchiche, Hashed, Inverted), Swapping e Segmentazione in architetture Intel x86.
     </p>
   </div>
   <hr class="divider">
@@ -94,27 +92,39 @@
       <div class="mermaid-container">
         <div class="mermaid">
           flowchart LR
-              Disk[(Storage / Disco)] -.->|Caricamento| RAM[(Main Memory)]
-              RAM &lt;--&gt;|Cache Fill/Evict| Cache[Cache]
-              Cache &lt;--&gt;|Accesso Diretto| CPU[CPU / Registri]
-              
-              classDef default fill:#0f0f1a,stroke:#7c5cfc,stroke-width:1px,color:#f0eeff;
-              classDef storage fill:#0f0f1a,stroke:#a78bfa,stroke-width:2px,stroke-dasharray: 5 5;
-              classDef hardware fill:#111827,stroke:#34d399,stroke-width:2px;
-              
-              class Disk storage;
-              class RAM,Cache,CPU hardware;
+          Disk[(Storage / Disco)] -.->|Caricamento| RAM[(Main Memory)]
+          RAM &lt;--&gt;|Cache Fill/Evict| Cache[Cache]
+          Cache &lt;--&gt;|Accesso Diretto| CPU[CPU / Registri]
+
+          classDef default fill:#0f0f1a,stroke:#7c5cfc,stroke-width:1px,color:#f0eeff;
+          classDef storage fill:#0f0f1a,stroke:#a78bfa,stroke-width:2px,stroke-dasharray: 5 5;
+          classDef hardware fill:#111827,stroke:#34d399,stroke-width:2px;
+
+          class Disk storage;
+          class RAM,Cache,CPU hardware;
         </div>
       </div>
-      <p>Prima di poter essere eseguito, un programma deve essere portato dal disco alla memoria principale (RAM). Per proteggere lo spazio di memoria di ciascun processo ed evitare che un processo legga o scriva nella memoria del sistema operativo o di un altro utente, si utilizzano storicamente due registri hardware: il <strong>Base register</strong> (indirizzo fisico di partenza) e il <strong>Limit register</strong> (dimensione dello spazio). Ad ogni accesso, l'hardware verifica che l'indirizzo richiesto sia compreso nei limiti consentiti; le istruzioni per modificare questi registri sono privilegiate (eseguibili solo in kernel mode).</p>
-      
-      <p>L'<span class="keyword">Address Binding</span> (associazione degli indirizzi) è il processo che mappa le variabili e le funzioni del codice sorgente su indirizzi fisici. Può avvenire in tre fasi:</p>
+      <p>Prima di poter essere eseguito, un programma deve essere portato dal disco alla memoria principale (RAM). Per
+        proteggere lo spazio di memoria di ciascun processo ed evitare che un processo legga o scriva nella memoria del
+        sistema operativo o di un altro utente, si utilizzano storicamente due registri hardware: il <strong>Base
+          register</strong> (indirizzo fisico di partenza) e il <strong>Limit register</strong> (dimensione dello
+        spazio). Ad ogni accesso, l'hardware verifica che l'indirizzo richiesto sia compreso nei limiti consentiti; le
+        istruzioni per modificare questi registri sono privilegiate (eseguibili solo in kernel mode).</p>
+
+      <p>L'<span class="keyword">Address Binding</span> (associazione degli indirizzi) è il processo che mappa le
+        variabili e le funzioni del codice sorgente su indirizzi fisici. Può avvenire in tre fasi:</p>
       <ul>
-        <li><span class="keyword">Compile-time</span>: se si sa a priori dove il processo sarà caricato in memoria, si genera <em>absolute code</em>. Se la posizione cambia, bisogna ricompilare.</li>
-        <li><span class="keyword">Load-time</span>: il compilatore genera <em>relocatable code</em> (es. "14 byte dall'inizio del modulo"); il linker/loader calcola l'indirizzo assoluto al momento del caricamento in RAM.</li>
-        <li><span class="keyword">Execution-time</span>: il processo può essere spostato in memoria durante l'esecuzione. Richiede supporto hardware (la MMU).</li>
+        <li><span class="keyword">Compile-time</span>: se si sa a priori dove il processo sarà caricato in memoria, si
+          genera <em>absolute code</em>. Se la posizione cambia, bisogna ricompilare.</li>
+        <li><span class="keyword">Load-time</span>: il compilatore genera <em>relocatable code</em> (es. "14 byte
+          dall'inizio del modulo"); il linker/loader calcola l'indirizzo assoluto al momento del caricamento in RAM.
+        </li>
+        <li><span class="keyword">Execution-time</span>: il processo può essere spostato in memoria durante
+          l'esecuzione. Richiede supporto hardware (la MMU).</li>
       </ul>
-      <p>Per ottimizzare l'uso della RAM si usa anche il <span class="keyword">Dynamic Loading</span>: le singole routine (o moduli) non vengono caricate in memoria finché non vengono effettivamente chiamate durante l'esecuzione. Questo è utilissimo per blocchi di codice usati raramente (es. gestione degli errori).</p>
+      <p>Per ottimizzare l'uso della RAM si usa anche il <span class="keyword">Dynamic Loading</span>: le singole
+        routine (o moduli) non vengono caricate in memoria finché non vengono effettivamente chiamate durante
+        l'esecuzione. Questo è utilissimo per blocchi di codice usati raramente (es. gestione degli errori).</p>
     </div>
 
     <!-- ══════════════════════════════════════════════════
@@ -122,7 +132,9 @@
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-3">
       <h2><span class="dot"></span> Allocazione Contigua <span class="sub-tag">algoritmi di fit</span></h2>
-      <p>Nelle prime architetture, ogni processo doveva essere caricato in un singolo blocco di memoria contiguo. Con l'<strong>allocazione a partizioni variabili</strong>, il sistema operativo mantiene una lista di <em>buchi (holes)</em> liberi sparsi per la RAM.</p>
+      <p>Nelle prime architetture, ogni processo doveva essere caricato in un singolo blocco di memoria contiguo. Con
+        l'<strong>allocazione a partizioni variabili</strong>, il sistema operativo mantiene una lista di <em>buchi
+          (holes)</em> liberi sparsi per la RAM.</p>
       <p>Come soddisfare una richiesta di dimensione <em>n</em> da un elenco di buchi liberi?</p>
       <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
         <div class="compare-col">
@@ -136,24 +148,26 @@
           <div class="compare-col-head green">Best-Fit</div>
           <div class="compare-col-body">
             <div class="compare-row">Alloca il buco più piccolo tra quelli sufficientemente grandi.</div>
-            <div class="compare-row">Richiede di cercare in tutta la lista. Produce il buco rimanente più piccolo (spesso inutilizzabile).</div>
+            <div class="compare-row">Richiede di cercare in tutta la lista. Produce il buco rimanente più piccolo
+              (spesso inutilizzabile).</div>
           </div>
         </div>
         <div class="compare-col">
           <div class="compare-col-head amber">Worst-Fit</div>
           <div class="compare-col-body">
             <div class="compare-row">Alloca il buco più grande in assoluto.</div>
-            <div class="compare-row">Produce il buco rimanente più grande, che potrebbe essere utile per processi successivi, ma si dimostra il peggiore dei tre.</div>
+            <div class="compare-row">Produce il buco rimanente più grande, che potrebbe essere utile per processi
+              successivi, ma si dimostra il peggiore dei tre.</div>
           </div>
         </div>
       </div>
     </div>
-<!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════
        07.04 — FRAMMENTAZIONE
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-4">
 
-    <h2><span class="dot"></span> Spazio di Indirizzamento <span class="sub-tag">address space</span></h2>
+      <h2><span class="dot"></span> Spazio di Indirizzamento <span class="sub-tag">address space</span></h2>
       <p>
         Lo <span class="keyword">spazio di indirizzamento</span> è l'insieme di tutti gli indirizzi di memoria che un
         processo può generare. Su un sistema a 32 bit è 2³² = 4 GB; su un sistema a 64 bit è teoricamente 2⁶⁴, ma in
@@ -164,181 +178,246 @@
       <div class="stat-row">
         <div class="stat-pill"><span class="stat-pill-val">2³²</span><span class="stat-pill-label">indirizzi a 32 bit =
             4 GB</span>
-        <div class="stat-pill"><span class="stat-pill-val">2⁴⁸</span><span class="stat-pill-label">indirizzi virtuali a
-            48 bit (usati in pratica)</span></div>
-        <div class="stat-pill"><span class="stat-pill-val">4 KB</span><span class="stat-pill-label">dimensione tipica di
-            una pagina</span></div>
-      </div>
-
-      <p>
-        Lo spazio è diviso in due metà: la <span class="keyword">user space</span> (dove risiedono codice, dati, stack e
-        heap del processo) e la <span class="keyword">kernel space</span> (mappata nello stesso spazio virtuale ma
-        protetta — non accessibile dal codice utente). Su Linux a 64 bit la divisione è a metà dello spazio a 48 bit:
-        0x0000'0000'0000'0000 – 0x0000'7FFF'FFFF'FFFF per user, 0xFFFF'8000'0000'0000 – 0xFFFF'FFFF'FFFF'FFFF per
-        kernel.
-      </p>
-
-      <!-- Illustrazione spazio di indirizzi -->
-      <div class="diag-wrap">
-        <svg width="520" height="240" viewBox="0 0 520 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- address bar -->
-          <rect x="20" y="20" width="120" height="200" rx="6" fill="rgba(8,8,16,0.8)" stroke="rgba(34,211,238,.25)"
-            stroke-width="1" />
-          <!-- segments -->
-          <rect x="21" y="21" width="118" height="30" rx="5" fill="rgba(248,113,113,.15)" stroke="rgba(248,113,113,.3)"
-            stroke-width="1" />
-          <text x="80" y="40" font-family="JetBrains Mono" font-size="10" fill="#f87171" text-anchor="middle">kernel
-            space</text>
-          <rect x="21" y="56" width="118" height="18" rx="3" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.2)"
-            stroke-width="1" />
-          <text x="80" y="68" font-family="JetBrains Mono" font-size="9" fill="#22d3ee" text-anchor="middle">stack
-            ↓</text>
-          <rect x="21" y="80" width="118" height="26" rx="3" fill="rgba(34,211,238,.04)" stroke="rgba(34,211,238,.1)"
-            stroke-width="1" />
-          <text x="80" y="96" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
-            text-anchor="middle">(libero)</text>
-          <rect x="21" y="112" width="118" height="18" rx="3" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.2)"
-            stroke-width="1" />
-          <text x="80" y="124" font-family="JetBrains Mono" font-size="9" fill="#22d3ee" text-anchor="middle">heap
-            ↑</text>
-          <rect x="21" y="136" width="118" height="18" rx="3" fill="rgba(52,211,153,.1)" stroke="rgba(52,211,153,.25)"
-            stroke-width="1" />
-          <text x="80" y="148" font-family="JetBrains Mono" font-size="9" fill="#34d399" text-anchor="middle">bss /
-            data</text>
-          <rect x="21" y="160" width="118" height="18" rx="3" fill="rgba(124,92,252,.1)" stroke="rgba(124,92,252,.25)"
-            stroke-width="1" />
-          <text x="80" y="172" font-family="JetBrains Mono" font-size="9" fill="#a78bfa" text-anchor="middle">text
-            (codice)</text>
-          <rect x="21" y="182" width="118" height="37" rx="3" fill="rgba(255,255,255,.03)"
-            stroke="rgba(255,255,255,.08)" stroke-width="1" />
-          <text x="80" y="199" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.3)"
-            text-anchor="middle">null guard</text>
-          <!-- addresses -->
-          <text x="148" y="38" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)">0xFFFF…FFFF</text>
-          <text x="148" y="68" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">0x7FFF…</text>
-          <text x="148" y="124" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">indirizzi
-            crescenti</text>
-          <text x="148" y="172" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">0x0040…</text>
-          <text x="148" y="210" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)">0x0000…0000</text>
-          <!-- arrows -->
-          <line x1="142" y1="36" x2="150" y2="36" stroke="rgba(34,211,238,.3)" stroke-width="1" />
-          <line x1="142" y1="68" x2="150" y2="68" stroke="rgba(34,211,238,.2)" stroke-width="1" />
-          <line x1="142" y1="171" x2="150" y2="171" stroke="rgba(34,211,238,.2)" stroke-width="1" />
-          <line x1="142" y1="210" x2="150" y2="210" stroke="rgba(34,211,238,.3)" stroke-width="1" />
-          <!-- title -->
-          <text x="80" y="12" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)" text-anchor="middle"
-            letter-spacing="1">VIRTUAL ADDRESS SPACE</text>
-        </svg>
-      </div>
-      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:-.5rem">Layout tipico dello spazio
-        di indirizzamento virtuale di un processo Linux a 64 bit.</p>
-    </div>
-
-    <div class="section-block" id="section-4-ext">
-      <h2><span class="dot"></span> Frammentazione Interna ed Esterna <span class="sub-tag">memoria sprecata</span></h2>
-      
-      <p>L'allocazione della memoria soffre fisiologicamente del problema della <span class="keyword">Frammentazione</span>, ovvero memoria assegnata o libera che però risulta inutilizzabile. Esistono due varianti:</p>
-
-      <p><strong>1. Frammentazione Interna</strong><br>
-      Si verifica quando la memoria allocata a un processo è leggermente più grande di quella effettivamente richiesta (es. il processo chiede 6 KB, ma la memoria è divisa in blocchi o pagine fisse da 8 KB). Quella porzione extra è "interna" al blocco, ma inutilizzata dal processo e inaccessibile ad altri. È tipica dell'allocazione a <em>partizioni fisse</em> e della <em>paginazione</em>.</p>
-
-      <div id="frag-interna-anim" class="anim-container" style="height: 180px; margin: 1.5rem auto;"></div>
-
-      <p><strong>2. Frammentazione Esterna</strong><br>
-      Si verifica nell'allocazione contigua a <em>partizioni variabili</em>. A furia di caricare e scaricare processi, la memoria si riempie di tanti piccoli "buchi" liberi non contigui. Anche se la somma totale della memoria libera sarebbe sufficiente per ospitare un nuovo processo, questa non è contigua e la richiesta fallisce.</p>
-      
-      <div class="card-warning">
-        <div class="header"><i class="bi bi-exclamation-triangle-fill"></i> Frammentazione Esterna</div>
-        <div class="content">
-          <p>La <span class="keyword">regola del 50%</span>: analisi statistiche sul <em>First-Fit</em> rivelano che per ogni $N$ blocchi allocati, altri $0.5 N$ blocchi andranno persi a causa della frammentazione. Questo significa che fino a <strong>1/3 della memoria</strong> può diventare inutilizzabile!</p>
+          <div class="stat-pill"><span class="stat-pill-val">2⁴⁸</span><span class="stat-pill-label">indirizzi virtuali
+              a
+              48 bit (usati in pratica)</span></div>
+          <div class="stat-pill"><span class="stat-pill-val">4 KB</span><span class="stat-pill-label">dimensione tipica
+              di
+              una pagina</span></div>
         </div>
+
+        <p>
+          Lo spazio è diviso in due metà: la <span class="keyword">user space</span> (dove risiedono codice, dati, stack
+          e
+          heap del processo) e la <span class="keyword">kernel space</span> (mappata nello stesso spazio virtuale ma
+          protetta — non accessibile dal codice utente). Su Linux a 64 bit la divisione è a metà dello spazio a 48 bit:
+          0x0000'0000'0000'0000 – 0x0000'7FFF'FFFF'FFFF per user, 0xFFFF'8000'0000'0000 – 0xFFFF'FFFF'FFFF'FFFF per
+          kernel.
+        </p>
+
+        <!-- Illustrazione spazio di indirizzi -->
+        <div class="diag-wrap">
+          <svg width="520" height="240" viewBox="0 0 520 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- address bar -->
+            <rect x="20" y="20" width="120" height="200" rx="6" fill="rgba(8,8,16,0.8)" stroke="rgba(34,211,238,.25)"
+              stroke-width="1" />
+            <!-- segments -->
+            <rect x="21" y="21" width="118" height="30" rx="5" fill="rgba(248,113,113,.15)"
+              stroke="rgba(248,113,113,.3)" stroke-width="1" />
+            <text x="80" y="40" font-family="JetBrains Mono" font-size="10" fill="#f87171" text-anchor="middle">kernel
+              space</text>
+            <rect x="21" y="56" width="118" height="18" rx="3" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.2)"
+              stroke-width="1" />
+            <text x="80" y="68" font-family="JetBrains Mono" font-size="9" fill="#22d3ee" text-anchor="middle">stack
+              ↓</text>
+            <rect x="21" y="80" width="118" height="26" rx="3" fill="rgba(34,211,238,.04)" stroke="rgba(34,211,238,.1)"
+              stroke-width="1" />
+            <text x="80" y="96" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.5)"
+              text-anchor="middle">(libero)</text>
+            <rect x="21" y="112" width="118" height="18" rx="3" fill="rgba(34,211,238,.08)" stroke="rgba(34,211,238,.2)"
+              stroke-width="1" />
+            <text x="80" y="124" font-family="JetBrains Mono" font-size="9" fill="#22d3ee" text-anchor="middle">heap
+              ↑</text>
+            <rect x="21" y="136" width="118" height="18" rx="3" fill="rgba(52,211,153,.1)" stroke="rgba(52,211,153,.25)"
+              stroke-width="1" />
+            <text x="80" y="148" font-family="JetBrains Mono" font-size="9" fill="#34d399" text-anchor="middle">bss /
+              data</text>
+            <rect x="21" y="160" width="118" height="18" rx="3" fill="rgba(124,92,252,.1)" stroke="rgba(124,92,252,.25)"
+              stroke-width="1" />
+            <text x="80" y="172" font-family="JetBrains Mono" font-size="9" fill="#a78bfa" text-anchor="middle">text
+              (codice)</text>
+            <rect x="21" y="182" width="118" height="37" rx="3" fill="rgba(255,255,255,.03)"
+              stroke="rgba(255,255,255,.08)" stroke-width="1" />
+            <text x="80" y="199" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.3)"
+              text-anchor="middle">null guard</text>
+            <!-- addresses -->
+            <text x="148" y="38" font-family="JetBrains Mono" font-size="9"
+              fill="rgba(34,211,238,.5)">0xFFFF…FFFF</text>
+            <text x="148" y="68" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">0x7FFF…</text>
+            <text x="148" y="124" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">indirizzi
+              crescenti</text>
+            <text x="148" y="172" font-family="JetBrains Mono" font-size="9" fill="rgba(200,211,224,.4)">0x0040…</text>
+            <text x="148" y="210" font-family="JetBrains Mono" font-size="9"
+              fill="rgba(34,211,238,.5)">0x0000…0000</text>
+            <!-- arrows -->
+            <line x1="142" y1="36" x2="150" y2="36" stroke="rgba(34,211,238,.3)" stroke-width="1" />
+            <line x1="142" y1="68" x2="150" y2="68" stroke="rgba(34,211,238,.2)" stroke-width="1" />
+            <line x1="142" y1="171" x2="150" y2="171" stroke="rgba(34,211,238,.2)" stroke-width="1" />
+            <line x1="142" y1="210" x2="150" y2="210" stroke="rgba(34,211,238,.3)" stroke-width="1" />
+            <!-- title -->
+            <text x="80" y="12" font-family="JetBrains Mono" font-size="9" fill="rgba(34,211,238,.6)"
+              text-anchor="middle" letter-spacing="1">VIRTUAL ADDRESS SPACE</text>
+          </svg>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:-.5rem">Layout tipico dello spazio
+          di indirizzamento virtuale di un processo Linux a 64 bit.</p>
       </div>
 
-      <p>L'unica soluzione software è la <span class="keyword">Compattazione (Compaction)</span>: spostare i processi in memoria per "spingere" tutti i buchi vuoti da una parte e creare un unico grande blocco libero. Questo è un processo molto costoso in termini di I/O e CPU, ed è possibile <em>solo se</em> l'address binding è di tipo <strong>Execution-time</strong> (ovvero se i processi possono essere rilocati dinamicamente mentre sono in esecuzione).</p>
-    </div>
+      <div class="section-block" id="section-4-ext">
+        <h2><span class="dot"></span> Frammentazione Interna ed Esterna <span class="sub-tag">memoria sprecata</span>
+        </h2>
 
-    <div class="section-block" id="section-4-mem">
-      <h2><span class="dot"></span> Tipologie di Memoria <span class="sub-tag">riepilogo</span></h2>      <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
-        <div class="compare-col">
-          <div class="compare-col-head teal">Memoria Fisica</div>
-          <div class="compare-col-body">
-            <div class="compare-row">La RAM vera, i chip fisici installati nel sistema.</div>
-            <div class="compare-row">Indirizzi fisici: prodotti dalla MMU dopo traduzione.</div>
-            <div class="compare-row">Limitata dalla RAM installata (es. 16 GB).</div>
-            <div class="compare-row">Condivisa tra tutti i processi e il kernel.</div>
+        <p>L'allocazione della memoria soffre fisiologicamente del problema della <span
+            class="keyword">Frammentazione</span>, ovvero memoria assegnata o libera che però risulta inutilizzabile.
+          Esistono due varianti:</p>
+
+        <p><strong>1. Frammentazione Interna</strong><br>
+          Si verifica quando la memoria allocata a un processo è leggermente più grande di quella effettivamente
+          richiesta (es. il processo chiede 6 KB, ma la memoria è divisa in blocchi o pagine fisse da 8 KB). Quella
+          porzione extra è "interna" al blocco, ma inutilizzata dal processo e inaccessibile ad altri. È tipica
+          dell'allocazione a <em>partizioni fisse</em> e della <em>paginazione</em>.</p>
+
+        <div id="frag-interna-anim" class="anim-container" style="height: 180px; margin: 1.5rem auto;"></div>
+
+        <p><strong>2. Frammentazione Esterna</strong><br>
+          Si verifica nell'allocazione contigua a <em>partizioni variabili</em>. A furia di caricare e scaricare
+          processi, la memoria si riempie di tanti piccoli "buchi" liberi non contigui. Anche se la somma totale della
+          memoria libera sarebbe sufficiente per ospitare un nuovo processo, questa non è contigua e la richiesta
+          fallisce.</p>
+
+        <div class="card-warning">
+          <div class="header"><i class="bi bi-exclamation-triangle-fill"></i> Frammentazione Esterna</div>
+          <div class="content">
+            <p>La <span class="keyword">regola del 50%</span>: analisi statistiche sul <em>First-Fit</em> rivelano che
+              per ogni $N$ blocchi allocati, altri $0.5 N$ blocchi andranno persi a causa della frammentazione. Questo
+              significa che fino a <strong>1/3 della memoria</strong> può diventare inutilizzabile!</p>
           </div>
         </div>
-        <div class="compare-col">
-          <div class="compare-col-head amber">Memoria Logica</div>
-          <div class="compare-col-body">
-            <div class="compare-row">Lo spazio di indirizzi visto dal processo in esecuzione.</div>
-            <div class="compare-row">Indirizzi logici: generati dalla CPU durante l'esecuzione.</div>
-            <div class="compare-row">Ogni processo ha il proprio spazio logico separato.</div>
-            <div class="compare-row">La MMU traduce logico <i class="bi bi-arrow-right"></i> fisico a runtime.</div>
+
+        <p>L'unica soluzione software è la <span class="keyword">Compattazione (Compaction)</span>: spostare i processi
+          in memoria per "spingere" tutti i buchi vuoti da una parte e creare un unico grande blocco libero. Questo è un
+          processo molto costoso in termini di I/O e CPU, ed è possibile <em>solo se</em> l'address binding è di tipo
+          <strong>Execution-time</strong> (ovvero se i processi possono essere rilocati dinamicamente mentre sono in
+          esecuzione).</p>
+      </div>
+
+      <div class="section-block" id="section-4-mem">
+        <h2><span class="dot"></span> Tipologie di Memoria <span class="sub-tag">riepilogo</span></h2>
+        <div class="compare-grid" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="compare-col">
+            <div class="compare-col-head teal">Memoria Fisica</div>
+            <div class="compare-col-body">
+              <div class="compare-row">La RAM vera, i chip fisici installati nel sistema.</div>
+              <div class="compare-row">Indirizzi fisici: prodotti dalla MMU dopo traduzione.</div>
+              <div class="compare-row">Limitata dalla RAM installata (es. 16 GB).</div>
+              <div class="compare-row">Condivisa tra tutti i processi e il kernel.</div>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-col-head amber">Memoria Logica</div>
+            <div class="compare-col-body">
+              <div class="compare-row">Lo spazio di indirizzi visto dal processo in esecuzione.</div>
+              <div class="compare-row">Indirizzi logici: generati dalla CPU durante l'esecuzione.</div>
+              <div class="compare-row">Ogni processo ha il proprio spazio logico separato.</div>
+              <div class="compare-row">La MMU traduce logico <i class="bi bi-arrow-right"></i> fisico a runtime.</div>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-col-head green">Memoria Virtuale</div>
+            <div class="compare-col-body">
+              <div class="compare-row">Astrazione che estende la memoria logica oltre la RAM fisica.</div>
+              <div class="compare-row">Usa il disco come estensione (swap/paging area).</div>
+              <div class="compare-row">Permette processi più grandi della RAM disponibile.</div>
+              <div class="compare-row">Gestita tramite demand paging e page replacement.</div>
+            </div>
           </div>
         </div>
-        <div class="compare-col">
-          <div class="compare-col-head green">Memoria Virtuale</div>
-          <div class="compare-col-body">
-            <div class="compare-row">Astrazione che estende la memoria logica oltre la RAM fisica.</div>
-            <div class="compare-row">Usa il disco come estensione (swap/paging area).</div>
-            <div class="compare-row">Permette processi più grandi della RAM disponibile.</div>
-            <div class="compare-row">Gestita tramite demand paging e page replacement.</div>
+
+        <!-- Flusso di traduzione indirizzi -->
+        <p>La <span class="keyword">MMU (Memory Management Unit)</span> è l'unità hardware che traduce ogni indirizzo
+          logico in fisico in modo trasparente. La traduzione avviene ad ogni accesso alla memoria:</p>
+
+
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span>
+            <span>MMU address translation</span>
+          </div>
+          <div class="terminal-body">
+            <span class="t-comment">// CPU esegue: MOV rax, [0x40001234] <i class="bi bi-arrow-left"></i> indirizzo
+              LOGICO</span><br>
+            <span class="t-dim">──────────────────────────────────────────────</span><br>
+            indirizzo logico &nbsp;<span class="t-addr">0x40001234</span><br>
+            pagina <span class="t-dim">(bits 47..12)</span>&nbsp;&nbsp;&nbsp;<span class="t-key">0x40001</span>
+            &nbsp;<i class="bi bi-arrow-right"></i>&nbsp; page table lookup<br>
+            offset <span class="t-dim">(bits 11..0)</span>&nbsp;&nbsp;&nbsp;<span class="t-val">0x234</span><br>
+            <span class="t-dim">──────────────────────────────────────────────</span><br>
+            frame fisico trovato&nbsp;&nbsp;<span class="t-ok">0xB3</span><br>
+            indirizzo fisico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-ok">0xB3234</span> <span
+              class="t-comment">= (0xB3 &lt;&lt; 12) | 0x234</span><br>
+            <span class="t-dim">──────────────────────────────────────────────</span><br>
+            <span class="t-ok">✓</span> dato letto dalla RAM fisica all'indirizzo <span class="t-ok">0xB3234</span>
+          </div>
+        </div>
+
+
+        <div class="card-tip">
+          <div class="header"><i class="bi bi-lightbulb-fill"></i> Astrazione della Memoria</div>
+          <div class="content">
+            <p>Il processo non sa mai dove i suoi dati risiedono fisicamente in RAM — conosce solo gli indirizzi logici.
+              Questo
+              è il principio fondamentale dell'<strong class="text-amber">astrazione della memoria</strong>.</p>
           </div>
         </div>
       </div>
 
-      <!-- Flusso di traduzione indirizzi -->
-      <p>La <span class="keyword">MMU (Memory Management Unit)</span> è l'unità hardware che traduce ogni indirizzo
-        logico in fisico in modo trasparente. La traduzione avviene ad ogni accesso alla memoria:</p>
-
-      <div class="terminal-card">
-        <div class="terminal-header">
-          <span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span>
-          <span>MMU address translation</span>
-        </div>
-        <div class="terminal-body">
-          <span class="t-comment">// CPU esegue: MOV rax, [0x40001234] <i class="bi bi-arrow-left"></i> indirizzo LOGICO</span><br>
-          <span class="t-dim">──────────────────────────────────────────────</span><br>
-          indirizzo logico &nbsp;<span class="t-addr">0x40001234</span><br>
-          pagina <span class="t-dim">(bits 47..12)</span>&nbsp;&nbsp;&nbsp;<span class="t-key">0x40001</span>
-          &nbsp;<i class="bi bi-arrow-right"></i>&nbsp; page table lookup<br>
-          offset <span class="t-dim">(bits 11..0)</span>&nbsp;&nbsp;&nbsp;<span class="t-val">0x234</span><br>
-          <span class="t-dim">──────────────────────────────────────────────</span><br>
-          frame fisico trovato&nbsp;&nbsp;<span class="t-ok">0xB3</span><br>
-          indirizzo fisico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-ok">0xB3234</span> <span
-            class="t-comment">= (0xB3 &lt;&lt; 12) | 0x234</span><br>
-          <span class="t-dim">──────────────────────────────────────────────</span><br>
-          <span class="t-ok">✓</span> dato letto dalla RAM fisica all'indirizzo <span class="t-ok">0xB3234</span>
-        </div>
-      </div>
-
-      <div class="card-tip">
-        <div class="header"><i class="bi bi-lightbulb-fill"></i> Astrazione della Memoria</div>
-        <div class="content">
-          <p>Il processo non sa mai dove i suoi dati risiedono fisicamente in RAM — conosce solo gli indirizzi logici. Questo
-          è il principio fondamentale dell'<strong class="text-amber">astrazione della memoria</strong>.</p>
-        </div>
-      </div>
     </div>
-
-        </div>
-<!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════
        07.05 — PAGINAZIONE & TLB
   ══════════════════════════════════════════════════ -->
 
     <div class="section-block" id="section-5">
-      <h2><span class="dot"></span> TLB e Memory Protection <span class="sub-tag">hardware</span></h2>
-      <p>Nella paginazione, l'indirizzo logico è diviso in <strong>Page number (p)</strong> (usato come indice nella page table) e <strong>Page offset (d)</strong>. Siccome la Page Table risiede in memoria principale (puntata dal registro PTBR - <em>Page-Table Base Register</em>), ogni accesso logico richiederebbe in realtà <strong>due accessi alla RAM</strong>: uno per leggere la Page Table e trovare il frame, e un secondo per accedere al dato reale.</p>
+      <h2><span class="dot"></span> Paginazione (Paging) <span class="sub-tag">base</span></h2>
+      <p>La <span class="keyword">Paginazione</span> è lo schema di gestione della memoria che permette allo spazio di indirizzi fisico di un processo di non essere contiguo, evitando così del tutto la frammentazione esterna e la necessità di compattazione.</p>
       
-      <p>Per evitare questo enorme rallentamento, la MMU include una cache hardware associativa piccolissima e superveloce chiamata <span class="keyword">TLB (Translation Look-aside Buffer)</span>. Quando la CPU cerca una pagina, la cerca in parallelo nel TLB. Se la trova (<span class="keyword">TLB hit</span>), si accede subito alla RAM. Se non c'è (<span class="keyword">TLB miss</span>), si consulta la Page Table in RAM, si accede al dato, e si salva la voce nel TLB per il futuro. Le prestazioni sono misurate dall'<span class="keyword">Effective Access Time (EAT)</span>: con un hit ratio del 99%, un accesso di 10ns e un miss di 20ns, l'EAT = 0.99 × 10 + 0.01 × 20 = 10.1 ns (solo l'1% di rallentamento).</p>
+      <div class="card-def">
+        <div class="header"><i class="bi bi-layout-text-window-reverse"></i> Frame e Pagine</div>
+        <div class="content">
+          <p>Il concetto fondamentale della paginazione si basa sulla suddivisione della memoria in blocchi di dimensione fissa:</p>
+          <ul>
+            <li>La <span class="keyword">Memoria Fisica</span> viene suddivisa in blocchi chiamati <strong>Frame</strong> (cornici).</li>
+            <li>La <span class="keyword">Memoria Logica</span> viene suddivisa in blocchi della <em>stessa</em> dimensione chiamati <strong>Pagine</strong> (pages).</li>
+          </ul>
+          <p>Quando un processo deve essere eseguito, le sue <em>pagine</em> vengono caricate all'interno di eventuali <em>frame</em> liberi in memoria principale. La mappa che associa ogni pagina logica al corrispondente frame fisico è mantenuta dal SO all'interno di una struttura chiamata <strong>Page Table</strong>.</p>
+        </div>
+      </div>
+      <div id="address-trans-anim" class="anim-container" style="height: 380px; margin: 1.5rem auto;"></div>
 
-      <div class="callout">
-        <span class="callout-icon">⚡</span>
-        Alcuni TLB moderni memorizzano in ogni voce l'<strong style="color:var(--teal)">ASID (Address-Space ID)</strong>. Questo identifica univocamente a quale processo appartiene la traduzione, evitando di dover fare il "flush" (svuotamento) del TLB ad ogni context switch!
+      <h2><span class="dot"></span> TLB e Memory Protection <span class="sub-tag">hardware</span></h2>
+      <p>Nella paginazione, l'indirizzo logico è diviso in <strong>Page number (p)</strong> (usato come indice nella
+        page table) e <strong>Page offset (d)</strong>. Siccome la Page Table risiede in memoria principale (puntata dal
+        registro PTBR - <em>Page-Table Base Register</em>), ogni accesso logico richiederebbe in realtà <strong>due
+          accessi alla RAM</strong>: uno per leggere la Page Table e trovare il frame, e un secondo per accedere al dato
+        reale.</p>
+
+      <p>Per evitare questo enorme rallentamento, la MMU include una cache hardware associativa piccolissima e
+        superveloce chiamata <span class="keyword">TLB (Translation Look-aside Buffer)</span>. Quando la CPU cerca una
+        pagina, la cerca in parallelo nel TLB. Se la trova (<span class="keyword">TLB hit</span>), si accede subito alla
+        RAM. Se non c'è (<span class="keyword">TLB miss</span>), si consulta la Page Table in RAM, si accede al dato, e
+        si salva la voce nel TLB per il futuro. Le prestazioni sono misurate dall'<span class="keyword">Effective Access
+          Time (EAT)</span>: con un hit ratio del 99%, un accesso di 10ns e un miss di 20ns, l'EAT = 0.99 × 10 + 0.01 ×
+          20 = 10.1 ns (solo l'1% di rallentamento).</p>
+        <div class="card-formula">
+          <div class="header"><i class="bi bi-lightbulb-fill"></i> Calcolo EAT</div>
+          <div class="content">
+              $$EAT = (1 - \alpha) \cdot Access + \alpha \cdot (Access + Memory Cycle)$$
+          </div>
+        </div>
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-lightbulb-fill"></i> Astrazione della Memoria</div>
+        <div class="content">
+          <p>Alcuni TLB moderni memorizzano in ogni voce l'<strong style="color:var(--teal)">ASID (Address-Space
+            ID)</strong>. Questo identifica univocamente a quale processo appartiene la traduzione, evitando di dover fare
+          il "flush" (svuotamento) del TLB ad ogni context switch!</p>
+        </div>
       </div>
 
-      <p>Ogni voce della page table ha dei bit di protezione. Fondamentale è il <span class="keyword">Valid-Invalid bit</span>: se settato a <em>valid</em>, significa che la pagina appartiene allo spazio logico del processo. Se è <em>invalid</em>, l'accesso scatena una trap al SO. Altri bit controllano permessi come <em>read-only</em>, consentendo il concetto di <span class="keyword">Shared Pages</span>: lo stesso codice (es. librerie o editor di testo reentrant) può essere mappato nello spazio di più processi contemporaneamente in sola lettura, risparmiando molta memoria fisica.</p>
+      <p>Ogni voce della page table ha dei bit di protezione. Fondamentale è il <span class="keyword">Valid-Invalid
+          bit</span>: se settato a <em>valid</em>, significa che la pagina appartiene allo spazio logico del processo.
+        Se è <em>invalid</em>, l'accesso scatena una trap al SO. Altri bit controllano permessi come <em>read-only</em>,
+        consentendo il concetto di <span class="keyword">Shared Pages</span>: lo stesso codice (es. librerie o editor di
+        testo reentrant) può essere mappato nello spazio di più processi contemporaneamente in sola lettura,
+        risparmiando molta memoria fisica.</p>
 
       <h2><span class="dot"></span> Frammentazione Interna <span class="sub-tag">paginazione</span></h2>
       <p>
@@ -426,7 +505,8 @@
       <div class="formula-card">
         <span class="formula-label">Spreco medio</span>
         <span class="formula-expr">framm. interna media = page_size / 2</span>
-        <span style="font-size:12px;color:var(--text-muted)">Con page_size = 4 KB <i class="bi bi-arrow-right"></i> spreco medio ≈ 2 KB per
+        <span style="font-size:12px;color:var(--text-muted)">Con page_size = 4 KB <i class="bi bi-arrow-right"></i>
+          spreco medio ≈ 2 KB per
           processo</span>
       </div>
 
@@ -442,32 +522,72 @@
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-6">
       <h2><span class="dot"></span> Strutture della Page Table <span class="sub-tag">gestire lo spazio</span></h2>
-      <p>Poiché le page table per i processi a 32 o 64 bit diventerebbero giganti se memorizzate in un array continuo (es. 4MB a processo per 32 bit con page size 4KB), si usano 3 approcci per strutturarle:</p>
+      <p>Poiché le page table per i processi a 32 o 64 bit diventerebbero giganti se memorizzate in un array continuo
+        (es. 4MB a processo per 32 bit con page size 4KB), si usano 3 approcci per strutturarle:</p>
       <ul>
-        <li><span class="keyword">Hierarchical Paging</span>: L'indirizzo logico è diviso in più livelli. Ad esempio su un sistema a 32 bit, i primi 10 bit indicano l'indice nella <em>outer page table</em>, i successivi 10 bit indicano l'indice nella <em>inner page table</em>, e i restanti 12 bit l'offset. Si allocano solo le inner page table effettivamente usate, risparmiando moltissima RAM.</li>
-        <li><span class="keyword">Hashed Page Tables</span>: Ideale per indirizzi > 32 bit. Il page number viene processato da un hash che punta a una catena di elementi. Si confronta il page number con quello memorizzato nella entry della catena per trovare il frame corrispondente.</li>
-        <li><span class="keyword">Inverted Page Tables (IPT)</span>: C'è <em>una singola tabella</em> per l'intera memoria fisica, con una entry per ogni <strong>frame</strong>. L'entry contiene l'ID del processo (ASID o PID) e il page number logico. Riduce drasticamente la RAM usata per le tabelle (dimensione fissa dipendente dalla RAM fisica), ma aumenta il tempo di ricerca (mitigato con l'hashing).</li>
+        <li><span class="keyword">Hierarchical Paging</span>: L'indirizzo logico è diviso in più livelli. Ad esempio su
+          un sistema a 32 bit, i primi 10 bit indicano l'indice nella <em>outer page table</em>, i successivi 10 bit
+          indicano l'indice nella <em>inner page table</em>, e i restanti 12 bit l'offset. Si allocano solo le inner
+          page table effettivamente usate, risparmiando moltissima RAM.</li>
+        <li><span class="keyword">Hashed Page Tables</span>: Ideale per indirizzi > 32 bit. Il page number viene
+          processato da un hash che punta a una catena di elementi. Si confronta il page number con quello memorizzato
+          nella entry della catena per trovare il frame corrispondente.</li>
+        <li><span class="keyword">Inverted Page Tables (IPT)</span>: C'è <em>una singola tabella</em> per l'intera
+          memoria fisica, con una entry per ogni <strong>frame</strong>. L'entry contiene l'ID del processo (ASID o PID)
+          e il page number logico. Riduce drasticamente la RAM usata per le tabelle (dimensione fissa dipendente dalla
+          RAM fisica), ma aumenta il tempo di ricerca (mitigato con l'hashing).</li>
       </ul>
     </div>
-<!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════
        07.07 — SWAPPING
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-7">
       <h2><span class="dot"></span> Swapping <span class="sub-tag">backing store</span></h2>
-      <p>Quando la RAM fisica non è sufficiente per contenere tutti i processi attivi, il SO sfrutta uno spazio su disco (chiamato <span class="keyword">backing store</span> o area di swap). Un processo (o una porzione di esso) viene temporaneamente <strong>swapped out</strong> dalla RAM al disco, e poi <strong>swapped in</strong> quando deve essere nuovamente eseguito.</p>
-      <p>Nello <em>standard swapping</em> viene mosso l'intero processo. Questo è costosissimo per il context switch (trasferire decine di MB da disco richiede tempo). I SO moderni implementano perciò lo <strong>swapping with paging</strong>: vengono scambiate solo le singole pagine necessarie in modo granulare, un approccio che fa da base per il <em>Demand Paging</em> (approfondito nel prossimo capitolo sulla Virtual Memory).</p>
-      <div class="callout warn">
-        <span class="callout-icon">⚠️</span>
-        Il context-switch time con lo swapping tradizionale è elevatissimo. Se si sposta su disco l'intero processo, la coda del ready queue è limitata alla velocità dell'Hard Disk / SSD.
+      <p>Quando la RAM fisica non è sufficiente per contenere tutti i processi attivi, il SO sfrutta uno spazio su disco
+        (chiamato <span class="keyword">backing store</span> o area di swap). Un processo (o una porzione di esso) viene
+        temporaneamente <strong>swapped out</strong> dalla RAM al disco, e poi <strong>swapped in</strong> quando deve
+        essere nuovamente eseguito.</p>
+      <p>Nello <em>standard swapping</em> viene mosso l'intero processo. Questo è costosissimo per il context switch
+        (trasferire decine di MB da disco richiede tempo). I SO moderni implementano perciò lo <strong>swapping with
+          paging</strong>: vengono scambiate solo le singole pagine necessarie in modo granulare, un approccio che fa da
+        base per il <em>Demand Paging</em> (approfondito nel prossimo capitolo sulla Virtual Memory).</p>
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-exclamation-triangle-fill"></i> Avviso: Swapping Tradizionale</div>
+        <div class="content">
+          <p>Il context-switch time con lo swapping tradizionale è elevatissimo. Se si sposta su disco l'intero processo, la
+            coda del ready queue è limitata alla velocità dell'Hard Disk / SSD.</p>
+        </div>
       </div>
     </div>
-<!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════
        07.08 — SEGMENTAZIONE & INTEL X86
   ══════════════════════════════════════════════════ -->
     <div class="section-block" id="section-8">
       <h2><span class="dot"></span> Segmentazione e Intel x86 <span class="sub-tag">hardware</span></h2>
-      <p>La <span class="keyword">Segmentazione</span> organizza la memoria in segmenti di dimensione variabile (es. un segmento per il codice, uno per i dati globali, uno per lo stack). L'indirizzo logico è formato da <code class="inline">&lt;segment-number, offset&gt;</code>. Ogni voce nella segment table ha una <em>base</em> e un <em>limit</em> per protezione. Questo modello è intuitivo per il programmatore, ma soffre di frammentazione esterna.</p>
-      <p>L'architettura <strong>Intel x86 (IA-32)</strong> risolve i problemi unendo Segmentazione e Paginazione. La segmentazione è obbligatoria per hardware (Local/Global Descriptor Table LDT/GDT), producendo un indirizzo lineare. L'indirizzo lineare attraversa poi un paging gerarchico a due livelli (page directory e page table) per generare l'indirizzo fisico in RAM, eliminando la frammentazione esterna. Nelle moderne architetture x86-64, la segmentazione è stata sostanzialmente disabilitata (flat memory model), usando solo paging a 4 livelli (e 5 livelli nei sistemi più recenti).</p>
+      
+      <p>Mentre la paginazione divide la memoria in blocchi rigidi di dimensione fissa nascondendo la logica alla macchina, la <span class="keyword">Segmentazione</span> è uno schema di gestione che rispecchia esattamente la visione che il <strong>programmatore</strong> ha della memoria.</p>
+      
+      <p>Un programma è infatti un insieme di entità logiche distinte (il main, le funzioni, gli array, lo stack). La segmentazione alloca per ciascuna di queste entità un <strong>segmento di dimensione variabile</strong>.</p>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-diagram-3-fill"></i> Segment Table e Protezione</div>
+        <div class="content">
+          <p>L'indirizzo logico è bidimensionale ed è formato da <code class="inline">&lt;segment-number, offset&gt;</code>.</p>
+          <p>Il sistema mantiene una <strong>Segment Table</strong> dove ogni riga rappresenta un segmento e contiene due valori fondamentali:</p>
+          <ul>
+            <li><strong>Base:</strong> l'indirizzo fisico esatto da cui inizia il segmento in RAM.</li>
+            <li><strong>Limit:</strong> la lunghezza massima del segmento.</li>
+          </ul>
+          <p>Se un programma cerca di accedere a un <em>offset</em> maggiore del <em>limit</em> consentito (ad esempio cercando di leggere oltre la fine di un array), l'hardware blocca l'accesso generando una trap. È da questo meccanismo di protezione che nasce il famigerato errore <strong>Segmentation Fault</strong>!</p>
+        </div>
+      </div>
+
+      <p>Il grande svantaggio della segmentazione "pura" è che, avendo i segmenti dimensioni tutte diverse, il caricamento e lo scaricamento continuo dei processi causa una grave <strong>frammentazione esterna</strong> nella memoria fisica.</p>
+
+      <p>L'architettura <strong>Intel x86 (IA-32)</strong> risolse il problema unendo Segmentazione e Paginazione. La
+        segmentazione è obbligatoria in hardware (tramite <em>Local/Global Descriptor Table LDT/GDT</em>) e trasforma l'indirizzo logico in un indirizzo lineare contiguo. L'indirizzo lineare viene poi "spezzettato" da un paging gerarchico a due livelli per
+        generare l'indirizzo fisico in RAM, eliminando del tutto la frammentazione esterna. Nelle moderne architetture x86-64, la
+        segmentazione è stata sostanzialmente aggirata (<em>flat memory model</em>), demandando l'intera gestione a un paging gerarchico a 4 o 5 livelli.</p>
     </div>
 
     <!-- NAVIGATION -->
@@ -497,10 +617,10 @@
       p.setup = () => {
         p.createCanvas(600, 160);
         p.pixelDensity(2);
-        
+
         // Matrice 1x4 (4 slot da 2KB ciascuno, cellW=80, cellH=50)
-        p.page = factory.createMatrix('frag', 140, 50, 'Pagina Allocata (8 KB totali)', ['','','',''], [''], [[1, 1, 1, 0]], 80, 50);
-        
+        p.page = factory.createMatrix('frag', 140, 50, 'Pagina Allocata (8 KB totali)', ['', '', '', ''], [''], [[1, 1, 1, 0]], 80, 50);
+
         // Colorazione e testo
         p.page.data.forEach((row, i) => {
           row.forEach((cell, j) => {
@@ -520,7 +640,7 @@
       p.draw = () => {
         p.clear();
         factory.drawMatrix(p.page);
-        
+
         p.push();
         p.fill(248, 113, 113);
         p.noStroke();
@@ -532,6 +652,58 @@
     };
 
     new p5(sketchFrag, 'frag-interna-anim');
+
+    const addressTransSim = new KatchSimulation('address-trans-anim', 700, 360,
+      (p, factory) => {
+        p.setupAnim = () => {
+          // X = 100, Y = 50
+          p.mLog = factory.createMatrix('mLog', 120, 50, 'Memoria Logica', ['Dato'], ['Pag. 0','Pag. 1','Pag. 2','Pag. 3'], [['A'],['B'],['C'],['D']], 60, 30);
+          p.mTab = factory.createMatrix('mTab', 320, 50, 'Page Table', ['Frame'], ['Pag. 0','Pag. 1','Pag. 2','Pag. 3'], [[5],[2],[7],[1]], 60, 30);
+          p.mPhys = factory.createMatrix('mPhys', 540, 50, 'Memoria Fisica', ['Dato'], ['Frm 0','Frm 1','Frm 2','Frm 3','Frm 4','Frm 5','Frm 6','Frm 7'], [[''],['D'],['B'],[''],[''],['A'],[''],['C']], 60, 30);
+        };
+        
+        p.onAnimStart = () => {
+          p.setupAnim();
+          let tl = gsap.timeline({ repeat: -1 });
+
+          const animateTranslation = (pageIdx, frameIdx) => {
+             // 1. Evidenzia la pagina logica e l'ingresso nella page table
+             factory.animMatrixRowStyle(tl, p.mLog, pageIdx, { color: [52, 211, 153], scale: 1.1 }, 0.4);
+             factory.animMatrixRowStyle(tl, p.mTab, pageIdx, { color: [52, 211, 153], scale: 1.1 }, 0.4, "<");
+             
+             // 2. Dopo un breve istante, evidenzia il frame fisico di destinazione
+             factory.animMatrixRowStyle(tl, p.mPhys, frameIdx, { color: [52, 211, 153], scale: 1.1 }, 0.4, "+=0.2");
+             
+             // 3. Pausa per far leggere
+             tl.to({}, { duration: 1.5 });
+             
+             // 4. Reset stile
+             factory.animMatrixRowStyle(tl, p.mLog, pageIdx, { color: [255, 255, 255], scale: 1 }, 0.2);
+             factory.animMatrixRowStyle(tl, p.mTab, pageIdx, { color: [255, 255, 255], scale: 1 }, 0.2, "<");
+             factory.animMatrixRowStyle(tl, p.mPhys, frameIdx, { color: [255, 255, 255], scale: 1 }, 0.2, "<");
+          };
+
+          animateTranslation(0, 5); // Pag 0 -> Frm 5 (A)
+          animateTranslation(1, 2); // Pag 1 -> Frm 2 (B)
+          animateTranslation(2, 7); // Pag 2 -> Frm 7 (C)
+          animateTranslation(3, 1); // Pag 3 -> Frm 1 (D)
+        };
+        
+        // Esegue subito
+        p.onAnimStart();
+      },
+      (p, factory) => {
+        factory.drawMatrix(p.mLog);
+        factory.drawMatrix(p.mTab);
+        factory.drawMatrix(p.mPhys);
+
+        // Frecce fisse di sfondo per far capire il flusso tra le tabelle
+        p.push();
+        factory.drawArrow(120 + 60 + 5, 50 + 60, 320 - 45, 50 + 60, 5, [255,255,255], 30);
+        factory.drawArrow(320 + 60 + 5, 50 + 60, 540 - 45, 50 + 120, 5, [255,255,255], 30);
+        p.pop();
+      }
+    );
   </script>
 </body>
 

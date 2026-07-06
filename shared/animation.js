@@ -81,9 +81,24 @@ class KatchMatrix {
     this.cellH = cellH;
     this.alpha = 255;
     
-    // Converte l'array di numeri in oggetti per animarli con GSAP
-    this.data = data.map(row => 
-      row.map(val => ({ val: val, r: 255, g: 255, b: 255, alpha: 255, scale: 1 }))
+    let self = this;
+    
+    // Converte l'array di numeri in oggetti per animarli con GSAP e aggiunge gli ancoraggi spaziali
+    this.data = data.map((row, i) => 
+      row.map((val, j) => {
+        let cell = { val: val, r: 255, g: 255, b: 255, alpha: 255, scale: 1 };
+        
+        // Ancoraggi (calcolati in tempo reale durante l'animazione GSAP per disegnare frecce tra celle)
+        Object.defineProperties(cell, {
+          dx: { get: () => ({ x: self.x + (j + 1) * self.cellW, y: self.y + i * self.cellH + self.cellH / 2 }) },
+          sx: { get: () => ({ x: self.x + j * self.cellW, y: self.y + i * self.cellH + self.cellH / 2 }) },
+          top: { get: () => ({ x: self.x + j * self.cellW + self.cellW / 2, y: self.y + i * self.cellH }) },
+          bottom: { get: () => ({ x: self.x + j * self.cellW + self.cellW / 2, y: self.y + (i + 1) * self.cellH }) },
+          cx: { get: () => ({ x: self.x + j * self.cellW + self.cellW / 2, y: self.y + i * self.cellH + self.cellH / 2 }) }
+        });
+        
+        return cell;
+      })
     );
   }
   
