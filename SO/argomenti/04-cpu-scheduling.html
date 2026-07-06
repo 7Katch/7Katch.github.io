@@ -216,7 +216,7 @@
         usava una variante di questo schema.</p>
     </div>
 
-    <div class="section-block" id="section-rt">
+    <div class="section-block" id="section-8">
       <h2><span class="dot"></span> Real-Time CPU Scheduling</h2>
       <p>I sistemi real-time (es. ABS, robotica, pacemaker) richiedono risposte entro scadenze ferree. L'<span class="keyword">event latency</span> è il tempo tra l'occorrenza di un evento e la sua risposta (composto da interrupt latency + dispatch latency).</p>
       <ul>
@@ -231,7 +231,7 @@
       </ul>
     </div>
 
-    <div class="section-block" id="section-mp">
+    <div class="section-block" id="section-9">
       <h2><span class="dot"></span> Multiprocessor Scheduling</h2>
       <p>Nei moderni sistemi simmetrici (<span class="keyword">SMP - Symmetric Multiprocessing</span>) o multithreaded (es. hyperthreading), bisogna decidere su quale core allocare il processo. Il <span class="keyword">Load Balancing</span> bilancia il carico tramite Push migration (sposta un thread da un core sovraccarico a uno vuoto) o Pull migration (un core vuoto "ruba" un thread).</p>
       <p>Le migrazioni eccessive svuotano i dati pre-caricati nella cache del processore originale. Questo spinge all'uso della <span class="keyword">Processor Affinity</span>:</p>
@@ -242,7 +242,7 @@
       <p>Infine, lo scheduler è <span class="keyword">NUMA-aware</span>: tenta sempre di allocare l'esecuzione di un thread nel core fisico il cui banco di memoria associato contiene effettivamente i dati del thread (accesso veloce locale vs remoto).</p>
     </div>
 
-    <div class="section-block" id="section-8">
+    <div class="section-block" id="section-10">
       <h2><span class="dot"></span> Scheduling in Linux</h2>
       <p>Per molto tempo Linux ha usato il <span class="keyword">CFS (Completely Fair Scheduler)</span>: assegna a ogni processo una quota di tempo bilanciata. Registra per ogni task il <strong>virtual runtime (vruntime)</strong>: tempo CPU pesato in base alla priorità (il nice level). Il CFS seleziona sempre il processo col vruntime più basso prelevandolo da un albero Red-Black.</p>
       <p>Attualmente Linux sta sostituendo il CFS con <span class="keyword">EEVDF (Earliest Eligible Virtual Deadline First)</span> per ottimizzare sia l'equità sia la garanzia dei tempi di latenza per processi real-time soft. Lo scheduler Linux usa nativamente raggruppamenti logici dei core (Scheduling Domains) per fare load balancing tenendo traccia dell'hardware topology e dei limiti NUMA.</p>
@@ -570,7 +570,7 @@
     // =========================================================================
     // 5. MLQ - MULTILEVEL QUEUE
     // =========================================================================
-    let instMLQ = new KatchSimulation('MLQ-example-animation', 850, 340, 
+    let instMLQ = new KatchSimulation('MLQ-example-animation', 850, 420, 
       (p, factory) => {
         p.cpu = { x: 650, y: 220, label: "CPU" };
         p.queue1 = { x: 350, y: 140, label: "Q1 - FOREGROUND (Round Robin)" };
