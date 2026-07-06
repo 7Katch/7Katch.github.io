@@ -68,6 +68,31 @@ class KatchEntity {
   get cx() { return { x: this.x, y: this.y }; }
 }
 
+// Classe Matrice per simulazioni (es. Algoritmo del Banchiere)
+class KatchMatrix {
+  constructor(id, x, y, title, colHeaders, rowHeaders, data, cellW = 40, cellH = 30) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+    this.title = title;
+    this.colHeaders = colHeaders; // es. ['A', 'B', 'C']
+    this.rowHeaders = rowHeaders; // es. ['P0', 'P1', 'P2']
+    this.cellW = cellW;
+    this.cellH = cellH;
+    this.alpha = 255;
+    
+    // Converte l'array di numeri in oggetti per animarli con GSAP
+    this.data = data.map(row => 
+      row.map(val => ({ val: val, r: 255, g: 255, b: 255, alpha: 255, scale: 1 }))
+    );
+  }
+  
+  getCell(row, col) { return this.data[row][col]; }
+  
+  get w() { return this.colHeaders.length * this.cellW; }
+  get h() { return this.rowHeaders.length * this.cellH; }
+}
+
 // Factory per i componenti visivi
 class AnimFactory {
   constructor(p) {
@@ -209,6 +234,65 @@ class AnimFactory {
     return new KatchEntity(id, x, y, w, h, colors);
   }
   
+  /**
+   * Crea una matrice per animazioni di algoritmi.
+   */
+  createMatrix(id, x, y, title, colHeaders, rowHeaders, data, cellW = 40, cellH = 30) {
+    return new KatchMatrix(id, x, y, title, colHeaders, rowHeaders, data, cellW, cellH);
+  }
+
+  drawMatrix(mat) {
+    const p = this.p;
+    if (mat.alpha <= 0) return;
+    p.push();
+    p.translate(mat.x, mat.y);
+    
+    // Titolo
+    p.fill(255, 255, 255, mat.alpha);
+    p.textAlign(p.CENTER, p.BOTTOM);
+    p.textSize(16);
+    p.textFont('JetBrains Mono');
+    p.text(mat.title, (mat.colHeaders.length * mat.cellW) / 2, -25);
+    
+    // Intestazioni Colonne
+    p.fill(KatchColors.teal[0], KatchColors.teal[1], KatchColors.teal[2], mat.alpha);
+    p.textSize(14);
+    p.textAlign(p.CENTER, p.CENTER);
+    for (let j=0; j<mat.colHeaders.length; j++) {
+      p.text(mat.colHeaders[j], j*mat.cellW + mat.cellW/2, -10);
+    }
+    
+    // Intestazioni Righe
+    for (let i=0; i<mat.rowHeaders.length; i++) {
+      p.text(mat.rowHeaders[i], -15, i*mat.cellH + mat.cellH/2);
+    }
+    
+    // Dati e Griglia Leggera
+    p.stroke(255, 255, 255, 30 * (mat.alpha/255));
+    p.strokeWeight(1);
+    for (let i=0; i<=mat.rowHeaders.length; i++) {
+      p.line(0, i*mat.cellH, mat.w, i*mat.cellH);
+    }
+    for (let j=0; j<=mat.colHeaders.length; j++) {
+      p.line(j*mat.cellW, 0, j*mat.cellW, mat.h);
+    }
+    
+    p.noStroke();
+    for (let i=0; i<mat.data.length; i++) {
+      for (let j=0; j<mat.data[i].length; j++) {
+        let cell = mat.data[i][j];
+        p.push();
+        p.fill(cell.r, cell.g, cell.b, cell.alpha * (mat.alpha/255));
+        p.textSize(14 * cell.scale);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.text(Math.round(cell.val), j*mat.cellW + mat.cellW/2, i*mat.cellH + mat.cellH/2);
+        p.pop();
+      }
+    }
+    
+    p.pop();
+  }
+
   drawMagicText(msgObj, color = KatchColors.teal) {
     const p = this.p;
     if (msgObj.alpha > 0) {
@@ -284,8 +368,14 @@ class KatchSimulation {
     this.factory = new AnimFactory(p);
     
     // Expose instance methods for HTML hooks
-    this.animStart = () => { if(this.onAnimStart) this.onAnimStart(p, this.factory); };
-    this.animReset = () => { if(this.onAnimReset) this.onAnimReset(p, this.factory); };
+    this.animStart = () => { 
+      if(this.onAnimStart) this.onAnimStart(p, this.factory); 
+      else if(p.onAnimStart) p.onAnimStart(p, this.factory);
+    };
+    this.animReset = () => { 
+      if(this.onAnimReset) this.onAnimReset(p, this.factory); 
+      else if(p.onAnimReset) p.onAnimReset(p, this.factory);
+    };
     
     p.setup = () => {
       let canvas = p.createCanvas(this.width, this.height);

@@ -129,14 +129,12 @@
       <h2><span class="dot"></span> Prevenzione del Deadlock</h2>
       <p>La <span class="keyword">prevenzione</span> agisce a livello di design del sistema, garantendo che almeno una
         delle quattro condizioni di Coffman non possa mai verificarsi. È l'approccio più conservativo.</p>
-      <p>Eliminare la <span class="keyword">Mutual Exclusion</span> è impossibile per risorse intrinsecamente non
-        condivisibili. Eliminare <span class="keyword">Hold and Wait</span>: richiedere che ogni processo acquisisca
-        tutte le risorse necessarie prima di iniziare, oppure che rilasci tutto ciò che ha prima di richiedere nuove
-        risorse. Eliminare <span class="keyword">No Preemption</span>: il SO può sottrarre risorse a un processo
-        (funziona per risorse il cui stato è facilmente salvabile, come registri CPU). Eliminare <span
-          class="keyword">Circular Wait</span>: imporre un ordinamento globale sulle risorse (ogni risorsa ha un numero
-        unico) e obbligare ogni processo a richiedere le risorse in ordine crescente; questa è la strategia più pratica.
-      </p>
+      <ul class="lesson-list">
+        <li><span class="keyword">Eliminare la Mutual Exclusion</span>: Impossibile per risorse intrinsecamente non condivisibili (es. una stampante non può stampare due documenti a metà).</li>
+        <li><span class="keyword">Eliminare Hold and Wait</span>: Richiedere che ogni processo acquisisca tutte le risorse necessarie prima di iniziare (<em>"Tutto e subito"</em>), oppure che rilasci tutto ciò che ha in mano prima di poter richiedere nuove risorse (<em>"Molla tutto prima di chiedere"</em>). In questo modo un processo non aspetta mai mentre tiene bloccate altre risorse.</li>
+        <li><span class="keyword">Eliminare No Preemption</span>: Il SO può sottrarre con la forza le risorse a un processo. (Questo funziona bene solo per risorse in cui lo stato è salvabile e ripristinabile facilmente, come i registri della CPU, ma non per hardware come i masterizzatori).</li>
+        <li><span class="keyword">Eliminare Circular Wait</span>: Si impone un ordinamento globale sulle risorse. A ogni risorsa viene assegnato un numero unico (es. Stampante = 1, Disco = 2) e si obbliga ogni processo a <strong>richiedere le risorse esclusivamente in ordine crescente</strong>. In questo modo è matematicamente impossibile che si formi un cerchio (un processo con la risorsa 2 non potrà mai mettersi in attesa della risorsa 1, impedendo il loop). Questa è la strategia di prevenzione più pratica.</li>
+      </ul>
       <h2><span class="dot"></span>Teorema sul deadlock <span class="sub-tag">fondamentale</span></h2>
       <p>
         $\text{Se il grafo non contiene cicli }\implies \text{Non ci sono deadlock}$
@@ -171,19 +169,26 @@
         Need_{i,j} = Max_{i,j} - Allocation_{i,j}
         \end{equation}
         \begin{array}{c | ccc | ccc | ccc}
-        \text{Processo} & & \text{Allocation} & & & \text{Max} & & & \text{Need} & \\
+        \text{Processo} & & \text{Max} & & & \text{Allocation} & & & \text{Need} & \\
         & A & B & C & A & B & C & A & B & C \\
         \hline
-        P_0 & 0 & 1 & 0 & 7 & 5 & 3 & 7 & 4 & 3 \\
-        P_1 & 2 & 0 & 0 & 3 & 2 & 2 & 1 & 2 & 2 \\
-        P_2 & 3 & 0 & 2 & 9 & 0 & 2 & 6 & 0 & 0 \\
-        P_3 & 2 & 1 & 1 & 2 & 2 & 2 & 0 & 1 & 1 \\
-        P_4 & 0 & 0 & 2 & 4 & 3 & 3 & 4 & 3 & 1 \\
+        P_0 & 7 & 5 & 3 & 0 & 1 & 0 & 7 & 4 & 3 \\
+        P_1 & 3 & 2 & 2 & 2 & 0 & 0 & 1 & 2 & 2 \\
+        P_2 & 9 & 0 & 2 & 3 & 0 & 2 & 6 & 0 & 0 \\
+        P_3 & 2 & 2 & 2 & 2 & 1 & 1 & 0 & 1 & 1 \\
+        P_4 & 4 & 3 & 3 & 0 & 0 & 2 & 4 & 3 & 1 \\
         \end{array}
-
-        
-
       </div>
+        <div id="banker-safe-anim"></div>
+        <div class="sim-controls">
+                <button class="btn btn-primary" onclick="animStartSafe()">Simula Stato Sicuro</button>
+
+        </div>
+        <div id="banker-unsafe-anim"></div>
+        <div class="sim-controls">
+
+          <button class="btn btn-primary" onclick="animStartUnsafe()">Simula Stato Insicuro</button>
+        </div>
 
       <h2><span class="dot"></span> Avoidance con Grafo (Singola Istanza)</h2>
       <p>L'Algoritmo del Banchiere è ideale per risorse con istanze multiple. Se il sistema ha solo
@@ -272,6 +277,131 @@
   </footer>
 
   <script src="/shared/katchkit.js"></script>
+  <!-- Dipendenze animazione -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="/shared/animation.js"></script>
+
+  <script type="text/javascript">
+    let instBankerSafe, instBankerUnsafe;
+    function animStartSafe() { if(instBankerSafe) instBankerSafe.animStart(); }
+    function animStartUnsafe() { if(instBankerUnsafe) instBankerUnsafe.animStart(); }
+
+    function createBankerSim(containerId, isSafe) {
+      return new KatchSimulation(containerId, 850, 300,
+        /**
+         * @param {any} p
+         * @param {AnimFactory} factory
+         */
+        (p, factory) => {
+          p.resetAnim = () => {
+            p.mMax = factory.createMatrix('Max', 100, 100, 'Max', ['A','B','C'], ['P0','P1','P2','P3','P4'],
+              [[7,5,3], [3,2,2], [9,0,2], [2,2,2], [4,3,3]]);
+            p.mAlloc = factory.createMatrix('Alloc', 280, 100, 'Allocation', ['A','B','C'], ['','','','',''],
+              [[0,1,0], [2,0,0], [3,0,2], [2,1,1], [0,0,2]]);
+            p.mNeed = factory.createMatrix('Need', 460, 100, 'Need', ['A','B','C'], ['','','','',''],
+              [[7,4,3], [1,2,2], [6,0,0], [0,1,1], [4,3,1]]);
+            
+            // Per lo stato unsafe forziamo l'Available a essere troppo basso per chiunque
+            let availInit = isSafe ? [3,3,2] : [0,0,0];
+            p.mAvail = factory.createMatrix('Avail', 660, 100, 'Available', ['A','B','C'], ['Work'], [availInit]);
+              
+            p.scanner = { x: 460 - 10, y: 100, w: 140, h: 30, alpha: 0, r: 251, g: 191, b: 36 }; // amber
+            p.msg = { text: isSafe ? "STATO SAFE" : "STATO UNSAFE (DEADLOCK POSSIBILE)", x: 425, y: 150, alpha: 0, scale: 0.1 };
+          };
+          p.resetAnim();
+
+          p.onAnimStart = () => {
+            p.resetAnim();
+            let tl = gsap.timeline();
+            
+            const scanRow = (rowIndex, pass, allocArr) => {
+              let yPos = 100 + rowIndex * 30;
+              // muovi scanner
+              tl.to(p.scanner, { alpha: 255, y: yPos, duration: 0.5, ease: "power2.inOut" });
+              if (pass) {
+                // diventa verde
+                tl.to(p.scanner, { r: KatchColors.teal[0], g: KatchColors.teal[1], b: KatchColors.teal[2], duration: 0.3 });
+                
+                // Evidenzia i valori in Allocation che stiamo per sommare
+                for(let j=0; j<3; j++) {
+                  let cell = p.mAlloc.getCell(rowIndex, j);
+                  tl.to(cell, { r: KatchColors.teal[0], g: KatchColors.teal[1], b: KatchColors.teal[2], scale: 1.5, duration: 0.3 }, "<");
+                }
+
+                // aggiorna avail
+                for(let j=0; j<3; j++) {
+                  let pos = (j === 0) ? "+=0.2" : "<";
+                  tl.to(p.mAvail.getCell(0, j), { val: "+=" + allocArr[j], roundProps: "val", duration: 0.5 }, pos);
+                }
+                
+                // sbarra riga Need e ripristina Allocation
+                for(let j=0; j<3; j++) {
+                   tl.to(p.mNeed.getCell(rowIndex, j), { alpha: 50, duration: 0.2 }, "<");
+                   tl.to(p.mAlloc.getCell(rowIndex, j), { scale: 1, r: 255, g: 255, b: 255, alpha: 50, duration: 0.2 }, "<");
+                }
+              } else {
+                // diventa rosso e poi torna ambra
+                tl.to(p.scanner, { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: 0.3 })
+                  .to(p.scanner, { r: 251, g: 191, b: 36, duration: 0.3 }, "+=0.2");
+              }
+            };
+
+            tl.set(p.scanner, { alpha: 0 });
+            
+            if (isSafe) {
+              // Passi algoritmici (safe sequence: P1, P3, P4, P0, P2)
+              scanRow(0, false); // P0 fail
+              scanRow(1, true, [2,0,0]); // P1 pass
+              scanRow(2, false); // P2 fail
+              scanRow(3, true, [2,1,1]); // P3 pass
+              scanRow(4, true, [0,0,2]); // P4 pass
+              scanRow(0, true, [0,1,0]); // P0 pass
+              scanRow(2, true, [3,0,2]); // P2 pass
+            } else {
+              // Tutti falliscono in Unsafe
+              scanRow(0, false);
+              scanRow(1, false);
+              scanRow(2, false);
+              scanRow(3, false);
+              scanRow(4, false);
+            }
+            
+            // Fine
+            tl.to(p.scanner, { alpha: 0, duration: 0.3 });
+            let finalColor = isSafe ? KatchColors.teal : KatchColors.red;
+            factory.animMagicText(tl, p.msg, p.msg.text, "+=0.5");
+            tl.to(p.msg, { r: finalColor[0], g: finalColor[1], b: finalColor[2], duration: 0 }, "<"); // Color override is tricky since drawMagicText expects a direct color param, wait we can just pass msg object color property.
+            p.msg.finalColor = finalColor; // We'll use this in draw
+          };
+        },
+        /**
+         * @param {any} p
+         * @param {AnimFactory} factory
+         */
+        (p, factory) => {
+          factory.drawMatrix(p.mMax);
+          factory.drawMatrix(p.mAlloc);
+          factory.drawMatrix(p.mNeed);
+          factory.drawMatrix(p.mAvail);
+          
+          if (p.scanner.alpha > 0) {
+            p.push();
+            p.noFill();
+            p.stroke(p.scanner.r, p.scanner.g, p.scanner.b, p.scanner.alpha);
+            p.strokeWeight(3);
+            p.rect(p.scanner.x, p.scanner.y, p.scanner.w, p.scanner.h, 4);
+            p.pop();
+          }
+          
+          factory.drawMagicText(p.msg, p.msg.finalColor || KatchColors.teal);
+        }
+      );
+    }
+
+    instBankerSafe = createBankerSim('banker-safe-anim', true);
+    instBankerUnsafe = createBankerSim('banker-unsafe-anim', false);
+  </script>
 </body>
 
 </html>
