@@ -84,32 +84,67 @@
 
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Il Concetto di File</h2>
-      <p>Un <strong>File</strong> &egrave; un'astrazione dell'OS che definisce uno spazio di indirizzamento logico contiguo, mappato su settori fisici di un disco. L'estensione spesso identifica il tipo, ma in Unix non &egrave; obbligatoria (si usa un "magic number" interno).
-      I file possiedono un <strong>Identifier</strong> (tag univoco interno), Location, Size, Date, e diritti di <strong>Protection</strong>.</p>
+      <p>Un <strong>File</strong> &egrave; un'astrazione dell'OS che definisce uno spazio di indirizzamento logico contiguo, mappato su settori fisici di un disco. L'estensione spesso identifica il tipo, ma in Unix non &egrave; obbligatoria (si usa un "magic number" interno).</p>
+      
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr; margin-bottom: 1.5rem;">
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:var(--accent-soft);color:var(--accent)">Attributi del File</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><strong>Name:</strong> L'unica info salvata in forma leggibile per l'utente.</div>
+            <div class="compare-row"><strong>Identifier:</strong> Tag numerico univoco che identifica il file nel File System.</div>
+            <div class="compare-row"><strong>Type & Size:</strong> Formato (per OS che li supportano) e dimensioni attuali.</div>
+            <div class="compare-row"><strong>Location:</strong> Puntatore alla locazione fisica su dispositivo.</div>
+            <div class="compare-row"><strong>Protection & Time/Date/User:</strong> Diritti di lettura/scrittura/esecuzione e dati per monitoraggio e sicurezza.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:rgba(255,255,255,.05)">Operazioni Principali</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><strong>Create & Delete:</strong> Creazione e rimozione.</div>
+            <div class="compare-row"><strong>Read & Write:</strong> Eseguite a partire dalla posizione dell'attuale <em>read/write pointer</em>.</div>
+            <div class="compare-row"><strong>Reposition (Seek):</strong> Sposta il puntatore all'interno del file.</div>
+            <div class="compare-row"><strong>Truncate:</strong> Cancella il contenuto resettando la taglia a 0, ma mantiene gli attributi.</div>
+            <div class="compare-row"><strong>Open & Close:</strong> Trasferiscono/Rimuovono le info strutturali da disco a memoria (vedi Open-File Table).</div>
+          </div>
+        </div>
+      </div>
 
       <h3>Record Logici e Fisici</h3>
       <p>L'OS legge/scrive usando unit&agrave; base minime dette <em>Record Logici</em>, ma l'Hardware legge interi <em>Record Fisici</em> (settori). Quasi mai combaciano perfettamente: ad esempio su 512 byte di settore fisico, se un file usa solo 10 byte, i restanti 502 byte del blocco vanno sprecati. Questo causa <strong>Frammentazione Interna</strong>.</p>
       
       <h3>Open-File Table e Lock</h3>
-      <p>La system call <code>open()</code> carica le informazioni del file in memoria per non dover accedere al disco ogni volta che si invoca una read/write. Il kernel mantiene una <em>System-wide Open-File Table</em> e una tabella <em>Per-Process</em> (con il current file pointer, open count e diritti di accesso).</p>
+      <p>Per operare velocemente, il sistema evita le lente letture da disco a ogni istruzione tramite la chiamata <code>open()</code>, che sposta le informazioni essenziali in memoria RAM. L'OS tiene traccia di diversi dati vitali:</p>
+      <ul>
+        <li><span class="keyword">Open-file table:</span> Una tabella globale (<em>System-wide</em>) e una per singolo processo (<em>Per-process</em>).</li>
+        <li><span class="keyword">File pointer:</span> Puntatore all'ultima locazione di read/write (unico per ogni processo).</li>
+        <li><span class="keyword">File-open count:</span> Un contatore che indica quante volte un file &egrave; stato aperto, per permettere all'OS di rimuoverlo in modo sicuro dalla open-file table solo quando l'ultimo processo lo chiude.</li>
+        <li><span class="keyword">Access rights & Disk location:</span> Permessi e coordinate del file mantenuti in RAM per accesso immediato.</li>
+      </ul>
       <p>Se pi&ugrave; processi aprono lo stesso file, si possono richiedere dei <strong>Locks</strong>:</p>
       <ul>
-        <li><strong>Shared Lock:</strong> Molti lettori concorrenti.</li>
-        <li><strong>Exclusive Lock:</strong> Un solo scrittore per volta.</li>
-        <li><em>Mandatory:</em> l'OS impedisce fisicamente ad altri di accedere. <em>Advisory (Unix):</em> l'OS dice ai processi che il file &egrave; lockato, ma sta a loro decidere di fermarsi o meno.</li>
+        <li><span class="keyword">Shared Lock:</span> Molti lettori concorrenti.</li>
+        <li><span class="keyword">Exclusive Lock:</span> Un solo scrittore per volta.</li>
+        <li><span class="keyword"><em>Mandatory:</em></span> l'OS impedisce fisicamente ad altri di accedere. <span class="keyword"><em>Advisory (Unix):</em></span> l'OS dice ai processi che il file &egrave; lockato, ma sta a loro decidere di fermarsi o meno.</li>
       </ul>
     </div>
 
     <div class="section-block" id="section-2">
-      <h2><span class="dot"></span> Accesso e Directory</h2>
-      <p>L'accesso ai dati pu&ograve; essere: <strong>Sequenziale</strong> (letto dall'inizio alla fine, tipico dei nastri) o <strong>Diretto (Random)</strong> (si salta a un record specifico tramite un indice). I file sono organizzati in <strong>Directory</strong>.</p>
-      
-      <h3>Struttura delle Directory</h3>
-      <p>Per nominare ed esplorare le directory in modo intelligente (senza conflitti di nome tra utenti) si usa un albero logico:</p>
+      <h2><span class="dot"></span> Metodi di Accesso</h2>
+      <p>A seconda dell'hardware e del caso d'uso, i file possono essere letti in modi diversi:</p>
       <ul>
-        <li><strong>Tree-structured:</strong> Permette path <em>Assoluti</em> (da `/`) e <em>Relativi</em> (da `.`).</li>
-        <li><strong>Acyclic-Graph:</strong> La struttura ad albero classica in realt&agrave; in Linux pu&ograve; avere sotto-alberi condivisi tramite <em>Aliasing</em>, diventando un grafo aciclico.</li>
-        <li><strong>General Graph:</strong> Ammette cicli. Serve un Garbage Collector che periodiciamente cerchi e ripulisca le sezioni disco irraggiungibili.</li>
+        <li><span class="keyword">Sequential Access:</span> Il pi&ugrave; semplice e comune. I dati sono letti progressivamente in ordine (tramite operazioni <em>read next</em> e <em>write next</em>). Nato per i vecchi nastri magnetici.</li>
+        <li><span class="keyword">Direct Access (Random):</span> Un file &egrave; visto come un array a lunghezza fissa di blocchi logici. Si pu&ograve; leggere/scrivere un blocco arbitrario <em>N</em> saltando posizioni intermedie (es. database). Ottimale per dischi magnetici e SSD.</li>
+        <li><span class="keyword">Other Access Methods:</span> Solitamente basati su indici secondari (simili a quelli dei libri) mantenuti in memoria per accelerare enormemente la ricerca su file giganteschi.</li>
+      </ul>
+
+      <h2><span class="dot"></span> Struttura delle Directory</h2>
+      <p>Le directory sono file speciali che contengono informazioni e riferimenti ad altri file. Si sono evolute nel tempo per gestire utenti e organizzazione in modo sempre pi&ugrave; intelligente:</p>
+      <ul>
+        <li><span class="keyword">Single-level Directory:</span> Una singola directory condivisa tra tutti gli utenti. Genera enormi conflitti di <em>Naming</em> (non si possono avere due file con lo stesso nome) e zero capacit&agrave; di raggruppamento logico.</li>
+        <li><span class="keyword">Two-level Directory:</span> Una directory dedicata per ogni utente isola i nomi e la privacy, ma non permette all'utente di raggruppare liberamente i file in sottocartelle logiche.</li>
+        <li><span class="keyword">Tree-structured:</span> La soluzione moderna standard. L'utente pu&ograve; creare infinite sottocartelle (albero gerarchico). Permette l'uso di percorsi (path) <em>Assoluti</em> (partendo dalla root `/`) e <em>Relativi</em> (partendo dalla directory corrente `.`).</li>
+        <li><span class="keyword">Acyclic-Graph:</span> La struttura ad albero classica in Linux viene potenziata, ammettendo sotto-alberi e file condivisi tra pi&ugrave; percorsi tramite <em>Aliasing</em> (diventando un grafo aciclico).</li>
+        <li><span class="keyword">General Graph:</span> Se si ammettono cicli (per errore o volont&agrave;), serve imperativamente un Garbage Collector che periodiciamente cerchi e ripulisca le sezioni disco in loop irraggiungibili.</li>
       </ul>
       
       <div class="mermaid-container" style="background:rgba(0,0,0,0.2); padding:1.5rem; border-radius:8px; margin: 1.5rem 0;">
@@ -129,23 +164,57 @@ flowchart TD
       <h3>Implementazione (Linear vs Hash)</h3>
       <p>Sotto il cofano, le directory sono implementate come: <strong>Liste Lineari</strong> (semplici da programmare ma con tempi lineari lunghissimi di ricerca <code>O(n)</code>) o come <strong>Hash Tables</strong> (ricerca quasi istantanea, ma bisogna gestire le collisioni con un chain overflow).</p>
       
-      <div class="alert alert-tip">
-        <strong>Links in Unix (ln vs ln -s):</strong> <br>
-        <strong>Hard Link:</strong> Crea un vero puntatore parallelo al file fisico (FCB/inode). Se elimini l'originale, il file vive finch&eacute; il contatore di hard links non va a 0.<br>
-        <strong>Symbolic Link:</strong> &Egrave; un "puntatore a un puntatore" (una stringa che contiene il path originale). Se cancelli l'originale, il symlink resta "orfano" (dangling pointer) e si rompe.
+      <div class="card-tip">
+        <div class="header">Nota bene</div>
+        <div class="content">
+          <p>
+            <span class="keyword" >Links in Unix (ln vs ln -s):</span> <br>
+            <span class="keyword">Hard Link:</span> Crea un vero puntatore parallelo al file fisico (FCB/inode). Se elimini l'originale, il file vive finch&eacute; il contatore di hard links non va a 0.<br>
+            <span class="keyword">Symbolic Link:</span> &Egrave; un "puntatore a un puntatore" (una stringa che contiene il path originale). Se cancelli l'originale, il symlink resta "orfano" (dangling pointer) e si rompe.
+          </p>
+        </div>
       </div>
     </div>
 
     <div class="section-block" id="section-3">
-      <h2><span class="dot"></span> Strati del File System</h2>
-      <p>Per garantire modularit&agrave;, il sistema operativo divide il modulo File System in strati (Layers):</p>
+      <h2><span class="dot"></span> Strati del File System <span class="sub-tag" style="color:var(--success)">importante</span></h2>
+      <p>Per garantire modularit&agrave;, il sistema operativo divide il modulo File System in strati logici discendenti:</p>
+      <div class="card-def">
+        <div class="header">File system</div>
+        <div class="content">
+            <p>Interfaccia tra l'OS e la memoria secondaria. Tiene traccia di dove sono fisicamente i file, gestisce permessi, e coordina le operazioni di lettura/scrittura.</p>
+        </div>
+      </div>
       <ol>
-        <li><strong>Application Program</strong></li>
-        <li><strong>Logical File System:</strong> Gestisce i metadati e la struttura a directory. Traduce i nomi in file ID / Inode Number (File Control Blocks - FCB). Non tocca i dati veri.</li>
-        <li><strong>File-organization Module:</strong> Converte il blocco logico (chiesto dall'utente) nel blocco fisico (settore del disco). Gestisce l'allocazione dello spazio.</li>
-        <li><strong>Basic File System:</strong> Interroga il controller HW: "leggi blocco fisico 123", gestendo RAM buffers e cache.</li>
-        <li><strong>I/O Control / Device Drivers:</strong> Invia bit e correnti elettriche all'hardware.</li>
+        <li><span class="keyword">Application Program</span>: Programmi che leggono/scrivono file.</li>
+        <li><span class="keyword">Logical File System</span>: Gestisce i metadati, la protezione e la struttura a directory. Traduce i nomi logici in file ID / Inode Number mantenendo i File Control Blocks (FCB).</li>
+        <li><span class="keyword">File-organization Module</span>: Traduce gli indirizzi di blocco logico in blocco fisico sul disco. Gestisce l'allocazione e lo spazio libero.</li>
+        <li><span class="keyword">Basic File System</span>: Invia comandi generici all'hardware (es. "leggi blocco 123") e gestisce potentemente memoria buffer e cache.</li>
+        <li><span class="keyword">I/O Control / Device Drivers</span>: "Traduce" l'input logico in istruzioni binarie e interrupt hardware specifici per il controller del device.</li>
       </ol>
+
+      <h3>Strutture Dati del File System</h3>
+      <p>Il File System utilizza massicciamente due categorie di strutture dati, sul disco per la persistenza, e in memoria RAM per le prestazioni:</p>
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr; margin-top: 1rem;">
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:var(--accent-soft);color:var(--accent)"><i class="bi bi-hdd-fill"></i> On-disk structures</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><p><span class="keyword">Boot control block:</span> Dati necessari per avviare un OS dal volume (chiamato <em>boot block</em> in UFS, <em>partition boot sector</em> in NTFS).</p></div>
+            <div class="compare-row"><p><span class="keyword">Volume control block:</span> Info strutturali sul volume (numero totale di blocchi, blocco size, puntatori ai blocchi liberi). Noto come <em>Superblock</em> (UFS) o <em>Master File Table</em> (NTFS).</p></div>
+            <div class="compare-row"><p><span class="keyword">Directory structure:</span> Organizza i file nel volume.</p></div>
+            <div class="compare-row"><p><span class="keyword">Per-file FCB:</span> Il File Control Block (es. Inode) descrive ogni specifico file.</p></div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:rgba(255,255,255,.05)"><i class="bi bi-memory"></i> In-memory structures</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><p><span class="keyword">Mount table:</span> Tabella di tutti i file system montati, punti di mount e tipi.</p></div>
+            <div class="compare-row"><p><span class="keyword">System-wide open-file table:</span> Copia globale degli FCB (inode) dei file correntemente aperti in tutto il sistema.</p></div>
+            <div class="compare-row"><p><span class="keyword">Per-process open-file table:</span> Tabella privata di un processo con puntatori e permessi collegati alla System-wide table.</p></div>
+            <div class="compare-row"><p><span class="keyword">Directory cache & Buffers:</span> Cache di directory e blocchi dati per evitare accessi costosi al disco.</p></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="section-block" id="section-4">
@@ -164,9 +233,14 @@ flowchart TD
         <div class="compare-col">
           <div class="compare-col-head" style="background:rgba(255,255,255,.05)">2. Linked</div>
           <div class="compare-col-body">
-            <div class="compare-row">I blocchi sono sparsi a caso ovunque. Ogni blocco contiene un puntatore (link) al blocco successivo.</div>
-            <div class="compare-row">Nessuna frammentazione esterna. Si spreca lo spazio del puntatore (Framm. Interna).</div>
-            <div class="compare-row"><strong>Pessimo per accesso diretto:</strong> per leggere l'n-esimo blocco, devi scorrere dall'inizio! Un'evoluzione &egrave; la FAT (File Allocation Table), che tiene i link in una tabella RAM velocissima.</div>
+            <div class="compare-row">I blocchi sono sparsi a caso ovunque. Ogni blocco contiene un puntatore (link) al blocco successivo. Nessuna frammentazione esterna, ma rischio alto di corrompere l'intero file se si perde un blocco.</div>
+            <div class="compare-row"><strong>Pessimo per accesso diretto:</strong> per leggere l'n-esimo blocco, devi scorrere dall'inizio, impiegando tantissimi I/O e <em>disk seek</em>.</div>
+            <div class="compare-row">
+              <div class="alert alert-note" style="margin: 0;">
+                <strong>FAT (File-Allocation Table):</strong> <br>
+                Usata storicamente in MS-DOS. Invece di avere i link sparsi nei blocchi, gli indici sono in una tabella salvata a inizio volume (cacheabile in RAM). Risolve in parte l'accesso random: l'OS cerca la lista dei blocchi in RAM senza muovere le testine del disco!
+              </div>
+            </div>
           </div>
         </div>
         <div class="compare-col">

@@ -84,24 +84,56 @@
         <li>Algoritmi di Disk Scheduling (SSTF, SCAN)</li>
         <li>Non-Volatile Memory (NVM / SSD)</li>
         <li>Storage Device Management</li>
+        <li>Error Detection and Correction</li>
         <li>RAID Levels e Affidabilit&agrave; Matematica</li>
       </ul>
     </div>
 
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> HDD e Performance</h2>
-      <p>I tradizionali <strong>Hard Disk Drives (HDD)</strong> usano testine mobili (head) per leggere piatti magnetici rotanti suddivisi in tracce e settori. Il tempo impiegato per effettuare un'operazione su disco dipende da leggi fisiche ben precise.</p>
+      <p>I tradizionali <strong>Hard Disk Drives (HDD)</strong> usano testine mobili (head) per leggere piatti magnetici rotanti suddivisi in tracce circolari e settori. Il tempo impiegato per effettuare un'operazione su disco dipende da leggi fisiche ben precise.</p>
       
       <div class="shell-box">
-        Access Time = Seek Time + Rotational Latency
+        $$\text{Access Time} = \text{Seek Time} + \text{Rotational Latency}$$
       </div>
       
       <ul>
-        <li><strong>Seek Time:</strong> Il tempo necessario per muovere il braccio meccanico sulla traccia (cilindro) desiderata (solitamente qualche ms).</li>
-        <li><strong>Rotational Latency:</strong> Il tempo medio atteso affinch&eacute; il settore esatto passi sotto la testina, dipendente dai giri al minuto (RPM). Formula media: <code>(30 / RPM) secondi</code>.</li>
-        <li><strong>Transfer Time:</strong> Quantit&agrave; dati / Transfer Rate.</li>
+        <li><span class="keyword">Seek Time:</span> Il tempo necessario per muovere il braccio meccanico sulla traccia (cilindro) desiderata verso l'interno o esterno (solitamente qualche <span class="keyword">ms</span>).</li>
+        <li><span class="keyword">Rotational Latency:</span> Il tempo medio atteso affinch&eacute; il settore esatto passi sotto la testina, dipendente dai giri al minuto (RPM). Formula media: <code>(30 / RPM) secondi</code>.</li>
       </ul>
       <p>L'<strong>I/O Time Totale</strong> per un trasferimento si calcola come: <code>Access Time + Transfer Time + Controller Overhead</code>.</p>
+      <div class="shell-box">
+        $$\text{I/O Time} = \text{Access Time} + \text{Transfer Time} + \text{Controller Overhead}$$
+        $$\text{Transfer Time} = \frac{\text{Quantita' da trasferire}}{\text{Transfer Rate}}$$
+      </div>
+
+      <div class="card-tip">
+        <div class="header">Esempio di Calcolo di I/O Time</div>
+        <div class="content">
+          $$
+          \begin{aligned}
+          &\text{Trasferire 4KB di data block con 7200 RPM disk} \\
+          &\text{e 5ms average seek time, 1Gb/sec transfer rate,} \\
+          &\text{and 0.1ms controller overhead}
+          \end{aligned}
+          $$
+          $$
+          \begin{equation}
+          \text{Access Time} = 5ms + \frac{30}{7200} \text{sec} = 5 \text{ms} + 4.167 \text{ms} = 9.17 \text{ms}
+          \end{equation}
+          $$
+          $$
+          \begin{equation}
+          \text{Transfer Time} = \frac{4 \text{KB}}{1 \text{Gb/sec}} = \frac{4\text{KB}}{0.125 \text{GB}} = 32 \cdot 2^{10-30} = 0.03051 \text{ms}
+          \end{equation}
+          $$
+          $$
+          \begin{equation}
+          \text{I/O Time} = 9.17 \text{ms} + 0.03051 \text{ms} + 0.1 \text{ms} = 9.3 \text{ms}
+          \end{equation}
+          $$
+        </div>
+      </div>
 
       <h3>Address Mapping (LBA)</h3>
       <p>Per il Sistema Operativo, il disco non è una serie di piatti e testine, ma è astratto come un grandissimo array 1D logico. Questo standard si chiama <strong>LBA (Logical Block Address)</strong>. Il controller del disco si occupa poi di tradurre l'indice LBA (es. blocco n° 1420) nella coordinata fisica reale (<em>Cilindro/Traccia/Settore</em> per gli HDD, oppure <em>Chip/Block/Page</em> per gli SSD).</p>
@@ -146,11 +178,11 @@
       <p>I dischi a stato solido, basati su memoria NAND Flash, non hanno parti mobili (niente seek time o rotational latency, ottimi per Random I/O). Tuttavia, presentano enormi peculiarit&agrave; architetturali:</p>
       
       <ul>
-        <li><strong>Pagina vs Blocco:</strong> La lettura/scrittura avviene in "Pages" (es. 4KB), ma la <em>cancellazione</em> pu&ograve; avvenire solo su interi "Blocks" (gruppi di pagine). <strong>Importante:</strong> in un SSD una pagina <em>non pu&ograve; essere sovrascritta sul posto</em>, ma deve essere prima svuotata l'intera block.</li>
-        <li><strong>Wear Out:</strong> Una cella NAND resiste solo a un numero limitato di cicli P/E (Program/Erase), circa 100,000.</li>
-        <li><strong>FTL (Flash Translation Layer):</strong> Un controller integrato che gestisce dinamicamente la mappa tra indirizzi logici chiesti dall'OS e celle fisiche usurate.</li>
-        <li><strong>Garbage Collection, Overprovisioning & Write Amplification:</strong> L'SSD in background sposta i dati validi in blocchi freschi (usando l'Overprovisioning, 20% di spazio extra nascosto all'OS) per pulire i blocchi vecchi. Questo causa la temuta <strong>Write Amplification</strong>: una singola piccola scrittura da parte dell'OS pu&ograve; innescare enormi quantità di I/O interni di background, degradando le performance. L'algoritmo di <em>Wear Leveling</em> distribuisce le scritture uniformemente su tutto il disco per non fondere una singola cella.</li>
-        <li><strong>NVM Scheduling:</strong> Non avendo testine fisiche mobili, gli algoritmi complessi come lo SCAN sono inutili. Su Linux gli SSD usano spessissimo il "NOOP" (un semplice FCFS/FIFO) limitandosi unicamente a fondere insieme (merge) le richieste per blocchi LBA adiacenti.</li>
+        <li><span class="keyword">Pagina vs Blocco:</span> La lettura/scrittura avviene in "Pages" (es. 4KB), ma la <em>cancellazione</em> pu&ograve; avvenire solo su interi "Blocks" (gruppi di pagine). <strong>Importante:</strong> in un SSD una pagina <em>non pu&ograve; essere sovrascritta sul posto</em>, ma deve essere prima svuotata l'intera block.</li>
+        <li><span class="keyword">Wear Out:</span> Una cella NAND resiste solo a un numero limitato di cicli P/E (Program/Erase), circa 100,000.</li>
+        <li><span class="keyword">FTL (Flash Translation Layer):</span> Un controller integrato che gestisce dinamicamente la mappa tra indirizzi logici chiesti dall'OS e celle fisiche usurate.</li>
+        <li><span class="keyword">Garbage Collection, Overprovisioning & Write Amplification:</span> L'SSD in background sposta i dati validi in blocchi freschi (usando l'Overprovisioning, 20% di spazio extra nascosto all'OS) per pulire i blocchi vecchi. Questo causa la temuta <strong>Write Amplification</strong>: una singola piccola scrittura da parte dell'OS pu&ograve; innescare enormi quantità di I/O interni di background, degradando le performance. L'algoritmo di <em>Wear Leveling</em> distribuisce le scritture uniformemente su tutto il disco per non fondere una singola cella.</li>
+        <li><span class="keyword">NVM Scheduling:</span> Non avendo testine fisiche mobili, gli algoritmi complessi come lo SCAN sono inutili. Su Linux gli SSD usano spessissimo il "NOOP" (un semplice FCFS/FIFO) limitandosi unicamente a fondere insieme (merge) le richieste per blocchi LBA adiacenti.</li>
       </ul>
     </div>
 
@@ -158,16 +190,77 @@
       <h2><span class="dot"></span> Storage Device Management</h2>
       <p>Un disco fisico grezzo attraversa pi&ugrave; fasi prima di ospitare dei file:</p>
       <ol>
-        <li><strong>Low-level formatting (Physical):</strong> Divide il disco magnetico in settori iniettando Header, spazio Dati, e <strong>ECC (Error Correction Code)</strong>. L'hardware &egrave; progettato per rilevare danni: la <em>Parity</em> pu&ograve; solo rilevare errori, mentre i codici ECC possono <em>rilevarli e correggerli</em> (<strong>Soft Errors</strong>). Se il danno fisico &egrave; irreparabile, si parla di <strong>Hard Error</strong>, ed &egrave; letale per il dato.</li>
-        <li><strong>Partitioning:</strong> Il disco viene affettato in uno o pi&ugrave; gruppi (partizioni). Una di queste &egrave; la <em>Root Partition</em>, che contiene il nucleo del SO.</li>
-        <li><strong>Logical formatting:</strong> Viene impresso il "File System" (es. NTFS, ext4) scrivendone le strutture dati essenziali (inode tables, root directory).</li>
+        <li><span class="keyword">Low-level formatting (Physical):</span> Divide il disco magnetico in settori iniettando Header, spazio Dati, e <strong>ECC (Error Correction Code)</strong>. L'hardware &egrave; progettato per rilevare danni: la <em>Parity</em> pu&ograve; solo rilevare errori, mentre i codici ECC possono <em>rilevarli e correggerli</em> (<strong>Soft Errors</strong>). Se il danno fisico &egrave; irreparabile, si parla di <strong>Hard Error</strong>, ed &egrave; letale per il dato.</li>
+        <li><span class="keyword">Partitioning:</span> Il disco viene affettato in uno o pi&ugrave; gruppi (partizioni). Una di queste &egrave; la <em>Root Partition</em>, che contiene il nucleo del SO.</li>
+        <li><span class="keyword">Logical formatting:</span> Viene impresso il "File System" (es. NTFS, ext4) scrivendone le strutture dati essenziali (inode tables, root directory).</li>
       </ol>
       
-      <h3>Boot e Swap</h3>
-      <p>La primissima parte di un disco di avvio &egrave; il <em>Boot Block</em>, che carica un minuscolo Bootstrap Loader capace a sua volta di caricare l'OS intero. <br>L'OS pu&ograve; riservare una partizione cruda o un enorme file dedicato esclusivamente alla <strong>Swap Space</strong> (memoria virtuale), mappato internamente con slot di pagine (Page Slots) e Swap Maps per ottimizzare l'I/O disperato del kernel durante le crisi di RAM.</p>
+      <h3>Boot Block</h3>
+      <p>La primissima parte di un disco di avvio &egrave; il <em>Boot Block</em>, che carica un minuscolo Bootstrap Loader capace a sua volta di caricare l'OS intero.</p>
+      
+      <h3>Swap-space Management</h3>
+      <p>Lo Swap Space &egrave; usato per spostare interi processi (<strong>swapping</strong>) o singole pagine (<strong>paging</strong>) dalla memoria RAM allo storage secondario quando la RAM fisica si riempie.</p>
+      
+      <ul>
+        <li>Poiché lo storage secondario è immensamente più lento della RAM, è vitale ottimizzarne le performance.</li>
+        <li>I sistemi permettono l'uso di <strong>swap spaces multipli</strong>: suddividendo lo swap su più dischi si riduce il carico di I/O (I/O load) su ciascun device.</li>
+        <li>Può essere implementato come una <strong>raw partition</strong> (veloce ma rigida) o come un normale <strong>file</strong> all'interno di un file system (più flessibile).</li>
+      </ul>
+      
+      <div class="card-tip">
+        <div class="header">Strutture Dati Swap (Esempio Linux)</div>
+        <div class="content">
+          <p>Il Kernel Linux mappa internamente lo swap dividendo l'area in <strong>page slots</strong> (slot grandi quanto una singola page). Per tracciarli, usa un array chiamato <strong>swap map</strong>:</p>
+          <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+            <li><code>0</code> = lo slot è <strong>libero</strong>.</li>
+            <li><code>n > 0</code> = la pagina in questo slot è condivisa in memoria da <strong>n processi</strong>.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> Error Detection and Correction</h2>
+      <p>L'identificazione e la gestione degli errori è un aspetto vitale di molti sistemi informatici, specialmente nello storage di massa dove i dati devono persistere a lungo nel tempo.</p>
+      
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr">
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:var(--accent-soft);color:var(--accent)">1. Error Detection (Rilevamento)</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><span>Determina <em>se</em> si è verificato un problema (es. un <em>bit flip</em> accidentale, dove uno 0 diventa 1 per instabilità magnetica).</span></div>
+            <div class="compare-row"><span>Se un errore viene rilevato, l'operazione in corso viene immediatamente bloccata (halted) per prevenire disastri a catena.</span></div>
+            <div class="compare-row">
+              <div style="margin-top:-2px">
+                <span class="keyword">Parity Bit:</span> Il metodo più semplice. Aggiunge un bit a ogni byte in modo che la somma dei bit 1 sia sempre pari (o sempre dispari).
+              </div>
+            </div>
+            <div class="compare-row">
+              <div style="margin-top:-2px">
+                <span class="keyword">Checksum:</span> Una forma di parità evoluta che usa l'aritmetica modulare per generare un'impronta (valore compatto) per interi blocchi di dati.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head" style="background:rgba(255,255,255,.05)">2. Error-Correction Code (ECC)</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><span>A differenza del semplice rilevamento (Parity/Checksum), i codici ECC sfruttano algoritmi complessi (come i codici di Hamming o Reed-Solomon) per <strong>ripristinare matematicamente</strong> il bit danneggiato!</span></div>
+            <div class="compare-row">
+              <div style="margin-top:-2px">
+                <span style="color:var(--teal)"><strong>Soft Errors:</strong></span> Errori transitori. I codici ECC li rilevano e li <em>correggono silenziosamente</em> "al volo".
+              </div>
+            </div>
+            <div class="compare-row">
+              <div style="margin-top:-2px">
+                <span style="color:var(--coral)"><strong>Hard Errors:</strong></span> Danni fisici irrecuperabili (es. piatto del disco graffiato). Anche l'ECC deve arrendersi: l'errore viene rilevato, ma <em>non può essere corretto</em>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block" id="section-6">
       <h2><span class="dot"></span> RAID (Redundant Array of Inexpensive Disks)</h2>
       <p>Raggruppare dischi offre immensi vantaggi di <strong>Capacit&agrave;</strong>, <strong>Affidabilit&agrave;</strong> (tramite Ridondanza) e <strong>Velocit&agrave;</strong> (tramite Parallelo/Striping). </p>
 
