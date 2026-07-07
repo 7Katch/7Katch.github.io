@@ -118,6 +118,13 @@ class KatchMatrix {
   get w() { return this.colHeaders.length * this.cellW; }
   get h() { return this.rowHeaders.length * this.cellH; }
   
+  // Ancoraggi della matrice (x,y è in alto a sinistra)
+  get cx() { return { x: this.x + this.w / 2, y: this.y + this.h / 2 }; }
+  get sx() { return { x: this.x, y: this.y + this.h / 2 }; }
+  get dx() { return { x: this.x + this.w, y: this.y + this.h / 2 }; }
+  get top() { return { x: this.x + this.w / 2, y: this.y }; }
+  get bottom() { return { x: this.x + this.w / 2, y: this.y + this.h }; }
+  
   addGroup(startRow, startCol, endRow, endCol, text, color = [255,255,255], position = 'bottom') {
     this.groups.push({ startRow, startCol, endRow, endCol, text, color, position });
   }

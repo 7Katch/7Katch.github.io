@@ -115,33 +115,41 @@
       <p>Se un processo tenta di accedere ad una pagina con bit a <code>i</code> (invalid), l'hardware della Memory
         Management Unit (MMU) genera un'eccezione detta <strong>Page Fault</strong>.</p>
 
-      <div class="algo-steps">
-        <div class="algo-step"><span class="algo-step-n">1</span> Trap al Sistema Operativo per il Page Fault.</div>
-        <div class="algo-step"><span class="algo-step-n">2</span> Il SO controlla se il riferimento era legale. Se non
-          lo era (accesso fuori dal range), abortisce il processo. Altrimenti, la pagina non &egrave; in memoria.</div>
-        <div class="algo-step"><span class="algo-step-n">3</span> Il SO individua un free frame nella RAM.</div>
-        <div class="algo-step"><span class="algo-step-n">4</span> Attiva un'operazione su disco (Swap) per leggere la
-          pagina e caricarla nel nuovo frame. (Nel frattempo, la CPU viene ceduta a un altro processo).</div>
-        <div class="algo-step"><span class="algo-step-n">5</span> Aggiorna la page table, settando il bit a
-          <code>v</code>.</div>
-        <div class="algo-step"><span class="algo-step-n">6</span> Riavvia esattamente l'istruzione che aveva causato il
-          fault.</div>
+      <div class="algo-steps" id="pf-steps">
+        <div class="algo-step" id="pf-s1"><span class="algo-step-n">1</span> Trap al Sistema Operativo per il Page Fault.</div>
+        <div class="algo-step" id="pf-s2"><span class="algo-step-n">2</span> Il SO controlla se il riferimento era legale. Se non lo era (fuori range), abortisce il processo con una <b style="color:var(--coral)">X rossa</b>. Altrimenti procede.</div>
+        <div class="algo-step" id="pf-s3"><span class="algo-step-n">3</span> Il SO individua un free frame nella RAM.</div>
+        <div class="algo-step" id="pf-s4"><span class="algo-step-n">4</span> Attiva un'operazione su disco (Swap) per caricare la pagina nel nuovo frame.</div>
+        <div class="algo-step" id="pf-s5"><span class="algo-step-n">5</span> Aggiorna la page table (bit a <code>v</code>).</div>
+        <div class="algo-step" id="pf-s6"><span class="algo-step-n">6</span> Riavvia l'istruzione.</div>
       </div>
 
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartPF()">Avvia Animazione Page Fault</button>
+      </div>
+      <div id="pf-animation"></div>
+
+
+
       <div class="alert alert-tip">
-        <strong>Pure Demand Paging:</strong> Si pu&ograve; persino avviare un processo con ZERO pagine in RAM. Il primo
-        riferimento provocher&agrave; un fault. Man mano verranno caricate le pagine. L'alternativa &egrave; il
-        <strong>Prepaging</strong>, che carica in anticipo alcune pagine che si ipotizza verranno utilizzate (es. tutto
-        il working-set precedente al risveglio del processo).
+
+        <h3>Pure Demand Paging</h3>
+        <p>Si pu&ograve; persino avviare un processo con ZERO pagine in RAM. Il primo
+          riferimento provocher&agrave; un fault. Man mano verranno caricate le pagine. L'alternativa &egrave; il
+          <strong>Prepaging</strong>, che carica in anticipo alcune pagine che si ipotizza verranno utilizzate (es. tutto
+          il working-set precedente al risveglio del processo).</p>
       </div>
 
       <h3>Effective Access Time (EAT)</h3>
       <p>Dato che leggere dal disco richiede molto tempo, il Demand Paging ha senso solo se il tasso di fault
         (<strong>p</strong>, <em>Page Fault Rate</em>) &egrave; molto basso. L'accesso medio (EAT) &egrave; calcolato
         come:</p>
-      <div class="shell-box">
-        EAT = (1 - p) &times; memory_access_time + p &times; (page_fault_overhead)
-      </div>
+        <div class="card-formula">
+          <div class="header">Effective Access Time (EAT)</div>
+          <div class="content">
+              $$EAT = (1 - p) \cdot \text{memory_access_time} + p \cdot \text{page_fault_overhead}$$
+          </div>
+        </div>
       <p>Ad esempio, se memory_access = 200ns, e page_fault_overhead = 8ms (8,000,000ns), basta un
         <code>p = 0.0000025</code> (cio&egrave; 1 fault su 400.000 accessi) per rallentare l'intero sistema del 10%!</p>
 
@@ -494,5 +502,146 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="/shared/animation.js"></script>
+  <!-- PAGE FAULT ANIMATION SCRIPT -->
+  <script>
+    let instPF = new KatchSimulation('pf-animation', 850, 400,
+      (p, factory) => {
+        p.resetAnim = () => {
+          // Reset evidenziazione testo
+          for(let i=1; i<=6; i++) {
+            let el = document.getElementById('pf-s'+i);
+            if(el) {
+              el.style.color = "";
+              el.style.fontWeight = "";
+            }
+          }
+
+          // Entità
+          p.proc = factory.createEntity("Processo", 100, 180, 120, 60);
+          p.os = factory.createEntity("S.O.", 350, 60, 100, 40, KatchColors.pink);
+          p.disk = factory.createEntity("Disco", 700, 320, 100, 80, KatchColors.slate);
+          
+          // Matrici
+          p.pt = factory.createMatrix("PT", 350, 180, "Page Table", ["F#", "Val"], ["P0", "P1", "P2", "P3"], [
+              ["5", "v"],
+              ["-", "i"],
+              ["-", "i"],
+              ["2", "v"]
+          ], 40, 25);
+          
+          p.ram = factory.createMatrix("RAM", 700, 160, "RAM", ["Page"], ["F0", "F1", "F2", "F3", "F4", "F5"], [
+              ["-"],
+              ["-"],
+              ["P3"],
+              ["-"],
+              ["-"],
+              ["P0"]
+          ], 60, 25);
+          
+          // Frecce "teste" invisibili per le animazioni
+          p.arrProcPT = { x: p.proc.dx.x, y: p.proc.dx.y, alpha: 0 };
+          p.arrTrap = { x: p.pt.cx.x, y: p.pt.top.y, alpha: 0 };
+          p.arrOsDisk = { x: p.os.dx.x, y: p.os.bottom.y, alpha: 0 };
+          p.arrDiskRam = { x: p.disk.top.x, y: p.disk.top.y, alpha: 0 };
+          p.arrOsPt = { x: p.os.bottom.x, y: p.os.bottom.y, alpha: 0 };
+          
+          p.redX = { alpha: 0, scale: 0, x: p.os.sx.x - 30, y: p.os.cx.y };
+        };
+        p.resetAnim();
+      },
+      (p, factory) => {
+        factory.drawProcess(p.proc);
+        factory.drawProcess(p.os);
+        factory.drawProcess(p.disk);
+        factory.drawMatrix(p.pt);
+        factory.drawMatrix(p.ram);
+        
+        // Frecce
+        if(p.arrProcPT.alpha > 0) factory.drawArrowBetween(p.proc.dx, p.arrProcPT, 8, KatchColors.teal, p.arrProcPT.alpha);
+        if(p.arrTrap.alpha > 0) factory.drawArrowBetween(p.pt.top, p.arrTrap, 8, KatchColors.pink, p.arrTrap.alpha);
+        if(p.arrOsDisk.alpha > 0) factory.drawArrowBetween(p.os.dx, p.arrOsDisk, 8, KatchColors.amber, p.arrOsDisk.alpha);
+        if(p.arrDiskRam.alpha > 0) factory.drawArrowBetween(p.disk.top, p.arrDiskRam, 8, KatchColors.amber, p.arrDiskRam.alpha);
+        if(p.arrOsPt.alpha > 0) factory.drawArrowBetween(p.os.bottom, p.arrOsPt, 8, KatchColors.pink, p.arrOsPt.alpha);
+        
+        // Disegno la X Rossa
+        if(p.redX.alpha > 0) {
+          p.push();
+          p.translate(p.redX.x, p.redX.y);
+          p.scale(p.redX.scale);
+          p.stroke(KatchColors.pink[0], KatchColors.pink[1], KatchColors.pink[2], p.redX.alpha);
+          p.strokeWeight(6);
+          p.drawingContext.shadowBlur = 15;
+          p.drawingContext.shadowColor = `rgba(${KatchColors.pink[0]}, ${KatchColors.pink[1]}, ${KatchColors.pink[2]}, ${p.redX.alpha / 255})`;
+          p.line(-15, -15, 15, 15);
+          p.line(15, -15, -15, 15);
+          p.pop();
+        }
+      }
+    );
+
+    instPF.onAnimStart = (p, factory) => {
+      gsap.killTweensOf([p.proc, p.os, p.disk, p.pt, p.ram, p.arrProcPT, p.arrTrap, p.arrOsDisk, p.arrDiskRam, p.arrOsPt, p.redX]);
+      p.resetAnim();
+      let tl = gsap.timeline();
+      
+      const highlightStep = (stepNum) => {
+        for(let i=1; i<=6; i++) {
+          let el = document.getElementById('pf-s'+i);
+          if(el) {
+            gsap.to(el, { color: i === stepNum ? "var(--accent)" : "var(--text)", fontWeight: i === stepNum ? "bold" : "normal", duration: 0.3 });
+          }
+        }
+      };
+
+      // Il processo chiede P1 (che è a 'i' - invalid)
+      let p1_y = p.pt.y - p.pt.h/2 + 30 + 1 * 25 + 12; // Riga P1
+      tl.add(() => highlightStep(1));
+      factory.animArrowExtend(tl, p.arrProcPT, {x: p.pt.sx.x, y: p1_y}, "+=0.5");
+      
+      // Step 1: Trap al SO
+      tl.to(p.pt.data[1], { r: KatchColors.pink[0], g: KatchColors.pink[1], b: KatchColors.pink[2], duration: 0.3 }); // Evidenzia riga rossa
+      factory.animArrowExtend(tl, p.arrTrap, p.os.bottom, "+=0.2");
+      
+      // Step 2: SO Controlla
+      tl.add(() => highlightStep(2), "+=0.5");
+      tl.to(p.os, { r: KatchColors.pink[0], g: KatchColors.pink[1], b: KatchColors.pink[2], duration: 0.3 });
+      // Appare la X rossa
+      tl.set(p.redX, { alpha: 255, scale: 0 })
+        .to(p.redX, { scale: 1.5, duration: 0.5, ease: "back.out(1.7)" })
+        .to(p.redX, { scale: 1, duration: 0.2 })
+        .to(p.redX, { alpha: 0, duration: 0.5 }, "+=1.0"); // Svanisce e procede
+        
+      // Step 3: Trova Free Frame (es. F1)
+      tl.add(() => highlightStep(3), "+=0.5");
+      tl.to(p.ram.data[1], { r: KatchColors.teal[0], g: KatchColors.teal[1], b: KatchColors.teal[2], duration: 0.5 });
+      
+      // Step 4: Swap da Disco a RAM
+      tl.add(() => highlightStep(4), "+=0.5");
+      factory.animArrowExtend(tl, p.arrOsDisk, p.disk.top, "+=0.2"); // Comando al disco
+      factory.animArrowRetract(tl, p.arrOsDisk, p.os.dx, "+=0.2"); // Nasconde freccia
+      factory.animArrowExtend(tl, p.arrDiskRam, p.ram.bottom, "+=0.2"); // Legge su RAM
+      tl.set(p.ram.data[1], { text0: "P1" }) // Carica P1 in F1
+        .to(p.ram.data[1], { r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.5 });
+      factory.animArrowRetract(tl, p.arrDiskRam, p.disk.top, "+=0.2");
+        
+      // Step 5: Aggiorna Page Table
+      tl.add(() => highlightStep(5), "+=0.5");
+      factory.animArrowExtend(tl, p.arrOsPt, p.pt.top, "+=0.2");
+      tl.set(p.pt.data[1], { text0: "1", text1: "v" }) // Aggiorna riga P1 (Frame 1, valid)
+        .to(p.pt.data[1], { r: KatchColors.teal[0], g: KatchColors.teal[1], b: KatchColors.teal[2], duration: 0.5 });
+      factory.animArrowRetract(tl, p.arrOsPt, p.os.bottom, "+=0.2");
+      
+      // Step 6: Riavvia istruzione
+      tl.add(() => highlightStep(6), "+=0.5");
+      factory.animArrowRetract(tl, p.arrTrap, p.pt.top, "+=0.2");
+      factory.animArrowRetract(tl, p.arrProcPT, p.proc.dx, "+=0.2");
+      
+      // Nuovo tentativo che va a buon fine
+      factory.animArrowExtend(tl, p.arrProcPT, {x: p.pt.sx.x, y: p1_y}, "+=0.5");
+      tl.to(p.pt.data[1], { r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.5 });
+    };
+
+    function animStartPF() { instPF.animStart(); }
+  </script>
 </body>
 </html>
