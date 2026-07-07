@@ -306,9 +306,17 @@
       <p>Se un processo non ha "abbastanza" frame per eseguire il suo flusso, genera in continuazione Page Faults,
         rubando frame, causando faults ad altri, spingendo al massimo l'utilizzo dell'I/O Disco. In questa spirale
         distruttiva, l'OS nota che la CPU non &egrave; usata (tutti aspettano il disco) e <strong>lancia altri processi
-          per aumentare il grado di multiprogrammazione</strong>, peggiorando ulteriormente la situazione! <br>Il
-        sistema collassa: &egrave; il <strong>Thrashing</strong> (si passa pi&ugrave; tempo a swappare pagine che a
-        eseguire istruzioni).</p>
+          per aumentare il grado di multiprogrammazione</strong>, peggiorando ulteriormente la situazione!</p>          
+          <p>Il sistema collassa: &egrave; il <strong>Thrashing</strong> (si passa pi&ugrave; tempo a swappare pagine che a eseguire istruzioni).</p>
+          <div class="card-def">
+            <div class="header">Definizione</div>
+            <div class="content">
+              <p>
+              <span class="keyword">Thrashing</span>: condizione per cui un processo passa piu' tempo a fare swap-in e swap-out anziche' 
+              eseguire istruzioni
+            </p>
+              </div>
+        </div>
 
       <p>Per limitare in modo diretto il thrashing si pu&ograve; usare l'approccio <strong>Page-Fault Frequency
           (PFF)</strong>: si stabilisce un tasso "accettabile" (un limite minimo e massimo) di fault per ogni processo.
@@ -319,11 +327,12 @@
       <p>Il demand paging funziona solo grazie al Principio di Localit&agrave; (il processo usa gruppi specifici di
         pagine contigue per un certo periodo).<br>
         Per evitare il thrashing, il SO usa il <strong>Working-Set Model</strong>. Si definisce una finestra di tempo
-        &Delta; (es. ultimi 10.000 memory references). Il set di pagine referenziate in quella finestra &egrave; il
-        <em>Working Set Size (WSS)</em> del processo <code>i</code>.</p>
+        <span class="keyword">$\Delta$</span> (es. ultimi 10.000 memory references). Il set di pagine referenziate in quella finestra &egrave; il
+        <em>Working Set Size (WSS)</em> del processo <span class="keyword">$P_i$</span></p>
       <div class="shell-box">
-        D = &Sigma; WSS_i <br>
-        (D = Domanda Totale di Pagine)
+        $$D = \sum_{i=1}^{n} {WSS}_i$$
+        <br>
+        <em>D = Domanda Totale di Pagine</em>
       </div>
       <p>Se <code>D &gt; m</code> (numero di frame fisici totali), il sistema &egrave; sovraccarico e andr&agrave; in
         thrashing. Il SO interviene sospendendo preventivamente (Swapping out) uno o pi&ugrave; processi.</p>
@@ -355,7 +364,7 @@
         frammentazione interna, la dimensione della page table e l'I/O overhead) e dal <strong>TLB Reach</strong>,
         ovvero la quantit&agrave; di memoria accessibile rapidamente tramite i record memorizzati nel TLB.</p>
       <div class="shell-box">
-        TLB Reach = (TLB Size) &times; (Page Size)
+        $$TLB Reach = (TLB Size) \cdot (Page Size)$$
       </div>
       <p>Idealmente l'intero working-set di un processo dovrebbe stare nel TLB Reach per minimizzare le letture in Page
         Table. Per aumentarlo senza implementare TLB giganteschi e costosi, i processori moderni supportano <em>Multiple
@@ -373,24 +382,31 @@
         <div class="compare-col">
           <div class="compare-col-head" style="background:var(--accent-soft);color:var(--accent)">1. Buddy System</div>
           <div class="compare-col-body">
-            <div class="compare-row">Divide la memoria fisica contigua in potenze di 2.</div>
-            <div class="compare-row">Se il kernel chiede 21KB, l'allocatore arrotonda alla potenza superiore (32KB).
+            <div class="compare-row"><span>Divide la memoria fisica contigua in potenze di 2.</span></div>
+            <div class="compare-row"><span>Se il kernel chiede 21KB, l'allocatore arrotonda alla potenza superiore (32KB).</span></div>
+            <div class="compare-row"><span>Un pezzo enorme (es. 256KB) viene spaccato a met&agrave; in due "Buddies" da 128KB,
+              poi 64, poi 32, finch&eacute; non si trova la taglia adatta.</span></div>
+            <div class="compare-row">
+              <div style="margin-top:-2px">
+                <span style="color:var(--teal)"><strong>Pro:</strong></span> Facilissimo riunire (coalesce) due buddies adiacenti liberi.<br>
+                <span style="color:var(--coral)"><strong>Contro:</strong></span> Forte <em>Frammentazione Interna</em> (chiedi 33KB, ti danno 64KB!).
+              </div>
             </div>
-            <div class="compare-row">Un pezzo enorme (es. 256KB) viene spaccato a met&agrave; in due "Buddies" da 128KB,
-              poi 64, poi 32, finch&eacute; non si trova la taglia adatta.</div>
-            <div class="compare-row"><strong>Pro:</strong> Facilissimo riunire (coalesce) due buddies adiacenti liberi.
-              <strong>Contro:</strong> Forte <em>Frammentazione Interna</em> (chiedi 33KB, ti danno 64KB!).</div>
           </div>
         </div>
         <div class="compare-col">
           <div class="compare-col-head" style="background:rgba(255,255,255,.05)">2. Slab Allocation</div>
           <div class="compare-col-body">
-            <div class="compare-row">Uno Slab &egrave; una collezione di pagine contigue. La Cache (un pool) gestisce
-              strutture dati di grandezza specifica (es. un array esatto di strutture `task_struct`).</div>
-            <div class="compare-row">I pezzi di memoria allocati corrispondono esattamente alla dimensione della
-              struttura kernel.</div>
-            <div class="compare-row"><strong>Pro:</strong> Nessuna frammentazione interna, le richeste di memoria
-              vengono soddisfatte quasi istantaneamente instanziando gli oggetti pronti.</div>
+            <div class="compare-row"><span>Uno Slab &egrave; una collezione di pagine contigue. La Cache (un pool) gestisce
+              strutture dati di grandezza specifica (es. un array esatto di strutture `task_struct`).</span></div>
+            <div class="compare-row"><span>I pezzi di memoria allocati corrispondono esattamente alla dimensione della
+              struttura kernel.</span></div>
+            <div class="compare-row">
+              <div style="margin-top:-2px">
+                <span style="color:var(--teal)"><strong>Pro:</strong></span> Nessuna frammentazione interna, le richeste di memoria
+                vengono soddisfatte quasi istantaneamente instanziando gli oggetti pronti.
+              </div>
+            </div>
           </div>
         </div>
       </div>
