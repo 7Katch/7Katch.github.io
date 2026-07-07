@@ -45,3 +45,30 @@ I colori delle simulazioni devono rispettare il tema del sito. I valori RGB stan
   1. Inizializza gli elementi con `x: 0, y: 0`.
   2. A fine costruzione, usa `factory.layoutRow([elem1, elem2, elem3], startX, y, gap)` per allinearli orizzontalmente in modo automatico calcolandone l'ingombro reale.
 - **Larghezza Dinamica (Auto-Sizing)**: Se stai creando una `KatchMatrix` in cui le celle devono contenere testo, imposta `cellW = 'auto'` nel costruttore. La classe misurerà automaticamente la larghezza del testo più lungo usando `p.textWidth()` e imposterà la larghezza della cella per farcelo stare perfettamente (aggiungendo il padding), evitando collisioni visive!
+
+## 6. Disegnare Grafici Cartesiani (KatchGraph)
+Se l'utente richiede di tracciare un grafico (es. per illustrare l'Anomalia di Belady o le prestazioni degli algoritmi), utilizza il componente standardizzato **`KatchGraph`** piuttosto che disegnare assi e linee a mano in P5.js.
+
+1. **Creazione (nel resetAnim)**:
+   ```javascript
+   p.mioGrafico = factory.createGraph("id", originX, originY, widthX, heightY, "Etichetta X", "Etichetta Y", 
+       { min: 0, max: 10, step: 1 },  // Ticks X
+       { min: 0, max: 20, step: 2 }   // Ticks Y
+   );
+   ```
+
+2. **Definizione dei Punti**:
+   Aggiungi un array di oggetti in `p.mioGrafico.points`. Il formato atteso per i punti è:
+   `{ xVal: numero, yVal: numero, alpha: 0, r, g, b, lineAlpha: 0, drawX, drawY, isAnomaly }`
+
+   *Importante*: `drawX` e `drawY` vengono interpolati con GSAP per tracciare progressivamente la linea tra un punto e il precedente.
+   Usa il metodo `getCoords(xVal, yVal)` fornito da `KatchGraph` per ottenere le coordinate fisiche (pixel) esatte a cui un punto logico corrisponde sul canvas:
+   ```javascript
+   p.mioGrafico.points.forEach((pt, index) => {
+      let coords = p.mioGrafico.getCoords(pt.xVal, pt.yVal);
+      // Da usare in setup per allineare pt.drawX = coords.x del punto precedente
+   });
+   ```
+
+3. **Disegno (nel blocco draw)**:
+   Richiama semplicemente: `factory.drawGraph(p.mioGrafico);`

@@ -135,8 +135,9 @@
     <div class="index-grid" data-prefix="12">
       <ul>
         <li>Microprocessori vs Microcontrollori</li>
-        <li>Embedded Linux (Buildroot, Yocto)</li>
+        <li>Embedded Linux e µClinux</li>
         <li>RTOS per MCU (TinyOS, RIOT, FreeRTOS, Zephyr)</li>
+        <li>Internet of Things e Architettura OS IoT</li>
       </ul>
     </div>
 
@@ -163,6 +164,19 @@
           </div>
         </div>
       </div>
+
+      <div class="amber-box" style="margin-top:2rem">
+        <strong style="color:var(--amber)"><i class="bi bi-info-circle"></i> Caratteristiche di un Embedded OS</strong><br>
+        <span style="font-size:0.95rem;color:rgba(255,255,255,.8);display:block;margin-top:0.5rem">
+          Gli OS dedicati ai sistemi embedded presentano peculiarità uniche rispetto a quelli desktop:
+          <ul style="margin-top:0.5rem;padding-left:1.2rem">
+            <li><strong>Real-time / Reactive operation:</strong> Il sistema deve reagire in tempi garantiti a stimoli esterni (hard o soft real-time).</li>
+            <li><strong>Uso diretto degli interrupt:</strong> Molto del lavoro computazionale è svolto direttamente nelle ISR per ridurre drasticamente la latenza.</li>
+            <li><strong>Configurabilità:</strong> Il kernel è costruito su misura (stripped-down) includendo solo i moduli strettamente necessari all'applicazione.</li>
+            <li><strong>Streamlined protection:</strong> Spesso mancano i meccanismi complessi di protezione della memoria per risparmiare overhead, poiché tutto gira in un unico spazio di indirizzamento (specialmente nei microcontrollori).</li>
+          </ul>
+        </span>
+      </div>
     </div>
 
     <!-- ══════════════════════════════════════════════════
@@ -171,6 +185,14 @@
     <div class="section-block" id="section-2">
       <h2><span class="dot"></span> Embedded Linux <span class="sub-tag">Buildroot e Yocto</span></h2>
       <p>Portare Linux su sistemi compatti è possibile, ma richiede forti ottimizzazioni. La libreria standard del C (<code class="inline">glibc</code>) usata nei desktop pesa svariati MB, inaccettabili per un sistema con pochi MB di RAM. Nascono così alternative leggerissime come <span class="keyword">uClibc-ng</span> o <span class="keyword">musl libc</span>, che pesano poche decine di KB rinunciando ad alcune funzionalità o ottimizzando il codice al massimo.</p>
+
+      <h3>µClinux e File System per Flash</h3>
+      <p>Nelle MCU prive di Memory Management Unit (MMU) si ricorre storicamente a varianti come <strong>µClinux</strong>. Le differenze principali rispetto a un Linux classico sono:</p>
+      <ul>
+        <li><strong>Assenza di memoria virtuale:</strong> i processi condividono un singolo spazio di indirizzi fisico.</li>
+        <li><strong>Assenza di <code>fork()</code>:</strong> si usa <code>vfork()</code> perché non si può copiare lo spazio di indirizzi in isolamento.</li>
+      </ul>
+      <p>Anche i file system devono essere adattati ai supporti Flash (limitati cicli di scrittura, necessità di wear-leveling) o progettati per risparmiare spazio. Alcuni esempi sono <strong>jffs2 / ubifs / yaffs2</strong> (per NAND/NOR flash, supportano read/write) e <strong>cramfs / squashfs</strong> (sola lettura, altamente compressi per risparmiare preziosa ROM).</p>
 
       <div class="amber-box" style="margin-top:1.5rem">
         <strong style="color:var(--amber)">Build Systems: Buildroot e Yocto</strong><br>
@@ -279,9 +301,31 @@ flowchart LR
       <ul>
         <li><strong>Small Memory Footprint:</strong> Dimensioni dell'ordine dei Kilobyte (molto meno degli smartphone).</li>
         <li><strong>Energy Efficiency:</strong> Il dispositivo deve vivere per anni con una singola batteria (frequente uso di <em>deep sleep</em>).</li>
-        <li><strong>Network Connectivity:</strong> Stack di rete superleggero.</li>
+        <li><strong>Network Connectivity:</strong> Stack di rete superleggero e supporto a protocolli low-power (BLE, LoRaWAN).</li>
         <li><strong>Hardware Eterogeneo:</strong> Supporto non solo a 32-bit (ARM) ma anche ai diffusissimi chip a 8 e 16-bit.</li>
+        <li><strong>Real-time capabilities:</strong> Risposte immediate a stream di dati sensoriali o eventi di sicurezza.</li>
       </ul>
+
+      <div class="compare-grid" style="grid-template-columns:1fr 1fr; margin-top:2rem;">
+        <div class="compare-col">
+          <div class="compare-col-head indigo">Componenti HW Nodo IoT</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><strong>Microcontroller (MCU):</strong> il cervello computazionale (es. ESP32, STM32).</div>
+            <div class="compare-row"><strong>Sensori / Attuatori:</strong> leggono grandezze fisiche o compiono azioni sull'ambiente.</div>
+            <div class="compare-row"><strong>Transceiver:</strong> modulo radio per trasmettere e ricevere.</div>
+            <div class="compare-row"><strong>RFID:</strong> per identificazione passiva a corto raggio.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-col-head violet">Architettura OS IoT</div>
+          <div class="compare-col-body">
+            <div class="compare-row"><strong>HAL (Hardware Abstraction Layer):</strong> API uniformi per pilotare GPIO, UART, SPI e I2C indipendentemente dall'hardware.</div>
+            <div class="compare-row"><strong>Kernel:</strong> gestisce scheduler, mutual exclusion e timer in modo super minimale.</div>
+            <div class="compare-row"><strong>Network Stack:</strong> supporto protocolli IPv6/IPv4 e low-power.</div>
+            <div class="compare-row"><strong>Drivers & Libs:</strong> configurati al minimo necessario per risparmiare memoria.</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- NAVIGATION -->

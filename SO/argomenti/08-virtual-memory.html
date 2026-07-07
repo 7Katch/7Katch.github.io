@@ -194,6 +194,11 @@
       <p>Si sostituisce la pagina caricata da pi&ugrave; tempo in memoria. Molto semplice da implementare (coda), ma
         soffre dell'<strong>Anomalia di Belady</strong>: per certi pattern di accesso, aumentare il numero di frame
         fisici (aggiungere RAM) causa incredibilmente un AUMENTO dei Page Faults.</p>
+        
+      <div class="sim-controls">
+        <button class="btn btn-primary" onclick="animStartBelady()">Mostra Anomalia di Belady</button>
+      </div>
+      <div id="belady-animation"></div>
 
       <h3>2. Algoritmo Ottimo (OPT/MIN)</h3>
       <p>Sostituisce la pagina che <em>non verr&agrave; usata per il periodo di tempo pi&ugrave; lungo nel futuro</em>.
@@ -272,9 +277,24 @@
       <h2><span class="dot"></span> Allocazione dei Frame e Thrashing</h2>
       <p>Come distribuire i limitati frame fisici tra pi&ugrave; processi? </p>
       <ul>
-        <li><strong>Equal Allocation:</strong> Es. 100 frame per 5 processi = 20 ciascuno.</li>
-        <li><strong>Proportional Allocation:</strong> Basato sulla size o sulla priorit&agrave; (un processo pi&ugrave;
-          pesante ottiene pi&ugrave; memoria).</li>
+        <li><span class="keyword">Equal Allocation:</span> Es. 100 frame per 5 processi = 20 ciascuno.</li>
+        <li><p><span class="keyword">Proportional Allocation:</span class="keyword"> Basato sulla size o sulla priorit&agrave; (un processo pi&ugrave;
+          pesante ottiene pi&ugrave; memoria).</p>
+          <div class="card-tip">
+            <div class="header">ESEMPIO</div>
+            <div class="content">
+              $$
+              \begin{equation}
+              s_i=\text{size del processo } P_i \quad S =\sum s_i \quad a_i = \text{frame allocati a } P_i \quad
+              m=\text{frame totali}
+              \end{equation}
+              \begin{equation}
+              a_i = m \cdot
+              \end{equation}
+              $$
+            </div>
+          </div>
+        </li>
         <li><strong>Global vs Local Replacement:</strong> Sostituzione Globale permette a un processo di rubare frame a
           un altro (throughput maggiore), ma l'esecuzione non &egrave; predicibile. La Sostituzione Locale confina il
           processo alla sua pool, limitando le performance complessive.</li>
@@ -642,6 +662,145 @@
     };
 
     function animStartPF() { instPF.animStart(); }
+  </script>
+  <!-- BELADY'S ANOMALY ANIMATION SCRIPT -->
+  <script>
+    let instBelady = new KatchSimulation('belady-animation', 980, 480,
+      (p, factory) => {
+        p.resetAnim = () => {
+          // --- MATRICI (SINISTRA) ---
+          p.refString = factory.createMatrix("REF", 40, 40, "Reference String", [], [], [
+              ["1", "2", "3", "4", "1", "2", "5", "1", "2", "3", "4", "5"]
+          ], 30, 30);
+          
+          p.mat3 = factory.createMatrix("MAT3", 40, 140, "3 Frames (9 Faults)", [], ["F1", "F2", "F3"], [
+              ["1", "1", "1", "4", "4", "4", "5", "5", "5", "5", "5", "5"],
+              ["", "2", "2", "2", "1", "1", "1", "1", "1", "3", "3", "3"],
+              ["", "", "3", "3", "3", "2", "2", "2", "2", "2", "4", "4"]
+          ], 30, 25);
+          
+          p.mat4 = factory.createMatrix("MAT4", 40, 300, "4 Frames (10 Faults)", [], ["F1", "F2", "F3", "F4"], [
+              ["1", "1", "1", "1", "1", "1", "5", "5", "5", "5", "4", "4"],
+              ["", "2", "2", "2", "2", "2", "2", "1", "1", "1", "1", "5"],
+              ["", "", "3", "3", "3", "3", "3", "3", "2", "2", "2", "2"],
+              ["", "", "", "4", "4", "4", "4", "4", "4", "3", "3", "3"]
+          ], 30, 25);
+
+          // Rendi le celle invisibili all'inizio (le mostriamo durante l'animazione)
+          p.mat3.data.forEach(row => row.forEach(cell => cell.alpha = 0));
+          p.mat4.data.forEach(row => row.forEach(cell => cell.alpha = 0));
+
+          // Evidenzia i Page Fault (colore rosso/corallo) e falli partire da alpha 0
+          const pfCols3 = [0, 1, 2, 3, 4, 5, 6, 9, 10]; // Indici colonne con Page Fault per 3 frames
+          pfCols3.forEach(col => {
+            // Cerca la cella che ha cambiato valore rispetto allo step precedente
+            for(let r=0; r<3; r++) {
+               let valNow = p.mat3.data[r][col].val;
+               let valPrev = col > 0 ? p.mat3.data[r][col-1].val : "";
+               if(valNow !== "" && valNow !== valPrev) {
+                  p.mat3.data[r][col].r = KatchColors.red[0];
+                  p.mat3.data[r][col].g = KatchColors.red[1];
+                  p.mat3.data[r][col].b = KatchColors.red[2];
+                  break;
+               }
+            }
+          });
+
+          const pfCols4 = [0, 1, 2, 3, 6, 7, 8, 9, 10, 11]; // Indici colonne con Page Fault per 4 frames
+          pfCols4.forEach(col => {
+            for(let r=0; r<4; r++) {
+               let valNow = p.mat4.data[r][col].val;
+               let valPrev = col > 0 ? p.mat4.data[r][col-1].val : "";
+               if(valNow !== "" && valNow !== valPrev) {
+                  p.mat4.data[r][col].r = KatchColors.red[0];
+                  p.mat4.data[r][col].g = KatchColors.red[1];
+                  p.mat4.data[r][col].b = KatchColors.red[2];
+                  break;
+               }
+            }
+          });
+
+
+          // --- GRAFICO (DESTRA) ---
+          p.graph = factory.createGraph("beladyGraph", 520, 380, 450, 260, "Numero di Frames in RAM", "Page\nFaults", 
+            { min: 0, max: 7, step: 1 },
+            { min: 0, max: 16, step: 2 }
+          );
+          
+          p.graph.points = [
+            { xVal: 1, yVal: 12, alpha: 0 },
+            { xVal: 2, yVal: 12, alpha: 0 },
+            { xVal: 3, yVal: 9, alpha: 0 },
+            { xVal: 4, yVal: 10, alpha: 0, r: KatchColors.teal[0], g: KatchColors.teal[1], b: KatchColors.teal[2], isAnomaly: true },
+            { xVal: 5, yVal: 5, alpha: 0 },
+            { xVal: 6, yVal: 5, alpha: 0 },
+            { xVal: 7, yVal: 5, alpha: 0 }
+          ];
+          
+          p.graph.points.forEach((pt, index) => {
+            let coords = p.graph.getCoords(pt.xVal, pt.yVal);
+            if (index > 0) {
+              let prev = p.graph.points[index-1];
+              let coordsPrev = p.graph.getCoords(prev.xVal, prev.yVal);
+              pt.drawX = coordsPrev.x;
+              pt.drawY = coordsPrev.y;
+              pt.lineAlpha = 0;
+            }
+          });
+          
+          let anomalyCoords = p.graph.getCoords(4, 10);
+          p.graph.magicMsg = { text: "Anomalia: 4 Frame = 10 Faults", x: anomalyCoords.x, y: anomalyCoords.y - 30, alpha: 0, scale: 1 };
+        };
+        p.resetAnim();
+      },
+      (p, factory) => {
+        // Disegna Matrici
+        factory.drawMatrix(p.refString);
+        factory.drawMatrix(p.mat3);
+        factory.drawMatrix(p.mat4);
+
+        // Disegna Grafico
+        factory.drawGraph(p.graph);
+      }
+    );
+
+    instBelady.onAnimStart = (p, factory) => {
+      gsap.killTweensOf(p.graph.points);
+      gsap.killTweensOf(p.graph.magicMsg);
+      p.resetAnim();
+      let tl = gsap.timeline();
+      
+      // Step 1: Popola le matrici colonna per colonna in rapida successione
+      for(let col=0; col<12; col++) {
+         let cells3 = p.mat3.data.map(row => row[col]);
+         let cells4 = p.mat4.data.map(row => row[col]);
+         tl.to([...cells3, ...cells4], { alpha: 255, duration: 0.1 }, "+=0.05");
+      }
+
+      tl.to({}, {duration: 0.5}); // Pausa
+
+      // Step 2: Disegna il grafico
+      for(let i=0; i<p.graph.points.length; i++) {
+        let pt = p.graph.points[i];
+        
+        if (i === 0) {
+           tl.to(pt, { alpha: 255, duration: 0.4, ease: "power2.out" });
+        } else {
+           let targetCoords = p.graph.getCoords(pt.xVal, pt.yVal);
+           tl.set(pt, { lineAlpha: 255 })
+             .to(pt, { drawX: targetCoords.x, drawY: targetCoords.y, duration: 0.6, ease: "power2.inOut" });
+           tl.to(pt, { alpha: 255, duration: 0.4, ease: "power2.out" }, "-=0.2");
+        }
+        
+        if (pt.isAnomaly) {
+           tl.to(pt, { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: 0.4 });
+           tl.to(p.graph.points[2], { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: 0.4, isAnomaly: true }, "-=0.4");
+           
+           tl.to(p.graph.magicMsg, { alpha: 255, y: p.graph.magicMsg.y - 15, duration: 0.5, ease: "back.out" });
+        }
+      }
+    };
+    function animStartBelady() { instBelady.animStart(); }
   </script>
 </body>
 </html>

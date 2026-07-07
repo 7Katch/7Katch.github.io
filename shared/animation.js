@@ -130,6 +130,40 @@ class KatchMatrix {
   }
 }
 
+// Classe per grafici cartesiani (es. Anomalia di Belady, prestazioni)
+class KatchGraph {
+  constructor(id, x, y, w, h, xAxisLabel, yAxisLabel, xTicks, yTicks) {
+    this.id = id;
+    this.x = x; // Origine X
+    this.y = y; // Origine Y (cresce verso l'alto graficamente)
+    this.w = w; // Lunghezza asse X
+    this.h = h; // Lunghezza asse Y
+    this.xAxisLabel = xAxisLabel;
+    this.yAxisLabel = yAxisLabel;
+    
+    // Formato atteso: { min: 0, max: 10, step: 1 }
+    this.xTicks = xTicks;
+    this.yTicks = yTicks;
+    
+    this.points = []; // { xVal, yVal, alpha, r, g, b, isAnomaly, lineAlpha, drawX, drawY }
+    this.magicMsg = { text: "", x: this.x, y: this.y, alpha: 0, scale: 1 };
+  }
+
+  // Metodo per convertire le coordinate logiche (dati) in coordinate fisiche sul canvas
+  getCoords(xVal, yVal) {
+    let tickXRange = this.xTicks.max - this.xTicks.min;
+    let tickYRange = this.yTicks.max - this.yTicks.min;
+    
+    let xRatio = (xVal - this.xTicks.min) / tickXRange;
+    let yRatio = (yVal - this.yTicks.min) / tickYRange;
+    
+    return {
+      x: this.x + xRatio * this.w,
+      y: this.y - yRatio * this.h // Y cresce verso l'alto (sottraiamo in p5)
+    };
+  }
+}
+
 // Factory per i componenti visivi
 class AnimFactory {
   constructor(p) {
@@ -272,6 +306,13 @@ class AnimFactory {
   }
   
   /**
+   * Crea un grafico cartesiano.
+   */
+  createGraph(id, x, y, w, h, xAxisLabel, yAxisLabel, xTicks, yTicks) {
+    return new KatchGraph(id, x, y, w, h, xAxisLabel, yAxisLabel, xTicks, yTicks);
+  }
+  
+  /**
    * Crea una matrice per animazioni di algoritmi.
    */
   createMatrix(id, x, y, title, colHeaders, rowHeaders, data, cellW = 40, cellH = 30) {
@@ -298,6 +339,98 @@ class AnimFactory {
       el.x = currentX;
       el.y = y;
       currentX += el.w + gap;
+    }
+  }
+
+  drawGraph(graph) {
+    const p = this.p;
+    let { x, y, w, h, xAxisLabel, yAxisLabel, xTicks, yTicks, points, magicMsg } = graph;
+    
+    // Assi
+    p.stroke(KatchColors.slate[0], KatchColors.slate[1], KatchColors.slate[2], 100);
+    p.strokeWeight(2);
+    p.line(x, y, x + w, y); // Asse X
+    p.line(x, y, x, y - h); // Asse Y
+    
+    p.noStroke();
+    p.fill(KatchColors.slate[0], KatchColors.slate[1], KatchColors.slate[2]);
+    p.textSize(12);
+    p.textAlign(p.CENTER, p.TOP);
+    p.text(xAxisLabel, x + w / 2, y + 25);
+    
+    p.textAlign(p.RIGHT, p.CENTER);
+    p.text(yAxisLabel, x - 15, y - h / 2);
+    
+    // Ticks X
+    p.textAlign(p.CENTER, p.TOP);
+    for(let val = Math.ceil(xTicks.min); val <= xTicks.max; val += xTicks.step) {
+      if(val === xTicks.min) continue; // Salta lo zero o il minimo se si sovrappone
+      let coords = graph.getCoords(val, yTicks.min);
+      p.text(val, coords.x, y + 5);
+      p.stroke(KatchColors.slate[0], KatchColors.slate[1], KatchColors.slate[2], 50);
+      p.line(coords.x, y, coords.x, y - h);
+      p.noStroke();
+    }
+
+    // Ticks Y
+    p.textAlign(p.RIGHT, p.CENTER);
+    for(let val = Math.ceil(yTicks.min); val <= yTicks.max; val += yTicks.step) {
+      if(val === yTicks.min) continue;
+      let coords = graph.getCoords(xTicks.min, val);
+      p.text(val, x - 5, coords.y);
+      p.stroke(KatchColors.slate[0], KatchColors.slate[1], KatchColors.slate[2], 50);
+      p.line(x, coords.y, x + w, coords.y);
+      p.noStroke();
+    }
+    
+    // Linee tra i punti
+    for(let i = 1; i < points.length; i++) {
+      let ptPrev = points[i-1];
+      let pt = points[i];
+      if(pt.lineAlpha > 0) {
+        let coordsPrev = graph.getCoords(ptPrev.xVal, ptPrev.yVal);
+        p.stroke(KatchColors.teal[0], KatchColors.teal[1], KatchColors.teal[2], pt.lineAlpha);
+        if(pt.isAnomaly && pt.r === KatchColors.red[0]) {
+           p.stroke(KatchColors.red[0], KatchColors.red[1], KatchColors.red[2], pt.lineAlpha);
+        }
+        p.strokeWeight(3);
+        p.line(coordsPrev.x, coordsPrev.y, pt.drawX, pt.drawY);
+      }
+    }
+    
+    // Punti
+    p.noStroke();
+    for(let i = 0; i < points.length; i++) {
+      let pt = points[i];
+      if(pt.alpha > 0) {
+        let coords = graph.getCoords(pt.xVal, pt.yVal);
+        let r = pt.r !== undefined ? pt.r : KatchColors.teal[0];
+        let g = pt.g !== undefined ? pt.g : KatchColors.teal[1];
+        let b = pt.b !== undefined ? pt.b : KatchColors.teal[2];
+        
+        p.fill(r, g, b, pt.alpha);
+        p.drawingContext.shadowBlur = 10;
+        p.drawingContext.shadowColor = `rgba(${r}, ${g}, ${b}, ${pt.alpha / 255})`;
+        
+        if(pt.isAnomaly && pt.r === KatchColors.red[0]) {
+           p.noFill();
+           p.stroke(r, g, b, pt.alpha);
+           p.strokeWeight(4);
+           p.circle(coords.x, coords.y, 20);
+           p.noStroke();
+        } else {
+           p.circle(coords.x, coords.y, 10);
+        }
+        p.drawingContext.shadowBlur = 0;
+      }
+    }
+    
+    // Messaggio magicMsg
+    if(magicMsg.alpha > 0) {
+       p.fill(KatchColors.red[0], KatchColors.red[1], KatchColors.red[2], magicMsg.alpha);
+       p.textAlign(p.CENTER, p.BOTTOM);
+       p.textSize(16 * magicMsg.scale);
+       p.text(magicMsg.text, magicMsg.x, magicMsg.y);
     }
   }
 
