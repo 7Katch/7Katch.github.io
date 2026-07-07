@@ -281,6 +281,7 @@
             <p>La <span class="keyword">regola del 50%</span>: analisi statistiche sul <em>First-Fit</em> rivelano che
               per ogni $N$ blocchi allocati, altri $0.5 N$ blocchi andranno persi a causa della frammentazione. Questo
               significa che fino a <strong>1/3 della memoria</strong> può diventare inutilizzabile!</p>
+            <div id="frag-esterna-anim" class="anim-container" style="height: 140px; margin: 1rem auto 0 auto;"></div>
           </div>
         </div>
 
@@ -382,7 +383,9 @@
         </div>
       </div>
       <div id="address-trans-anim" class="anim-container" style="height: 380px; margin: 1.5rem auto;"></div>
-
+      <div class="sim-controls">
+        <button class="btn btn-primary"><i class="bi bi-play-fill"></i>Esegui</button>
+      </div>
       <h2><span class="dot"></span> TLB e Memory Protection <span class="sub-tag">hardware</span></h2>
       <p>Nella paginazione, l'indirizzo logico è diviso in <strong>Page number (p)</strong> (usato come indice nella
         page table) e <strong>Page offset (d)</strong>. Siccome la Page Table risiede in memoria principale (puntata dal
@@ -397,12 +400,7 @@
         si salva la voce nel TLB per il futuro. Le prestazioni sono misurate dall'<span class="keyword">Effective Access
           Time (EAT)</span>: con un hit ratio del 99%, un accesso di 10ns e un miss di 20ns, l'EAT = 0.99 × 10 + 0.01 ×
           20 = 10.1 ns (solo l'1% di rallentamento).</p>
-        <div class="card-formula">
-          <div class="header"><i class="bi bi-lightbulb-fill"></i> Calcolo EAT</div>
-          <div class="content">
-              $$EAT = (1 - \alpha) \cdot Access + \alpha \cdot (Access + Memory Cycle)$$
-          </div>
-        </div>
+        
       <div class="card-tip">
         <div class="header"><i class="bi bi-lightbulb-fill"></i> Astrazione della Memoria</div>
         <div class="content">
@@ -653,34 +651,94 @@
 
     new p5(sketchFrag, 'frag-interna-anim');
 
+    const sketchFragEsterna = (p) => {
+      let factory = new AnimFactory(p);
+
+      p.setup = () => {
+        p.createCanvas(600, 140);
+        p.pixelDensity(2);
+
+        // Matrice 1x3 per visualizzare la regola del 50%
+        // 2 blocchi allocati (N) = 66% e 1 blocco sprecato (0.5N) = 33%
+        p.mem = factory.createMatrix('fragEsterna', 120, 50, 'Regola del 50%', ['', '', ''], [''], [[1, 1, 0]], 120, 50);
+
+        p.mem.data.forEach((row, i) => {
+          row.forEach((cell, j) => {
+            if (j < 2) {
+              cell.val = 'Allocato';
+              cell.r = 52; cell.g = 211; cell.b = 153; // verde
+              cell.alpha = 255;
+            } else {
+              cell.val = 'Perso';
+              cell.r = 248; cell.g = 113; cell.b = 113; // rosso
+              cell.alpha = 150;
+            }
+          });
+        });
+
+        // Aggiungiamo l'evidenziazione che raggruppa le celle
+        p.mem.addGroup(0, 0, 0, 1, 'N Blocchi', [52, 211, 153], 'bottom');
+        p.mem.addGroup(0, 2, 0, 2, '0.5N', [248, 113, 113], 'bottom');
+      };
+
+      p.draw = () => {
+        p.clear();
+        factory.drawMatrix(p.mem);
+      };
+    };
+
+    new p5(sketchFragEsterna, 'frag-esterna-anim');
+
     const addressTransSim = new KatchSimulation('address-trans-anim', 700, 360,
       (p, factory) => {
         p.setupAnim = () => {
-          // X = 100, Y = 50
-          p.mLog = factory.createMatrix('mLog', 120, 50, 'Memoria Logica', ['Dato'], ['Pag. 0','Pag. 1','Pag. 2','Pag. 3'], [['A'],['B'],['C'],['D']], 60, 30);
-          p.mTab = factory.createMatrix('mTab', 320, 50, 'Page Table', ['Frame'], ['Pag. 0','Pag. 1','Pag. 2','Pag. 3'], [[5],[2],[7],[1]], 60, 30);
-          p.mPhys = factory.createMatrix('mPhys', 540, 50, 'Memoria Fisica', ['Dato'], ['Frm 0','Frm 1','Frm 2','Frm 3','Frm 4','Frm 5','Frm 6','Frm 7'], [[''],['D'],['B'],[''],[''],['A'],[''],['C']], 60, 30);
+          // Inizializziamo a (0,0), le posizionerà automaticamente il layout
+          p.mLog = factory.createMatrix('mLog', 0, 0, 'Memoria Logica', ['Dato'], ['Pag. 0','Pag. 1','Pag. 2','Pag. 3'], [['A'],['B'],['C'],['D']], 60, 30);
+          p.mTab = factory.createMatrix('mTab', 0, 0, 'Page Table', ['Frame'], ['Pag. 0','Pag. 1','Pag. 2','Pag. 3'], [[5],[2],[7],[1]], 60, 30);
+          p.mPhys = factory.createMatrix('mPhys', 0, 0, 'Memoria Fisica', ['Dato'], ['Frm 0','Frm 1','Frm 2','Frm 3','Frm 4','Frm 5','Frm 6','Frm 7'], [[''],['D'],['B'],[''],[''],['A'],[''],['C']], 60, 30);
+          
+          // Magia! Flex-row: partiamo da X=100, Y=50, con uno spazio di 140px tra le tabelle
+          factory.layoutRow([p.mLog, p.mTab, p.mPhys], 100, 50, 140);
+          
+          p.arrowLogToTab = { srcX: 0, srcY: 0, x: 0, y: 0, alpha: 0 };
+          p.arrowTabToPhys = { srcX: 0, srcY: 0, x: 0, y: 0, alpha: 0 };
         };
         
         p.onAnimStart = () => {
-          p.setupAnim();
-          let tl = gsap.timeline({ repeat: -1 });
+          p.setupAnim(); // Resetta lo stato visivo
+          if (p.tl) p.tl.kill(); // Interrompe eventuali animazioni in corso
+          
+          p.tl = gsap.timeline();
 
           const animateTranslation = (pageIdx, frameIdx) => {
-             // 1. Evidenzia la pagina logica e l'ingresso nella page table
-             factory.animMatrixRowStyle(tl, p.mLog, pageIdx, { color: [52, 211, 153], scale: 1.1 }, 0.4);
-             factory.animMatrixRowStyle(tl, p.mTab, pageIdx, { color: [52, 211, 153], scale: 1.1 }, 0.4, "<");
+             let cLog = p.mLog.getCell(pageIdx, 0);
+             let cTab = p.mTab.getCell(pageIdx, 0);
+             let cPhys = p.mPhys.getCell(frameIdx, 0);
+
+             // Setta le posizioni iniziali delle frecce
+             p.tl.set(p.arrowLogToTab, { srcX: cLog.dx.x, srcY: cLog.dx.y, x: cLog.dx.x, y: cLog.dx.y, alpha: 0 });
+             p.tl.set(p.arrowTabToPhys, { srcX: cTab.dx.x, srcY: cTab.dx.y, x: cTab.dx.x, y: cTab.dx.y, alpha: 0 });
+
+             // 1. Evidenzia la cella logica
+             factory.animMatrixRowStyle(p.tl, p.mLog, pageIdx, { bgColor: [...KatchColors.teal, 100], scale: 1.1 }, TIMING.NORMAL);
              
-             // 2. Dopo un breve istante, evidenzia il frame fisico di destinazione
-             factory.animMatrixRowStyle(tl, p.mPhys, frameIdx, { color: [52, 211, 153], scale: 1.1 }, 0.4, "+=0.2");
+             // Freccia da Logica a Page Table, e contemporaneamente evidenzia Page Table
+             factory.animArrowExtend(p.tl, p.arrowLogToTab, cTab.sx, "+=0", TIMING.NORMAL);
+             factory.animMatrixRowStyle(p.tl, p.mTab, pageIdx, { bgColor: [...KatchColors.teal, 100], scale: 1.1 }, TIMING.NORMAL, "<");
+             
+             // 2. Freccia da Page Table a Fisica, e contemporaneamente evidenzia Fisica
+             factory.animArrowExtend(p.tl, p.arrowTabToPhys, cPhys.sx, "+=" + TIMING.FAST, TIMING.NORMAL);
+             factory.animMatrixRowStyle(p.tl, p.mPhys, frameIdx, { bgColor: [...KatchColors.teal, 100], scale: 1.1 }, TIMING.NORMAL, "<");
              
              // 3. Pausa per far leggere
-             tl.to({}, { duration: 1.5 });
+             p.tl.to({}, { duration: 1.5 });
              
-             // 4. Reset stile
-             factory.animMatrixRowStyle(tl, p.mLog, pageIdx, { color: [255, 255, 255], scale: 1 }, 0.2);
-             factory.animMatrixRowStyle(tl, p.mTab, pageIdx, { color: [255, 255, 255], scale: 1 }, 0.2, "<");
-             factory.animMatrixRowStyle(tl, p.mPhys, frameIdx, { color: [255, 255, 255], scale: 1 }, 0.2, "<");
+             // 4. Reset stile (Sfondo Trasparente) e ritrai frecce
+             factory.animMatrixRowStyle(p.tl, p.mLog, pageIdx, { bgColor: [...KatchColors.teal, 0], scale: 1 }, TIMING.FAST);
+             factory.animMatrixRowStyle(p.tl, p.mTab, pageIdx, { bgColor: [...KatchColors.teal, 0], scale: 1 }, TIMING.FAST, "<");
+             factory.animMatrixRowStyle(p.tl, p.mPhys, frameIdx, { bgColor: [...KatchColors.teal, 0], scale: 1 }, TIMING.FAST, "<");
+             factory.animArrowRetract(p.tl, p.arrowLogToTab, {x: cLog.dx.x, y: cLog.dx.y}, "<", TIMING.FAST);
+             factory.animArrowRetract(p.tl, p.arrowTabToPhys, {x: cTab.dx.x, y: cTab.dx.y}, "<", TIMING.FAST);
           };
 
           animateTranslation(0, 5); // Pag 0 -> Frm 5 (A)
@@ -689,19 +747,24 @@
           animateTranslation(3, 1); // Pag 3 -> Frm 1 (D)
         };
         
-        // Esegue subito
-        p.onAnimStart();
+        // Collega il pulsante "Esegui" all'animazione
+        let playBtn = document.querySelector('#address-trans-anim').nextElementSibling.querySelector('button');
+        if (playBtn) {
+          playBtn.addEventListener('click', () => { p.onAnimStart(); });
+        }
       },
       (p, factory) => {
         factory.drawMatrix(p.mLog);
         factory.drawMatrix(p.mTab);
         factory.drawMatrix(p.mPhys);
 
-        // Frecce fisse di sfondo per far capire il flusso tra le tabelle
-        p.push();
-        factory.drawArrow(120 + 60 + 5, 50 + 60, 320 - 45, 50 + 60, 5, [255,255,255], 30);
-        factory.drawArrow(320 + 60 + 5, 50 + 60, 540 - 45, 50 + 120, 5, [255,255,255], 30);
-        p.pop();
+        // Frecce dinamiche
+        if (p.arrowLogToTab && p.arrowLogToTab.alpha > 0) {
+           factory.drawArrowBetween({x: p.arrowLogToTab.srcX, y: p.arrowLogToTab.srcY}, p.arrowLogToTab, 5, KatchColors.teal, p.arrowLogToTab.alpha);
+        }
+        if (p.arrowTabToPhys && p.arrowTabToPhys.alpha > 0) {
+           factory.drawArrowBetween({x: p.arrowTabToPhys.srcX, y: p.arrowTabToPhys.srcY}, p.arrowTabToPhys, 5, KatchColors.teal, p.arrowTabToPhys.alpha);
+        }
       }
     );
   </script>

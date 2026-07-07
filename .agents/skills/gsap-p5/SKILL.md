@@ -38,3 +38,10 @@ I colori delle simulazioni devono rispettare il tema del sito. I valori RGB stan
 - RAM / I-O Attivo: `[34, 211, 238]` (Teal)
 - CPU / Running: `[251, 191, 36]` (Amber)
 - Terminato / Errore: `[248, 113, 113]` (Coral)
+
+## 5. Layout e Posizionamento (No Magic Numbers)
+- **DIVIETO ASSOLUTO DI MAGIC NUMBERS**: Non usare valori numerici assoluti "hardcoded" (`x: 120`, `y: 350`) per posizionare entità o matrici affiancate. Questo è fragile e non rispetta le best-practice del frontend.
+- Utilizza sempre il sistema di impaginazione dinamico stile "flexbox" esposto dalla classe `AnimFactory`:
+  1. Inizializza gli elementi con `x: 0, y: 0`.
+  2. A fine costruzione, usa `factory.layoutRow([elem1, elem2, elem3], startX, y, gap)` per allinearli orizzontalmente in modo automatico calcolandone l'ingombro reale.
+- **Larghezza Dinamica (Auto-Sizing)**: Se stai creando una `KatchMatrix` in cui le celle devono contenere testo, imposta `cellW = 'auto'` nel costruttore. La classe misurerà automaticamente la larghezza del testo più lungo usando `p.textWidth()` e imposterà la larghezza della cella per farcelo stare perfettamente (aggiungendo il padding), evitando collisioni visive!

@@ -17,6 +17,12 @@ Questo walkthrough documenta le modifiche apportate alla pagina **07-main-memory
 4. **Animazione Traduzione Indirizzi (Paginazione)**
    Sfruttando la logica di `KatchSimulation` e `AnimFactory`, abbiamo aggiunto un'animazione a loop infinito subito sotto il terminal-card per mostrare la traduzione fisica tra *Memoria Logica*, *Page Table*, e *Memoria Fisica*. Le tre matrici (verticali a 1 sola colonna) si evidenziano dinamicamente in verde (KatchKit Teal) tramite un sequenziatore GSAP, tracciando passo per passo dove risiedono in memoria le Pagine logiche (da P0 a P3).
 
+5. **Animazione P5.js per la Frammentazione Interna ed Esterna**
+   A corredo della spiegazione, sono state create animazioni P5.js per simulare visivamente:
+   - La *Frammentazione Interna* (tramite KatchMatrix 1x4) con calcolo visivo dello spreco.
+   - La *Frammentazione Esterna* (tramite KatchMatrix 1x3) per la regola del 50%.
+   - **Novità Layout System**: È stato implementato un sistema di layout (`factory.layoutRow`) che calcola dinamicamente le coordinate (stile *flex-row*) senza *magic numbers*. Inoltre, le matrici ora supportano l'opzione `cellW = 'auto'` per espandersi in base al testo contenuto, e il colore di sfondo delle celle (`bgColor`) è pienamente animabile con le tinte di `KatchColors`.
+
 ## Aggiornamento del Framework P5.js / AnimFactory
 
 Per consentire l'utilizzo della classe `KatchMatrix` per semplici diagrammi testuali senza arrotondamenti matematici forzati (che avrebbero reso `"2 KB"` come `NaN`), è stato apportato il seguente fix a `/shared/animation.js`:

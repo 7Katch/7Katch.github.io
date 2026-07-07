@@ -24,6 +24,12 @@ const KatchScannerMode = {
   GLOW: 'glow'
 };
 
+const TIMING = {
+  FAST: 0.2,
+  NORMAL: 0.4,
+  SLOW: 0.6
+};
+
 const KatchColors = {
   // Colori base esistenti
   slate: [148, 163, 184],
@@ -80,13 +86,18 @@ class KatchMatrix {
     this.cellW = cellW;
     this.cellH = cellH;
     this.alpha = 255;
+    this.groups = []; // { startRow, startCol, endRow, endCol, text, color, position }
     
     let self = this;
     
     // Converte l'array di numeri in oggetti per animarli con GSAP e aggiunge gli ancoraggi spaziali
     this.data = data.map((row, i) => 
       row.map((val, j) => {
-        let cell = { val: val, r: 255, g: 255, b: 255, alpha: 255, scale: 1 };
+        let cell = { 
+          val: val, 
+          r: 255, g: 255, b: 255, alpha: 255, scale: 1,
+          bgR: 34, bgG: 211, bgB: 238, bgAlpha: 0 // Default bg (Teal) transparent
+        };
         
         // Ancoraggi (calcolati in tempo reale durante l'animazione GSAP per disegnare frecce tra celle)
         Object.defineProperties(cell, {
@@ -106,6 +117,10 @@ class KatchMatrix {
   
   get w() { return this.colHeaders.length * this.cellW; }
   get h() { return this.rowHeaders.length * this.cellH; }
+  
+  addGroup(startRow, startCol, endRow, endCol, text, color = [255,255,255], position = 'bottom') {
+    this.groups.push({ startRow, startCol, endRow, endCol, text, color, position });
+  }
 }
 
 // Factory per i componenti visivi
@@ -253,7 +268,30 @@ class AnimFactory {
    * Crea una matrice per animazioni di algoritmi.
    */
   createMatrix(id, x, y, title, colHeaders, rowHeaders, data, cellW = 40, cellH = 30) {
+    if (cellW === 'auto') {
+      this.p.push();
+      this.p.textSize(14);
+      this.p.textFont('JetBrains Mono');
+      let maxW = 40; // minimum width
+      if (colHeaders) colHeaders.forEach(h => maxW = Math.max(maxW, this.p.textWidth(h)));
+      if (data) data.forEach(row => row.forEach(val => maxW = Math.max(maxW, this.p.textWidth(String(val)))));
+      this.p.pop();
+      cellW = maxW + 30; // 30px padding
+    }
     return new KatchMatrix(id, x, y, title, colHeaders, rowHeaders, data, cellW, cellH);
+  }
+
+  /**
+   * Dispone una lista di matrici o entità in orizzontale (stile flex-row).
+   * Aggiorna automaticamente le coordinate x (e y) di ogni elemento basandosi sulle sue dimensioni (w).
+   */
+  layoutRow(elements, startX, y, gap = 50) {
+    let currentX = startX;
+    for (let el of elements) {
+      el.x = currentX;
+      el.y = y;
+      currentX += el.w + gap;
+    }
   }
 
   drawMatrix(mat) {
@@ -297,13 +335,63 @@ class AnimFactory {
       for (let j=0; j<mat.data[i].length; j++) {
         let cell = mat.data[i][j];
         p.push();
+        
+        // Disegna sfondo cella se presente
+        if (cell.bgAlpha > 0) {
+          p.fill(cell.bgR, cell.bgG, cell.bgB, cell.bgAlpha * (mat.alpha/255));
+          p.rectMode(p.CORNER);
+          p.rect(j*mat.cellW, i*mat.cellH, mat.cellW, mat.cellH);
+        }
+        
+        // Disegna testo
         p.fill(cell.r, cell.g, cell.b, cell.alpha * (mat.alpha/255));
         p.textSize(14 * cell.scale);
         p.textAlign(p.CENTER, p.CENTER);
         let displayVal = (typeof cell.val === 'number') ? Math.round(cell.val) : cell.val;
         p.text(displayVal, j*mat.cellW + mat.cellW/2, i*mat.cellH + mat.cellH/2);
+        
         p.pop();
       }
+    }
+    
+    // Disegna le etichette di raggruppamento (es. N blocchi allocati)
+    for (let g of mat.groups) {
+      p.push();
+      let alpha = mat.alpha;
+      
+      let x1 = g.startCol * mat.cellW;
+      let y1 = g.startRow * mat.cellH;
+      let x2 = (g.endCol + 1) * mat.cellW;
+      let y2 = (g.endRow + 1) * mat.cellH;
+      
+      let cx = (x1 + x2) / 2;
+      
+      p.stroke(g.color[0], g.color[1], g.color[2], alpha * 0.7);
+      p.strokeWeight(1.5);
+      p.noFill();
+      
+      if (g.position === 'bottom') {
+        p.line(x1 + 5, y2 + 5, x2 - 5, y2 + 5);
+        p.line(x1 + 5, y2 + 1, x1 + 5, y2 + 5);
+        p.line(x2 - 5, y2 + 1, x2 - 5, y2 + 5);
+        
+        p.fill(g.color[0], g.color[1], g.color[2], alpha);
+        p.noStroke();
+        p.textAlign(p.CENTER, p.TOP);
+        p.textSize(12);
+        p.text(g.text, cx, y2 + 10);
+      } else if (g.position === 'top') {
+        p.line(x1 + 5, y1 - 5, x2 - 5, y1 - 5);
+        p.line(x1 + 5, y1 - 1, x1 + 5, y1 - 5);
+        p.line(x2 - 5, y1 - 1, x2 - 5, y1 - 5);
+        
+        p.fill(g.color[0], g.color[1], g.color[2], alpha);
+        p.noStroke();
+        p.textAlign(p.CENTER, p.BOTTOM);
+        p.textSize(12);
+        p.text(g.text, cx, y1 - 10);
+      }
+      p.pop();
     }
     
     p.pop();
@@ -312,13 +400,14 @@ class AnimFactory {
   // --- Animazioni GSAP per Matrici e Scanner ---
 
   /**
-   * Cambia stile (colore, scala, opacità) a un'intera riga di una KatchMatrix.
+   * Cambia stile (colore testo, colore sfondo, scala, opacità) a un'intera riga di una KatchMatrix.
    */
-  animMatrixRowStyle(tl, matrix, rowIndex, { color = null, scale = null, alpha = null }, duration = 0.3, position = "<") {
+  animMatrixRowStyle(tl, matrix, rowIndex, { color = null, bgColor = null, scale = null, alpha = null }, duration = 0.3, position = "<") {
     for (let j = 0; j < matrix.colHeaders.length; j++) {
       let cell = matrix.getCell(rowIndex, j);
       let props = { duration: duration };
       if (color) { props.r = color[0]; props.g = color[1]; props.b = color[2]; }
+      if (bgColor) { props.bgR = bgColor[0]; props.bgG = bgColor[1]; props.bgB = bgColor[2]; props.bgAlpha = bgColor[3] !== undefined ? bgColor[3] : 100; }
       if (scale !== null) props.scale = scale;
       if (alpha !== null) props.alpha = alpha;
       tl.to(cell, props, position);
