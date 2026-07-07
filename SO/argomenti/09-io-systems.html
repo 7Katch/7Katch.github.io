@@ -82,12 +82,19 @@
     <div class="section-block" id="section-1">
       <h2><span class="dot"></span> Categorie di Dispositivi I/O</h2>
       <p>L'incredibile variet&agrave; di periferiche hardware obbliga il SO a usare i <strong>Device Drivers</strong> per incapsulare i dettagli tecnici in interfacce uniformi chiamate System Calls. I dispositivi si suddividono principalmente in:</p>
-      
+      <div class="card-def">
+        <div class="header">Definizione</div>
+        <div class="content">
+          <p>
+            <span class="keyword">System Call</span>: interfaccia per la comunicazione tra l'utente e il kernel mediante chiamate come accesso e scrittura ad un file.
+          </p>
+        </div>
+      </div>
       <ul>
-        <li><strong>Block Devices:</strong> Es. Hard Disk. I comandi base sono <code>read</code>, <code>write</code>, <code>seek</code> su blocchi di byte definiti. Usano ampiamente il DMA.</li>
-        <li><strong>Character (Stream) Devices:</strong> Es. Tastiere, Mouse, Porte Seriali. I comandi base sono <code>get()</code>, <code>put()</code>. Leggono/scrivono un carattere alla volta, in un flusso.</li>
-        <li><strong>Network Devices:</strong> Es. Schede di rete. Hanno un'interfaccia a s&eacute; stante (i Socket), che separa il protocollo di rete dall'operazione in s&eacute;.</li>
-        <li><strong>Clocks & Timers:</strong> Forniscono l'orario corrente, timer per interrompere ciclicamente la CPU, corretti spesso dal protocollo di rete NTP (Network Time Protocol).</li>
+        <li><span class="keyword">Block Devices:</span> Es. Hard Disk. I comandi base sono <code>read</code>, <code>write</code>, <code>seek</code> su blocchi di byte definiti. Usano ampiamente il DMA. <br> Accedono al File-system, sono un I/O semplice, o diretto (compromesso)</li>
+        <li><span class="keyword">Character (Stream) Devices:</span> Es. Tastiere, Mouse, Porte Seriali. I comandi base sono <code>get()</code>, <code>put()</code>. Leggono/scrivono un carattere alla volta, in un flusso.</li>
+        <li><span class="keyword">Network Devices:</span> Es. Schede di rete. Hanno un'interfaccia a s&eacute; stante (i Socket), che separa il protocollo di rete dall'operazione in s&eacute;.</li>
+        <li><span class="keyword">Clocks & Timers:</span> Forniscono l'orario corrente, timer per interrompere ciclicamente la CPU, corretti spesso dal protocollo di rete NTP (Network Time Protocol).</li>
       </ul>
       <p>In UNIX/Linux, tutti questi dispositivi sono presentati e astratti all'utente come file speciali dentro la directory <code>/dev</code>.</p>
     </div>
@@ -117,12 +124,12 @@
       
       <h3>Polling (Busy-Wait)</h3>
       <p>Il protocollo pi&ugrave; elementare. L'host (CPU) interroga continuamente il bit di stato (<code>busy bit</code>) del dispositivo in un ciclo chiuso (while loop).</p>
-      <div class="shell-box">
-        1. Host legge il busy_bit continuamente finch&eacute; &egrave; 0. <br>
-        2. L'host imposta il comando (read/write) nel command_register. <br>
-        3. L'host imposta il bit di <code>command-ready</code>. <br>
-        4. Il controller alza il busy_bit a 1 e inizia a lavorare. <br>
-        5. Finito il lavoro, il controller riabbassa il busy_bit a 0.
+      <div class="algo-steps">
+        <div class="algo-step"><span class="algo-step-n">1</span> <p>L'host legge il busy_bit continuamente finch&eacute; non diventa 0 (dispositivo libero).</p></div>
+        <div class="algo-step"><span class="algo-step-n">2</span> <p>L'host imposta il comando (read/write) nel command_register.</p></div>
+        <div class="algo-step"><span class="algo-step-n">3</span> <p>L'host imposta il bit di <code>command-ready</code>.</p></div>
+        <div class="algo-step"><span class="algo-step-n">4</span> <p>Il controller alza il busy_bit a 1 e inizia a lavorare.</p></div>
+        <div class="algo-step"><span class="algo-step-n">5</span> <p>Finito il lavoro, il controller ripristina i valori di busy_bit, error_bit e command_ready_bit</p></div>
       </div>
       <p><strong>Contro:</strong> Spreca enormi quantit&agrave; di cicli CPU (inefficiente) se il dispositivo &egrave; molto pi&ugrave; lento della CPU, perch&eacute; costringe il processore ad aspettare girando a vuoto.</p>
       
@@ -136,15 +143,17 @@
       <p>Le periferiche veloci o i dischi che muovono blocchi immensi di dati (Block Devices) intaserebbero rapidamente il sistema se la CPU dovesse farsi carico di ogni singolo byte (<strong>Programmed I/O</strong>).</p>
       <p>La soluzione &egrave; il <strong>DMA Controller (DMAC)</strong>, un chip dedicato che bypassa la CPU.</p>
       
-      <ol>
-        <li>Il SO prepara in memoria (RAM) un "DMA command block", contenente: <br><em>Indirizzo sorgente, Indirizzo destinazione, Read/Write, e il Numero di Byte (count).</em></li>
-        <li>Il SO dice al controller I/O di avviare il DMA fornendogli il puntatore a questo blocco.</li>
-        <li>Il DMAC <strong>ruba il bus (Bus Stealing)</strong> alla CPU e trasferisce autonomamente l'intero mucchio di byte dal dispositivo hardware direttamente alla RAM (o viceversa).</li>
-        <li>Terminato il trasferimento di tutto il blocco, il DMA invia <strong>un singolo Interrupt</strong> alla CPU per notificare il successo.</li>
-      </ol>
+      <div class="algo-steps">
+        <div class="algo-step"><span class="algo-step-n">1</span> <p>Il SO prepara in memoria (RAM) un "DMA command block", contenente: <br><em>Indirizzo sorgente, Indirizzo destinazione, Read/Write, e il Numero di Byte (count).</em></p></div>
+        <div class="algo-step"><span class="algo-step-n">2</span> <p>Il SO dice al controller I/O di avviare il DMA fornendogli il puntatore a questo blocco.</p></div>
+        <div class="algo-step"><span class="algo-step-n">3</span> <p>Il DMAC <strong>ruba il bus (Bus Stealing)</strong> alla CPU e trasferisce autonomamente l'intero mucchio di byte dal dispositivo hardware direttamente alla RAM (o viceversa).</p></div>
+        <div class="algo-step"><span class="algo-step-n">4</span> <p>Terminato il trasferimento di tutto il blocco, il DMA invia <strong>un singolo Interrupt</strong> alla CPU per notificare il successo.</p></div>
+      </div>
       
-      <div class="alert alert-note">
-        <strong>Differenza Critica:</strong> Con l'I/O Programmato c'&egrave; un interrupt <em>per ogni singolo byte</em> letto. Col DMA, c'&egrave; un solo interrupt <em>per l'intero blocco di dati</em>!
+      <div class="card-warning">
+        <div class="header">Nota bene</div>
+        <div class="content">
+        <strong>Differenza Critica:</strong> Con l'I/O Programmato c'&egrave; un interrupt <em>per ogni singolo byte</em> letto. Col DMA, c'&egrave; un solo interrupt <em>per l'intero blocco di dati</em>!</div>
       </div>
       
       <!-- INIZIO SIMULATORE DMA -->
