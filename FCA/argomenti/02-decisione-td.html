@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decisione TD — FCA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <!-- CSS Condiviso -->
+  <link rel="stylesheet" href="../../shared/katchkit.css">
+  <!-- Script Animazioni -->
+  <script src="../../shared/animation.js"></script>
+  <script src="../fca-data.js"></script>
+  <script>window.PAGE_DATA = FCA_DATA;</script>
+</head>
+
+<body class="dot-grid theme-amber">
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages"></ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
+
+  <site-navbar logo-text="// FCA · 02 Decisione TD" back-url="../index.html" back-text="Indice FCA">
+  </site-navbar>
+
+  <!-- HERO -->
+  <div class="kk-hero" style="min-height:55vh">
+    <div class="kk-hero-glow"></div>
+    <span class="kk-hero-eyebrow">
+      02 · Decisione TD
+    </span>
+    <h1 class="kk-hero-title">Decisione TD</h1>
+    <p class="kk-hero-sub" style="max-width:640px">
+      Modelli di routing e magazzini a tempo discreto (TD). I trasferimenti avvengono a istanti di tempo discreti
+      (salti) tramite frazioni di risorsa inviate da un nodo all'altro.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- MAIN LAYOUT -->
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">FCA</a><span>/</span>
+      <span>02 · Decisione TD</span>
+    </div>
+
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> 1. Modelli a Tempo Discreto (TD)</h2>
+
+      <div class="card-def">
+        <div class="header">
+          <i class="bi bi-diagram-3"></i> Frazioni di Trasferimento
+        </div>
+        <div class="content">
+          <p>A differenza del TC in cui vi è un flusso continuo, nei modelli TD la risorsa si sposta a "scatti"
+            temporali \(k\). La quantità che si sposta da \(j\) a \(i\) dipende da una frazione o percentuale (es. il
+            30% della risorsa nel magazzino \(j\) viene spedita a \(i\)).</p>
+        </div>
+      </div>
+
+      <!-- Animazione GSAP/P5.js -->
+      <div class="sim-container">
+        <div class="sim-header">
+          // SIMULAZIONE: TRASFERIMENTO A TEMPO DISCRETO
+        </div>
+        <div id="p5-sim-container" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button class="btn-primary" onclick="animStart()">
+            <i class="bi bi-play-fill"></i> Avvia
+          </button>
+          <button class="btn-secondary" onclick="animReset()">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset
+          </button>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header">
+          <i class="bi bi-calculator"></i> Equazione di Stato TD
+        </div>
+        <div class="content">
+          <p style="text-align:center;font-size:1.2rem;">
+            \[ x(k+1) = A x(k) + B u(k) \]
+          </p>
+          <p>A differenza del TC, gli elementi della matrice \(A\) in un sistema TD rappresentano <strong>frazioni di
+              transizione</strong>, e di conseguenza sono tutti non negativi: \( a_{ij} \geq 0 \).</p>
+        </div>
+      </div>
+
+      <div class="card-warning">
+        <div class="header">
+          <i class="bi bi-exclamation-triangle-fill"></i> Regola di Conservazione (Somma per colonne)
+        </div>
+        <div class="content">
+          <p>Nei sistemi chiusi e conservativi (senza uscite o perdite), il 100% della risorsa di un compartimento deve
+            essere mantenuto o trasferito al passo successivo.</p>
+          <p>Questo implica che la somma degli elementi su ogni colonna della matrice \(A\) deve essere esattamente pari
+            a 1: <strong>\( \sum_{i} a_{ij} = 1 \)</strong>.</p>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header">
+          <i class="bi bi-info-circle-fill"></i> Esempi Tipici
+        </div>
+        <div class="content">
+          <ul>
+            <li><strong>Magazzini logistici:</strong> Merce smistata tra vari centri di distribuzione a cadenza
+              giornaliera.</li>
+            <li><strong>Routing di pacchetti in rete:</strong> Probabilità di instradamento da un router ad un altro.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div> <!-- end section-1 -->
+
+    <!-- Navigation -->
+    <div class="back-btn-wrap">
+      <a href="01-flusso-continuo.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> 01 · Flusso Continuo</a>
+      <a href="../" class="btn btn-amber">Torna all'indice FCA <i class="bi bi-arrow-up"></i></a>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · FCA · 02 · Decisione TD</p>
+  </footer>
+
+  <!-- SCRIPT PER L'ANIMAZIONE P5+GSAP -->
+  <script>
+    let cellsA = [];
+    let cellsB = [];
+    let factory = null;
+    let animTl = null;
+
+    const sketch = (p) => {
+      p.setup = () => {
+        let canvas = p.createCanvas(700, 300);
+        canvas.parent('p5-sim-container');
+
+        if (typeof AnimFactory !== 'undefined') {
+          factory = new AnimFactory(p);
+        }
+
+        p.noLoop();
+        gsap.ticker.add(() => p.redraw());
+        animReset();
+      };
+
+      p.draw = () => {
+        p.background(10, 10, 16);
+
+        // Draw background for Magazzino A
+        p.stroke(255, 30); p.strokeWeight(2); p.fill(15, 15, 26);
+        p.rectMode(p.CORNER);
+        p.rect(100, 100, 120, 100, 8);
+        p.fill(255); p.textAlign(p.CENTER); p.noStroke();
+        p.text("Magazzino j (A)", 160, 220);
+
+        // Draw background for Magazzino B
+        p.stroke(255, 30); p.strokeWeight(2); p.fill(15, 15, 26);
+        p.rectMode(p.CORNER);
+        p.rect(480, 100, 120, 100, 8);
+        p.fill(255); p.textAlign(p.CENTER); p.noStroke();
+        p.text("Magazzino i (B)", 540, 220);
+
+        // Arrow
+        p.stroke(255, 30); p.strokeWeight(4);
+        p.line(230, 150, 470, 150);
+        p.fill(255, 100); p.noStroke(); p.text("Trasferimento 30%", 350, 140);
+
+        // Draw cells A
+        cellsA.forEach(c => {
+          if (c.alpha > 0) {
+            p.fill(34, 211, 238, c.alpha);
+            p.rectMode(p.CORNER);
+            p.rect(c.x, c.y, 16, 16, 4);
+          }
+        });
+
+        // Draw cells B
+        cellsB.forEach(c => {
+          if (c.alpha > 0) {
+            p.fill(251, 191, 36, c.alpha);
+            p.rectMode(p.CORNER);
+            p.rect(c.x, c.y, 16, 16, 4);
+          }
+        });
+      };
+    };
+
+    let myP5 = new p5(sketch);
+
+    function animReset() {
+      if (animTl) animTl.kill();
+      cellsA = [];
+      cellsB = [];
+
+      // Create 10 cells in A (2 rows of 5)
+      for (let i = 0; i < 10; i++) {
+        let row = Math.floor(i / 5);
+        let col = i % 5;
+        cellsA.push({
+          x: 110 + col * 20,
+          y: 130 + row * 20,
+          alpha: 255
+        });
+      }
+
+      gsap.killTweensOf(myP5);
+      myP5.redraw();
+    }
+
+    function animStart() {
+      animReset();
+      animTl = gsap.timeline();
+
+      // We move 3 cells (30% of 10) from A to B.
+      let movingCells = cellsA.splice(7, 3); // take last 3 cells
+
+      // B destination coords for 3 cells
+      movingCells.forEach((c, index) => {
+        let col = index % 5;
+        let row = Math.floor(index / 5);
+        let destX = 490 + col * 20;
+        let destY = 130 + row * 20;
+
+        // Add them to B array so they are drawn with B's color
+        cellsB.push(c);
+
+        // Change color and move
+        animTl.to(c, { x: destX, y: destY, duration: 1.2, ease: "power2.inOut" }, index * 0.15);
+      });
+    }
+  </script>
+
+  <script src="../../shared/katchkit.js"></script>
+</body>
+
+</html>

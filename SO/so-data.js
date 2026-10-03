@@ -67,7 +67,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "I kernel moderni (Linux) supportano moduli caricabili dinamicamente: driver e funzionalità aggiuntive aggiunte/rimosse a runtime senza riavviare il sistema."
       }
-    ]
+    ],
+    "href": "01-sistemi-operativi.html"
   },
   {
     "id": "02",
@@ -147,7 +148,8 @@ const SO_DATA = [
         "tag": "anticipa cap.03",
         "desc": "Unità di esecuzione all'interno di un processo. Condividono codice, dati e file aperti con gli altri thread dello stesso processo, ma hanno stack e registri propri."
       }
-    ]
+    ],
+    "href": "02-processi.html"
   },
   {
     "id": "03",
@@ -202,7 +204,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "N thread utente  M thread kernel (M ≤ N). Compromesso: parallelismo reale + flessibilità. Il kernel crea thread sufficienti e la libreria li gestisce. Thread pool pattern."
       }
-    ]
+    ],
+    "href": "03-thread.html"
   },
   {
     "id": "04",
@@ -252,7 +255,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Lo scheduler di Linux moderno. Usa un albero rosso-nero ordinato per virtual runtime: esegue sempre il processo con meno vruntime. Garantisce equità e ottima interattività senza quantum fisso."
       }
-    ]
+    ],
+    "href": "04-cpu-scheduling.html"
   },
   {
     "id": "05",
@@ -302,7 +306,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Classico problema di sincronizzazione: 5 filosofi, 5 bacchette condivise. Ogni filosofo ne serve 2. Naive solution  deadlock. Soluzioni: asimmetria, pickup atomico, semaforo limite (max 4 filosofi a tavola)."
       }
-    ]
+    ],
+    "href": "05-sincronizzazione.html"
   },
   {
     "id": "06",
@@ -342,7 +347,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Process termination: termina tutti i processi nel deadlock, o uno alla volta finché il ciclo si rompe. Resource preemption: sottrai risorse a un processo scelto (con possibile rollback al checkpoint)."
       }
-    ]
+    ],
+    "href": "06-deadlocks.html"
   },
   {
     "id": "07",
@@ -392,7 +398,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Ibrido usato da x86: ogni segmento ha la propria page table. Combina la visione logica della segmentazione con l'assenza di frammentazione esterna della paginazione."
       }
-    ]
+    ],
+    "href": "07-main-memory.html"
   },
   {
     "id": "08",
@@ -437,7 +444,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Un file su disco viene mappato nello spazio di indirizzi virtuale del processo. L'accesso al file avviene tramite normali istruzioni di memoria. Il SO gestisce il caricamento lazy tramite demand paging. Base di mmap() su Unix."
       }
-    ]
+    ],
+    "href": "08-virtual-memory.html"
   },
   {
     "id": "09",
@@ -482,7 +490,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Sincrono: il processo si blocca fino al completamento dell'I/O. Asincrono: il processo continua; viene notificato al completamento (callback, signal, future/promise). Fondamentale per I/O ad alto throughput."
       }
-    ]
+    ],
+    "href": "09-io-systems.html"
   },
   {
     "id": "10",
@@ -522,7 +531,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Strutture dati per tracciare i blocchi liberi: Bit vector (1 bit per blocco, compatto, facile accesso), Linked list (blocchi liberi collegati), Grouping e Counting (ottimizzazioni)."
       }
-    ]
+    ],
+    "href": "10-mass-storage.html"
   },
   {
     "id": "11",
@@ -567,7 +577,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Mounting: aggancia un filesystem a un punto dell'albero delle directory. Hard link: due nomi per lo stesso inode (stessa directory entry, stesso file). Soft link (symlink): file speciale con un percorso, può puntare tra filesystem diversi."
       }
-    ]
+    ],
+    "href": "11-file-system.html"
   },
   {
     "id": "12",
@@ -602,7 +613,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "Un Real-Time OS ha: latenza di interrupt minimale e deterministica, preemption immediata, no virtual memory (latenza non deterministica), clock ad alta risoluzione. Esempi: FreeRTOS, VxWorks, QNX, Zephyr."
       }
-    ]
+    ],
+    "href": "12-embedded-systems.html"
   },
   {
     "id": "13",
@@ -642,7 +654,8 @@ const SO_DATA = [
         "tag": null,
         "desc": "L'hardware supporta livelli di privilegio (ring 0 = kernel, ring 3 = user). Il codice user non può eseguire istruzioni privilegiate. La sandbox isola processi tramite namespaces, seccomp, cgroups (base dei container Docker)."
       }
-    ]
+    ],
+    "href": "13-sicurezza.html"
   },
   {
     "id": "14",
@@ -682,6 +695,7 @@ const SO_DATA = [
         "tag": "iot",
         "desc": "Microkernel per dispositivi IoT a risorse vincolate (es. Arduino). Gestione dei background thread declassando la priorità per garantirne la sopravvivenza e moduli ztimer per latenze prevedibili."
       }
-    ]
+    ],
+    "href": "14-laboratori-teoria.html"
   }
 ];

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fondamenti di Controlli Automatici — FCA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../shared/katchkit.css">
+  <!-- Dati ed engine dinamico -->
+  <script src="fca-data.js"></script>
+  <script>window.PAGE_DATA = FCA_DATA;</script>
+</head>
+
+<body class="dot-grid">
+
+  <nav>
+    <div class="nav-left">
+      <a href="#" class="nav-logo">// FCA · Fondamenti di Controlli Automatici</a>
+    </div>
+    <div class="nav-right">
+      <a href="../index.html" class="nav-back"><i class="bi bi-house"></i> Home</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="kk-hero">
+    <div class="kk-hero-glow"></div>
+
+    <span class="kk-hero-eyebrow">
+      Fondamenti di Controlli Automatici
+    </span>
+
+    <h1 class="kk-hero-title">Fondamenti di <br>Controlli Automatici</h1>
+
+    <p class="kk-hero-sub">
+      Dalle reti di flusso continuo ai modelli a salti discreti. Il punto di partenza per capire la dinamica dei sistemi.
+    </p>
+
+    <!-- Stats bar (dynamically populated) -->
+    <div class="stats-bar"
+      style="width:100%;max-width:700px;border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-top:1rem;">
+      <div class="stat-item">
+        <div id="stat-macro" class="stat-number" style="color:var(--accent-soft)">--</div>
+        <div class="stat-label">Macro argomenti</div>
+      </div>
+      <div class="stat-item">
+        <div id="stat-micro" class="stat-number" style="color:var(--teal)">--</div>
+        <div class="stat-label">Sotto-argomenti</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" style="color:var(--green)"><i class="bi bi-cpu"></i></div>
+        <div class="stat-label">Architetture</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-hint-line"></div>
+      scroll
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- INTRO -->
+  <div class="intro-section">
+    <div class="breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a>
+      <span>/</span>
+      <span>FCA</span>
+    </div>
+
+    <div class="section-eyebrow">Panoramica del corso</div>
+    <h2 class="section-title">Di cosa parliamo</h2>
+    <p class="section-intro" style="margin-bottom:1.5rem">
+      Esplora le basi dell'hardware e dell'architettura dei calcolatori. Ogni accordion qui sotto corrisponde a un
+      macro-argomento.
+    </p>
+
+    <!-- Overview grid (dynamically populated) -->
+    <div class="overview-grid" id="overview-grid-container"></div>
+
+    <div class="card-tip" style="margin-top:2rem">
+      <div class="header">
+        <i class="bi bi-lightbulb"></i> Esplora i macro-argomenti
+      </div>
+      <div class="content">
+        <p>Clicca su un macro-argomento per espanderlo e scoprire tutti i sotto-argomenti dettagliati.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" style="margin-top:2rem">
+
+  <!-- ACCORDIONS (dynamically populated) -->
+  <div class="acc-section">
+    <div class="divider-label">
+      <span>// esplora argomenti</span>
+    </div>
+    <div class="accordion" id="accordion-container"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="text-align:center;padding:4rem 2rem;border-top:1px solid var(--border);margin-top:4rem;">
+    <div style="font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:0.85rem;">
+      // <a href="https://7Katch.github.io" style="color:var(--text-muted);text-decoration:none;">7Katch.github.io</a> ·
+      FCA
+    </div>
+  </footer>
+
+  <script src="../shared/katchkit.js"></script>
+</body>
+
+</html>

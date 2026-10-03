@@ -6,29 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>03 · Thread — SO</title>
   <link rel="stylesheet" href="/shared/katchkit.css">
+  <script src="../so-data.js"></script>
+  <script>window.PAGE_DATA = SO_DATA;</script>
 </head>
 
 <body class="dot-grid theme-emerald">
   <aside class="so-sidebar">
     <div class="sb-label">Macroargomenti</div>
-    <ul class="sb-pages">
-      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-      <li>
-        <div class="sb-cur"><span class="sb-pdot"></span>03 · Thread</div>
-      </li>
-      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 · CPU Scheduling</a></li>
-      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-          <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
-    </ul>
+    <ul class="sb-pages"></ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
 
@@ -39,14 +24,13 @@
     back-url="../" 
     back-text="Indice SO">
   </site-navbar>
-  <div class="hero" style="min-height:55vh">
-    <div class="hero-glow"></div>
-    <span class="hero-eyebrow"
-      style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3);color:var(--amber)">Macroargomento 03 ·
+  <div class="kk-hero" style="min-height:55vh">
+    <div class="kk-hero-glow"></div>
+    <span class="kk-hero-eyebrow">Macroargomento 03 ·
       Core</span>
     <div class="topic-num">03 / 13</div>
-    <h1 class="topic-hero-title">Thread</h1>
-    <p class="hero-sub" style="max-width:640px">Multithreading, concorrenza vs parallelismo, Legge di Amdahl,
+    <h1 class="kk-hero-title">Thread</h1>
+    <p class="kk-hero-sub" style="max-width:640px">Multithreading, concorrenza vs parallelismo, Legge di Amdahl,
       user/kernel thread e i tre modelli di mapping: Many-to-One, One-to-One, Many-to-Many</p>
   </div>
   <hr class="divider">

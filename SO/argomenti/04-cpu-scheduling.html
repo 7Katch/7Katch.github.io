@@ -8,43 +8,27 @@
   <link rel="stylesheet" href="../../shared/katchkit.css">
   <script src="../../shared/animation.js"></script>
 
+  <script src="../so-data.js"></script>
+  <script>window.PAGE_DATA = SO_DATA;</script>
 </head>
 
 <body class="dot-grid theme-teal">
   <aside class="so-sidebar">
     <div class="sb-label">Macroargomenti</div>
-    <ul class="sb-pages">
-      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 · Sistemi Operativi</a></li>
-      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 · Processi</a></li>
-      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 · Thread</a></li>
-      <li>
-        <div class="sb-cur"><span class="sb-pdot"></span>04 · CPU Scheduling</div>
-      </li>
-      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 · Sincronizzazione</a></li>
-      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 · Deadlocks</a></li>
-      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 · Main Memory</a></li>
-      <li><a href="08-virtual-memory.html"><span class="sb-pdot"></span>08 · Virtual Memory</a></li>
-      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 · I/O Systems</a></li>
-      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 · Mass-Storage</a></li>
-      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 · File System</a></li>
-      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 · Embedded Systems</a></li>
-      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 · Sicurezza</a></li>
-      <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 · Laboratori (Teoria)</a></li>
-    </ul>
+    <ul class="sb-pages"></ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
   </aside>
 
   <site-navbar logo-text="// SO · Sistemi Operativi" back-url="../" back-text="Indice SO">
   </site-navbar>
-  <div class="hero" style="min-height:55vh">
-    <div class="hero-glow"></div>
-    <span class="hero-eyebrow"
-      style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:var(--teal)">Macroargomento 04 ·
+  <div class="kk-hero" style="min-height:55vh">
+    <div class="kk-hero-glow"></div>
+    <span class="kk-hero-eyebrow">Macroargomento 04 ·
       Gestione CPU</span>
     <div class="topic-num">04 / 13</div>
-    <h1 class="topic-hero-title">CPU Scheduling</h1>
-    <p class="hero-sub" style="max-width:640px">FCFS, SJF, Round Robin, Priority Scheduling, Multilevel Queue e il
+    <h1 class="kk-hero-title">CPU Scheduling</h1>
+    <p class="kk-hero-sub" style="max-width:640px">FCFS, SJF, Round Robin, Priority Scheduling, Multilevel Queue e il
       Completely Fair Scheduler di Linux. Come il SO decide chi usa la CPU e quando.</p>
   </div>
   <hr class="divider">

@@ -434,3 +434,81 @@ document.querySelectorAll('.materia-card, .section-card, .overview-card').forEac
   card.style.transitionDelay = `${(index % 3) * 0.1}s`;
   observer.observe(card);
 });
+
+/* ==================== DYNAMIC INDEX ENGINE ==================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const data = window.PAGE_DATA;
+  if (!data || !Array.isArray(data)) return;
+
+  const sbPages = document.querySelector('.sb-pages');
+  if (sbPages) {
+    const currentPage = window.location.pathname.split('/').pop() || '';
+    sbPages.innerHTML = data.map(ch => {
+      const href = ch.href || (ch.id + '.html');
+      const isActive = currentPage === href;
+      if (isActive) {
+        return `<li><div class="sb-cur"><span class="sb-pdot"></span>${ch.id} · ${ch.title}</div></li>`;
+      } else {
+        return `<li><a href="${href}"><span class="sb-pdot"></span>${ch.id} · ${ch.title}</a></li>`;
+      }
+    }).join('');
+  }
+
+  const gridEl   = document.getElementById('overview-grid-container');
+  const accEl    = document.getElementById('accordion-container');
+  const statMac  = document.getElementById('stat-macro');
+  const statMic  = document.getElementById('stat-micro');
+
+  let totalSubs = 0;
+  data.forEach(ch => { if(ch.subs) totalSubs += ch.subs.length; });
+  if (statMac) statMac.textContent = data.length;
+  if (statMic) statMic.textContent = totalSubs + '+';
+
+  if (gridEl) {
+    gridEl.innerHTML = data.map(ch => {
+      const href = 'argomenti/' + (ch.href || (ch.id + '.html'));
+      return `
+        <a href="${href}" class="overview-card ov-${ch.theme}" style="cursor:pointer">
+          <div class="ov-num">${ch.id} · ${ch.badge}</div>
+          <div class="ov-title">${ch.title}</div>
+          <div class="ov-sub">${ch.ovSub}</div>
+        </a>`;
+    }).join('');
+  }
+
+  if (accEl) {
+    accEl.innerHTML = data.map(ch => {
+      const subsHtml = ch.subs ? ch.subs.map(sub => {
+        const tagSpan = sub.tag ? `<span class="sub-tag">${sub.tag}</span>` : '';
+        return `
+          <div class="sub-item">
+            <div class="sub-dot" style="background:var(--${ch.theme})"></div>
+            <div>
+              <div class="sub-title">${sub.title} ${tagSpan}</div>
+              <div class="sub-desc">${sub.desc}</div>
+            </div>
+          </div>`;
+      }).join('') : '';
+
+      return `
+        <div class="acc-item ${ch.theme}-theme" onclick="toggleAccordion(this)">
+          <div class="acc-header">
+            <div class="acc-left">
+              <span class="acc-num">${ch.id}</span>
+              <span class="acc-title">${ch.title}</span>
+              <span class="acc-badge ${ch.badgeClass}">${ch.badge}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="acc-count">${ch.subs ? ch.subs.length : 0} argomenti</span>
+              <span class="acc-chevron">▼</span>
+            </div>
+          </div>
+          <div class="acc-body">
+            <div class="sub-list">${subsHtml}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+});
+
+window.toggleAccordion = function (el) { el.classList.toggle('open'); };

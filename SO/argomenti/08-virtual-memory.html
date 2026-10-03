@@ -8,6 +8,8 @@
 
   <link rel="stylesheet" href="/shared/katchkit.css">
 
+  <script src="../so-data.js"></script>
+  <script>window.PAGE_DATA = SO_DATA;</script>
 </head>
 
 <body class="dot-grid theme-coral">
@@ -15,24 +17,7 @@
   <!-- ═══════ SIDEBAR ═══════ -->
   <aside class="so-sidebar">
     <div class="sb-label">Macroargomenti</div>
-    <ul class="sb-pages">
-      <li><a href="01-sistemi-operativi.html"><span class="sb-pdot"></span>01 &middot; Sistemi Operativi</a></li>
-      <li><a href="02-processi.html"><span class="sb-pdot"></span>02 &middot; Processi</a></li>
-      <li><a href="03-thread.html"><span class="sb-pdot"></span>03 &middot; Thread</a></li>
-      <li><a href="04-cpu-scheduling.html"><span class="sb-pdot"></span>04 &middot; CPU Scheduling</a></li>
-      <li><a href="05-sincronizzazione.html"><span class="sb-pdot"></span>05 &middot; Sincronizzazione</a></li>
-      <li><a href="06-deadlocks.html"><span class="sb-pdot"></span>06 &middot; Deadlocks</a></li>
-      <li><a href="07-main-memory.html"><span class="sb-pdot"></span>07 &middot; Main Memory</a></li>
-      <li>
-        <div class="sb-cur"><span class="sb-pdot"></span>08 &middot; Virtual Memory</div>
-      </li>
-      <li><a href="09-io-systems.html"><span class="sb-pdot"></span>09 &middot; I/O Systems</a></li>
-      <li><a href="10-mass-storage.html"><span class="sb-pdot"></span>10 &middot; Mass-Storage</a></li>
-      <li><a href="11-file-system.html"><span class="sb-pdot"></span>11 &middot; File System</a></li>
-      <li><a href="12-embedded-systems.html"><span class="sb-pdot"></span>12 &middot; Embedded Systems</a></li>
-      <li><a href="13-sicurezza.html"><span class="sb-pdot"></span>13 &middot; Sicurezza</a></li>
-      <li><a href="14-laboratori-teoria.html"><span class="sb-pdot"></span>14 &middot; Laboratori (Teoria)</a></li>
-    </ul>
+    <ul class="sb-pages"></ul>
     <div class="sb-label">In questa pagina</div>
     <ul class="sb-sections"></ul>
   </aside>
@@ -42,14 +27,14 @@
   </site-navbar>
 
   <!-- ═══════ HERO ═══════ -->
-  <div class="hero" style="min-height:55vh">
-    <div class="hero-glow"></div>
-    <span class="hero-eyebrow">
+  <div class="kk-hero" style="min-height:55vh">
+    <div class="kk-hero-glow"></div>
+    <span class="kk-hero-eyebrow">
       Macroargomento 08 &middot; Gestione Memoria Avanzata
     </span>
     <div class="topic-num">08 / 14</div>
-    <h1 class="topic-hero-title">Virtual Memory</h1>
-    <p class="hero-sub" style="max-width:680px">
+    <h1 class="kk-hero-title">Virtual Memory</h1>
+    <p class="kk-hero-sub" style="max-width:680px">
       Esecuzione di processi parzialmente caricati, Demand Paging, algoritmi di Page Replacement, prevenzione del
       Thrashing e strategie di allocazione per il Kernel (Buddy System e Slab Allocation).
     </p>
