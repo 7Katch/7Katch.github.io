@@ -49,7 +49,11 @@ const KatchColors = {
   
   // Altri colori cyberpunk utili
   cyan: [6, 182, 212],
-  magenta: [217, 70, 239]
+  magenta: [217, 70, 239],
+
+  // Helper conversione in oggetto {r, g, b} per animazioni GSAP
+  toRgb(c) { return { r: c ? c[0] : 255, g: c ? c[1] : 255, b: c ? c[2] : 255 }; },
+  rgb(c) { return { r: c ? c[0] : 255, g: c ? c[1] : 255, b: c ? c[2] : 255 }; }
 };
 
 // Classe Entità (rettangolo) con punti di ancoraggio per le frecce
@@ -616,6 +620,83 @@ class AnimFactory {
     
     p.pop(); // Ripristina lo stato grafico
   }
+
+  // --- Sottotitoli & Didascalie Temporizzate (Timeline GSAP) ---
+  /**
+   * Anima una didascalia sincronizzata sulla timeline: fade out della precedente,
+   * cambio testo, fade in ed eventuale tempo di lettura (hold).
+   * @param {any} tl - Timeline GSAP
+   * @param {object} capObj - Oggetto didascalia { text: string, alpha: number }
+   * @param {string} text - Testo da mostrare
+   * @param {string|number} [position='>'] - Posizione nella timeline GSAP
+   * @param {number} [hold=2.2] - Secondi di permanenza del testo prima del passo successivo
+   */
+  animCaption(tl, capObj, text, position = '>', hold = 2.2) {
+    tl.to(capObj, { alpha: 0, duration: 0.15 }, position)
+      .set(capObj, { text: text })
+      .to(capObj, { alpha: 255, duration: 0.4 })
+      .to({}, { duration: hold });
+    return tl;
+  }
+
+  /**
+   * Renderizza la didascalia in una barra dedicata a fondo canvas con allineamento a sinistra (stile Word).
+   * Include sfondo scuro isolante, linea divisoria e ritorno a capo automatico (word-wrap) entro margini precisi.
+   * @param {object} capObj - Oggetto didascalia { text: string, alpha: number }
+   * @param {object} [options] - Opzioni di configurazione
+   */
+  drawCaption(capObj, options = {}) {
+    if (!capObj || capObj.alpha <= 0 || !capObj.text) return;
+    const p = this.p;
+
+    const barH = 50;
+    const barY = p.height - barH;
+
+    p.push();
+    // 1. Barra dedicata di sfondo con contrasto per isolare la didascalia dal resto del canvas
+    p.fill(13, 17, 28, Math.min(capObj.alpha, 240));
+    p.noStroke();
+    p.rect(0, barY, p.width, barH);
+
+    // Bordo superiore sottile per definire visivamente lo spazio
+    p.stroke(255, 255, 255, Math.min(capObj.alpha * 0.15, 30));
+    p.strokeWeight(1);
+    p.line(0, barY, p.width, barY);
+
+    // 2. Prompt stilizzato "//" (stile console/IDE)
+    p.noStroke();
+    p.fill(KatchColors.teal[0], KatchColors.teal[1], KatchColors.teal[2], capObj.alpha);
+    p.textFont('JetBrains Mono');
+    p.textSize(12);
+    p.textAlign(p.LEFT, p.TOP);
+    p.text('//', 20, barY + 16);
+
+    // 3. Testo della didascalia allineato a sinistra (Word-style) con word-wrap automatico
+    p.fill(241, 245, 249, capObj.alpha);
+    p.textSize(12.5);
+    p.textLeading(16);
+    p.text(capObj.text, 46, barY + 9, p.width - 66, barH - 12);
+    p.pop();
+  }
+
+  /**
+   * Renderizza un'etichetta testuale mono-spaziata con colore, dimensione e allineamento configurabili.
+   * @param {string} txt - Testo dell'etichetta
+   * @param {number} x - Coordinata X
+   * @param {number} y - Coordinata Y
+   * @param {object} [options] - Opzioni { col, size, align, alpha }
+   */
+  drawLabel(txt, x, y, { col = KatchColors.slate, size = 12, align = 'LEFT', alpha = 255 } = {}) {
+    const p = this.p;
+    p.push();
+    p.noStroke();
+    p.fill(col[0], col[1], col[2], alpha);
+    p.textFont('JetBrains Mono');
+    p.textSize(size);
+    p.textAlign(p[align] !== undefined ? p[align] : p.LEFT, p.CENTER);
+    p.text(txt, x, y);
+    p.pop();
+  }
 }
 
 /**
@@ -628,6 +709,40 @@ class AnimFactory {
  * Wrapper per eliminare il boilerplate
  */
 class KatchSimulation {
+  /**
+   * Factory method standard per creare simulazioni passive con timeline e gestione didascalie integrate.
+   * @param {string} containerId - ID del div contenitore HTML
+   * @param {number} width - Larghezza canvas
+   * @param {number} height - Altezza canvas
+   * @param {function(any, AnimFactory): void} setupFn - Callback di setup
+   * @param {function(any, AnimFactory): void} drawFn - Callback di disegno passivo
+   * @param {function(any, AnimFactory, any): void} timelineFn - Callback per costruire la timeline GSAP
+   */
+  static create(containerId, width, height, setupFn, drawFn, timelineFn) {
+    const sim = new KatchSimulation(containerId, width, height,
+      (p, f) => {
+        p.cap = { text: '', alpha: 0 };
+        if (setupFn) setupFn(p, f);
+      },
+      (p, f) => {
+        if (drawFn) drawFn(p, f);
+        f.drawCaption(p.cap);
+      }
+    );
+    sim.onAnimReset = (p, f) => {
+      if (p.tl) p.tl.kill();
+      p.cap = { text: '', alpha: 0 };
+      if (setupFn) setupFn(p, f);
+      p.redraw();
+    };
+    sim.onAnimStart = (p, f) => {
+      sim.onAnimReset(p, f);
+      p.tl = gsap.timeline();
+      if (timelineFn) timelineFn(p, f, p.tl);
+    };
+    return sim;
+  }
+
   /**
    * @param {string} containerId - L'ID del div HTML in cui iniettare il canvas.
    * @param {number} width - Larghezza del canvas.

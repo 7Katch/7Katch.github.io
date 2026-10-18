@@ -4354,9 +4354,23 @@ footer a:hover { text-decoration: underline; }
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1rem;
+  padding: 1.25rem;
   margin-bottom: 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
+
+/* Su computer/desktop: sfrutta tutto lo spazio orizzontale necessario (breakout a 1040px) */
+@media (min-width: 1080px) {
+  .sim-container {
+    width: 1040px;
+    max-width: calc(100vw - 80px);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .sim-header {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.85rem;
@@ -4371,6 +4385,13 @@ footer a:hover { text-decoration: underline; }
   border-radius: 8px;
   overflow: hidden;
   background: rgba(0,0,0,0.5);
+  width: 100%;
+}
+
+.sim-canvas canvas {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
 }
 .sim-controls {
   display: flex;

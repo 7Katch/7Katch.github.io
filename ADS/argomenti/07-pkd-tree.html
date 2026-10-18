@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pkd-tree: Parallel kd-tree with Batch Updates — ADS</title>
+  <meta name="description"
+    content="Comprehensive academic presentation of Pkd-tree (Parallel kd-tree, SIGMOD 2025): motivations, paradigms comparison, work-span analysis, ideal-cache theory, geometric bounding, and weight-balancing mathematics.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../shared/katchkit.css?v=4">
+  <script src="../../shared/animation.js?v=4"></script>
+  <script src="../ads-data.js"></script>
+  <script>window.PAGE_DATA = ADS_DATA;</script>
+
+  <style>
+    /* Styling for the architectural comparison matrix */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border-radius: 10px;
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+      background: var(--bg-card, rgba(15, 23, 42, 0.5));
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .comparison-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--teal, #22d3ee);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+      white-space: nowrap;
+    }
+    .comparison-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-soft, #cbd5e1);
+      vertical-align: middle;
+    }
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+    .comparison-table tr.highlight-pkd {
+      background: rgba(34, 211, 238, 0.06);
+      font-weight: 500;
+    }
+    .comparison-table tr.highlight-pkd td:first-child {
+      color: var(--green, #10b981);
+      font-weight: 700;
+    }
+    .badge-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .badge-pill.good { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .badge-pill.bad { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .badge-pill.mid { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+
+    /* Notation table styling */
+    .notation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      margin-top: 1rem;
+    }
+    .notation-item {
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.9rem;
+    }
+    .notation-symbol {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--teal, #22d3ee);
+      font-weight: 700;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+
+<body class="dot-grid theme-teal">
+  <aside class="so-sidebar">
+    <div class="sb-label">Macro Topics</div>
+    <ul class="sb-pages"></ul>
+    <div class="sb-label">On This Page</div>
+    <ul class="sb-sections"></ul>
+  </aside>
+
+  <site-navbar logo-text="// ADS · Pkd-tree" back-url="../index.html" back-text="ADS Index"></site-navbar>
+
+  <!-- HERO -->
+  <div class="kk-hero" style="min-height:55vh">
+    <div class="kk-hero-glow"></div>
+    <span class="kk-hero-eyebrow">07 · SIGMOD 2025 Paper · Chapters 1–2</span>
+    <h1 class="kk-hero-title">Parallel kd-tree</h1>
+    <p class="kk-hero-sub" style="max-width:700px">
+      The <strong>Pkd-tree</strong> (Men, Shen, Gu, Sun — UC Riverside) is an in-memory spatial tree that is highly parallel,
+      cache-efficient, and dynamic: supporting construction, batch updates, and multi-dimensional queries on a <em>single</em> weight-balanced tree.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">ADS</a><span>/</span>
+      <span>07 · Pkd-tree</span>
+    </div>
+
+    <!-- ============ 1. WHAT IS A KD-TREE ============ -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> 1. The kd-tree: Fundamentals & Systems Context</h2>
+
+      <div class="card-tip" style="margin-bottom: 1.5rem;">
+        <div class="header"><i class="bi bi-mortarboard-fill"></i> New to kd-trees?</div>
+        <div class="content">
+          <p>If you have never encountered spatial trees before, read our beginner guide first: 
+            <a href="06-kdtree-intro.html" style="color:var(--teal); text-decoration: underline; font-weight: 600;">kd-tree da Zero: Guida Visuale & Intuitiva</a>, which explains spatial partitioning, the circle test, and range queries step by step.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-diagram-3"></i> kd-tree Architecture (Bentley, 1975)</div>
+        <div class="content">
+          <p>A <strong>binary spatial partitioning tree</strong> designed to index points in \(D\)-dimensional Euclidean space \(\mathbb{R}^D\).
+            Each internal node signifies an axis-aligned splitting hyperplane \(\langle d, x \rangle\). Points with coordinate value smaller than \(x\) on dimension \(d\) belong to the left subtree, while the remainder fall into the right subtree. The space is partitioned recursively until the cardinality of a sub-space drops to or below the <strong>leaf wrap threshold \(\phi\)</strong>.</p>
+          <p><strong>Dimensionality Notation:</strong> In this paper, \(D\) explicitly denotes the dimensionality (rather than \(k\)) to avoid confusion with the \(k\) in <em>k-nearest neighbor</em> (\(k\)-NN) queries.</p>
+        </div>
+      </div>
+
+      <div class="sim-container">
+        <div class="sim-header">// SIMULATION: 2D KD-TREE RECURSIVE PARTITIONING</div>
+        <div id="sim-kd" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-kd-start" class="btn-primary" onclick="PKD.kd.animStart()"><i class="bi bi-play-fill"></i> Start</button>
+          <button id="btn-kd-reset" class="btn-secondary" onclick="PKD.kd.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-bounding-box"></i> Splitting Strategy: Widest Stretch vs. Round-Robin</div>
+        <div class="content">
+          <p>A fundamental design decision is how to select the splitting dimension \(d\) at each interior node:</p>
+          <ul>
+            <li><strong>Classic Round-Robin Cycling (Bentley, 1975):</strong> Cycles dimensions in predetermined succession: \(d = (\text{depth} \bmod D) + 1\). If the dataset has disparate variance along different dimensions (e.g. latitude vs. elevation), round-robin forces splits on low-variance axes, yielding elongated, needle-shaped bounding boxes.</li>
+            <li><strong>Widest Dimension / Maximum Spread (Friedman et al., 1977; used in Pkd-tree):</strong> Always cuts the dimension with the largest spread:
+              \[ d = \arg\max_{1 \le i \le D} \left( \max_{p \in P} p[i] - \min_{p \in P} p[i] \right) \]
+              This ensures spatial partitions remain roughly <strong>hyper-cubical</strong> (isotropic), which minimizes the probability that search spheres in \(k\)-NN or bounding rectangles in range queries intersect multiple boundaries.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-exclamation-octagon-fill"></i> The Curse of Dimensionality (\(D \approx 10\))</div>
+        <div class="content">
+          <p>The kd-tree is practically unmatched for dimensions up to \(D \approx 10-12\). Why not higher dimensions?</p>
+          <p>In high-dimensional space, the ratio of the volume of a hyper-sphere to its bounding hyper-cube shrinks exponentially towards zero. Consequently, a \(k\)-NN search sphere will inevitably intersect almost every axis-aligned partition hyperplane, forcing the search algorithm to backtrack through virtually all branches. At \(D > 15-20\), a kd-tree typically degrades to a brute-force \(O(n)\) linear scan. For \(D \le 10\), however, spatial pruning remains mathematically optimal.</p>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-memory"></i> Systems Insight: The Leaf Wrap Threshold \(\phi\)</div>
+        <div class="content">
+          <p>Why do we stop splitting when \(|P| \le \phi\) (where \(\phi\) is a small constant, e.g. 16 to 32) instead of building a tree with single-point leaves?</p>
+          <ul>
+            <li><strong>Cacheline Packing:</strong> A single point requires its own node object and pointers (16–24 bytes per node). By packing \(\phi\) points into a contiguous leaf array, all points in the leaf fit inside one or two hardware cachelines (\(B = 64\) bytes).</li>
+            <li><strong>Pointer Overhead Elimination:</strong> Eliminates \(\approx 50\%\) of the tree's internal nodes, cutting tree pointer traversal and memory footprint in half.</li>
+            <li><strong>SIMD / Vectorized Linear Scan:</strong> Once the traversal reaches a leaf, computing Euclidean distance over \(\phi\) continuous coordinates is heavily vectorized using CPU SIMD instructions (AVX-512 / AVX2).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 2. THE PROBLEM ============ -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> 2. The Problem: Data Scales Up, Existing kd-trees Do Not</h2>
+
+      <p>Modern spatial repositories have expanded drastically. For example, the North America dataset of <strong>OpenStreetMap</strong> comprises over <strong>1.29 billion coordinate nodes</strong>. Constructing a kd-tree on this dataset sequentially via <strong>CGAL</strong> (the industry standard computational geometry library) requires <strong>more than 2,000 seconds</strong> (over 33 minutes). In an era of multi-core servers, lack of end-to-end parallelism is untenable.</p>
+
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-exclamation-triangle-fill"></i> Systematic Failures in Existing Paradigms</div>
+        <div class="content">
+          <p>Existing state-of-the-art implementations exhibit severe structural compromises:</p>
+          <ul>
+            <li><strong>Static Implementations (e.g., ParGeo Static):</strong> Extremely fast at construction, but strictly read-only. Inserting or deleting data is impossible without a full rebuild.</li>
+            <li><strong>Full Tree Rebuilding (CGAL & ParGeo BHL-tree):</strong> Lacks parallel update support. Even in sequential mode, rebalancing an updated tree forces a <em>full structural reconstruction</em> (\(O(n \log n)\) work), causing severe stop-the-world latency spikes.</li>
+            <li><strong>The Logarithmic Method (ParGeo Log-tree, Bentley 1980):</strong> Avoids full rebuilds by maintaining a set of \(O(\log n)\) perfectly balanced trees of geometric sizes \(\{2^0, 2^1, 2^2, \dots\}\). While updates are parallelized by cascading merges (analogous to binary addition carries), <strong>every single query must traverse all \(O(\log n)\) trees and merge results</strong>. As a result, Log-tree is up to <strong>10× slower</strong> on \(k\)-NN queries than a single tree.</li>
+            <li><strong>Cache-Inefficient Construction:</strong> Existing parallel partition routines incur \(O(\log n)\) independent memory movement passes, falling significantly behind parallel binary search trees and octrees.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PARADIGMS COMPARISON TABLE -->
+      <div class="table-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Approach</th>
+              <th>Data Representation</th>
+              <th>Batch Update Mechanism</th>
+              <th>Query Degradation Factor</th>
+              <th>Parallel Capabilities</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Static kd-tree</strong></td>
+              <td>1 single tree</td>
+              <td><span class="badge-pill bad">Unsupported</span></td>
+              <td><span class="badge-pill good">\(1\times\) (Baseline)</span></td>
+              <td>Build only</td>
+            </tr>
+            <tr>
+              <td><strong>CGAL / BHL-tree</strong></td>
+              <td>1 single tree</td>
+              <td><span class="badge-pill bad">Full Rebuild \(O(n \log n)\)</span></td>
+              <td><span class="badge-pill good">\(1\times\) (Zero overhead)</span></td>
+              <td>Query only</td>
+            </tr>
+            <tr>
+              <td><strong>Log-tree (Bentley)</strong></td>
+              <td>\(O(\log n)\) distinct trees</td>
+              <td><span class="badge-pill good">Parallel Merge</span></td>
+              <td><span class="badge-pill bad">\(O(\log n)\times\) slower</span></td>
+              <td>Build & Updates</td>
+            </tr>
+            <tr class="highlight-pkd">
+              <td><strong>Pkd-tree (SIGMOD '25)</strong></td>
+              <td>1 single tree</td>
+              <td><span class="badge-pill good">Lazy Local Reconstruction</span></td>
+              <td><span class="badge-pill good">\(1\times\) (Zero overhead)</span></td>
+              <td><span class="badge-pill good">Build, Updates & Queries</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sim-container">
+        <div class="sim-header">// SIMULATION: LOGARITHMIC METHOD (LOG-TREE) VS SINGLE TREE (PKD-TREE)</div>
+        <div id="sim-log" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-log-start" class="btn-primary" onclick="PKD.log.animStart()"><i class="bi bi-play-fill"></i> Start</button>
+          <button id="btn-log-reset" class="btn-secondary" onclick="PKD.log.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 3. CONTRIBUTIONS ============ -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> 3. The Pkd-tree Architecture & Benchmark Evidence</h2>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-cpu"></i> Two Foundational Theoretical Breakthroughs</div>
+        <div class="content">
+          <p><strong>1) Cache-Optimal Parallel Construction (Chapter 3):</strong> Instead of shifting the entire dataset across memory at each individual tree level, Pkd-tree constructs \(\lambda\) levels simultaneously in a single pass of data movement. Partition splitters are calculated using a small <strong>sample set</strong>, followed by a cache-conscious <strong>sieving routine</strong> that partitions points into \(2^\lambda\) buckets. By configuring \(\lambda = \Theta(\log M)\), the algorithm achieves simultaneously:</p>
+          <p style="text-align:center; font-size:1.15rem;">
+            \[ W = O(n\log n) \qquad Q = O\!\left(\frac{n}{B}\log_M n\right) \qquad S = \text{polylog}(n) \quad \text{whp} \]
+          </p>
+          <p><strong>2) Reconstruction-Based Weight-Balanced Updates (Chapter 4):</strong> Classic rebalancing primitives—such as tree rotations (AVL/Red-Black) or B-tree node splits/merges—are geometrically impossible in kd-trees without re-sorting points. Pkd-tree enforces <strong>weight-balancing</strong> with a <em>lazy tolerance parameter \(\alpha\)</em>: deviations in subtree weights are tolerated up to factor \(\alpha\). Once violated, only the localized affected subtree is <strong>reconstructed in parallel</strong> using the fast construction subroutine.</p>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-search"></i> Single-Tree Query Advantage</div>
+        <div class="content">
+          <p>Because the Pkd-tree maintains a <strong>single coherent kd-tree</strong> at all times, all standard, highly optimized static kd-tree query algorithms run directly without alteration, completely avoiding the multi-tree aggregation bottleneck of the logarithmic method.</p>
+        </div>
+      </div>
+
+      <div class="sim-container">
+        <div class="sim-header">// SIMULATION: BENCHMARK RESULTS (TABLE 1 FROM PAPER, 10⁹ POINTS)</div>
+        <div id="sim-table" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-table-start" class="btn-primary" onclick="PKD.table.animStart()"><i class="bi bi-play-fill"></i> Start</button>
+          <button id="btn-table-reset" class="btn-secondary" onclick="PKD.table.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-speedometer2"></i> Quantitative Performance Gains (96-core benchmark)</div>
+        <div class="content">
+          <p>On \(10^9\) 2D points: Batch Insertion is <strong>2.02–62× faster</strong> than Log-tree; Batch Deletion is <strong>3.27–400× faster</strong>; and \(k\)-NN queries are <strong>6.71–11.9× faster</strong>. Compared to full rebuild implementations (CGAL and BHL-tree), updates are several orders of magnitude faster.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 4. WORK-SPAN ============ -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> 4. Preliminaries: The Work–Span Model of Parallelism</h2>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-bezier2"></i> Binary Fork-Join Computational Paradigm</div>
+        <div class="content">
+          <p>The algorithms are designed and analyzed in the standard shared-memory <strong>work-span model</strong> with binary forking. Each thread behaves as a sequential RAM augmented with an instruction <code>fork</code>, which creates two child threads executing in parallel. The parent thread suspends until both children synchronize via <code>join</code>. A parallel loop over \(n\) elements is constructed as a balanced binary fork tree with depth \(O(\log n)\). The entire computation is formally modeled as a <strong>Directed Acyclic Graph (DAG)</strong>:</p>
+          <ul>
+            <li><strong>Work (\(W\)):</strong> The total number of operations executed across all vertices in the DAG. This is equivalent to the algorithm's sequential running time on a single processor.</li>
+            <li><strong>Span (\(S\)):</strong> The length of the longest directed path (critical path) within the DAG. It represents the minimum possible execution time on an infinite number of processors.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sim-container">
+        <div class="sim-header">// SIMULATION: FORK-JOIN DAG, WORK W, AND SPAN S</div>
+        <div id="sim-forkjoin" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-fj-start" class="btn-primary" onclick="PKD.fj.animStart()"><i class="bi bi-play-fill"></i> Start</button>
+          <button id="btn-fj-reset" class="btn-secondary" onclick="PKD.fj.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-calculator"></i> Scheduling Theorem (Brent's Lemma & Work-Stealing)</div>
+        <div class="content">
+          <p>By <strong>Brent's Theorem</strong>, any greedy parallel scheduler can execute a computation with work \(W\) and span \(S\) on \(\rho\) processors in time:</p>
+          <p style="text-align:center">\[ T_\rho \le \frac{W}{\rho} + S \]</p>
+          <p>In distributed runtime systems, utilizing a <strong>randomized work-stealing scheduler</strong> (Blumofe & Leiserson, 1999), idle processors steal tasks from busy processors' double-ended queues. The execution time satisfies:</p>
+          <p style="text-align:center">\[ T_\rho = \frac{W}{\rho} + O(S) \quad \text{with high probability (whp)} \]</p>
+          <p><strong>Algorithmic Consequence:</strong> The maximum achievable speedup is bounded by \(\frac{W}{S}\) (the <em>parallelism</em>). To scale near-linearly to massive multi-core systems (\(\rho = 96, 128, \dots\)), the span \(S\) must be strictly <strong>polylogarithmic</strong> in \(n\) (\(S = O(\log^c n)\)), while work \(W\) must remain optimal.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 5. IDEAL CACHE ============ -->
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> 5. Preliminaries: The Ideal-Cache Model & Memory Hierarchy</h2>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-memory"></i> Two-Level Memory Model (Frigo, Leiserson, Prokop, Ramachandran, 1999)</div>
+        <div class="content">
+          <p>To analyze memory traffic independent of specific hardware cache configurations, we adopt the classic <strong>ideal-cache model</strong>:</p>
+          <ul>
+            <li>The memory system consists of two levels: an internal small memory (the <strong>cache</strong>) of capacity \(M\), and an unbounded external memory (the <strong>main memory</strong>).</li>
+            <li>Both memories are partitioned into uniform blocks (cache lines) of size \(B\).</li>
+            <li>The CPU can only operate on data residing in cache, with zero access penalty.</li>
+            <li>Accessing data not present in cache triggers a <strong>block transfer</strong> (cache miss) that loads a block of size \(B\) from main memory at unit cost.</li>
+            <li>The <strong>cache complexity</strong> \(Q\) is the total number of block transfers executed.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sim-container">
+        <div class="sim-header">// SIMULATION: BLOCK TRANSFERS, CACHE CAPACITY M, AND EVICTION</div>
+        <div id="sim-cache" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-cache-start" class="btn-primary" onclick="PKD.cache.animStart()"><i class="bi bi-play-fill"></i> Start</button>
+          <button id="btn-cache-reset" class="btn-secondary" onclick="PKD.cache.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-calculator"></i> The Mathematics of Cache Bound: Why \(\log_M n\)?</div>
+        <div class="content">
+          <p>Applying the change-of-base logarithmic identity:</p>
+          <p style="text-align:center">\[ \log_M n = \frac{\log_2 n}{\log_2 M} \]</p>
+          <p><strong>The Classical Bottleneck:</strong> A standard parallel partitioning routine partitions data 1 level at a time. Across \(\log_2 n\) tree levels, every level performs a full scan over \(n\) points, costing \(O(n/B)\) block transfers per level, culminating in a suboptimal cache complexity of \(O\left(\frac{n}{B}\log_2 n\right)\).</p>
+          <p><strong>Pkd-tree's Innovation:</strong> Pkd-tree builds \(\lambda = \Theta(\log M)\) tree levels concurrently in a single data movement pass. Once a subproblem fits into cache size \(M\), all subsequent internal splits occur with <strong>zero additional block transfers</strong>. The total number of memory passes is reduced from \(\log_2 n\) to:</p>
+          <p style="text-align:center">\[ \frac{\log_2 n}{\lambda} = \frac{\log_2 n}{\Theta(\log_2 M)} = O(\log_M n) \implies Q = O\!\left(\frac{n}{B}\log_M n\right) \]</p>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-shield-check"></i> Theoretical vs. Real-World Caches: Sleator-Tarjan Competitive Ratio</div>
+        <div class="content">
+          <p>The ideal-cache model assumes an optimal offline replacement policy (Belady's MIN algorithm). Is this realistic for practical hardware? Yes!</p>
+          <p>By the seminal <strong>Sleator-Tarjan theorem</strong> (1985), an online Least Recently Used (<strong>LRU</strong>) or First-In-First-Out (<strong>FIFO</strong>) cache with capacity \(2M\) incurs at most twice the number of cache misses as an optimal offline cache of capacity \(M\). Asymptotically, hardware LRU caches preserve the theoretical bounds.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 6. FORMAL DEFINITIONS ============ -->
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> 6. Formal Specifications & Weight-Balancing Mathematics</h2>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-signpost-split"></i> Formal Splitters and Tree Representation</div>
+        <div class="content">
+          <p>Points reside in \(\mathbb{R}^D\), and distances are Euclidean \(\|p - q\|_2 = \sqrt{\sum_{i=1}^D (p[i] - q[i])^2}\). An axis-aligned partition hyperplane is defined by a <strong>splitter</strong> tuple \(\langle d, x \rangle\), where \(1 \le d \le D\) is the split dimension and \(x \in \mathbb{R}\) is the coordinate threshold.</p>
+          <p>Every interior node \(T\) stores:</p>
+          <ul>
+            <li>Splitter definition \(\langle d, x \rangle\).</li>
+            <li>Subtree pointers \(T.lc\) (points with \(p[d] < x\)) and \(T.rc\) (points with \(p[d] \ge x\)).</li>
+            <li>Subtree weight \(|T|\): the total number of points contained in subtree \(T\).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-bullseye"></i> The 3 Query Workloads: Formal Formulation</div>
+        <div class="content">
+          <ul>
+            <li><strong>k-Nearest Neighbors (k-NN):</strong> Given a query point \(q \in \mathbb{R}^D\), retrieve the set \(K \subset P\) such that \(|K| = k\) and \(\forall p \in K, \forall p' \in P \setminus K : \|p - q\|_2 \le \|p' - q\|_2\).</li>
+            <li><strong>Orthogonal Range Report:</strong> Given an axis-aligned bounding hyper-rectangle \(R = \prod_{i=1}^D [l_i, u_i]\), return all points \(p \in P\) such that \(l_i \le p[i] \le u_i\) for all \(1 \le i \le D\).</li>
+            <li><strong>Orthogonal Range Count:</strong> Return the cardinality \(|\{p \in P \mid p \in R\}|\).
+              <br><span style="color:var(--teal)"><em>Subtree Weight Pruning:</em></span> Because each node stores its weight \(|T|\), if a node's bounding box is strictly enclosed within \(R\), the algorithm directly adds \(|T|\) in <strong>\(O(1)\)</strong> time without exploring the subtree!</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-sliders"></i> Weight-Balance Formalism & Height Theorem</div>
+        <div class="content">
+          <p>Given the balancing parameter \(\alpha \in [0, 0.5]\), a kd-tree subtree \(T\) is <strong>weight-balanced</strong> if and only if:</p>
+          <p style="text-align:center; font-size:1.2rem;">
+            \[ 0.5 - \alpha \;\le\; \frac{|T.lc|}{|T|} \;\le\; 0.5 + \alpha \]
+          </p>
+          <p><strong>Height Bound Proof:</strong> In any weight-balanced tree, each child contains at most \((0.5 + \alpha)|T|\) points. Therefore, for an arbitrary path from root to leaf in a tree of size \(n\), the depth \(h\) satisfies:</p>
+          <p style="text-align:center">
+            \[ n \cdot (0.5 + \alpha)^h \ge 1 \implies h \le \frac{\log n}{\log \left(\frac{1}{0.5 + \alpha}\right)} = O(\log n) \]
+          </p>
+          <p>For example, with \(\alpha = 0.2\), each branch retains at most \(70\%\) of the points, yielding a bounded maximum height of \(h \le \frac{\log_2 n}{\log_2(1/0.7)} \approx 1.94 \log_2 n\).</p>
+        </div>
+      </div>
+
+      <div class="sim-container">
+        <div class="sim-header">// SIMULATION: WEIGHT-BALANCED MONITORING (α = 0.2)</div>
+        <div id="sim-balance" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-bal-start" class="btn-primary" onclick="PKD.bal.animStart()"><i class="bi bi-play-fill"></i> Start</button>
+          <button id="btn-bal-reset" class="btn-secondary" onclick="PKD.bal.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-question-circle"></i> Why Weight-Balance Instead of Height-Balance?</div>
+        <div class="content">
+          <p>Classic balanced trees (such as AVL or Red-Black trees) maintain <em>height balance</em> via local rotations. In a spatial kd-tree, however, rotating two nodes changes the coordinate cut dimensions, scrambling the geometric space and requiring full point re-evaluation.</p>
+          <p>Instead, <strong>weight-balancing</strong> directly controls the exact number of points in each subproblem. This enables a <strong>lazy rebalancing strategy</strong>: when an update unbalances a subtree, the cost of rebuilding it in parallel is strictly proportional to the number of points it contains, allowing amortized analysis (Overmars' reconstruction theorem) to prove optimal update bounds.</p>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-journal-text"></i> Formal Notations Summary (Table 2 of Paper)</div>
+        <div class="content">
+          <div class="notation-grid">
+            <div class="notation-item"><span class="notation-symbol">T, T.lc, T.rc</span> Subtree root, left child, right child</div>
+            <div class="notation-item"><span class="notation-symbol">n, m</span> Tree size (\(n\)), batch update size (\(m\))</div>
+            <div class="notation-item"><span class="notation-symbol">D, d</span> Total dimensions (\(D\)), cutting dimension (\(d\))</div>
+            <div class="notation-item"><span class="notation-symbol">&phi;</span> Leaf wrap capacity threshold (\(\phi = O(1)\))</div>
+            <div class="notation-item"><span class="notation-symbol">&lambda;</span> Levels in tree skeleton (\(\lambda = \Theta(\log M)\))</div>
+            <div class="notation-item"><span class="notation-symbol">T (mathcal)</span> Tree skeleton of height \(\lambda\) (\(2^\lambda\) leaves)</div>
+            <div class="notation-item"><span class="notation-symbol">S, s, &sigma;</span> Sample set (\(S\)), size \(s = 2^\lambda \sigma\), oversampling factor \(\sigma\)</div>
+            <div class="notation-item"><span class="notation-symbol">&alpha;</span> Weight-balancing tolerance (\(\alpha \in [0, 0.5]\))</div>
+            <div class="notation-item"><span class="notation-symbol">M, B</span> Cache size (\(M\)), cacheline/block size (\(B\))</div>
+            <div class="notation-item"><span class="notation-symbol">whp</span> With high probability: \(\ge 1 - n^{-c}\) for \(c > 0\)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROADMAP TO CHAPTERS 3 & 4 -->
+      <div class="card-def" style="margin-top: 2rem;">
+        <div class="header"><i class="bi bi-arrow-right-circle-fill"></i> Academic Bridge: Progression to Chapters 3 & 4</div>
+        <div class="content">
+          <p>Having established the mathematical model, cache boundaries, and weight invariants, the paper develops the core algorithmic engines:</p>
+          <ol>
+            <li><strong>Chapter 3 — Parallel Construction & Multi-Level Sieving:</strong> 
+              How to construct the tree skeleton using an oversampled set \(S\) without moving all data, followed by parallel sieving via chunking, local count matrix \(A\), and column-major exclusive prefix-sum matrix \(B\) to route points into \(2^\lambda\) buckets in a single pass.
+            </li>
+            <li><strong>Chapter 4 — Dynamic Batch Updates & Amortized Rebalancing:</strong> 
+              How to route a batch of \(m\) insertions/deletions through the tree skeleton using sieving, and how lazy local rebuilds preserve the \(\alpha\) weight-balance invariant with optimal amortized work and cache complexity.
+            </li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="back-btn-wrap">
+      <a href="../index.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> Back to ADS Index</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · ADS · 07 · Parallel kd-tree</p>
+  </footer>
+
+  <script src="../pkd-tree-sims.js?v=4"></script>
+  <script src="../../shared/katchkit.js"></script>
+</body>
+
+</html>

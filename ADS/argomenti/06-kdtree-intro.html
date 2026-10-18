@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kd-tree da Zero: Guida Visuale & Rigorosa — ADS</title>
+  <meta name="description"
+    content="Guida completa e rigorosa ai kd-tree spiegata da zero per studenti di Advanced Database Systems: dal fallimento degli indici compositi B-Tree, alla partizione cartesiana, fino al Nearest Neighbor col test della distanza al quadrato, le Range Query O(sqrt(n)) e il confronto con Quadtree e R-Tree.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../shared/katchkit.css?v=4">
+  <script src="../../shared/animation.js?v=4"></script>
+  <script src="../ads-data.js"></script>
+  <script>window.PAGE_DATA = ADS_DATA;</script>
+
+  <style>
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+      background: var(--bg-card, rgba(15, 23, 42, 0.5));
+      font-size: 0.95rem;
+    }
+    .summary-table th {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--teal, #22d3ee);
+      padding: 12px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      text-align: left;
+      border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    }
+    .summary-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-soft, #cbd5e1);
+      vertical-align: middle;
+    }
+    .summary-table tr:last-child td { border-bottom: none; }
+
+    /* Code block styling */
+    .code-box {
+      background: #0b0f19;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 1rem 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+      overflow-x: auto;
+    }
+    .code-box .kw { color: #f43f5e; font-weight: 600; }
+    .code-box .fn { color: #38bdf8; }
+    .code-box .cm { color: #64748b; font-style: italic; }
+    .code-box .num { color: #f59e0b; }
+    .code-box .str { color: #10b981; }
+  </style>
+</head>
+
+<body class="dot-grid theme-teal">
+  <aside class="so-sidebar">
+    <div class="sb-label">Macroargomenti</div>
+    <ul class="sb-pages"></ul>
+    <div class="sb-label">In questa pagina</div>
+    <ul class="sb-sections"></ul>
+  </aside>
+
+  <site-navbar logo-text="// ADS · kd-tree da Zero" back-url="../index.html" back-text="Indice ADS"></site-navbar>
+
+  <!-- HERO -->
+  <div class="kk-hero" style="min-height:55vh">
+    <div class="kk-hero-glow"></div>
+    <span class="kk-hero-eyebrow">GUIDA VISUALE & RIGOROSA · ADS FONDAMENTI</span>
+    <h1 class="kk-hero-title">Cos'è un kd-tree?</h1>
+    <p class="kk-hero-sub" style="max-width:720px">
+      La guida definitiva per chi non ha mai visto alberi spaziali multidimensionali: dal fallimento degli indici compositi B-Tree, alla partizione cartesiana ricorsiva, fino al test della distanza euclidea al quadrato per il Nearest Neighbor e la derivazione geometrica di \(O(\sqrt{n})\).
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="content-wrap">
+
+    <div class="nav-breadcrumb">
+      <a href="https://7Katch.github.io">7Katch.github.io</a><span>/</span>
+      <a href="../index.html">ADS</a><span>/</span>
+      <span>kd-tree da Zero</span>
+    </div>
+
+    <!-- ============ SEZIONE 1: IL PROBLEMA ============ -->
+    <div class="section-block" id="section-1">
+      <h2><span class="dot"></span> 1. Il Problema: Perché un normale albero binario (BST) fallisce in 2D?</h2>
+
+      <p>
+        Negli esami base di algoritmi e programmazione hai studiato gli <strong>alberi binari di ricerca (BST)</strong>. Un BST eccelle quando i dati sono ordinati lungo una <strong>singola dimensione scalare</strong> (ad esempio: cercare un cliente per <code>ID</code> o un conto per <code>Saldo</code>).
+        Poiché l'insieme dei numeri reali \(\mathbb{R}\) ammette un <em>ordinamento totale lineare</em>, possiamo sempre decidere inequivocabilmente se una chiave è a sinistra (\(<\)) o a destra (\(\ge\)). In tempo logaritmico \(O(\log n)\) troviamo qualsiasi elemento.
+      </p>
+
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-exclamation-triangle-fill"></i> Il Paradosso Multidimensionale: In \(\mathbb{R}^D\) Non Esiste un Ordinamento Totale Naturale!</div>
+        <div class="content">
+          <p>Cosa succede se i record hanno 2 o più coordinate, come coordinate GPS <strong>(Latitudine, Longitudine)</strong>, o record bancari <strong>(Età, Stipendio)</strong>?</p>
+          <p>Dati due punti \(P_1 = (25, 80000)\) e \(P_2 = (45, 30000)\): <em>chi viene prima e chi viene dopo?</em> \(P_1\) è più giovane, ma \(P_2\) guadagna meno. Non esiste un ordine univoco naturale nello spazio continuo a più dimensioni!</p>
+          <p>Se crei un classico BST ordinato solo per <em>Età (X)</em>, l'albero è <strong>completamente cieco</strong> rispetto allo <em>Stipendio (Y)</em>. Quando esegui una query congiunta (es. <em>"Trova persone con Età \(\in [30, 70]\) E Stipendio \(\in [60k, 95k]\)"</em>), l'albero su X seleziona un sottoinsieme di candidati, ma dovrai scansionarli uno per uno per verificare Y, degenerando in una lenta scansione lineare!</p>
+        </div>
+      </div>
+
+      <!-- SIMULAZIONE 1 -->
+      <div class="sim-container">
+        <div class="sim-header">// SIMULAZIONE 1: IL FALLIMENTO DI UN INDICE A 1 SOLA DIMENSIONE</div>
+        <div id="sim-fail-1d" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-f1d-start" class="btn-primary" onclick="KDI.fail1D.animStart()"><i class="bi bi-play-fill"></i> Avvia Simulazione</button>
+          <button id="btn-f1d-reset" class="btn-secondary" onclick="KDI.fail1D.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-question-diamond-fill"></i> E un indice composito SQL B-Tree: <code>CREATE INDEX ON (X, Y)</code>?</div>
+        <div class="content">
+          <p>Uno studente di basi di dati potrebbe obiettare: <em>"Perché non usiamo un indice B-Tree composito su entrambe le colonne (X, Y)?"</em></p>
+          <p>Un B-Tree composito su <code>(X, Y)</code> ordina i dati in <strong>ordine lessicografico</strong> (come un dizionario: prima ordina per X; a parità di X, ordina per Y). Funziona meravigliosamente per query con uguaglianza stretta su X (es. <code>WHERE X = 30 AND Y BETWEEN 10 AND 20</code>).</p>
+          <p>Ma quando <strong>entrambe le coordinate hanno un intervallo aperto</strong> (es. <code>WHERE X BETWEEN 30 AND 70 AND Y BETWEEN 60 AND 95</code>), il B-Tree individua la prima foglia con \(X \ge 30\), ma da quel punto in poi deve scansionare sequenzialmente tutti i record fino a \(X = 70\), perché lungo quell'intervallo i valori di Y oscillano continuamente! Un B-Tree composito <strong>non è un indice spaziale</strong>: abbiamo bisogno di una partizione geometrica simmetrica.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SEZIONE 2: L'INTUIZIONE CHIAVE ============ -->
+    <div class="section-block" id="section-2">
+      <h2><span class="dot"></span> 2. L'Intuizione Geometrica: Tagliare lo Spazio ad Assi Alternati</h2>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-scissors"></i> Come Funziona il Partizionamento dello Spazio (Bentley, 1975)</div>
+        <div class="content">
+          <p>Un kd-tree (k-dimensional tree) è un albero binario in cui <strong>ogni livello discrimina su una dimensione diversa</strong>, alternandole ricorsivamente:</p>
+          <ul>
+            <li><strong>Livello 0 (Radice):</strong> Traccia un iperpiano <em>verticale</em> (taglio su <strong>X</strong>). Lo spazio viene diviso in due semispazi: semispazio sinistro (\(x < x_{med}\)) e destro (\(x \ge x_{med}\)).</li>
+            <li><strong>Livello 1 (Figli della radice):</strong> Si cambia asse! Si traccia un iperpiano <em>orizzontale</em> (taglio su <strong>Y</strong>). Ciascun semispazio viene diviso in quadrante inferiore (\(y < y_{med}\)) e superiore (\(y \ge y_{med}\)).</li>
+            <li><strong>Livello 2 (Nipoti):</strong> Si torna all'asse <strong>X</strong>, dividendo ciascun quadrante con nuove rette verticali.</li>
+            <li><strong>In generale per \(D\) dimensioni:</strong> Si alternano gli assi con la regola modulo:
+              \[ d = (\text{depth} \bmod D) + 1 \quad \implies \quad X \to Y \to Z \to X \to \dots \]
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SIMULAZIONE 2 -->
+      <div class="sim-container">
+        <div class="sim-header">// SIMULAZIONE 2: COSTRUZIONE PASSO-PASSO (PIANO CARTESIANO + ALBERO BINARIO)</div>
+        <div id="sim-build-2d" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-b2d-start" class="btn-primary" onclick="KDI.build2D.animStart()"><i class="bi bi-play-fill"></i> Avvia Costruzione</button>
+          <button id="btn-b2d-reset" class="btn-secondary" onclick="KDI.build2D.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-check-circle-fill"></i> La Regola della Mediana: Perché l'Albero è Bilanciato</div>
+        <div class="content">
+          <p>Perché l'albero abbia un'altezza minima garantita \(O(\log n)\), ad ogni passo la coordinata di taglio deve essere esattamente la <strong>mediana</strong> dei punti rispetto alla dimensione attiva:</p>
+          <p style="text-align:center">\[ x_{\text{cut}} = \text{median}\big(\{ p[d] \mid p \in P \}\big) \]</p>
+          <p>Se abbiamo \(N\) punti, esattamente \(\lfloor N/2 \rfloor\) cadono a sinistra e \(\lceil N/2 \rceil\) a destra. Di conseguenza, l'altezza è rigorosamente limitata a:</p>
+          <p style="text-align:center">\[ h = \lfloor \log_2 n \rfloor + 1 = O(\log n) \]</p>
+          <p>Ordinare completamente \(N\) punti ad ogni livello con un algoritmo di sorting generico richiederebbe \(O(N \log N)\), portando la costruzione totale a \(O(n \log^2 n)\). Possiamo fare di meglio?</p>
+          <ul>
+            <li><strong>Quickselect (\(O(n)\) tempo medio):</strong> Per trovare la mediana basta la selezione lineare, partizionando i punti senza ordinarli tutti. La ricorrenza totale \(T(n) = 2T(n/2) + O(n)\) garantisce un tempo totale ottimo di <strong>\(W = O(n \log n)\)</strong>.</li>
+            <li><strong>Pre-sorting iniziale:</strong> In alternativa, si possono pre-ordinare i punti lungo ciascuna delle \(D\) dimensioni una sola volta all'avvio in \(O(D \cdot n \log n)\), mantenendo le liste partizionate ad ogni livello.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-arrows-fullscreen"></i> Variante Avanzata: Alternanza vs. Dimensione con Massima Dispersione (Widest Spread)</div>
+        <div class="content">
+          <p>Nel kd-tree didattico alterniamo rigidamente \(X \to Y \to X \to Y\). Ma cosa succede se i dati sono distribuiti lungo una striscia orizzontale sottile (es. \(X \in [0, 1000]\) e \(Y \in [0, 1]\))?</p>
+          <p>Alternare rigidamente costringerebbe a tagliare su Y, creando celle strettissime e allungate ("a spillo"), inefficienti da potare. Nei sistemi ad alte prestazioni (e nel Pkd-tree del nostro corso), si sceglie invece la <strong>dimensione con massima dispersione (Widest Stretch)</strong>:
+            \[ d = \arg\max_{1 \le i \le D} (\max p[i] - \min p[i]) \]
+          In questo modo le scatole rimangono il più possibile cubiche (isotrope), massimizzando il pruning durante le query geometriche.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SEZIONE 3: ANATOMIA E CHIARIMENTO SULLE FOGLIE ============ -->
+    <div class="section-block" id="section-3">
+      <h2><span class="dot"></span> 3. Anatomia di un Nodo: Dove Vengono Salvati i Punti?</h2>
+
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-patch-question-fill"></i> Chiarezza Fondamentale: Point-Node vs. Leaf-Wrapped kd-tree</div>
+        <div class="content">
+          <p>Spesso gli studenti si confondono leggendo manuali diversi. Esistono storicamente due varianti di kd-tree:</p>
+          <ul>
+            <li><strong>kd-tree Classico (Point-Node, Bentley 1975):</strong> Ogni nodo interno contiene <em>un singolo punto</em> del dataset, e l'iperpiano passa esattamente per quel punto. Gli altri punti vengono divisi tra figlio sinistro e destro.</li>
+            <li><strong>kd-tree per Database e Sistemi (Point-Region / Leaf-Wrapped, usato nel nostro corso e nel Pkd-tree):</strong> I nodi interni contengono <strong>soltanto lo splitter geometrico \(\langle d, x \rangle\)</strong> (un numero reale e un asse), mentre <strong>tutti i punti reali risiedono esclusivamente nei nodi foglia</strong>!</li>
+          </ul>
+          <p>La variante con foglie (Leaf-Wrapped) è nettamente superiore per l'hardware: permette di raggruppare fino a \(\phi\) punti in un array contiguo per ogni foglia, sfruttando le cacheline della CPU (\(B = 64\) byte) ed eliminando la frammentazione dei puntatori.</p>
+        </div>
+      </div>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-diagram-2"></i> Campi di un Nodo Interno \(T\)</div>
+        <div class="content">
+          <ul>
+            <li><strong>Splitter \(\langle d, x \rangle\):</strong> Dimensione di taglio \(d \in \{1, \dots, D\}\) e coordinata di separazione \(x \in \mathbb{R}\).</li>
+            <li><strong>Puntatore Sinistro (\(T.lc\)):</strong> Radice del sottoalbero per i punti con \(p[d] < x\).</li>
+            <li><strong>Puntatore Destro (\(T.rc\)):</strong> Radice del sottoalbero per i punti con \(p[d] \ge x\). (Per convenzione, i duplicati con \(p[d] = x\) vanno sempre nel ramo destro).</li>
+            <li><strong>Bounding Box della Cella:</strong> I limiti geometrici iper-rettangolari \([x_{\min}, x_{\max}] \times [y_{\min}, y_{\max}]\) della regione coperta da questo nodo.</li>
+            <li><strong>Peso del sottoalbero \(|T|\):</strong> Conteggio esatto del numero di punti contenuti nel ramo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SEZIONE 4: NEAREST NEIGHBOR & IL TEST DEL CERCHIO ============ -->
+    <div class="section-block" id="section-4">
+      <h2><span class="dot"></span> 4. Il Nearest Neighbor (1-NN) e il Test Matematico del Cerchio</h2>
+
+      <p>
+        La query più celebre del kd-tree è il <strong>Nearest Neighbor (1-NN)</strong>: dato un punto sonda \(Q \in \mathbb{R}^D\), individuare il punto \(P^*\) nel database a minima distanza euclidea da \(Q\):
+        \[ P^* = \arg\min_{p \in P} \|p - Q\|_2 = \arg\min_{p \in P} \sqrt{\sum_{i=1}^D (p[i] - Q[i])^2} \]
+      </p>
+
+      <!-- SIMULAZIONE 3 -->
+      <div class="sim-container">
+        <div class="sim-header">// SIMULAZIONE 3: 1-NN, BACKTRACKING E IL TEST DEL CERCHIO</div>
+        <div id="sim-nn-search" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-nn-start" class="btn-primary" onclick="KDI.nn.animStart()"><i class="bi bi-play-fill"></i> Cerca Vicino</button>
+          <button id="btn-nn-reset" class="btn-secondary" onclick="KDI.nn.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-calculator"></i> La Formula di Pruning: Come si Verifica se il Cerchio Tocca la Linea?</div>
+        <div class="content">
+          <p>Molti studenti credono che verificare se la sfera di ricerca attraversa l'iperpiano richieda calcoli trigonometrici complessi. In realtà, grazie al fatto che gli assi sono <strong>ortogonali e allineati</strong>, il calcolo è un'operazione scalare immediata:</p>
+          <p>Sia \(R\) la distanza euclidea dal punto query \(Q\) al miglior candidato trovato finora (current best). Consideriamo un nodo genitore con splitter \(\langle d, x_{\text{split}} \rangle\). La distanza minima tra \(Q\) e l'iperpiano di taglio lungo l'asse \(d\) è semplicemente:</p>
+          <p style="text-align:center; font-size:1.15rem;">
+            \[ \Delta_{\text{piano}} = \big| Q[d] - x_{\text{split}} \big| \]
+          </p>
+          <ul>
+            <li><strong>Se \(\Delta_{\text{piano}} \ge R\):</strong> La distanza minima dell'iperpiano è maggiore o uguale al raggio del cerchio. È <strong>fisicamente impossibile</strong> che esista un punto più vicino nel ramo opposto. <strong>POTATURA TOTALE (Pruning):</strong> Non scendiamo nell'altro sottoalbero!</li>
+            <li><strong>Se \(\Delta_{\text{piano}} < R\):</strong> Il cerchio attraversa la linea di taglio. Dobbiamo esplorare anche l'altro ramo (backtracking).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-cpu"></i> Ottimizzazione Ingegneristica: Usare Sempre la Distanza al Quadrato (\(L_2^2\))!</div>
+        <div class="content">
+          <p>Nei database di produzione, nei motori grafici e nei simulatori fisici, calcolare la radice quadrata <code>sqrt()</code> è un'operazione computazionalmente lenta.
+            Poiché la funzione \(f(x) = x^2\) è strettamente monotona crescente per valori positivi, <strong>confrontare le distanze equivale a confrontare i quadrati delle distanze</strong>!</p>
+          <p>Memorizziamo il raggio al quadrato \(R^2\). La condizione di pruning diventa semplicemente:</p>
+          <p style="text-align:center">\[ (Q[d] - x_{\text{split}})^2 \ge R^2 \]</p>
+          <p>Nessuna radice quadrata calcolata durante l'intera discesa dell'albero: le prestazioni aumentano dal 20% al 40%!</p>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-code-slash"></i> Pseudocodice Formale dell'Algoritmo 1-NN</div>
+        <div class="content">
+          <div class="code-box">
+<span class="kw">function</span> <span class="fn">nearestNeighbor</span>(node, Q, bestPoint, bestDistSq):
+    <span class="kw">if</span> node == <span class="num">null</span>: 
+        <span class="kw">return</span> (bestPoint, bestDistSq)
+
+    <span class="cm">// 1. Caso Base: Se siamo su una foglia, esamina i punti contenuti</span>
+    <span class="kw">if</span> node.isLeaf:
+        <span class="kw">for each</span> p <span class="kw">in</span> node.points:
+            d2 = <span class="fn">distSquared</span>(Q, p)
+            <span class="kw">if</span> d2 < bestDistSq:
+                bestPoint = p
+                bestDistSq = d2
+        <span class="kw">return</span> (bestPoint, bestDistSq)
+
+    <span class="cm">// 2. Scegli il figlio primario (quello che contiene Q)</span>
+    d = node.splitDim
+    <span class="kw">if</span> Q[d] < node.splitVal:
+        nearChild = node.lc;  farChild = node.rc
+    <span class="kw">else</span>:
+        nearChild = node.rc;  farChild = node.lc
+
+    <span class="cm">// 3. Scendi ricorsivamente PRIMA nel ramo più vicino</span>
+    (bestPoint, bestDistSq) = <span class="fn">nearestNeighbor</span>(nearChild, Q, bestPoint, bestDistSq)
+
+    <span class="cm">// 4. Backtracking con Pruning: la sfera tocca l'iperpiano di taglio?</span>
+    planeDistSq = (Q[d] - node.splitVal) * (Q[d] - node.splitVal)
+    <span class="kw">if</span> planeDistSq < bestDistSq:
+        <span class="cm">// Il cerchio tocca l'iperpiano: dobbiamo esplorare anche il ramo opposto</span>
+        (bestPoint, bestDistSq) = <span class="fn">nearestNeighbor</span>(farChild, Q, bestPoint, bestDistSq)
+
+    <span class="kw">return</span> (bestPoint, bestDistSq)
+          </div>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-layers-half"></i> Da 1-NN a k-NN: Il Trucco del Max-Heap</div>
+        <div class="content">
+          <p>E se volessimo trovare i <strong>\(k\)</strong> punti più vicini (es. \(k=10\)) invece di 1 solo?</p>
+          <p>Si utilizza una <strong>coda con priorità (Max-Heap)</strong> di capienza massima \(k\). Il raggio di potatura \(R\) non è fisso, ma è dinamicamente pari alla <em>distanza del punto peggiore (più lontano) attualmente presente nel Max-Heap</em>:</p>
+          <p style="text-align:center">\[ R = \max_{p \in \text{Heap}} \|p - Q\|_2 \]</p>
+          <p>Man mano che l'algoritmo scopre vicini migliori, li inserisce nel Max-Heap (espellendo l'elemento in cima). Di conseguenza, il raggio \(R\) <strong>si restringe continuamente durante la ricerca</strong>, rendendo il pruning sempre più aggressivo e rapido!</p>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-compass"></i> Strategia di Visita: Depth-First vs. Best-First Search</div>
+        <div class="content">
+          <p>L'algoritmo ricorsivo sopra implementa una visita <strong>Depth-First Search (DFS) con backtracking</strong>. Tuttavia, nei motori spaziali ad alte prestazioni si adotta spesso la variante <strong>Best-First Search (Arya & Mount, 1998)</strong>:</p>
+          <p>Invece dello stack di ricorsione, si mantiene una <em>Min-Priority Queue di sottoalberi candidati</em>, prioritizzati in base alla distanza minima tra la query \(Q\) e il bounding box della cella: \(\text{dist}(Q, \text{Box}(T))\). Si estrae sempre la scatola spaziale globalmente più vicina a \(Q\). Questo permette di raggiungere il vero vicino quasi all'istante ed è la base per la ricerca approssimata (\(\epsilon\)-ANN)!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SEZIONE 5: RANGE SEARCH & COMPLESSITÀ ============ -->
+    <div class="section-block" id="section-5">
+      <h2><span class="dot"></span> 5. Orthogonal Range Search: Perché il Costo è \(O(\sqrt{n})\)?</h2>
+
+      <p>Una <strong>Orthogonal Range Query</strong> richiede di trovare tutti i punti che ricadono all'interno di un iper-rettangolo allineato agli assi: \(R_{\text{query}} = [x_{\min}, x_{\max}] \times [y_{\min}, y_{\max}]\).</p>
+
+      <!-- SIMULAZIONE 4 -->
+      <div class="sim-container">
+        <div class="sim-header">// SIMULAZIONE 4: RICERCA IN UNA FINESTRA RETTANGOLARE (RANGE BOX)</div>
+        <div id="sim-range-search" class="sim-canvas"></div>
+        <div class="sim-controls">
+          <button id="btn-rng-start" class="btn-primary" onclick="KDI.range.animStart()"><i class="bi bi-play-fill"></i> Esegui Range Query</button>
+          <button id="btn-rng-reset" class="btn-secondary" onclick="KDI.range.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-box-seam"></i> Le 3 Relazioni di Inclusione Geometrica</div>
+        <div class="content">
+          <p>Sia \(\text{Box}(T)\) il bounding box della regione dello spazio coperta dal nodo \(T\), e \(R_{\text{query}}\) la nostra finestra di ricerca:</p>
+          <ul>
+            <li><strong>Caso 1: Disgiunzione Totale (\(\text{Box}(T) \cap R_{\text{query}} = \emptyset\))</strong><br>
+              La regione del nodo non tocca la query. <strong>POTATURA \(O(1)\):</strong> Si ritorna immediatamente senza scendere!</li>
+            <li><strong>Caso 2: Inclusione Totale (\(\text{Box}(T) \subseteq R_{\text{query}}\))</strong><br>
+              Tutti i punti del sottoalbero sono all'interno della finestra!
+              <br>• Se la query è <em>Range Report</em>: emettiamo tutti i punti del ramo.
+              <br>• Se la query è <em>Range Count</em>: aggiungiamo semplicemente il peso \(|T|\) in <strong>tempo \(O(1)\)</strong> senza visitare nessun figlio!</li>
+            <li><strong>Caso 3: Intersezione Parziale (\(\text{Box}(T) \cap \partial R_{\text{query}} \neq \emptyset\))</strong><br>
+              La finestra interseca i bordi della scatola: scendiamo ricorsivamente su entrambi i figli.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-formula">
+        <div class="header"><i class="bi bi-calculator"></i> Dimostrazione Formale: Da Dove Salta Fuori \(O(\sqrt{n})\)?</div>
+        <div class="content">
+          <p>Molti studenti all'esame rimangono sorpresi: <em>perché la complessità in 2D è \(O(\sqrt{n} + k)\) e non \(O(\log n)\)?</em> Ecco la rigorosa dimostrazione geometrica:</p>
+          <p>Immagina una retta infinita (uno dei bordi del nostro rettangolo di query) che attraversa il piano 2D. Quanti nodi del kd-tree può intersecare al massimo?</p>
+          <ol>
+            <li>La radice divide lo spazio su X (linea verticale). Una linea verticale di query prosegue da un solo lato dello splitter (non può attraversare contemporaneamente due rami paralleli).</li>
+            <li>Al livello 1 (taglio su Y), la retta verticale interseca <strong>entrambi</strong> i semipiani orizzontali (sopra e sotto).</li>
+            <li>Al livello 2 (ritorno a X), interseca nuovamente solo una delle divisioni.</li>
+          </ol>
+          <p>Quindi, ogni <strong>2 livelli di profondità</strong> dell'albero (dove la dimensione di un sottoalbero scende da \(N\) a \(N/4\)), la linea di query visita al più <strong>2 sottoalberi su 4</strong>. La relazione di ricorrenza sul numero di nodi visitati \(T(N)\) è:</p>
+          <p style="text-align:center; font-size:1.15rem;">
+            \[ T(N) = 2 \cdot T\left(\frac{N}{4}\right) + O(1) \]
+          </p>
+          <p>Applicando il <strong>Master Theorem</strong> (\(a = 2, b = 4\)):</p>
+          <p style="text-align:center">
+            \[ \log_b a = \log_4 2 = \frac{1}{2} \implies T(N) = O(N^{1/2}) = O(\sqrt{n}) \]
+          </p>
+          <p>Aggiungendo i \(k\) punti effettivamente riportati in output, la complessità finale è <strong>\(O(\sqrt{n} + k)\)</strong>. In uno spazio a \(D\) dimensioni generico, la ricorrenza diventa \(T(N) = 2^{D-1} T(N / 2^D) + O(1)\), portando a:
+            \[ T(N) = O\left(n^{1 - 1/D} + k\right) \]
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SEZIONE 6: AGGIORNAMENTI DINAMICI E LIMITI ============ -->
+    <div class="section-block" id="section-6">
+      <h2><span class="dot"></span> 6. Aggiornamenti Dinamici (Insert/Delete) e la Maledizione della Dimensionalità</h2>
+
+      <div class="card-warning">
+        <div class="header"><i class="bi bi-cone-striped"></i> Il Tallone d'Achille del kd-tree Classico: Gli Aggiornamenti</div>
+        <div class="content">
+          <p>Nei normali alberi binari bilanciati (AVL o Red-Black), quando inseriamo o cancelliamo una chiave, possiamo ribilanciare l'albero in tempo \(O(\log n)\) tramite <strong>rotazioni ad albero</strong>.</p>
+          <p><strong>Nei kd-tree le rotazioni sono impossibili!</strong> Se ruoti un nodo padre che taglia su X con un figlio che taglia su Y, scambi le dimensioni di partizione, distruggendo la consistenza geometrica di tutto il sottoalbero! Di conseguenza:</p>
+          <ul>
+            <li><strong>Inserimenti sparsi:</strong> Se inserisci punti senza ribilanciare, l'albero degenera gradualmente e l'altezza può diventare \(O(n)\).</li>
+            <li><strong>Cancellazioni complesse:</strong> Cancellare un nodo interno richiede di trovare il punto minimo nel sottoalbero destro lungo la dimensione \(d\) (operazione ricorsiva complessa) per sostituire la chiave di taglio.</li>
+          </ul>
+          <p>È precisamente per risolvere questo limite che la ricerca moderna ha introdotto il <strong>bilanciamento per peso (Weight-Balancing) e la ricostruzione locale</strong>, come vedremo nel paper del Pkd-tree.</p>
+        </div>
+      </div>
+
+      <div class="card-def">
+        <div class="header"><i class="bi bi-infinity"></i> La Maledizione della Dimensionalità (Curse of Dimensionality)</div>
+        <div class="content">
+          <p>Perché non usiamo un kd-tree per i database vettoriali di intelligenza artificiale (con embedding da 512, 768 o 1536 dimensioni)?</p>
+          <p>All'aumentare di \(D\), il volume di una sfera inscritta in un iper-cubo tende a zero:
+            \[ \lim_{D \to \infty} \frac{\text{Volume}(\text{Sfera}_D)}{\text{Volume}(\text{Cubo}_D)} = 0 \]
+          Questo significa geometricamente che quasi tutto il volume dello spazio risiede negli <em>angoli</em> dell'iper-cubo. Di conseguenza, la sfera di ricerca di un \(k\)-NN toccherà quasi tutti gli iperpiani di taglio, costringendo l'algoritmo a esplorare entrambi i figli quasi ad ogni livello. Per \(D > 15-20\), il tempo di ricerca degrada a \(O(n)\), cioè una scansione lineare sequenziale. Per dimensioni elevate si usano indici approssimati come <strong>HNSW (Hierarchical Navigable Small World)</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SEZIONE 7: CONFRONTO SPATIAL INDEXES ============ -->
+    <div class="section-block" id="section-7">
+      <h2><span class="dot"></span> 7. Panorama degli Indici Spaziali: kd-tree vs. Quadtree vs. R-Tree</h2>
+
+      <p>A un esame orale di Sistemi di Basi di Dati, una delle domande più frequenti è: <em>"Quando conviene usare un kd-tree e quando invece un R-tree o un Quadtree?"</em> Ecco la guida comparativa definitiva:</p>
+
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Struttura Dati</th>
+            <th>Tipo di Partizionamento</th>
+            <th>Celle Disgiunte?</th>
+            <th>Ideale Per...</th>
+            <th>Punto Debole</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>kd-tree</strong></td>
+            <td>Spaziale binario ad assi alternati</td>
+            <td><span class="badge-pill good">Sì (Disgiunte)</span></td>
+            <td>Punti isolati in dimensioni \(D \le 10\), query \(k\)-NN veloci</td>
+            <td>Aggiornamenti singoli costosi da ribilanciare</td>
+          </tr>
+          <tr>
+            <td><strong>Quadtree / Octree</strong></td>
+            <td>Spaziale a griglia (\(2^D\) figli fissi)</td>
+            <td><span class="badge-pill good">Sì (Disgiunte)</span></td>
+            <td>Computer graphics, compressione immagini, GIS 2D/3D</td>
+            <td>Albero profondo e sbilanciato se i punti sono concentrati a cluster</td>
+          </tr>
+          <tr>
+            <td><strong>R-Tree / R*-Tree</strong></td>
+            <td>Basato su oggetti (Bounding Boxes)</td>
+            <td><span class="badge-pill bad">No (Scatole sovrapposte!)</span></td>
+            <td>Forme geometriche estese (poligoni, strade, confini geografici)</td>
+            <td>La sovrapposizione delle scatole rallenta le ricerche ad albero</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card-warning" style="margin-top: 1.5rem;">
+        <div class="header"><i class="bi bi-mortarboard-fill"></i> FAQ & Domande Trabocchetto all'Esame Orale</div>
+        <div class="content">
+          <ul>
+            <li><strong>"Se ho già due indici separati su X e su Y, perché il database non fa una semplice Index Intersection?"</strong><br>
+            <em>Risposta del docente:</em> L'intersezione di due indici 1D (ad esempio fare l'intersezione tra le liste di ID di due B-Tree) richiede di recuperare due insiemi enormi di candidati e scansionarli entrambi in memoria. Il kd-tree scarta lo spazio non interessante a monte, senza generare liste intermedie.</li>
+            <li><strong>"Come si trova il minimo lungo la coordinata d per cancellare un nodo?"</strong><br>
+            <em>Risposta del docente:</em> In un normale BST basta andare sempre a sinistra. In un kd-tree, se il nodo figlio discrimina sulla dimensione \(d\), il minimo è nel sottoalbero sinistro. Ma se il figlio discrimina su un'altra dimensione \(d' \neq d\), il minimo potrebbe trovarsi <strong>sia a sinistra che a destra</strong>! Quindi la ricerca del minimo deve esplorare entrambi i rami.</li>
+            <li><strong>"Cosa cambia se usiamo la metrica di Manhattan (L1) invece di Euclidea (L2)?"</strong><br>
+            <em>Risposta del docente:</em> La sfera di ricerca diventa un iper-rombo (in 2D un quadrato ruotato di 45°). La distanza minima dall'iperpiano di taglio \(\langle d, x \rangle\) rimane esattamente \(|Q[d] - x|\), dimostrando che il kd-tree funziona nativamente con qualsiasi norma di Minkowski \(L_p\).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-tip">
+        <div class="header"><i class="bi bi-rocket-takeoff-fill"></i> Il Ponte Accademico: Sei Pronto per il Paper SIGMOD 2025!</div>
+        <div class="content">
+          <p>Complimenti! Ora hai tutte le basi teoriche, geometriche e algoritmiche dei kd-tree. Sei pronto per affrontare il paper di punta di SIGMOD 2025:</p>
+          <p><strong>Come parallelizzare la costruzione e gli aggiornamenti su 96 processori?</strong> Nel capitolo successivo scoprirai il <strong>Pkd-tree (Parallel kd-tree with Batch Updates)</strong>: campionamento dello skeleton \(\mathcal{T}\), sieving di memoria con matrici di prefix-sum in cache e bilanciamento per peso con tolleranza \(\alpha\).</p>
+          <div style="margin-top: 1.2rem;">
+            <a href="07-pkd-tree.html" class="btn btn-teal">
+              Vai al Paper SIGMOD: 07 · Parallel kd-tree (Pkd-tree) <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-btn-wrap">
+      <a href="../index.html" class="btn btn-ghost"><i class="bi bi-arrow-left"></i> Torna all'indice ADS</a>
+      <a href="07-pkd-tree.html" class="btn btn-teal">Capitolo Successivo: 07 · Pkd-tree <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+
+  <footer>
+    <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · ADS · Guida Completa kd-tree per Studenti</p>
+  </footer>
+
+  <script src="../kdtree-intro-sims.js?v=4"></script>
+  <script src="../../shared/katchkit.js"></script>
+</body>
+
+</html>
