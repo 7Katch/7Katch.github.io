@@ -653,6 +653,9 @@ class AnimFactory {
     const barY = p.height - barH;
 
     p.push();
+    p.rectMode(p.CORNER); // Assicura coordinate CORNER anche se drawFn precedente ha usato rectMode(CENTER)
+    p.textAlign(p.LEFT, p.TOP);
+
     // 1. Barra dedicata di sfondo con contrasto per isolare la didascalia dal resto del canvas
     p.fill(13, 17, 28, Math.min(capObj.alpha, 240));
     p.noStroke();
@@ -668,7 +671,6 @@ class AnimFactory {
     p.fill(KatchColors.teal[0], KatchColors.teal[1], KatchColors.teal[2], capObj.alpha);
     p.textFont('JetBrains Mono');
     p.textSize(12);
-    p.textAlign(p.LEFT, p.TOP);
     p.text('//', 20, barY + 16);
 
     // 3. Testo della didascalia allineato a sinistra (Word-style) con word-wrap automatico

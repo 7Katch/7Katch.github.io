@@ -55,9 +55,9 @@ function kdBuild(pts, ids, rect, depth, x0, x1, out, parent) {
 
 const simKd = pkdMakeSim('sim-kd',
   (p) => {
-    const s = p.height - 2 * PKD_MARGIN - 30;
-    p.L = { x: PKD_MARGIN, y: PKD_MARGIN, s };
-    p.T = { x0: p.L.x + s + PKD_MARGIN, x1: p.width - PKD_MARGIN / 2, y0: PKD_MARGIN + 20, gap: (s - 30) / 3 };
+    const s = 280;
+    p.L = { x: 30, y: 24, s };
+    p.T = { x0: p.L.x + s + 60, x1: p.width - 40, y0: 55, gap: (s - 30) / 3 };
     p.X = v => p.L.x + v * s;
     p.Y = v => p.L.y + s - v * s;
     p.pts = KD_POINTS.map(([x, y]) => ({ x, y, ...pkdRGB(KatchColors.slate), alpha: 255 }));
@@ -118,12 +118,15 @@ const simKd = pkdMakeSim('sim-kd',
       p.fill(10, 10, 20, n.alpha); p.textSize(11);
       p.text(n.ids.length + 'p', n.tx, ny(n));
     });
+
+    p.rectMode(p.CORNER); // Ripristina rectMode standard
   },
   (p, f, tl) => {
-    pkdCaption(tl, p.cap, 'n = 12 points in D = 2 dimensions');
+    pkdCaption(tl, p.cap, 'n = 12 points in D = 2 dimensions: building kd-tree');
     p.kd.splits.forEach((sp, k) => {
-      if (k === 0) pkdCaption(tl, p.cap, 'Root: widest dimension → split at the median');
-      if (k === 1) pkdCaption(tl, p.cap, 'Recursion: each subtree splits its own sub-space');
+      if (k === 0) pkdCaption(tl, p.cap, 'Root: widest dimension (x) → split at the median (x = 0.50)');
+      else if (k === 1) pkdCaption(tl, p.cap, 'Recursion: left sub-space splits on y at median (y = 0.48)');
+      else pkdCaption(tl, p.cap, `Recursion: split on ${sp.d === 0 ? 'x' : 'y'} at median (${sp.c.toFixed(2)})`);
       tl.to(sp, { alpha: 255, duration: 0.3 })
         .to(sp, { progress: 1, duration: 0.6, ease: 'power2.inOut' }, '<')
         .to(sp.left.map(i => p.pts[i]), { ...pkdRGB(KatchColors.teal), duration: 0.3, stagger: 0.03 }, '>-0.15')
