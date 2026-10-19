@@ -141,7 +141,7 @@
         <div class="header"><i class="bi bi-diagram-3"></i> kd-tree Architecture (Bentley, 1975)</div>
         <div class="content">
           <p>A <strong>binary spatial partitioning tree</strong> designed to index points in \(D\)-dimensional Euclidean space \(\mathbb{R}^D\).
-            Each internal node signifies an axis-aligned splitting hyperplane \(\langle d, x \rangle\). Points with coordinate value smaller than \(x\) on dimension \(d\) belong to the left subtree, while the remainder fall into the right subtree. The space is partitioned recursively until the cardinality of a sub-space drops to or below the <strong>leaf wrap threshold \(\phi\)</strong>.</p>
+            Each internal node signifies an axis-aligned splitting hyperplane \(\langle d, x \rangle\). Points with coordinate value smaller than \(x\) on dimension \(d\) belong to the left subtree, while the remainder fall into the right subtree. The space is partitioned recursively until the cardinality of a sub-space drops to or below the <strong>leaf wrap threshold \(\phi\)</strong> (a small constant, where all remaining points reside directly in a flat leaf; \(\phi = 32\) in Pkd-tree).</p>
           <p><strong>Dimensionality Notation:</strong> In this paper, \(D\) explicitly denotes the dimensionality (rather than \(k\)) to avoid confusion with the \(k\) in <em>k-nearest neighbor</em> (\(k\)-NN) queries.</p>
         </div>
       </div>
@@ -154,27 +154,6 @@
           <span id="badge-kd-step" class="sim-step-badge">Slide 1 / 5</span>
           <button id="btn-kd-next" class="btn-primary" onclick="PKD.kd.next()">Next <i class="bi bi-chevron-right"></i></button>
           <button id="btn-kd-reset" class="btn-secondary" onclick="PKD.kd.reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
-        </div>
-      </div>
-
-
-      <div class="card-warning">
-        <div class="header"><i class="bi bi-exclamation-octagon-fill"></i> The Curse of Dimensionality (\(D \approx 10\))</div>
-        <div class="content">
-          <p>The kd-tree is practically unmatched for dimensions up to \(D \approx 10-12\). Why not higher dimensions?</p>
-          <p>In high-dimensional space, the ratio of the volume of a hyper-sphere to its bounding hyper-cube shrinks exponentially towards zero. Consequently, a \(k\)-NN search sphere will inevitably intersect almost every axis-aligned partition hyperplane, forcing the search algorithm to backtrack through virtually all branches. At \(D > 15-20\), a kd-tree typically degrades to a brute-force \(O(n)\) linear scan. For \(D \le 10\), however, spatial pruning remains mathematically optimal.</p>
-        </div>
-      </div>
-
-      <div class="card-tip">
-        <div class="header"><i class="bi bi-memory"></i> Systems Insight: The Leaf Wrap Threshold \(\phi\)</div>
-        <div class="content">
-          <p>Why do we stop splitting when \(|P| \le \phi\) (where \(\phi\) is a small constant, e.g. 16 to 32) instead of building a tree with single-point leaves?</p>
-          <ul>
-            <li><strong>Cacheline Packing:</strong> A single point requires its own node object and pointers (16–24 bytes per node). By packing \(\phi\) points into a contiguous leaf array, all points in the leaf fit inside one or two hardware cachelines (\(B = 64\) bytes).</li>
-            <li><strong>Pointer Overhead Elimination:</strong> Eliminates \(\approx 50\%\) of the tree's internal nodes, cutting tree pointer traversal and memory footprint in half.</li>
-            <li><strong>SIMD / Vectorized Linear Scan:</strong> Once the traversal reaches a leaf, computing Euclidean distance over \(\phi\) continuous coordinates is heavily vectorized using CPU SIMD instructions (AVX-512 / AVX2).</li>
-          </ul>
         </div>
       </div>
     </div>
@@ -255,27 +234,11 @@
       </div>
     </div>
 
-    <!-- ============ 3. CONTRIBUTIONS ============ -->
+    <!-- ============ 3. BENCHMARK EVIDENCE ============ -->
     <div class="section-block" id="section-3">
-      <h2><span class="dot"></span> 3. The Pkd-tree Architecture & Benchmark Evidence</h2>
+      <h2><span class="dot"></span> 3. Empirical Evidence: Benchmark Evaluation (Table 1)</h2>
 
-      <div class="card-def">
-        <div class="header"><i class="bi bi-cpu"></i> Two Foundational Theoretical Breakthroughs</div>
-        <div class="content">
-          <p><strong>1) Cache-Optimal Parallel Construction (Chapter 3):</strong> Instead of shifting the entire dataset across memory at each individual tree level, Pkd-tree constructs \(\lambda\) levels simultaneously in a single pass of data movement. Partition splitters are calculated using a small <strong>sample set</strong>, followed by a cache-conscious <strong>sieving routine</strong> that partitions points into \(2^\lambda\) buckets. By configuring \(\lambda = \Theta(\log M)\), the algorithm achieves simultaneously:</p>
-          <p style="text-align:center; font-size:1.15rem;">
-            \[ W = O(n\log n) \qquad Q = O\!\left(\frac{n}{B}\log_M n\right) \qquad S = \text{polylog}(n) \quad \text{whp} \]
-          </p>
-          <p><strong>2) Reconstruction-Based Weight-Balanced Updates (Chapter 4):</strong> Classic rebalancing primitives—such as tree rotations (AVL/Red-Black) or B-tree node splits/merges—are geometrically impossible in kd-trees without re-sorting points. Pkd-tree enforces <strong>weight-balancing</strong> with a <em>lazy tolerance parameter \(\alpha\)</em>: deviations in subtree weights are tolerated up to factor \(\alpha\). Once violated, only the localized affected subtree is <strong>reconstructed in parallel</strong> using the fast construction subroutine.</p>
-        </div>
-      </div>
-
-      <div class="card-tip">
-        <div class="header"><i class="bi bi-search"></i> Single-Tree Query Advantage</div>
-        <div class="content">
-          <p>Because the Pkd-tree maintains a <strong>single coherent kd-tree</strong> at all times, all standard, highly optimized static kd-tree query algorithms run directly without alteration, completely avoiding the multi-tree aggregation bottleneck of the logarithmic method.</p>
-        </div>
-      </div>
+      <p>To demonstrate the efficacy of the Pkd-tree against existing solutions, the authors present a benchmark summary directly in Section 1 (Table 1 of the paper), evaluating construction, batch updates, and queries across <strong>1 billion 2D points</strong> on a 96-core server.</p>
 
       <div class="sim-container">
         <div class="sim-header">// SIMULATION: BENCHMARK RESULTS (TABLE 1 FROM PAPER, 10⁹ POINTS)</div>
@@ -491,7 +454,7 @@
     <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · ADS · 07 · Parallel kd-tree</p>
   </footer>
 
-  <script src="../pkd-tree-sims.js?v=11"></script>
+  <script src="../pkd-tree-sims.js?v=12"></script>
   <script src="../../shared/katchkit.js"></script>
 </body>
 
