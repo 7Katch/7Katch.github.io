@@ -157,18 +157,6 @@
         </div>
       </div>
 
-      <div class="card-formula">
-        <div class="header"><i class="bi bi-bounding-box"></i> Splitting Strategy: Widest Stretch vs. Round-Robin</div>
-        <div class="content">
-          <p>A fundamental design decision is how to select the splitting dimension \(d\) at each interior node:</p>
-          <ul>
-            <li><strong>Classic Round-Robin Cycling (Bentley, 1975):</strong> Cycles dimensions in predetermined succession: \(d = (\text{depth} \bmod D) + 1\). If the dataset has disparate variance along different dimensions (e.g. latitude vs. elevation), round-robin forces splits on low-variance axes, yielding elongated, needle-shaped bounding boxes.</li>
-            <li><strong>Widest Dimension / Maximum Spread (Friedman et al., 1977; used in Pkd-tree):</strong> Always cuts the dimension with the largest spread:
-              \[ d = \arg\max_{1 \le i \le D} \left( \max_{p \in P} p[i] - \min_{p \in P} p[i] \right) \]
-              This ensures spatial partitions remain roughly <strong>hyper-cubical</strong> (isotropic), which minimizes the probability that search spheres in \(k\)-NN or bounding rectangles in range queries intersect multiple boundaries.</li>
-          </ul>
-        </div>
-      </div>
 
       <div class="card-warning">
         <div class="header"><i class="bi bi-exclamation-octagon-fill"></i> The Curse of Dimensionality (\(D \approx 10\))</div>
@@ -503,7 +491,7 @@
     <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · ADS · 07 · Parallel kd-tree</p>
   </footer>
 
-  <script src="../pkd-tree-sims.js?v=7"></script>
+  <script src="../pkd-tree-sims.js?v=11"></script>
   <script src="../../shared/katchkit.js"></script>
 </body>
 
