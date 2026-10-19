@@ -325,55 +325,11 @@
           <button id="btn-cache-reset" class="btn-secondary" onclick="PKD.cache.reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
       </div>
-
-      <div class="card-formula">
-        <div class="header"><i class="bi bi-calculator"></i> The Mathematics of Cache Bound: Why \(\log_M n\)?</div>
-        <div class="content">
-          <p>Applying the change-of-base logarithmic identity:</p>
-          <p style="text-align:center">\[ \log_M n = \frac{\log_2 n}{\log_2 M} \]</p>
-          <p><strong>The Classical Bottleneck:</strong> A standard parallel partitioning routine partitions data 1 level at a time. Across \(\log_2 n\) tree levels, every level performs a full scan over \(n\) points, costing \(O(n/B)\) block transfers per level, culminating in a suboptimal cache complexity of \(O\left(\frac{n}{B}\log_2 n\right)\).</p>
-          <p><strong>Pkd-tree's Innovation:</strong> Pkd-tree builds \(\lambda = \Theta(\log M)\) tree levels concurrently in a single data movement pass. Once a subproblem fits into cache size \(M\), all subsequent internal splits occur with <strong>zero additional block transfers</strong>. The total number of memory passes is reduced from \(\log_2 n\) to:</p>
-          <p style="text-align:center">\[ \frac{\log_2 n}{\lambda} = \frac{\log_2 n}{\Theta(\log_2 M)} = O(\log_M n) \implies Q = O\!\left(\frac{n}{B}\log_M n\right) \]</p>
-        </div>
-      </div>
-
-      <div class="card-tip">
-        <div class="header"><i class="bi bi-shield-check"></i> Theoretical vs. Real-World Caches: Sleator-Tarjan Competitive Ratio</div>
-        <div class="content">
-          <p>The ideal-cache model assumes an optimal offline replacement policy (Belady's MIN algorithm). Is this realistic for practical hardware? Yes!</p>
-          <p>By the seminal <strong>Sleator-Tarjan theorem</strong> (1985), an online Least Recently Used (<strong>LRU</strong>) or First-In-First-Out (<strong>FIFO</strong>) cache with capacity \(2M\) incurs at most twice the number of cache misses as an optimal offline cache of capacity \(M\). Asymptotically, hardware LRU caches preserve the theoretical bounds.</p>
-        </div>
-      </div>
     </div>
 
-    <!-- ============ 6. FORMAL DEFINITIONS ============ -->
+    <!-- ============ 6. WEIGHT-BALANCED TREES ============ -->
     <div class="section-block" id="section-6">
-      <h2><span class="dot"></span> 6. Formal Specifications & Weight-Balancing Mathematics</h2>
-
-      <div class="card-def">
-        <div class="header"><i class="bi bi-signpost-split"></i> Formal Splitters and Tree Representation</div>
-        <div class="content">
-          <p>Points reside in \(\mathbb{R}^D\), and distances are Euclidean \(\|p - q\|_2 = \sqrt{\sum_{i=1}^D (p[i] - q[i])^2}\). An axis-aligned partition hyperplane is defined by a <strong>splitter</strong> tuple \(\langle d, x \rangle\), where \(1 \le d \le D\) is the split dimension and \(x \in \mathbb{R}\) is the coordinate threshold.</p>
-          <p>Every interior node \(T\) stores:</p>
-          <ul>
-            <li>Splitter definition \(\langle d, x \rangle\).</li>
-            <li>Subtree pointers \(T.lc\) (points with \(p[d] < x\)) and \(T.rc\) (points with \(p[d] \ge x\)).</li>
-            <li>Subtree weight \(|T|\): the total number of points contained in subtree \(T\).</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="card-tip">
-        <div class="header"><i class="bi bi-bullseye"></i> The 3 Query Workloads: Formal Formulation</div>
-        <div class="content">
-          <ul>
-            <li><strong>k-Nearest Neighbors (k-NN):</strong> Given a query point \(q \in \mathbb{R}^D\), retrieve the set \(K \subset P\) such that \(|K| = k\) and \(\forall p \in K, \forall p' \in P \setminus K : \|p - q\|_2 \le \|p' - q\|_2\).</li>
-            <li><strong>Orthogonal Range Report:</strong> Given an axis-aligned bounding hyper-rectangle \(R = \prod_{i=1}^D [l_i, u_i]\), return all points \(p \in P\) such that \(l_i \le p[i] \le u_i\) for all \(1 \le i \le D\).</li>
-            <li><strong>Orthogonal Range Count:</strong> Return the cardinality \(|\{p \in P \mid p \in R\}|\).
-              <br><span style="color:var(--teal)"><em>Subtree Weight Pruning:</em></span> Because each node stores its weight \(|T|\), if a node's bounding box is strictly enclosed within \(R\), the algorithm directly adds \(|T|\) in <strong>\(O(1)\)</strong> time without exploring the subtree!</li>
-          </ul>
-        </div>
-      </div>
+      <h2><span class="dot"></span> 6. Weight-Balanced Trees (&alpha;-Balance Invariant)</h2>
 
       <div class="card-formula">
         <div class="header"><i class="bi bi-sliders"></i> Weight-Balance Formalism & Height Theorem</div>
@@ -454,7 +410,7 @@
     <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · ADS · 07 · Parallel kd-tree</p>
   </footer>
 
-  <script src="../pkd-tree-sims.js?v=12"></script>
+  <script src="../pkd-tree-sims.js?v=13"></script>
   <script src="../../shared/katchkit.js"></script>
 </body>
 
