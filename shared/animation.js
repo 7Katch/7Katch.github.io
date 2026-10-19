@@ -789,3 +789,163 @@ class KatchSimulation {
     };
   }
 }
+
+/**
+ * Simulazione guidata a slide/step discreti su richiesta dell'utente.
+ * Elimina i timer automatici fissi e offre controlli interattivi Previous / Next / Reset.
+ */
+class KatchSteppedSimulation {
+  /**
+   * Factory method per creare simulazioni a step discreti.
+   * @param {string} containerId - ID del div contenitore HTML
+   * @param {number} width - Larghezza canvas
+   * @param {number} height - Altezza canvas
+   * @param {function(any, AnimFactory): void} setupFn - Setup iniziale e reset dello stato
+   * @param {function(any, AnimFactory): void} drawFn - Render grafico continuo in p5
+   * @param {Array<{ caption: string, run: function(any, AnimFactory, number, any): void }>} steps - Array di slide/step
+   * @param {object} [uiConfig] - Configurazione facoltativa degli ID dei pulsanti e del badge
+   */
+  static create(containerId, width, height, setupFn, drawFn, steps, uiConfig = {}) {
+    return new KatchSteppedSimulation(containerId, width, height, setupFn, drawFn, steps, uiConfig);
+  }
+
+  constructor(containerId, width, height, setupFn, drawFn, steps, uiConfig = {}) {
+    this.containerId = containerId;
+    this.width = width;
+    this.height = height;
+    this.setupFn = setupFn;
+    this.drawFn = drawFn;
+    this.steps = steps || [];
+    this.uiConfig = uiConfig;
+    this.currentStep = 0;
+    this.p = null;
+    this.factory = null;
+
+    this.p5Instance = new p5(this.sketch.bind(this));
+  }
+
+  sketch(p) {
+    this.p = p;
+    this.factory = new AnimFactory(p);
+
+    // Metodi di controllo esposti
+    this.next = () => {
+      if (this.currentStep < this.steps.length - 1) {
+        this.goTo(this.currentStep + 1, true);
+      }
+    };
+
+    this.prev = () => {
+      if (this.currentStep > 0) {
+        this.goTo(this.currentStep - 1, false);
+      }
+    };
+
+    this.reset = () => {
+      this.goTo(0, false);
+    };
+
+    // Alias di retrocompatibilità
+    this.animStart = () => {
+      if (this.currentStep >= this.steps.length - 1) {
+        this.reset();
+      } else {
+        this.next();
+      }
+    };
+    this.animReset = () => this.reset();
+
+    p.setup = () => {
+      let canvas = p.createCanvas(this.width, this.height);
+      canvas.parent(this.containerId);
+      p.cap = { text: '', alpha: 255 };
+      p.noLoop();
+      gsap.ticker.add(() => p.redraw());
+
+      // Inizializza immediatamente alla prima slide (senza animazione di caricamento)
+      this.goTo(0, false);
+    };
+
+    p.draw = () => {
+      p.background(KatchColors.bg[0], KatchColors.bg[1], KatchColors.bg[2]);
+      if (this.drawFn) this.drawFn(p, this.factory);
+      this.factory.drawCaption(p.cap);
+    };
+  }
+
+  goTo(stepIndex, animate = true) {
+    const p = this.p;
+    const f = this.factory;
+    if (!p || !this.steps.length) return;
+
+    stepIndex = Math.max(0, Math.min(stepIndex, this.steps.length - 1));
+
+    // 1. Arresta eventuali timeline e tweens attivi
+    if (p.tl) {
+      p.tl.kill();
+      p.tl = null;
+    }
+
+    // 2. Ripristina lo stato pulito originario
+    if (this.setupFn) this.setupFn(p, f);
+
+    // 3. Fast-forward degli step precedenti (0 .. stepIndex - 1)
+    if (stepIndex > 0) {
+      const ffTl = gsap.timeline();
+      for (let i = 0; i < stepIndex; i++) {
+        if (this.steps[i].run) {
+          this.steps[i].run(p, f, 0, ffTl);
+        }
+      }
+      ffTl.progress(1);
+      ffTl.kill();
+    }
+
+    // 4. Esegui lo step corrente
+    const currentDef = this.steps[stepIndex];
+    p.cap = { text: currentDef.caption || '', alpha: animate ? 0 : 255 };
+
+    p.tl = gsap.timeline();
+    if (animate) {
+      p.tl.to(p.cap, { alpha: 255, duration: 0.35 });
+    }
+
+    const dur = animate ? 0.6 : 0;
+    if (currentDef.run) {
+      currentDef.run(p, f, dur, p.tl);
+    }
+
+    if (!animate) {
+      p.tl.progress(1);
+    }
+
+    this.currentStep = stepIndex;
+    this.updateUI();
+    p.redraw();
+  }
+
+  updateUI() {
+    const n = this.steps.length;
+    const k = this.currentStep;
+    const cfg = this.uiConfig || {};
+
+    const containerEl = document.getElementById(this.containerId);
+    const parent = containerEl ? containerEl.parentElement : null;
+
+    const badge = (cfg.badge ? document.getElementById(cfg.badge) : null) || parent?.querySelector('.sim-step-badge');
+    const prevBtn = (cfg.prevBtn ? document.getElementById(cfg.prevBtn) : null) || parent?.querySelector('.btn-prev') || parent?.querySelector('button[id$="-prev"]');
+    const nextBtn = (cfg.nextBtn ? document.getElementById(cfg.nextBtn) : null) || parent?.querySelector('.btn-next') || parent?.querySelector('button[id$="-next"]');
+    const resetBtn = (cfg.resetBtn ? document.getElementById(cfg.resetBtn) : null) || parent?.querySelector('.btn-reset') || parent?.querySelector('button[id$="-reset"]');
+
+    if (badge) {
+      badge.textContent = `Slide ${k + 1} / ${n}`;
+    }
+    if (prevBtn) {
+      prevBtn.disabled = (k === 0);
+    }
+    if (nextBtn) {
+      nextBtn.disabled = (k === n - 1);
+    }
+  }
+}
+

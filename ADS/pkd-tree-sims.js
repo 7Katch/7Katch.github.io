@@ -1,27 +1,24 @@
 /* ==========================================================================
-   Pkd-tree (Parallel kd-tree) — Simulazioni Capitoli 1-2
-   Framework: KatchSimulation + AnimFactory (shared/animation.js)
-   Pattern passivo: draw() legge soltanto, GSAP muove.
+   Pkd-tree (Parallel kd-tree) — Simulations for Chapters 1-2
+   Framework: KatchSteppedSimulation + AnimFactory (shared/animation.js)
+   Pattern: User-controlled sequential slides (Next / Prev / Reset)
    ========================================================================== */
 
 const PKD_W = 1000;
 const PKD_H = 430;
 const PKD_MARGIN = 30;
-const PKD_CAPTION_HOLD = 2.2; // seconds each caption stays on screen
 
-/* ---------- Helper comuni delegati alla libreria comune shared/animation.js ---------- */
-const pkdCaption = (tl, cap, text, pos = '>', hold = PKD_CAPTION_HOLD) => 
-  AnimFactory.prototype.animCaption(tl, cap, text, pos, hold);
+/* ---------- Common Helpers ---------- */
 const pkdDrawCaption = (p, cap) => AnimFactory.prototype.drawCaption.call({ p }, cap);
 const pkdLabel = (p, txt, x, y, col = KatchColors.slate, size = 12, align = 'LEFT', alpha = 255) => 
   AnimFactory.prototype.drawLabel.call({ p }, txt, x, y, { col, size, align, alpha });
 const pkdRGB = (c) => KatchColors.rgb(c);
-const pkdMakeSim = (containerId, resetFn, drawFn, timelineFn) => 
-  KatchSimulation.create(containerId, PKD_W, PKD_H, resetFn, drawFn, timelineFn);
+const pkdMakeSteppedSim = (containerId, setupFn, drawFn, steps, uiConfig) => 
+  KatchSteppedSimulation.create(containerId, PKD_W, PKD_H, setupFn, drawFn, steps, uiConfig);
 
 
 /* ==========================================================================
-   SIM 1 — Costruzione di un kd-tree (piano 2D + albero)
+   SIM 1 — 2D kd-tree Recursive Partitioning (Plane + Tree)
    ========================================================================== */
 const KD_POINTS = [
   [0.10, 0.20], [0.25, 0.75], [0.35, 0.42], [0.45, 0.90], [0.55, 0.15], [0.62, 0.60],
@@ -39,10 +36,10 @@ function kdBuild(pts, ids, rect, depth, x0, x1, out, parent) {
     return node;
   }
   const span = d => Math.max(...ids.map(i => pts[i][d])) - Math.min(...ids.map(i => pts[i][d]));
-  const d = span(0) >= span(1) ? 0 : 1;                // dimensione più "larga"
+  const d = span(0) >= span(1) ? 0 : 1;                // widest dimension
   const sorted = ids.slice().sort((a, b) => pts[a][d] - pts[b][d]);
   const m = Math.floor(sorted.length / 2);
-  const c = (pts[sorted[m - 1]][d] + pts[sorted[m]][d]) / 2; // mediana
+  const c = (pts[sorted[m - 1]][d] + pts[sorted[m]][d]) / 2; // median
   Object.assign(node, { d, c, rect, progress: 0, left: sorted.slice(0, m), right: sorted.slice(m) });
   out.splits.push(node);
   const mid = (x0 + x1) / 2;
@@ -53,7 +50,7 @@ function kdBuild(pts, ids, rect, depth, x0, x1, out, parent) {
   return node;
 }
 
-const simKd = pkdMakeSim('sim-kd',
+const simKd = pkdMakeSteppedSim('sim-kd',
   (p) => {
     const s = 280;
     p.L = { x: 30, y: 24, s };
@@ -67,13 +64,13 @@ const simKd = pkdMakeSim('sim-kd',
   },
   (p) => {
     const { L, T } = p;
-    // Piano
+    // Cartesian plane
     p.noFill(); p.stroke(255, 40); p.strokeWeight(1); p.rectMode(p.CORNER);
     p.rect(L.x, L.y, L.s, L.s, 4);
     pkdLabel(p, 'x →', L.x + L.s - 24, L.y + L.s + 12);
     pkdLabel(p, '↑ y', L.x - 4, L.y - 10);
 
-    // Iperpiani di split
+    // Splitting hyperplanes
     p.kd.splits.forEach(sp => {
       if (sp.alpha <= 0) return;
       const r = sp.rect;
@@ -83,7 +80,7 @@ const simKd = pkdMakeSim('sim-kd',
       else p.line(p.X(r.x0), p.Y(sp.c), p.X(r.x0 + (r.x1 - r.x0) * sp.progress), p.Y(sp.c));
     });
 
-    // Punti
+    // Data points
     p.noStroke();
     p.pts.forEach(pt => {
       p.fill(pt.r, pt.g, pt.b, pt.alpha);
@@ -93,7 +90,7 @@ const simKd = pkdMakeSim('sim-kd',
     });
     p.drawingContext.shadowBlur = 0;
 
-    // Albero
+    // Tree hierarchy
     const ny = n => T.y0 + n.depth * T.gap;
     const all = [...p.kd.splits, ...p.kd.leaves];
     all.forEach(n => {
@@ -119,58 +116,60 @@ const simKd = pkdMakeSim('sim-kd',
       p.text(n.ids.length + 'p', n.tx, ny(n));
     });
 
-    p.rectMode(p.CORNER); // Ripristina rectMode standard
+    p.rectMode(p.CORNER);
   },
-  (p, f, tl) => {
-    pkdCaption(tl, p.cap, 'n = 12 points in D = 2 dimensions: building kd-tree');
-    p.kd.splits.forEach((sp, k) => {
-      if (k === 0) pkdCaption(tl, p.cap, 'Root: widest dimension (x) → split at the median (x = 0.50)');
-      else if (k === 1) pkdCaption(tl, p.cap, 'Recursion: left sub-space splits on y at median (y = 0.48)');
-      else pkdCaption(tl, p.cap, `Recursion: split on ${sp.d === 0 ? 'x' : 'y'} at median (${sp.c.toFixed(2)})`);
-      tl.to(sp, { alpha: 255, duration: 0.3 })
-        .to(sp, { progress: 1, duration: 0.6, ease: 'power2.inOut' }, '<')
-        .to(sp.left.map(i => p.pts[i]), { ...pkdRGB(KatchColors.teal), duration: 0.3, stagger: 0.03 }, '>-0.15')
-        .to(sp.right.map(i => p.pts[i]), { ...pkdRGB(KatchColors.amber), duration: 0.3, stagger: 0.03 }, '<');
-    });
-    pkdCaption(tl, p.cap, `Leaves: ≤ φ = ${KD_PHI} points stored directly · height ≈ log₂ n`);
-    p.kd.leaves.forEach((lf, i) => {
-      const c = KD_LEAF_COLORS[i % KD_LEAF_COLORS.length];
-      tl.to(lf, { alpha: 255, duration: 0.3 }, i === 0 ? '>' : '<0.08')
-        .to(lf.ids.map(id => p.pts[id]), { ...pkdRGB(c), duration: 0.3 }, '<');
-    });
-  }
+  [
+    {
+      caption: '1/5 · Initial Dataset: 12 points distributed in a normalized 2D space [0, 1]².',
+      run: (p, f, dur, tl) => {
+        tl.to(p.pts, { alpha: 255, duration: dur });
+      }
+    },
+    {
+      caption: '2/5 · Root (depth 0): Widest dimension (x) → Split at median coordinate x = 0.50.',
+      run: (p, f, dur, tl) => {
+        const sp0 = p.kd.splits[0];
+        tl.to(sp0, { alpha: 255, duration: dur * 0.4 })
+          .to(sp0, { progress: 1, duration: dur * 0.7, ease: 'power2.inOut' }, '<')
+          .to(sp0.left.map(i => p.pts[i]), { ...pkdRGB(KatchColors.teal), duration: dur * 0.4 }, '>-0.2')
+          .to(sp0.right.map(i => p.pts[i]), { ...pkdRGB(KatchColors.amber), duration: dur * 0.4 }, '<');
+      }
+    },
+    {
+      caption: '3/5 · Left recursion (depth 1): Left subspace is split along y at median coordinate y = 0.48.',
+      run: (p, f, dur, tl) => {
+        const sp1 = p.kd.splits[1];
+        tl.to(sp1, { alpha: 255, duration: dur * 0.4 })
+          .to(sp1, { progress: 1, duration: dur * 0.7, ease: 'power2.inOut' }, '<')
+          .to(sp1.left.map(i => p.pts[i]), { ...pkdRGB(KatchColors.blue), duration: dur * 0.4 }, '>-0.2')
+          .to(sp1.right.map(i => p.pts[i]), { ...pkdRGB(KatchColors.violet), duration: dur * 0.4 }, '<');
+      }
+    },
+    {
+      caption: '4/5 · Right recursion & completion: Successive partitions alternating widest spread axes.',
+      run: (p, f, dur, tl) => {
+        p.kd.splits.slice(2).forEach(sp => {
+          tl.to(sp, { alpha: 255, progress: 1, duration: dur * 0.6, ease: 'power2.inOut' }, '<0.1');
+        });
+      }
+    },
+    {
+      caption: '5/5 · Leaves (threshold φ = 2): Points (≤ 2 per cell) reside directly in leaves for cache efficiency.',
+      run: (p, f, dur, tl) => {
+        p.kd.leaves.forEach((lf, i) => {
+          const c = KD_LEAF_COLORS[i % KD_LEAF_COLORS.length];
+          tl.to(lf, { alpha: 255, duration: dur * 0.4 }, i === 0 ? '>' : '<0.06')
+            .to(lf.ids.map(id => p.pts[id]), { ...pkdRGB(c), duration: dur * 0.4 }, '<');
+        });
+      }
+    }
+  ],
+  { prevBtn: 'btn-kd-prev', nextBtn: 'btn-kd-next', badge: 'badge-kd-step', resetBtn: 'btn-kd-reset' }
 );
 
-/* ==========================================================================
-   SIM 2 — Tabella 1: Pkd-tree vs baseline (10^9 punti 2D, Uniform)
-   ========================================================================== */
-const simTable = pkdMakeSim('sim-table',
-  (p, f) => {
-    p.mat = f.createMatrix('T1', 0, 0, 'Time (s) · 10⁹ 2D points · 96 cores',
-      ['Build', 'Ins 1%', 'Del 1%', '10-NN'],
-      ['Pkd', 'Log', 'BHL', 'CGAL'],
-      [['3.15', '.104', '.121', '.381'],
-       ['37.9', '2.16', '.396', '2.96'],
-       ['31.7', '31.4', '30.9', '.487'],
-       ['1147', '1631', '41.2', '1.04']], 'auto', 40);
-    f.layoutRow([p.mat], (p.width - p.mat.w) / 2, PKD_MARGIN + 60);
-    p.mat.data.forEach(row => row.forEach(c => { c.alpha = 0; }));
-  },
-  (p, f) => { f.drawMatrix(p.mat); },
-  (p, f, tl) => {
-    pkdCaption(tl, p.cap, 'Baseline: Log-tree, BHL-tree (ParGeo), CGAL');
-    [1, 2, 3].forEach(r => f.animMatrixRowStyle(tl, p.mat, r, { alpha: 255, color: KatchColors.slate }, 0.4, '>'));
-    pkdCaption(tl, p.cap, 'Pkd-tree: fastest on every operation');
-    f.animMatrixRowStyle(tl, p.mat, 0, { alpha: 255, color: KatchColors.green, bgColor: [...KatchColors.green, 45], scale: 1.1 }, 0.6, '>');
-    pkdCaption(tl, p.cap, 'Build ~10× · updates up to 400× · queries 6–12× vs Log-tree', '+=0.6');
-    tl.to(p.mat.getCell(3, 1), { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: 0.4 }, '<')
-      .to(p.mat.getCell(2, 1), { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: 0.4 }, '<')
-      .to(p.mat.getCell(1, 3), { r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: 0.4 }, '<');
-  }
-);
 
 /* ==========================================================================
-   SIM 3 — Metodo logaritmico (Log-tree) vs albero singolo (Pkd-tree)
+   SIM 2 — Logarithmic Method (Log-tree) vs Single Tree (Pkd-tree)
    ========================================================================== */
 const LOG_SIZES = [1, 2, 4, 8];
 
@@ -186,7 +185,7 @@ function pkdDrawTree(p, t, col) {
   p.pop();
 }
 
-const simLog = pkdMakeSim('sim-log',
+const simLog = pkdMakeSteppedSim('sim-log',
   (p) => {
     const rowY = p.height * 0.30;
     p.slotX = LOG_SIZES.map((_, i) => p.width * (0.32 + i * 0.17));
@@ -209,35 +208,101 @@ const simLog = pkdMakeSim('sim-log',
     f.drawScanner(p.scan, KatchColors.amber);
     pkdLabel(p, `trees visited by the query: ${Math.round(p.st.visits)}`, p.width - PKD_MARGIN, PKD_MARGIN - 8, KatchColors.amber, 12, 'RIGHT');
   },
-  (p, f, tl) => {
-    const [t1, t2, t4, t8] = p.trees;
-    pkdCaption(tl, p.cap, 'n = 11 = 8 + 2 + 1 → one perfect tree per 1-bit');
-    pkdCaption(tl, p.cap, 'Inserting 1 point…', '+=0.6');
-    tl.to(p.ins, { alpha: 255, duration: 0.3 })
-      .to(p.ins, { y: p.rowY, duration: 0.6, ease: 'power2.inOut' });
-    pkdCaption(tl, p.cap, '1 + 1 → 2 · 2 + 2 → 4 : cascading merges (like a binary carry)');
-    tl.to([p.ins, t1], { x: p.slotX[1], alpha: 0, duration: 0.7, ease: 'power2.inOut' })
-      .to(t2, { scale: 1.35, duration: 0.25, yoyo: true, repeat: 1 })
-      .to(t2, { x: p.slotX[2], alpha: 0, duration: 0.7, ease: 'power2.inOut' })
-      .fromTo(t4, { scale: 0.4 }, { alpha: 255, scale: 1, duration: 0.5, ease: 'back.out(2)' }, '<0.4');
-    pkdCaption(tl, p.cap, 'k-NN query: must search ALL trees and combine the results', '+=0.4');
-    tl.set(p.scan, { x: t4.x, y: p.rowY, alpha: 255 })
-      .to(p.st, { visits: 1, duration: 0.2 })
-      .to(p.scan, { x: t8.x, duration: 0.7, ease: 'power2.inOut' }, '+=0.4')
-      .to(p.st, { visits: 2, duration: 0.2 });
-    pkdCaption(tl, p.cap, 'Pkd-tree: a single balanced kd-tree → one visit', '+=0.5');
-    tl.set(p.st, { visits: 0 })
-      .to(p.scan, { x: p.pkd.x, y: p.pkd.y, w: 140, h: 140, duration: 0.8, ease: 'power2.inOut' })
-      .to(p.st, { visits: 1, duration: 0.2 });
-  }
+  [
+    {
+      caption: '1/5 · Log-tree: Maintains O(log n) static trees of power-of-two sizes (11 = 8 + 2 + 1).',
+      run: (p, f, dur, tl) => {
+        // Base state with trees 1, 2, 8
+      }
+    },
+    {
+      caption: '2/5 · Insertion: 1 new point arrives into the size-1 partition.',
+      run: (p, f, dur, tl) => {
+        tl.to(p.ins, { alpha: 255, duration: dur * 0.3 })
+          .to(p.ins, { y: p.rowY, duration: dur * 0.7, ease: 'power2.inOut' });
+      }
+    },
+    {
+      caption: '3/5 · Cascading Merges: 1+1=2, then 2+2=4. Cascading rebuilds analogous to binary addition carries.',
+      run: (p, f, dur, tl) => {
+        const [t1, t2, t4] = p.trees;
+        tl.to([p.ins, t1], { x: p.slotX[1], alpha: 0, duration: dur * 0.5, ease: 'power2.inOut' })
+          .to(t2, { scale: 1.35, duration: dur * 0.25, yoyo: true, repeat: 1 })
+          .to(t2, { x: p.slotX[2], alpha: 0, duration: dur * 0.5, ease: 'power2.inOut' })
+          .fromTo(t4, { scale: 0.4 }, { alpha: 255, scale: 1, duration: dur * 0.5, ease: 'back.out(2)' }, '<0.2');
+      }
+    },
+    {
+      caption: '4/5 · k-NN Query on Log-tree: The search MUST query all O(log n) trees and merge intermediate results!',
+      run: (p, f, dur, tl) => {
+        const [, , t4, t8] = p.trees;
+        tl.set(p.scan, { x: t4.x, y: p.rowY, alpha: 255 })
+          .to(p.st, { visits: 1, duration: dur * 0.3 })
+          .to(p.scan, { x: t8.x, duration: dur * 0.7, ease: 'power2.inOut' }, `+=${dur * 0.2}`)
+          .to(p.st, { visits: 2, duration: dur * 0.3 });
+      }
+    },
+    {
+      caption: '5/5 · Pkd-tree: ALWAYS maintains a single coherent tree → 1 search traversal, zero merge overhead.',
+      run: (p, f, dur, tl) => {
+        tl.set(p.st, { visits: 0 })
+          .to(p.scan, { x: p.pkd.x, y: p.pkd.y, w: 140, h: 140, duration: dur * 0.8, ease: 'power2.inOut' })
+          .to(p.st, { visits: 1, duration: dur * 0.3 });
+      }
+    }
+  ],
+  { prevBtn: 'btn-log-prev', nextBtn: 'btn-log-next', badge: 'badge-log-step', resetBtn: 'btn-log-reset' }
 );
 
+
 /* ==========================================================================
-   SIM 4 — Modello Work–Span (fork-join binario, DAG)
+   SIM 3 — Table 1: Pkd-tree vs Baselines (10^9 2D points, Uniform)
+   ========================================================================== */
+const simTable = pkdMakeSteppedSim('sim-table',
+  (p, f) => {
+    p.mat = f.createMatrix('T1', 0, 0, 'Time (s) · 10⁹ 2D points · 96 cores',
+      ['Build', 'Ins 1%', 'Del 1%', '10-NN'],
+      ['Pkd', 'Log', 'BHL', 'CGAL'],
+      [['3.15', '.104', '.121', '.381'],
+       ['37.9', '2.16', '.396', '2.96'],
+       ['31.7', '31.4', '30.9', '.487'],
+       ['1147', '1631', '41.2', '1.04']], 'auto', 40);
+    f.layoutRow([p.mat], (p.width - p.mat.w) / 2, PKD_MARGIN + 60);
+    p.mat.data.forEach(row => row.forEach(c => { c.alpha = 0; }));
+  },
+  (p, f) => { f.drawMatrix(p.mat); },
+  [
+    {
+      caption: '1/3 · Reference Baselines: Log-tree, BHL-tree (ParGeo), and CGAL (computational standard).',
+      run: (p, f, dur, tl) => {
+        [1, 2, 3].forEach(r => f.animMatrixRowStyle(tl, p.mat, r, { alpha: 255, color: KatchColors.slate }, dur * 0.4, '>'));
+      }
+    },
+    {
+      caption: '2/3 · Pkd-tree: Dominant performance across all operations (construction, updates, and queries).',
+      run: (p, f, dur, tl) => {
+        f.animMatrixRowStyle(tl, p.mat, 0, { alpha: 255, color: KatchColors.green, bgColor: [...KatchColors.green, 45], scale: 1.1 }, dur * 0.6, '>');
+      }
+    },
+    {
+      caption: '3/3 · Quantitative Gains: Build ~10×, batch updates up to 400×, k-NN queries 6–12× faster vs Log-tree.',
+      run: (p, f, dur, tl) => {
+        tl.to(p.mat.getCell(3, 1), { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: dur * 0.4 }, '<')
+          .to(p.mat.getCell(2, 1), { r: KatchColors.red[0], g: KatchColors.red[1], b: KatchColors.red[2], duration: dur * 0.4 }, '<')
+          .to(p.mat.getCell(1, 3), { r: KatchColors.amber[0], g: KatchColors.amber[1], b: KatchColors.amber[2], duration: dur * 0.4 }, '<');
+      }
+    }
+  ],
+  { prevBtn: 'btn-table-prev', nextBtn: 'btn-table-next', badge: 'badge-table-step', resetBtn: 'btn-table-reset' }
+);
+
+
+/* ==========================================================================
+   SIM 4 — Work–Span Model (Binary Fork-Join DAG)
    ========================================================================== */
 const FJ_LEVELS = [1, 2, 4, 8, 4, 2, 1];
 
-const simFJ = pkdMakeSim('sim-forkjoin',
+const simFJ = pkdMakeSteppedSim('sim-forkjoin',
   (p) => {
     const top = PKD_MARGIN + 20;
     const gap = (p.height - top - 60) / (FJ_LEVELS.length - 1);
@@ -286,35 +351,63 @@ const simFJ = pkdMakeSim('sim-forkjoin',
       pkdLabel(p, 'T ≈ W/ρ + O(S)', lx, p.height * 0.45 + 82, KatchColors.green, 13, 'LEFT', p.st.rho);
       pkdLabel(p, '  ≈ 22/4 + 7', lx, p.height * 0.45 + 100, KatchColors.green, 13, 'LEFT', p.st.rho);
     }
+    p.rectMode(p.CORNER);
   },
-  (p, f, tl) => {
-    pkdCaption(tl, p.cap, 'Fork: a thread spawns 2 children that run in parallel');
-    p.levels.forEach((lvl, l) => {
-      if (l === 3) pkdCaption(tl, p.cap, 'DAG leaves are the actual work (e.g. partitioning a chunk)');
-      if (l === 4) pkdCaption(tl, p.cap, 'Join: the parent resumes only when both children finish');
-      tl.to(lvl, { alpha: 255, duration: 0.3, stagger: 0.05 })
-        .to(p.st, { W: '+=' + lvl.length, roundProps: 'W', duration: 0.3 }, '<');
-    });
-    pkdCaption(tl, p.cap, 'Work W = total number of nodes (= sequential time)', '+=0.3');
-    pkdCaption(tl, p.cap, 'Span S = longest path in the DAG (dependence chain)', '+=0.8');
-    const path = p.levels.map(l => l[0]);
-    const pathEdges = p.edges.filter(e => path.includes(e.a) && path.includes(e.b));
-    path.forEach((n, k) => {
-      tl.to(n, { ...pkdRGB(KatchColors.amber), duration: 0.2 }, k === 0 ? '>' : '>-0.05')
-        .to(p.st, { S: k + 1, duration: 0.15 }, '<');
-      if (pathEdges[k]) tl.to(pathEdges[k], { hl: 255, duration: 0.2 });
-    });
-    pkdCaption(tl, p.cap, 'Work-stealing: time W/ρ + O(S) whp → we need small (polylog) span', '+=0.3');
-    tl.to(p.st, { rho: 255, duration: 0.5 }, '<');
-  }
+  [
+    {
+      caption: '1/5 · Fork: A parent thread recursively spawns 2 child threads that execute in parallel.',
+      run: (p, f, dur, tl) => {
+        [0, 1, 2].forEach(l => {
+          tl.to(p.levels[l], { alpha: 255, duration: dur * 0.35, stagger: dur * 0.04 }, '<')
+            .to(p.st, { W: '+=' + p.levels[l].length, roundProps: 'W', duration: dur * 0.25 }, '<');
+        });
+      }
+    },
+    {
+      caption: '2/5 · Task (DAG leaves): Parallel execution of computational workload (e.g. chunk partitioning).',
+      run: (p, f, dur, tl) => {
+        tl.to(p.levels[3], { alpha: 255, duration: dur * 0.45, stagger: dur * 0.04 }, '>')
+          .to(p.st, { W: '+=' + p.levels[3].length, roundProps: 'W', duration: dur * 0.3 }, '<');
+      }
+    },
+    {
+      caption: '3/5 · Join: Parallel branches synchronize; parent thread resumes only when both children finish.',
+      run: (p, f, dur, tl) => {
+        [4, 5, 6].forEach(l => {
+          tl.to(p.levels[l], { alpha: 255, duration: dur * 0.35, stagger: dur * 0.04 }, '<')
+            .to(p.st, { W: '+=' + p.levels[l].length, roundProps: 'W', duration: dur * 0.25 }, '<');
+        });
+      }
+    },
+    {
+      caption: '4/5 · Span S: The longest critical path in the DAG (chain of non-parallelizable serial dependencies).',
+      run: (p, f, dur, tl) => {
+        const path = p.levels.map(l => l[0]);
+        const pathEdges = p.edges.filter(e => path.includes(e.a) && path.includes(e.b));
+        path.forEach((n, k) => {
+          tl.to(n, { ...pkdRGB(KatchColors.amber), duration: dur * 0.2 }, k === 0 ? '>' : '<0.05')
+            .to(p.st, { S: k + 1, duration: dur * 0.15 }, '<');
+          if (pathEdges[k]) tl.to(pathEdges[k], { hl: 255, duration: dur * 0.2 }, '<');
+        });
+      }
+    },
+    {
+      caption: '5/5 · Brent\'s Theorem: On ρ processors, Time T ≈ W/ρ + O(S) → scaling requires polylogarithmic Span!',
+      run: (p, f, dur, tl) => {
+        tl.to(p.st, { rho: 255, duration: dur * 0.5 });
+      }
+    }
+  ],
+  { prevBtn: 'btn-fj-prev', nextBtn: 'btn-fj-next', badge: 'badge-fj-step', resetBtn: 'btn-fj-reset' }
 );
 
+
 /* ==========================================================================
-   SIM 5 — Ideal-cache model (M, B, trasferimenti di blocchi)
+   SIM 5 — Ideal-Cache Model (M, B, Block Transfers)
    ========================================================================== */
 const IC_BLOCKS = 6, IC_B = 4, IC_SLOTS = 2;
 
-const simCache = pkdMakeSim('sim-cache',
+const simCache = pkdMakeSteppedSim('sim-cache',
   (p) => {
     p.cellW = 22;
     const blockW = p.cellW * IC_B, gap = 14;
@@ -363,35 +456,91 @@ const simCache = pkdMakeSim('sim-cache',
     pkdLabel(p, `Block transfer (I/O): ${Math.round(p.st.io)}`, PKD_MARGIN, p.cpuY - 8, KatchColors.coral || KatchColors.red, 14);
     pkdLabel(p, `Cache hits:          ${Math.round(p.st.hit)}`, PKD_MARGIN, p.cpuY + 16, KatchColors.green, 14);
   },
-  (p, f, tl) => {
-    pkdCaption(tl, p.cap, 'Sequential scan of n = 24 elements');
-    tl.to(p.ptr, { alpha: 255, duration: 0.2 });
-    for (let j = 0; j < IC_BLOCKS; j++) {
-      if (j === 0) pkdCaption(tl, p.cap, 'Miss: a whole block is transferred (cost 1)');
-      if (j === 1) pkdCaption(tl, p.cap, 'The other B−1 elements are already cached (cost 0)');
-      if (j === IC_SLOTS) pkdCaption(tl, p.cap, 'Cache full: evict a block (optimal offline policy)');
-      tl.to(p.ptr, { x: p.blockX(j) + p.cellW / 2, duration: 0.25 })
-        .to(p.cells[j * IC_B], { read: 255, duration: 0.2 }, '<')
-        .set(p.copies[j], { alpha: 255 });
-      if (j >= IC_SLOTS) tl.to(p.copies[j - IC_SLOTS], { alpha: 0, y: p.cacheY - 30, duration: 0.4 });
-      tl.to(p.copies[j], { x: p.slotX(j % IC_SLOTS), y: p.cacheY, duration: 0.55, ease: 'power2.inOut' }, '<')
-        .to(p.st, { io: '+=1', roundProps: 'io', duration: 0.2 }, '<');
-      for (let k = 1; k < IC_B; k++) {
-        tl.to(p.ptr, { x: p.blockX(j) + k * p.cellW + p.cellW / 2, duration: 0.16 })
-          .to(p.cells[j * IC_B + k], { read: 255, duration: 0.15 }, '<')
-          .to(p.st, { hit: '+=1', roundProps: 'hit', duration: 0.1 }, '<');
+  [
+    {
+      caption: '1/5 · Ideal-Cache Model: CPU accesses cache with zero penalty (capacity M = 2 blocks of B = 4).',
+      run: (p, f, dur, tl) => {
+        tl.to(p.ptr, { alpha: 255, duration: dur * 0.3 });
+      }
+    },
+    {
+      caption: '2/5 · Cache Miss (Block 0): Entire block loaded from memory (cost 1 I/O); remaining B-1 accesses cost 0.',
+      run: (p, f, dur, tl) => {
+        const j = 0;
+        tl.to(p.ptr, { x: p.blockX(j) + p.cellW / 2, duration: dur * 0.2 })
+          .to(p.cells[j * IC_B], { read: 255, duration: dur * 0.2 }, '<')
+          .set(p.copies[j], { alpha: 255 })
+          .to(p.copies[j], { x: p.slotX(0), y: p.cacheY, duration: dur * 0.5, ease: 'power2.inOut' }, '<')
+          .to(p.st, { io: 1, duration: dur * 0.2 }, '<');
+        for (let k = 1; k < IC_B; k++) {
+          tl.to(p.ptr, { x: p.blockX(j) + k * p.cellW + p.cellW / 2, duration: dur * 0.15 })
+            .to(p.cells[j * IC_B + k], { read: 255, duration: dur * 0.15 }, '<')
+            .to(p.st, { hit: '+=' + 1, roundProps: 'hit', duration: dur * 0.1 }, '<');
+        }
+      }
+    },
+    {
+      caption: '3/5 · Second Block (Block 1): Loaded into the second available cache slot (I/O = 2, Hits = 6).',
+      run: (p, f, dur, tl) => {
+        const j = 1;
+        tl.to(p.ptr, { x: p.blockX(j) + p.cellW / 2, duration: dur * 0.2 })
+          .to(p.cells[j * IC_B], { read: 255, duration: dur * 0.2 }, '<')
+          .set(p.copies[j], { alpha: 255 })
+          .to(p.copies[j], { x: p.slotX(1), y: p.cacheY, duration: dur * 0.5, ease: 'power2.inOut' }, '<')
+          .to(p.st, { io: 2, duration: dur * 0.2 }, '<');
+        for (let k = 1; k < IC_B; k++) {
+          tl.to(p.ptr, { x: p.blockX(j) + k * p.cellW + p.cellW / 2, duration: dur * 0.15 })
+            .to(p.cells[j * IC_B + k], { read: 255, duration: dur * 0.15 }, '<')
+            .to(p.st, { hit: '+=' + 1, roundProps: 'hit', duration: dur * 0.1 }, '<');
+        }
+      }
+    },
+    {
+      caption: '4/5 · Cache Full & Eviction (Block 2): Cache capacity reached! Evicting block 0 to load block 2.',
+      run: (p, f, dur, tl) => {
+        const j = 2;
+        tl.to(p.copies[0], { alpha: 0, y: p.cacheY - 30, duration: dur * 0.4 })
+          .to(p.ptr, { x: p.blockX(j) + p.cellW / 2, duration: dur * 0.2 }, '<')
+          .to(p.cells[j * IC_B], { read: 255, duration: dur * 0.2 }, '<')
+          .set(p.copies[j], { alpha: 255 })
+          .to(p.copies[j], { x: p.slotX(0), y: p.cacheY, duration: dur * 0.5, ease: 'power2.inOut' }, '<')
+          .to(p.st, { io: 3, duration: dur * 0.2 }, '<');
+        for (let k = 1; k < IC_B; k++) {
+          tl.to(p.ptr, { x: p.blockX(j) + k * p.cellW + p.cellW / 2, duration: dur * 0.15 })
+            .to(p.cells[j * IC_B + k], { read: 255, duration: dur * 0.15 }, '<')
+            .to(p.st, { hit: '+=' + 1, roundProps: 'hit', duration: dur * 0.1 }, '<');
+        }
+      }
+    },
+    {
+      caption: '5/5 · Full Scan Complexity: For n = 24 elements, total block transfers Q = n / B = 24 / 4 = 6 blocks.',
+      run: (p, f, dur, tl) => {
+        for (let j = 3; j < IC_BLOCKS; j++) {
+          const slot = j % IC_SLOTS;
+          const prevInSlot = j - IC_SLOTS;
+          tl.to(p.copies[prevInSlot], { alpha: 0, y: p.cacheY - 30, duration: dur * 0.2 }, '<')
+            .to(p.ptr, { x: p.blockX(j) + p.cellW / 2, duration: dur * 0.15 }, '<')
+            .set(p.copies[j], { alpha: 255 })
+            .to(p.copies[j], { x: p.slotX(slot), y: p.cacheY, duration: dur * 0.25, ease: 'power2.inOut' }, '<')
+            .to(p.st, { io: j + 1, duration: dur * 0.1 }, '<');
+          for (let k = 0; k < IC_B; k++) {
+            tl.to(p.cells[j * IC_B + k], { read: 255, duration: dur * 0.05 }, '<')
+              .to(p.st, { hit: '+=' + (k > 0 ? 1 : 0), roundProps: 'hit', duration: dur * 0.05 }, '<');
+          }
+        }
       }
     }
-    pkdCaption(tl, p.cap, 'Cache complexity of the scan = n / B = 24 / 4 = 6');
-  }
+  ],
+  { prevBtn: 'btn-cache-prev', nextBtn: 'btn-cache-next', badge: 'badge-cache-step', resetBtn: 'btn-cache-reset' }
 );
 
+
 /* ==========================================================================
-   SIM 6 — Bilanciamento per peso (parametro α)
+   SIM 6 — Weight-Balanced Invariant (Parameter α)
    ========================================================================== */
 const WB_ALPHA = 0.2;
 
-const simBal = pkdMakeSim('sim-balance',
+const simBal = pkdMakeSteppedSim('sim-balance',
   (p) => {
     p.st = { lc: 10, rc: 10, flash: 0 };
     p.root = { x: p.width * 0.27, y: p.height * 0.2 };
@@ -404,7 +553,7 @@ const simBal = pkdMakeSim('sim-balance',
     const ok = ratio >= 0.5 - WB_ALPHA && ratio <= 0.5 + WB_ALPHA;
     const col = ok ? KatchColors.green : KatchColors.red;
 
-    // Albero
+    // Tree visualization
     const childY = p.height * 0.55, dx = p.width * 0.14;
     [[-1, lc, 'T.lc'], [1, rc, 'T.rc']].forEach(([s, n, name]) => {
       const h = 50 + 90 * Math.sqrt(n / 30), w = h * 0.95, cx = root.x + s * dx;
@@ -421,7 +570,7 @@ const simBal = pkdMakeSim('sim-balance',
     p.noStroke(); p.fill(col[0], col[1], col[2]); p.circle(root.x, root.y, 26);
     pkdLabel(p, 'T', root.x, root.y, [10, 10, 20], 13, 'CENTER');
 
-    // Barra rapporto
+    // Ratio progress bar
     const X = v => bar.x + v * bar.w;
     p.rectMode(p.CORNER); p.noStroke();
     p.fill(255, 15); p.rect(bar.x, bar.y, bar.w, bar.h, 4);
@@ -438,17 +587,34 @@ const simBal = pkdMakeSim('sim-balance',
     pkdLabel(p, `α = ${WB_ALPHA}  →  allowed range [${0.5 - WB_ALPHA}, ${0.5 + WB_ALPHA}]`, bar.x, bar.y - 20, KatchColors.slate, 11);
     pkdLabel(p, ok ? '✔ BALANCED' : '✖ UNBALANCED', bar.x, bar.y + bar.h + 50, col, 16);
   },
-  (p, f, tl) => {
-    pkdCaption(tl, p.cap, 'Perfect tree: 10 | 10 → ratio 0.50');
-    pkdCaption(tl, p.cap, 'Batch insertion into the left subtree: 14 | 10', '+=0.8');
-    tl.to(p.st, { lc: 14, duration: 1, ease: 'power1.inOut' });
-    pkdCaption(tl, p.cap, 'Lazy strategy: within ±α the imbalance is tolerated, no action', '+=0.2');
-    pkdCaption(tl, p.cap, 'Another skewed batch: 30 | 10 → out of bounds!', '+=1.2');
-    tl.to(p.st, { lc: 30, duration: 1.2, ease: 'power1.inOut' });
-    pkdCaption(tl, p.cap, 'Rebalancing = local reconstruction of the subtree (Sec. 4)', '+=0.6');
-    tl.to(p.st, { flash: 255, duration: 0.3, yoyo: true, repeat: 3 })
-      .to(p.st, { lc: 20, rc: 20, duration: 0.9, ease: 'power3.inOut' });
-  }
+  [
+    {
+      caption: '1/4 · Perfectly Balanced Tree: 10 elements on left and 10 on right → Ratio |T.lc|/|T| = 0.50.',
+      run: (p, f, dur, tl) => {
+        tl.set(p.st, { lc: 10, rc: 10, flash: 0 });
+      }
+    },
+    {
+      caption: '2/4 · Moderate Batch Insertion: 4 elements added to left (14 | 10) → Ratio = 0.58 (Tolerated within ±α).',
+      run: (p, f, dur, tl) => {
+        tl.to(p.st, { lc: 14, duration: dur * 0.8, ease: 'power1.inOut' });
+      }
+    },
+    {
+      caption: '3/4 · Invariant Violation: Another skewed batch brings left to 30 (30 | 10) → Ratio = 0.75 > 0.70 (Unbalanced)!',
+      run: (p, f, dur, tl) => {
+        tl.to(p.st, { lc: 30, duration: dur * 0.9, ease: 'power1.inOut' });
+      }
+    },
+    {
+      caption: '4/4 · Lazy Local Reconstruction: Only the unbalanced subtree is reconstructed in parallel (Sec. 4).',
+      run: (p, f, dur, tl) => {
+        tl.to(p.st, { flash: 255, duration: dur * 0.25, yoyo: true, repeat: 3 })
+          .to(p.st, { lc: 20, rc: 20, duration: dur * 0.7, ease: 'power3.inOut' });
+      }
+    }
+  ],
+  { prevBtn: 'btn-bal-prev', nextBtn: 'btn-bal-next', badge: 'badge-bal-step', resetBtn: 'btn-bal-reset' }
 );
 
 window.PKD = { kd: simKd, table: simTable, log: simLog, fj: simFJ, cache: simCache, bal: simBal };

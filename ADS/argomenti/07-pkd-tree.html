@@ -12,8 +12,8 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../../shared/katchkit.css?v=5">
-  <script src="../../shared/animation.js?v=5"></script>
+  <link rel="stylesheet" href="../../shared/katchkit.css?v=6">
+  <script src="../../shared/animation.js?v=6"></script>
   <script src="../ads-data.js"></script>
   <script>window.PAGE_DATA = ADS_DATA;</script>
 
@@ -150,8 +150,10 @@
         <div class="sim-header">// SIMULATION: 2D KD-TREE RECURSIVE PARTITIONING</div>
         <div id="sim-kd" class="sim-canvas"></div>
         <div class="sim-controls">
-          <button id="btn-kd-start" class="btn-primary" onclick="PKD.kd.animStart()"><i class="bi bi-play-fill"></i> Start</button>
-          <button id="btn-kd-reset" class="btn-secondary" onclick="PKD.kd.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button id="btn-kd-prev" class="btn-secondary" onclick="PKD.kd.prev()"><i class="bi bi-chevron-left"></i> Prev</button>
+          <span id="badge-kd-step" class="sim-step-badge">Slide 1 / 5</span>
+          <button id="btn-kd-next" class="btn-primary" onclick="PKD.kd.next()">Next <i class="bi bi-chevron-right"></i></button>
+          <button id="btn-kd-reset" class="btn-secondary" onclick="PKD.kd.reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
       </div>
 
@@ -257,8 +259,10 @@
         <div class="sim-header">// SIMULATION: LOGARITHMIC METHOD (LOG-TREE) VS SINGLE TREE (PKD-TREE)</div>
         <div id="sim-log" class="sim-canvas"></div>
         <div class="sim-controls">
-          <button id="btn-log-start" class="btn-primary" onclick="PKD.log.animStart()"><i class="bi bi-play-fill"></i> Start</button>
-          <button id="btn-log-reset" class="btn-secondary" onclick="PKD.log.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button id="btn-log-prev" class="btn-secondary" onclick="PKD.log.prev()"><i class="bi bi-chevron-left"></i> Prev</button>
+          <span id="badge-log-step" class="sim-step-badge">Slide 1 / 5</span>
+          <button id="btn-log-next" class="btn-primary" onclick="PKD.log.next()">Next <i class="bi bi-chevron-right"></i></button>
+          <button id="btn-log-reset" class="btn-secondary" onclick="PKD.log.reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
       </div>
     </div>
@@ -289,8 +293,10 @@
         <div class="sim-header">// SIMULATION: BENCHMARK RESULTS (TABLE 1 FROM PAPER, 10⁹ POINTS)</div>
         <div id="sim-table" class="sim-canvas"></div>
         <div class="sim-controls">
-          <button id="btn-table-start" class="btn-primary" onclick="PKD.table.animStart()"><i class="bi bi-play-fill"></i> Start</button>
-          <button id="btn-table-reset" class="btn-secondary" onclick="PKD.table.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button id="btn-table-prev" class="btn-secondary" onclick="PKD.table.prev()"><i class="bi bi-chevron-left"></i> Prev</button>
+          <span id="badge-table-step" class="sim-step-badge">Slide 1 / 3</span>
+          <button id="btn-table-next" class="btn-primary" onclick="PKD.table.next()">Next <i class="bi bi-chevron-right"></i></button>
+          <button id="btn-table-reset" class="btn-secondary" onclick="PKD.table.reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
       </div>
 
@@ -321,8 +327,10 @@
         <div class="sim-header">// SIMULATION: FORK-JOIN DAG, WORK W, AND SPAN S</div>
         <div id="sim-forkjoin" class="sim-canvas"></div>
         <div class="sim-controls">
-          <button id="btn-fj-start" class="btn-primary" onclick="PKD.fj.animStart()"><i class="bi bi-play-fill"></i> Start</button>
-          <button id="btn-fj-reset" class="btn-secondary" onclick="PKD.fj.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button id="btn-fj-prev" class="btn-secondary" onclick="PKD.fj.prev()"><i class="bi bi-chevron-left"></i> Prev</button>
+          <span id="badge-fj-step" class="sim-step-badge">Slide 1 / 5</span>
+          <button id="btn-fj-next" class="btn-primary" onclick="PKD.fj.next()">Next <i class="bi bi-chevron-right"></i></button>
+          <button id="btn-fj-reset" class="btn-secondary" onclick="PKD.fj.reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
       </div>
 
@@ -360,8 +368,10 @@
         <div class="sim-header">// SIMULATION: BLOCK TRANSFERS, CACHE CAPACITY M, AND EVICTION</div>
         <div id="sim-cache" class="sim-canvas"></div>
         <div class="sim-controls">
-          <button id="btn-cache-start" class="btn-primary" onclick="PKD.cache.animStart()"><i class="bi bi-play-fill"></i> Start</button>
-          <button id="btn-cache-reset" class="btn-secondary" onclick="PKD.cache.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button id="btn-cache-prev" class="btn-secondary" onclick="PKD.cache.prev()"><i class="bi bi-chevron-left"></i> Prev</button>
+          <span id="badge-cache-step" class="sim-step-badge">Slide 1 / 5</span>
+          <button id="btn-cache-next" class="btn-primary" onclick="PKD.cache.next()">Next <i class="bi bi-chevron-right"></i></button>
+          <button id="btn-cache-reset" class="btn-secondary" onclick="PKD.cache.reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
       </div>
 
@@ -433,8 +443,10 @@
         <div class="sim-header">// SIMULATION: WEIGHT-BALANCED MONITORING (α = 0.2)</div>
         <div id="sim-balance" class="sim-canvas"></div>
         <div class="sim-controls">
-          <button id="btn-bal-start" class="btn-primary" onclick="PKD.bal.animStart()"><i class="bi bi-play-fill"></i> Start</button>
-          <button id="btn-bal-reset" class="btn-secondary" onclick="PKD.bal.animReset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button id="btn-bal-prev" class="btn-secondary" onclick="PKD.bal.prev()"><i class="bi bi-chevron-left"></i> Prev</button>
+          <span id="badge-bal-step" class="sim-step-badge">Slide 1 / 4</span>
+          <button id="btn-bal-next" class="btn-primary" onclick="PKD.bal.next()">Next <i class="bi bi-chevron-right"></i></button>
+          <button id="btn-bal-reset" class="btn-secondary" onclick="PKD.bal.reset()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
       </div>
 
@@ -491,7 +503,7 @@
     <p>// <a href="https://7Katch.github.io">7Katch.github.io</a> · ADS · 07 · Parallel kd-tree</p>
   </footer>
 
-  <script src="../pkd-tree-sims.js?v=5"></script>
+  <script src="../pkd-tree-sims.js?v=7"></script>
   <script src="../../shared/katchkit.js"></script>
 </body>
 
